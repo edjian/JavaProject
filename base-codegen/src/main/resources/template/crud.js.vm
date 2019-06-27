@@ -1,0 +1,21 @@
+export const tableOption = {
+  border: true,
+  index: true,
+  indexLabel: '序号',
+  stripe: true,
+  menuAlign: 'center',
+  align: 'center',
+  menuType:'text',
+  searchShow:false,
+  excelBtn: true,
+  printBtn: true,
+  column: [
+#foreach ($column in $columns)
+	  {
+      label: '$column.comments',
+      prop: '$column.lowerAttrName',
+      sortable:true
+    },
+#end
+  ]
+}

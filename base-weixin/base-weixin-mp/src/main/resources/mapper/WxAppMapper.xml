@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.weixin.mp.mapper.WxAppMapper">
+
+	<resultMap id="wxAppMap" type="com.joolun.cloud.weixin.common.entity.WxApp">
+		<id property="id" column="id"/>
+		<result property="createId" column="create_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateId" column="update_id"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="weixinSign" column="weixin_sign"/>
+		<result property="appType" column="app_type"/>
+		<result property="secret" column="secret"/>
+		<result property="token" column="token"/>
+		<result property="aesKey" column="aes_key"/>
+		<result property="name" column="name"/>
+		<result property="weixinType" column="weixin_type"/>
+		<result property="weixinHao" column="weixin_hao"/>
+		<result property="logo" column="logo"/>
+		<result property="qrCode" column="qr_code"/>
+		<result property="community" column="community"/>
+		<result property="remarks" column="remarks"/>
+		<result property="vipCardId" column="vip_card_id"/>
+		<result property="verifyType" column="verify_type"/>
+		<result property="principalName" column="principal_name"/>
+		<result property="isComponent" column="is_component"/>
+	</resultMap>
+
+</mapper>
