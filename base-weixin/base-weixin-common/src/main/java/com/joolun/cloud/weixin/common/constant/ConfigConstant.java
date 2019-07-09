@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2018-2019
+ * All rights reserved, Designed By www.joolun.com
+ * 注意：
+ * 本软件为www.joolun.com开发研制，未经购买不得使用
+ * 购买后可获得全部源代码，并且可以商用（禁止转卖、分享、上传到码云、github等开源平台）
+ * 一经发现盗用、分享等行为，将追究法律责任，后果自负
+ */
 package com.joolun.cloud.weixin.common.constant;
 
 /**
@@ -49,4 +57,19 @@ public interface ConfigConstant {
 	String WX_MSG_TYPE_1 = "1";
 	String WX_MSG_TYPE_2 = "2";
 
+	/**
+	 * 群发消息发送类型（1、分组发；2、选择用户发）
+	 */
+	String WX_MASS_SEND_TYPE_1 = "1";
+	String WX_MASS_SEND_TYPE_2 = "2";
+
+	/**
+	 *  群发消息发送后的状态(SUB_SUCCESS：提交成功，SUB_FAIL：提交失败，SEND_SUCCESS：发送成功，SENDING：发送中，SEND_FAIL：发送失败，DELETE：已删除)
+	 */
+	String WX_MASS_STATUS_SUB_SUCCESS = "SUB_SUCCESS";
+	String WX_MASS_STATUS_SUB_FAIL = "SUB_FAIL";
+	String WX_MASS_STATUS_SEND_SUCCESS = "SEND_SUCCESS";
+	String WX_MASS_STATUS_SENDING = "SENDING";
+	String WX_MASS_STATUS_SEND_FAIL = "SEND_FAIL";
+	String WX_MASS_STATUS_DELETE = "DELETE";
 }

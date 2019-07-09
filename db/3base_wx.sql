@@ -85,6 +85,49 @@ CREATE TABLE `wx_auto_reply` (
 
 /*Data for the table `wx_auto_reply` */
 
+/*Table structure for table `wx_mass_msg` */
+
+DROP TABLE IF EXISTS `wx_mass_msg`;
+
+CREATE TABLE `wx_mass_msg` (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '主键',
+  `create_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `del_flag` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `tenant_id` int(11) NOT NULL COMMENT '所属租户',
+  `app_id` varchar(64) DEFAULT NULL COMMENT '应用ID',
+  `is_to_all` char(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '是否全部用户发送(0：是；1：否)',
+  `send_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '发送类型（1、按标签分组发；2、选择用户发）',
+  `tag_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '标签的tag_id',
+  `rep_type` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '回复消息类型（text：文本；image：图片；voice：语音；video：视频；music：音乐；news：图文）',
+  `rep_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Text:保存文字',
+  `rep_media_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'imge、voice、news、video：mediaID',
+  `rep_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '素材名、视频和音乐的标题',
+  `rep_desc` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '视频和音乐的描述',
+  `rep_url` varchar(500) DEFAULT NULL COMMENT '链接',
+  `rep_hq_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '高质量链接',
+  `rep_thumb_media_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '缩略图的媒体id',
+  `rep_thumb_url` varchar(500) DEFAULT NULL COMMENT '缩略图url',
+  `content` mediumtext COMMENT '图文消息的内容',
+  `send_ignore_reprint` char(5) DEFAULT NULL COMMENT '文章被判定为转载时，是否继续进行群发操作',
+  `msg_id` varchar(64) DEFAULT NULL COMMENT '群发消息后返回的消息id',
+  `msg_data_id` varchar(64) DEFAULT NULL COMMENT '消息的数据ID，该字段只有在群发图文消息时才会出现',
+  `msg_status` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '消息发送状态(SUB_SUCCESS：提交成功，SUB_FAIL：提交失败，SEND_SUCCESS：发送成功，SENDING：发送中，SEND_FAIL：发送失败，DELETE：已删除)',
+  `total_count` int(11) DEFAULT NULL COMMENT '发送的总粉丝数',
+  `sent_count` int(11) DEFAULT NULL COMMENT '发送成功的粉丝数',
+  `filter_count` int(11) DEFAULT NULL COMMENT '过滤（过滤是指特定地区、性别的过滤、用户设置拒收的过滤，用户接收已超4条的过滤）后，准备发送的粉丝数',
+  `error_count` int(11) DEFAULT NULL COMMENT '发送失败的粉丝数',
+  `error_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '错误码',
+  `error_msg` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '错误信息',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='群发消息表';
+
+/*Data for the table `wx_mass_msg` */
+
 /*Table structure for table `wx_menu` */
 
 DROP TABLE IF EXISTS `wx_menu`;
