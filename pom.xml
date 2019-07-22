@@ -228,18 +228,18 @@
 			<name>aliyun</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
-		<!--gitee 私服-->
+		<!--maven私服-->
 		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
+			<id>joolun</id>
+			<name>joolun</name>
+			<url>http://nexus.joolun.com/repository/maven-public/</url>
 		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
+			<id>joolun</id>
+			<name>joolun</name>
+			<url>http://nexus.joolun.com/repository/maven-public/</url>
 		</repository>
 	</distributionManagement>
 </project>
