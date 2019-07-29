@@ -3,11 +3,13 @@ package com.joolun.cloud.common.log.util;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
-import com.joolun.cloud.admin.api.entity.SysLog;
+import com.joolun.cloud.common.security.util.SecurityUtils;
+import com.joolun.cloud.upms.common.entity.SysLog;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,6 +29,7 @@ public class SysLogUtils {
 				.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
 		SysLog sysLog = new SysLog();
 		sysLog.setCreateBy(Objects.requireNonNull(getUsername()));
+		sysLog.setCreateId(Objects.requireNonNull(getUserId()));
 		sysLog.setType(CommonConstants.STATUS_NORMAL);
 		sysLog.setRemoteAddr(ServletUtil.getClientIP(request));
 		sysLog.setRequestUri(URLUtil.getPath(request.getRequestURI()));
@@ -49,6 +52,19 @@ public class SysLogUtils {
 			return auth2Authentication.getOAuth2Request().getClientId();
 		}
 		return null;
+	}
+
+	/**
+	 * 获取用户ID
+	 *
+	 * @return username
+	 */
+	private String getUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return null;
+		}
+		return SecurityUtils.getUser(authentication).getId();
 	}
 
 	/**

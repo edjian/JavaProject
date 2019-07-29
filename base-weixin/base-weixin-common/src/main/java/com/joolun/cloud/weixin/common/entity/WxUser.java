@@ -41,7 +41,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 创建时间
    */
-    private LocalDateTime createDate;
+    private LocalDateTime createTime;
     /**
    * 更新者
    */
@@ -49,7 +49,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 更新时间
    */
-    private LocalDateTime updateDate;
+    private LocalDateTime updateTime;
     /**
    * 备注信息
    */
@@ -61,7 +61,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * 所属租户
 	 */
-	private Integer tenantId;
+	private String tenantId;
     /**
    * 公众号配置ID、小程序AppID
    */

@@ -10,11 +10,11 @@
 
 	<artifactId>base-upms</artifactId>
 
-	<description>通用用户权限管理聚合模块</description>
+	<description>用户权限模块</description>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>base-upms-api</module>
-		<module>base-upms-biz</module>
+		<module>base-upms-common</module>
+		<module>base-upms-admin</module>
 	</modules>
 </project>

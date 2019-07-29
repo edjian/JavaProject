@@ -1,0 +1,22 @@
+package com.joolun.cloud.upms.admin;
+
+import com.joolun.cloud.common.security.annotation.EnableBaseFeignClients;
+import com.joolun.cloud.common.security.annotation.EnableBaseResourceServer;
+import com.joolun.cloud.common.swagger.annotation.BaseEnableSwagger;
+import org.springframework.boot.SpringApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
+
+/**
+ * @author
+ * 用户统一管理系统
+ */
+@BaseEnableSwagger
+@SpringCloudApplication
+@EnableBaseFeignClients
+@EnableBaseResourceServer
+public class BaseAdminApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(BaseAdminApplication.class, args);
+	}
+
+}

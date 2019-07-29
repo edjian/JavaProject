@@ -4,7 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.joolun.cloud.common.core.util.JsonUtil;
+import cn.hutool.json.JSONUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -18,28 +18,30 @@ import org.apache.ibatis.type.MappedTypes;
 @MappedJdbcTypes({JdbcType.VARCHAR})
 public class ArrayLongTypeHandler extends BaseTypeHandler<Long[]> {
 
+	private static Long[] l = new Long[]{};
+
 	@Override
 	public void setNonNullParameter(PreparedStatement ps, int i,
 									Long[] parameter, JdbcType jdbcType) throws SQLException {
-		ps.setString(i, JsonUtil.getBeanToJson(parameter));
+		ps.setString(i, JSONUtil.toJsonStr(parameter));
 	}
 
 	@Override
 	public Long[] getNullableResult(ResultSet rs, String columnName)
 			throws SQLException {
-		return JsonUtil.getJsonToBean(rs.getString(columnName),Long[].class);
+		return JSONUtil.parseArray(rs.getString(columnName)).toArray(l);
 	}
 
 	@Override
 	public Long[] getNullableResult(ResultSet rs, int columnIndex)
 			throws SQLException {
-		return JsonUtil.getJsonToBean(rs.getString(columnIndex),Long[].class);
+		return JSONUtil.parseArray(rs.getString(columnIndex)).toArray(l);
 	}
 
 	@Override
 	public Long[] getNullableResult(CallableStatement cs, int columnIndex)
 			throws SQLException {
-		return JsonUtil.getJsonToBean(cs.getString(columnIndex),Long[].class);
+		return JSONUtil.parseArray(cs.getString(columnIndex)).toArray(l);
 	}
 
 }

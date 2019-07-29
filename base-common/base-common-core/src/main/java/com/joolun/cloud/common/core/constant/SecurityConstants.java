@@ -57,7 +57,7 @@ public interface SecurityConstants {
 	/**
 	 * 社交登录URL
 	 */
-	String SOCIAL_TOKEN_URL = "/mobile/token/social";
+	String THIRDPARTY_TOKEN_URL = "/mobile/token/thirdparty";
 	/**
 	 * 自定义登录URL
 	 */
@@ -96,9 +96,9 @@ public interface SecurityConstants {
 	 */
 	String BCRYPT = "{bcrypt}";
 	/**
-	 * sys_oauth_client_details 表的字段，不包括client_id、client_secret
+	 * sys_oauth_client 表的字段，id、client_secret
 	 */
-	String CLIENT_FIELDS = "client_id, CONCAT('{noop}',client_secret) as client_secret, resource_ids, scope, "
+	String CLIENT_FIELDS = "id, CONCAT('{noop}',client_secret) as client_secret, resource_ids, scope, "
 			+ "authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, "
 			+ "refresh_token_validity, additional_information, autoapprove";
 
@@ -106,17 +106,17 @@ public interface SecurityConstants {
 	 * JdbcClientDetailsService 查询语句
 	 */
 	String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS
-			+ " from sys_oauth_client_details";
+			+ " from sys_oauth_client";
 
 	/**
 	 * 默认的查询语句
 	 */
-	String DEFAULT_FIND_STATEMENT = BASE_FIND_STATEMENT + " order by client_id";
+	String DEFAULT_FIND_STATEMENT = BASE_FIND_STATEMENT + " order by id";
 
 	/**
 	 * 按条件client_id 查询
 	 */
-	String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where client_id = ?";
+	String DEFAULT_SELECT_STATEMENT = BASE_FIND_STATEMENT + " where id = ?";
 
 	/**
 	 * 资源服务器默认bean名称
@@ -139,9 +139,9 @@ public interface SecurityConstants {
 	String DETAILS_USERNAME = "username";
 
 	/**
-	 * 用户部门字段
+	 * 用户机构字段
 	 */
-	String DETAILS_DEPT_ID = "dept_id";
+	String DETAILS_ORGAN_ID = "organ_id";
 
 	/**
 	 * 租户ID 字段

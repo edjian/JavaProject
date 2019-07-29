@@ -18,6 +18,7 @@ package com.alibaba.nacos.console.controller;
 import com.alibaba.nacos.console.config.WebSecurityConfig;
 import com.alibaba.nacos.config.server.model.RestResult;
 import com.alibaba.nacos.console.utils.JwtTokenUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * auth
  *
- * @author
+ * @author wfnuser
  */
 @RestController("auth")
 @RequestMapping("/v1/auth")

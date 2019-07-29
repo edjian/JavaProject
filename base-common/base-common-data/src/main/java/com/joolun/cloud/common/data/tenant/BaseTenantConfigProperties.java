@@ -27,4 +27,9 @@ public class BaseTenantConfigProperties {
 	 * 多租户的数据表集合
 	 */
 	private List<String> tables = new ArrayList<>();
+
+	/**
+	 * 不需要租户信息约束的sql
+	 */
+	private List<String> ignoreMss = new ArrayList<>();
 }

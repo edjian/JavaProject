@@ -27,7 +27,7 @@
 	<description>nacos 注册配置中心</description>
 
 	<properties>
-		<nacos.version>1.0.0</nacos.version>
+		<nacos.version>1.1.0</nacos.version>
 		<jsonwebtoken.version>0.10.5</jsonwebtoken.version>
 	</properties>
 

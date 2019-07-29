@@ -2,9 +2,9 @@ package com.joolun.cloud.common.security.service;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import com.joolun.cloud.admin.api.dto.UserInfo;
-import com.joolun.cloud.admin.api.entity.SysUser;
-import com.joolun.cloud.admin.api.feign.RemoteUserService;
+import com.joolun.cloud.upms.common.dto.UserInfo;
+import com.joolun.cloud.upms.common.entity.SysUser;
+import com.joolun.cloud.upms.common.feign.RemoteUserService;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
@@ -68,8 +68,8 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 	 */
 	@Override
 	@SneakyThrows
-	public UserDetails loadUserBySocial(String inStr) {
-		return getUserDetails(remoteUserService.social(inStr, SecurityConstants.FROM_IN));
+	public UserDetails loadUserBySysThirdParty(String inStr) {
+		return getUserDetails(remoteUserService.sysThirdParty(inStr, SecurityConstants.FROM_IN));
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 		boolean enabled = StrUtil.equals(user.getLockFlag(), CommonConstants.STATUS_NORMAL);
 		// 构造security用户
 
-		return new BaseUser(user.getUserId(), user.getDeptId(), user.getTenantId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(), enabled,
+		return new BaseUser(user.getId(), user.getOrganId(), user.getTenantId(), user.getUsername(), SecurityConstants.BCRYPT + user.getPassword(), enabled,
 				true, true, !CommonConstants.STATUS_LOCK.equals(user.getLockFlag()), authorities);
 	}
 }

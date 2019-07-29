@@ -4,6 +4,9 @@ nacos:
     eventTaskInterval: 10
     labelTaskInterval: 300
     loadDataAtStart: false
+  security:
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/login,/v1/console/health/**,/v1/cs/**,/v1/ns/**,/v1/cmdb/**,/actuator/**,/v1/console/server/**
 
 # 数据源相关配置
 db:
@@ -20,5 +23,8 @@ spring:
     enabled: false
 
 server:
+  port: 8848
   tomcat:
     basedir: logs
+    accesslog:
+      enabled: false

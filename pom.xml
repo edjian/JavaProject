@@ -30,7 +30,6 @@
 		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.10.2</ttl.version>
-		<minio.version>6.0.8</minio.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>
 		<security.oauth.version>2.3.5.RELEASE</security.oauth.version>
 		<security.oauth.auto.version>2.1.2.RELEASE</security.oauth.auto.version>
@@ -228,18 +227,18 @@
 			<name>aliyun</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
-		<!--gitee 私服-->
+		<!--maven私服-->
 		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
+			<id>joolun</id>
+			<name>joolun</name>
+			<url>http://nexus.joolun.com/repository/maven-public/</url>
 		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>gitee.wang</id>
-			<name>gitee.wang</name>
-			<url>http://nexus.gitee.wang/repository/maven-releases/</url>
+			<id>joolun</id>
+			<name>joolun</name>
+			<url>http://nexus.joolun.com/repository/maven-public/</url>
 		</repository>
 	</distributionManagement>
 </project>

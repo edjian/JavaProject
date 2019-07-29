@@ -18,9 +18,7 @@
 		<module>base-common-core</module>
 		<module>base-common-data</module>
 		<module>base-common-gateway</module>
-		<module>base-common-job</module>
 		<module>base-common-log</module>
-		<module>base-common-minio</module>
 		<module>base-common-security</module>
 		<module>base-common-swagger</module>
 		<module>base-common-datasource</module>

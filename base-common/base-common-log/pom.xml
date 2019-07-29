@@ -23,7 +23,12 @@
 		<!--UPMS接口模块-->
 		<dependency>
 			<groupId>com.joolun</groupId>
-			<artifactId>base-upms-api</artifactId>
+			<artifactId>base-upms-common</artifactId>
+		</dependency>
+		<!--安全工具类模块-->
+		<dependency>
+			<groupId>com.joolun</groupId>
+			<artifactId>base-common-security</artifactId>
 		</dependency>
 		<!--安全依赖获取上下文信息-->
 		<dependency>

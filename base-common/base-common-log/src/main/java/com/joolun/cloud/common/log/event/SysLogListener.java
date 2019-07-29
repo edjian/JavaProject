@@ -1,7 +1,7 @@
 package com.joolun.cloud.common.log.event;
 
-import com.joolun.cloud.admin.api.entity.SysLog;
-import com.joolun.cloud.admin.api.feign.RemoteLogService;
+import com.joolun.cloud.upms.common.entity.SysLog;
+import com.joolun.cloud.upms.common.feign.RemoteLogService;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

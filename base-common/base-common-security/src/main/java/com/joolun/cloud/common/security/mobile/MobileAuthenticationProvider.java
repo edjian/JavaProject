@@ -34,7 +34,7 @@ public class MobileAuthenticationProvider implements AuthenticationProvider {
 		MobileAuthenticationToken mobileAuthenticationToken = (MobileAuthenticationToken) authentication;
 
 		String principal = mobileAuthenticationToken.getPrincipal().toString();
-		UserDetails userDetails = userDetailsService.loadUserBySocial(principal);
+		UserDetails userDetails = userDetailsService.loadUserBySysThirdParty(principal);
 		if (userDetails == null) {
 			log.debug("Authentication failed: no credentials provided");
 

@@ -29,7 +29,7 @@ public class SysLogAspect {
 		String strMethodName = point.getSignature().getName();
 		log.debug("[类名]:{},[方法]:{}", strClassName, strMethodName);
 
-		com.joolun.cloud.admin.api.entity.SysLog logVo = SysLogUtils.getSysLog();
+		com.joolun.cloud.upms.common.entity.SysLog logVo = SysLogUtils.getSysLog();
 		logVo.setTitle(sysLog.value());
 		// 发送异步日志事件
 		Long startTime = System.currentTimeMillis();

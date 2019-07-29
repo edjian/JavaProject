@@ -12,7 +12,6 @@ public interface CacheConstants {
 	 */
 	String USER_DETAILS = "user_details";
 
-
 	/**
 	 * oauth 客户端信息
 	 */
@@ -47,4 +46,15 @@ public interface CacheConstants {
 	 * 租户缓存
 	 */
 	String TENANT_DETAILS = "tenant_details";
+
+
+	/**
+	 * 默认验证码前缀
+	 */
+	String VER_CODE_DEFAULT = "ver_code_default:";
+
+	/**
+	 * 注册验证码前缀
+	 */
+	String VER_CODE_REGISTER = "ver_code_register:";
 }

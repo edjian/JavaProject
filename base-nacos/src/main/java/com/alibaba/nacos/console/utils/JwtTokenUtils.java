@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Jwt token tool
  *
- * @author
+ * @author wfnuser
  */
 @Component
 public class JwtTokenUtils {
@@ -118,7 +118,7 @@ public class JwtTokenUtils {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
-        } catch (SecurityException e) {
+        } catch (SignatureException e) {
             log.info("Invalid JWT signature.");
             log.trace("Invalid JWT signature trace: {}", e);
         } catch (MalformedJwtException e) {

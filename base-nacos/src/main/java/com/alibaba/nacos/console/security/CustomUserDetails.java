@@ -25,7 +25,7 @@ import java.util.Collection;
 /**
  * custem user
  *
- * @author
+ * @author wfnuser
  */
 public class CustomUserDetails implements UserDetails {
 

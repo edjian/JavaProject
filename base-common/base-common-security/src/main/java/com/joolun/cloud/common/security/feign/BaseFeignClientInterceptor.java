@@ -8,7 +8,6 @@ import org.springframework.cloud.security.oauth2.client.AccessTokenContextRelay;
 import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-
 import java.util.Collection;
 
 /**
@@ -41,11 +40,11 @@ public class BaseFeignClientInterceptor extends OAuth2FeignRequestInterceptor {
 	 * 1. 如果使用 非web 请求，header 区别
 	 * 2. 根据authentication 还原请求token
 	 *
-	 * @param template
+	 * @param requestTemplate
 	 */
 	@Override
-	public void apply(RequestTemplate template) {
-		Collection<String> fromHeader = template.headers().get(SecurityConstants.FROM);
+	public void apply(RequestTemplate requestTemplate) {
+		Collection<String> fromHeader = requestTemplate.headers().get(SecurityConstants.FROM);
 		if (CollUtil.isNotEmpty(fromHeader) && fromHeader.contains(SecurityConstants.FROM_IN)) {
 			return;
 		}
@@ -53,7 +52,7 @@ public class BaseFeignClientInterceptor extends OAuth2FeignRequestInterceptor {
 		accessTokenContextRelay.copyToken();
 		if (oAuth2ClientContext != null
 			&& oAuth2ClientContext.getAccessToken() != null) {
-			super.apply(template);
+			super.apply(requestTemplate);
 		}
 	}
 }

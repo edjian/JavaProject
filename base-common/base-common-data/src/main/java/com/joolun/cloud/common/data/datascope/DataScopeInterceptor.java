@@ -62,9 +62,9 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		}
 
 		String scopeName = dataScope.getScopeName();
-		List<Integer> deptIds = dataScope.getDeptIds();
+		List<String> organIds = dataScope.getOrganIds();
 		// 优先获取赋值数据
-		if (CollUtil.isEmpty(deptIds)) {
+		if (CollUtil.isEmpty(organIds)) {
 			BaseUser user = SecurityUtils.getUser();
 			if (user == null) {
 				throw new CheckedException("auto datascope, set up security details true");
@@ -75,9 +75,8 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 					.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
 					.map(authority -> authority.split("_")[1])
 					.collect(Collectors.toList());
-
 			Entity query = Db.use(dataSource)
-					.query("SELECT * FROM sys_role where role_id IN (" + CollUtil.join(roleIdList, ",") + ")")
+					.query("SELECT * FROM sys_role where id IN ('" + CollUtil.join(roleIdList, "','") + "')")
 					.stream().min(Comparator.comparingInt(o -> o.getInt("ds_type"))).get();
 
 			Integer dsType = query.getInt("ds_type");
@@ -88,24 +87,24 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			// 自定义
 			if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
 				String dsScope = query.getStr("ds_scope");
-				deptIds.addAll(Arrays.stream(dsScope.split(","))
-						.map(Integer::parseInt).collect(Collectors.toList()));
+				organIds.addAll(Arrays.stream(dsScope.split(","))
+						.map(String::toString).collect(Collectors.toList()));
 			}
 			// 查询本级及其下级
 			if (DataScopeTypeEnum.OWN_CHILD_LEVEL.getType() == dsType) {
-				List<Integer> deptIdList = Db.use(dataSource)
-						.findBy("sys_dept_relation", "ancestor", user.getDeptId())
-						.stream().map(entity -> entity.getInt("descendant"))
+				List<String> organIdList = Db.use(dataSource)
+						.findBy("sys_organ_relation", "ancestor", user.getOrganId())
+						.stream().map(entity -> entity.getStr("descendant"))
 						.collect(Collectors.toList());
-				deptIds.addAll(deptIdList);
+				organIds.addAll(organIdList);
 			}
 			// 只查询本级
 			if (DataScopeTypeEnum.OWN_LEVEL.getType() == dsType) {
-				deptIds.add(user.getDeptId());
+				organIds.add(user.getOrganId());
 			}
 		}
-		String join = CollectionUtil.join(deptIds, ",");
-		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in (" + join + ")";
+		String join = CollectionUtil.join(organIds, "','");
+		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in ('" + join + "')";
 		metaObject.setValue("delegate.boundSql.sql", originalSql);
 		return invocation.proceed();
 	}

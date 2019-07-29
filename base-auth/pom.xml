@@ -27,7 +27,7 @@
 		<!--upms api、model 模块-->
 		<dependency>
 			<groupId>com.joolun</groupId>
-			<artifactId>base-upms-api</artifactId>
+			<artifactId>base-upms-common</artifactId>
 		</dependency>
 		<!--security-->
 		<dependency>

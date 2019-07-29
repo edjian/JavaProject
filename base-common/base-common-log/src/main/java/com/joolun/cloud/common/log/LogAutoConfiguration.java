@@ -2,7 +2,7 @@ package com.joolun.cloud.common.log;
 
 import com.joolun.cloud.common.log.aspect.SysLogAspect;
 import com.joolun.cloud.common.log.event.SysLogListener;
-import com.joolun.cloud.admin.api.feign.RemoteLogService;
+import com.joolun.cloud.upms.common.feign.RemoteLogService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;

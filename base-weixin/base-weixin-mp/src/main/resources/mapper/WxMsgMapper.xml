@@ -9,13 +9,13 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.joolun.cloud.wxmp.mapper.WxMsgMapper">
-	<resultMap id="wxMsgMap" type="com.joolun.cloud.wxmp.entity.WxMsg">
+<mapper namespace="com.joolun.cloud.weixin.mp.mapper.WxMsgMapper">
+	<resultMap id="wxMsgMap" type="com.joolun.cloud.weixin.mp.entity.WxMsg">
 		<id property="id" column="id"/>
 		<result property="createId" column="create_id"/>
-		<result property="createDate" column="create_date"/>
+		<result property="createTime" column="create_time"/>
 		<result property="updateId" column="update_id"/>
-		<result property="updateDate" column="update_date"/>
+		<result property="updateTime" column="update_time"/>
 		<result property="remark" column="remark"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="tenantId" column="tenant_id"/>
@@ -43,7 +43,7 @@
 		<result property="readFlag" column="read_flag"/>
 	</resultMap>
 
-	<resultMap id="wxMsgMap2" extends="wxMsgMap" type="com.joolun.cloud.wxmp.entity.WxMsgVO">
+	<resultMap id="wxMsgMap2" extends="wxMsgMap" type="com.joolun.cloud.weixin.mp.entity.WxMsgVO">
 		<result property="countMsg" column="count_msg"/>
 	</resultMap>
 
@@ -56,7 +56,7 @@
 		  right join
 			(select
 			  `wx_user_id`,
-			  max(`create_date`) as maxtime,
+			  max(`create_time`) as maxtime,
 			  count(`wx_user_id`) as count_msg
 			from
 			  `wx_msg`
@@ -73,7 +73,7 @@
 			</where>
 			group by `wx_user_id`) as b
 			on a.`wx_user_id` = b.`wx_user_id`
-			and a.`create_date` = b.maxtime
-		order by a.`create_date` desc ;
+			and a.`create_time` = b.maxtime
+		order by a.`create_time` desc ;
 	</select>
 </mapper>

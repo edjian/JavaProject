@@ -29,10 +29,10 @@
 			<groupId>org.springframework.security.oauth.boot</groupId>
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
 		</dependency>
-		<!--UPMS API-->
+		<!--UPMS-->
 		<dependency>
 			<groupId>com.joolun</groupId>
-			<artifactId>base-upms-api</artifactId>
+			<artifactId>base-upms-common</artifactId>
 		</dependency>
 	</dependencies>
 </project>

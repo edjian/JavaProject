@@ -8,7 +8,7 @@ public interface DataSourceConstants {
 	/**
 	 * 查询数据源的SQL
 	 */
-	String QUERY_DS_SQL = "select * from sys_datasource_conf where del_flag = 0";
+	String QUERY_DS_SQL = "select * from sys_datasource where del_flag = 0";
 
 	/**
 	 * 动态路由KEY

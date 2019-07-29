@@ -1,6 +1,6 @@
 package com.joolun.cloud.common.log.event;
 
-import com.joolun.cloud.admin.api.entity.SysLog;
+import com.joolun.cloud.upms.common.entity.SysLog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

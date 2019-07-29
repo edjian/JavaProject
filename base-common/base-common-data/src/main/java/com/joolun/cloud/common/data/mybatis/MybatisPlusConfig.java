@@ -2,14 +2,22 @@ package com.joolun.cloud.common.data.mybatis;
 
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
+import com.baomidou.mybatisplus.core.parser.ISqlParserFilter;
 import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.joolun.cloud.common.data.datascope.DataScopeInterceptor;
+import com.joolun.cloud.common.data.tenant.BaseTenantConfigProperties;
 import com.joolun.cloud.common.data.tenant.BaseTenantHandler;
+import lombok.AllArgsConstructor;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,9 +30,12 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnBean(DataSource.class)
+@AllArgsConstructor
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
 @MapperScan("com.joolun.cloud.**.mapper")
 public class MybatisPlusConfig {
 
+	private BaseTenantConfigProperties properties;
 	/**
 	 * 创建租户维护处理器对象
 	 *
@@ -37,13 +48,14 @@ public class MybatisPlusConfig {
 	}
 
 	/**
-	 * 分页插件
+	 * 租户处理器
 	 *
-	 * @param tenantHandler 租户处理器
+	 * @param tenantHandler
 	 * @return PaginationInterceptor
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "mybatisPlus.tenantEnable", havingValue = "true", matchIfMissing = true)
 	public PaginationInterceptor paginationInterceptor(BaseTenantHandler tenantHandler) {
 		PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 		List<ISqlParser> sqlParserList = new ArrayList<>();
@@ -51,6 +63,17 @@ public class MybatisPlusConfig {
 		tenantSqlParser.setTenantHandler(tenantHandler);
 		sqlParserList.add(tenantSqlParser);
 		paginationInterceptor.setSqlParserList(sqlParserList);
+		paginationInterceptor.setSqlParserFilter(new ISqlParserFilter() {
+			@Override
+			public boolean doFilter(MetaObject metaObject) {
+				MappedStatement ms = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+				// 过滤自定义查询此时无租户信息约束
+				if (properties.getIgnoreMss().contains(ms.getId())) {
+					return true;
+				}
+				return false;
+			}
+		});
 		return paginationInterceptor;
 	}
 

@@ -3,8 +3,8 @@ package com.joolun.cloud.gateway.filter;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.gateway.config.FilterIgnorePropertiesConfig;
-import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.constant.enums.LoginTypeEnum;
 import com.joolun.cloud.common.core.exception.ValidateCodeException;
@@ -43,7 +43,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			// 不是登录请求，直接向下执行
 			if (!StrUtil.containsAnyIgnoreCase(request.getURI().getPath()
 					, SecurityConstants.OAUTH_TOKEN_URL, SecurityConstants.SMS_TOKEN_URL
-					, SecurityConstants.SOCIAL_TOKEN_URL)) {
+					, SecurityConstants.THIRDPARTY_TOKEN_URL)) {
 				return chain.filter(exchange);
 			}
 
@@ -61,7 +61,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				}
 
 				// 如果是社交登录，判断是否包含SMS
-				if (StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.SOCIAL_TOKEN_URL)) {
+				if (StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.THIRDPARTY_TOKEN_URL)) {
 					String mobile = request.getQueryParams().getFirst("mobile");
 					if (StrUtil.containsAny(mobile, LoginTypeEnum.SMS.getType())) {
 						throw new ValidateCodeException("验证码不合法");
@@ -107,7 +107,7 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 			randomStr = mobile;
 		}
 
-		String key = CommonConstants.DEFAULT_CODE_KEY + randomStr;
+		String key = CacheConstants.VER_CODE_DEFAULT + randomStr;
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 
 		if (!redisTemplate.hasKey(key)) {

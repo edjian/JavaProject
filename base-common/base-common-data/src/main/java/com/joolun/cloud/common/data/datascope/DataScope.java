@@ -17,15 +17,15 @@ public class DataScope extends HashMap {
 	/**
 	 * 限制范围的字段名称
 	 */
-	private String scopeName = "deptId";
+	private String scopeName = "organ_id";
 
 	/**
 	 * 具体的数据范围
 	 */
-	private List<Integer> deptIds = new ArrayList<>();
+	private List<String> organIds = new ArrayList<>();
 
 	/**
-	 * 是否只查询本部门
+	 * 是否只查询本机构
 	 */
 	private Boolean isOnly = false;
 }

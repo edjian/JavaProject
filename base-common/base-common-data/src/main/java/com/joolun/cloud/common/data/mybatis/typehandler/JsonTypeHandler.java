@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.alibaba.fastjson.JSONObject;
-import com.joolun.cloud.common.core.util.JsonUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -24,27 +24,27 @@ public class JsonTypeHandler extends BaseTypeHandler<JSONObject> {
 	public void setNonNullParameter(PreparedStatement ps, int i, JSONObject parameter,
 									JdbcType jdbcType) throws SQLException {
 
-		ps.setString(i, JsonUtil.getBeanToJson(parameter));
+		ps.setString(i, JSONUtil.toJsonStr(parameter));
 	}
 
 	@Override
 	public JSONObject getNullableResult(ResultSet rs, String columnName)
 			throws SQLException {
 
-		return JsonUtil.getJsonToBean(rs.getString(columnName), JSONObject.class);
+		return JSONUtil.parseObj(rs.getString(columnName)).toBean(JSONObject.class);
 	}
 
 	@Override
 	public JSONObject getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
 
-		return JsonUtil.getJsonToBean(rs.getString(columnIndex), JSONObject.class);
+		return JSONUtil.parseObj(rs.getString(columnIndex)).toBean(JSONObject.class);
 	}
 
 	@Override
 	public JSONObject getNullableResult(CallableStatement cs, int columnIndex)
 			throws SQLException {
 
-		return JsonUtil.getJsonToBean(cs.getString(columnIndex), JSONObject.class);
+		return JSONUtil.parseObj(cs.getString(columnIndex)).toBean(JSONObject.class);
 	}
 
 }

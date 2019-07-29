@@ -9,9 +9,9 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.joolun.cloud.wxmp.mapper.WxMenuMapper">
+<mapper namespace="com.joolun.cloud.weixin.mp.mapper.WxMenuMapper">
 
-	<resultMap id="wxMenuMap" type="com.joolun.cloud.wxmp.entity.WxMenu">
+	<resultMap id="wxMenuMap" type="com.joolun.cloud.weixin.mp.entity.WxMenu">
 		<id property="id" column="id"/>
 		<result property="tenantId" column="tenant_id"/>
 		<result property="parentId" column="parent_id"/>

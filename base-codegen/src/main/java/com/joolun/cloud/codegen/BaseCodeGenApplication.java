@@ -3,7 +3,7 @@ package com.joolun.cloud.codegen;
 import com.joolun.cloud.common.datasource.annotation.EnableDynamicDataSource;
 import com.joolun.cloud.common.security.annotation.EnableBaseResourceServer;
 import com.joolun.cloud.common.security.annotation.EnableBaseFeignClients;
-import com.joolun.cloud.common.swagger.annotation.EnableSwagger2;
+import com.joolun.cloud.common.swagger.annotation.BaseEnableSwagger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 
@@ -13,7 +13,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * 代码生成模块
  */
 @EnableDynamicDataSource
-@EnableSwagger2
+@BaseEnableSwagger
 @SpringCloudApplication
 @EnableBaseFeignClients
 @EnableBaseResourceServer

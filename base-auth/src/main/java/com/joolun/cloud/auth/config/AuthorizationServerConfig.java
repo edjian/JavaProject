@@ -79,7 +79,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {
-				return super.extractKey(authentication) + ":" + TenantContextHolder.getTenantId();
+				return super.extractKey(authentication);
 			}
 		});
 		return tokenStore;
@@ -102,7 +102,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			BaseUser baseUser = (BaseUser) authentication.getUserAuthentication().getPrincipal();
 			additionalInfo.put(SecurityConstants.DETAILS_USER_ID, baseUser.getId());
 			additionalInfo.put(SecurityConstants.DETAILS_USERNAME, baseUser.getUsername());
-			additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, baseUser.getDeptId());
+			additionalInfo.put(SecurityConstants.DETAILS_ORGAN_ID, baseUser.getOrganId());
 			additionalInfo.put(SecurityConstants.DETAILS_TENANT_ID, baseUser.getTenantId());
 			additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.BASE_LICENSE);
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);

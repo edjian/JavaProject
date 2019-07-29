@@ -1,7 +1,7 @@
 package com.joolun.cloud.gateway.handler;
 
 import com.google.code.kaptcha.Producer;
-import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class ImageCodeHandler implements HandlerFunction<ServerResponse> {
 		//保存验证码信息
 		String randomStr = serverRequest.queryParam("randomStr").get();
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.opsForValue().set(CommonConstants.DEFAULT_CODE_KEY + randomStr, text
+		redisTemplate.opsForValue().set(CacheConstants.VER_CODE_DEFAULT + randomStr, text
 			, SecurityConstants.CODE_TIME, TimeUnit.SECONDS);
 
 		// 转换流信息写出

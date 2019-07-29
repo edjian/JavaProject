@@ -10,11 +10,12 @@ package com.joolun.cloud.weixin.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -33,6 +34,7 @@ private static final long serialVersionUID = 1L;
    * 应用ID
    */
     @TableId(type = IdType.INPUT)
+	@NotNull(message = "应用ID不能为空")
     private String id;
     /**
    * 创建者
@@ -41,7 +43,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 创建时间
    */
-    private LocalDateTime createDate;
+    private LocalDateTime createTime;
     /**
    * 更新者
    */
@@ -49,7 +51,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 更新时间
    */
-    private LocalDateTime updateDate;
+    private LocalDateTime updateTime;
     /**
    * 逻辑删除标记（0：显示；1：隐藏）
    */
@@ -57,7 +59,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 所属租户
    */
-    private Integer tenantId;
+    private String tenantId;
     /**
    * 微信原始标识
    */
@@ -65,6 +67,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 应用类型(1:小程序，2:公众号)
    */
+	@NotNull(message = "应用类型不能为空")
     private String appType;
     /**
    * 应用密钥
@@ -85,6 +88,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 公众号类型（0：订阅号；1：由历史老帐号升级后的订阅号；2：服务号）
    */
+	@NotNull(message = "公众号类型不能为空")
     private String weixinType;
     /**
    * 公众号微信号
@@ -113,6 +117,7 @@ private static final long serialVersionUID = 1L;
 	 * 4	已资质认证通过、还未通过名称认证，但通过了新浪微博认证
 	 * 5	已资质认证通过、还未通过名称认证，但通过了腾讯微博认证
 	 */
+	@NotNull(message = "认证类型不能为空")
 	private String verifyType;
 	/**
 	 * 主体名称

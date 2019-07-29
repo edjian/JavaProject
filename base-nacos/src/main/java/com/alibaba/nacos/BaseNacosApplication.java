@@ -16,25 +16,19 @@
 
 package com.alibaba.nacos;
 
-import com.alibaba.nacos.console.config.ConfigConstants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-/**
- * @author
- * <p>
- * nacos console 源码运行，方便开发
- * 生产建议从官网下载最新版配置运行
- */
+@SpringBootApplication(scanBasePackages = "com.alibaba.nacos")
+@ServletComponentScan
 @EnableScheduling
-@SpringBootApplication
 public class BaseNacosApplication {
 
 	public static void main(String[] args) {
-		System.setProperty(ConfigConstants.TOMCAT_DIR, "logs");
-		System.setProperty(ConfigConstants.TOMCAT_ACCESS_LOG, "false");
-		System.setProperty(ConfigConstants.STANDALONE_MODE, "true");
+		//单机模式
+		System.setProperty("nacos.standalone", "true");
 		SpringApplication.run(BaseNacosApplication.class, args);
 	}
 }

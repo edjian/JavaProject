@@ -11,9 +11,9 @@ public interface ServiceNameConstants {
 	String AUTH_SERVICE = "base-auth";
 
 	/**
-	 * UMPS模块
+	 * UMPS ADMIN模块
 	 */
-	String UMPS_SERVICE = "base-upms-biz";
+	String UMPS_SERVICE = "base-upms-admin";
 
 	/**
 	 * 微信第三方平台模块

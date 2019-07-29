@@ -16,5 +16,5 @@ public interface BaseUserDetailsService extends UserDetailsService {
 	 * @return UserDetails
 	 * @throws UsernameNotFoundException
 	 */
-	UserDetails loadUserBySocial(String code) throws UsernameNotFoundException;
+	UserDetails loadUserBySysThirdParty(String code) throws UsernameNotFoundException;
 }

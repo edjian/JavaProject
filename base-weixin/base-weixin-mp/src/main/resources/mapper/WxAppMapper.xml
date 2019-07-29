@@ -9,14 +9,14 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.joolun.cloud.wxmp.mapper.WxAppMapper">
+<mapper namespace="com.joolun.cloud.weixin.mp.mapper.WxAppMapper">
 
 	<resultMap id="wxAppMap" type="com.joolun.cloud.weixin.common.entity.WxApp">
 		<id property="id" column="id"/>
 		<result property="createId" column="create_id"/>
-		<result property="createDate" column="create_date"/>
+		<result property="createTime" column="create_time"/>
 		<result property="updateId" column="update_id"/>
-		<result property="updateDate" column="update_date"/>
+		<result property="updateTime" column="update_time"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="tenantId" column="tenant_id"/>
 		<result property="weixinSign" column="weixin_sign"/>
@@ -37,4 +37,46 @@
 		<result property="isComponent" column="is_component"/>
 	</resultMap>
 
+	<sql id="wxAppSql">
+		  wa.`id`,
+		  wa.`create_id`,
+		  wa.`create_time`,
+		  wa.`update_id`,
+		  wa.`update_time`,
+		  wa.`del_flag`,
+		  wa.`tenant_id`,
+		  wa.`weixin_sign`,
+		  wa.`app_type`,
+		  wa.`secret`,
+		  wa.`token`,
+		  wa.`aes_key`,
+		  wa.`name`,
+		  wa.`is_component`,
+		  wa.`weixin_type`,
+		  wa.`weixin_hao`,
+		  wa.`verify_type`,
+		  wa.`logo`,
+		  wa.`qr_code`,
+		  wa.`principal_name`,
+		  wa.`community`,
+		  wa.`remarks`,
+		  wa.`vip_card_id`
+	</sql>
+
+	<!--不需要租户信息约束的sql-->
+	<select id="findByWeixinSign" resultMap="wxAppMap">
+		SELECT
+			<include refid="wxAppSql"/>
+		FROM
+		`wx_app` wa
+		WHERE wa.`weixin_sign` = #{weixinSign}
+	</select>
+	<!--不需要租户信息约束的sql-->
+	<select id="findByAppId" resultMap="wxAppMap">
+		SELECT
+		<include refid="wxAppSql"/>
+		FROM
+		`wx_app` wa
+		WHERE wa.`id` = #{appId}
+	</select>
 </mapper>

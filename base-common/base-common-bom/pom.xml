@@ -21,10 +21,9 @@
 		<druid.version>1.1.17</druid.version>
 		<mysql.connector.version>8.0.16</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
-		<fastjson.version>1.2.56</fastjson.version>
 		<weixin-java.version>3.4.0</weixin-java.version>
-		<hutool.version>4.5.6</hutool.version>
 		<spring-boot-starter-websocket.version>2.1.5.RELEASE</spring-boot-starter-websocket.version>
+		<oh-my-email.version>0.0.4</oh-my-email.version>
 	</properties>
 
 	<dependencyManagement>
@@ -52,17 +51,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.joolun</groupId>
-				<artifactId>base-common-job</artifactId>
-				<version>${base.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.joolun</groupId>
 				<artifactId>base-common-log</artifactId>
-				<version>${base.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.joolun</groupId>
-				<artifactId>base-common-minio</artifactId>
 				<version>${base.version}</version>
 			</dependency>
 			<dependency>
@@ -77,7 +66,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.joolun</groupId>
-				<artifactId>base-upms-api</artifactId>
+				<artifactId>base-upms-common</artifactId>
 				<version>${base.version}</version>
 			</dependency>
 			<dependency>
@@ -88,12 +77,6 @@
 			<dependency>
 				<groupId>com.joolun</groupId>
 				<artifactId>base-weixin-common</artifactId>
-				<version>${base.version}</version>
-			</dependency>
-			<!--第三方平台模块-->
-			<dependency>
-				<groupId>com.joolun</groupId>
-				<artifactId>base-weixin-open</artifactId>
 				<version>${base.version}</version>
 			</dependency>
 			<!--mybatis plus extension,包含了mybatis plus core-->
@@ -131,12 +114,6 @@
 				<artifactId>swagger-annotations</artifactId>
 				<version>${swagger.core.version}</version>
 			</dependency>
-			<!-- fastjson -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
 			<!--weixin-java-common-->
 			<dependency>
 				<groupId>com.github.binarywang</groupId>
@@ -155,16 +132,17 @@
 				<artifactId>weixin-java-open</artifactId>
 				<version>${weixin-java.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>cn.hutool</groupId>
-				<artifactId>hutool-all</artifactId>
-				<version>${hutool.version}</version>
-			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-websocket</artifactId>
 				<version>${spring-boot-starter-websocket.version}</version>
+			</dependency>
+			<!--oh-my-email-->
+			<dependency>
+				<groupId>io.github.biezhi</groupId>
+				<artifactId>oh-my-email</artifactId>
+				<version>${oh-my-email.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

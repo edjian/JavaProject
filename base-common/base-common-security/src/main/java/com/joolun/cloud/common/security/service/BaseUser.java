@@ -16,25 +16,25 @@ public class BaseUser extends User {
 	 * 用户ID
 	 */
 	@Getter
-	private Integer id;
+	private String id;
 	/**
-	 * 部门ID
+	 * 机构ID
 	 */
 	@Getter
-	private Integer deptId;
+	private String organId;
 
 	/**
 	 * 租户ID
 	 */
 	@Getter
-	private Integer tenantId;
+	private String tenantId;
 
 	/**
 	 * Construct the <code>User</code> with the details required by
 	 * {@link DaoAuthenticationProvider}.
 	 *
 	 * @param id                    用户ID
-	 * @param deptId                部门ID
+	 * @param organId                机构ID
 	 * @param tenantId              租户ID
 	 * @param username              the username presented to the
 	 *                              <code>DaoAuthenticationProvider</code>
@@ -50,10 +50,10 @@ public class BaseUser extends User {
 	 * @throws IllegalArgumentException if a <code>null</code> value was passed either as
 	 *                                  a parameter or as an element in the <code>GrantedAuthority</code> collection
 	 */
-	public BaseUser(Integer id, Integer deptId, Integer tenantId, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+	public BaseUser(String id, String organId, String tenantId, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
-		this.deptId = deptId;
+		this.organId = organId;
 		this.tenantId = tenantId;
 	}
 }

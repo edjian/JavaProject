@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TenantContextHolder {
 
-	private final ThreadLocal<Integer> THREAD_LOCAL_TENANT = new TransmittableThreadLocal<>();
+	private final ThreadLocal<String> THREAD_LOCAL_TENANT = new TransmittableThreadLocal<>();
 
 
 	/**
@@ -18,7 +18,7 @@ public class TenantContextHolder {
 	 *
 	 * @param tenantId
 	 */
-	public void setTenantId(Integer tenantId) {
+	public void setTenantId(String tenantId) {
 		THREAD_LOCAL_TENANT.set(tenantId);
 	}
 
@@ -27,7 +27,7 @@ public class TenantContextHolder {
 	 *
 	 * @return
 	 */
-	public Integer getTenantId() {
+	public String getTenantId() {
 		return THREAD_LOCAL_TENANT.get();
 	}
 
