@@ -17,7 +17,6 @@
 		<module>base-common-bom</module>
 		<module>base-common-core</module>
 		<module>base-common-data</module>
-		<module>base-common-gateway</module>
 		<module>base-common-log</module>
 		<module>base-common-security</module>
 		<module>base-common-swagger</module>

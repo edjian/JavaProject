@@ -6,6 +6,14 @@ package com.joolun.cloud.common.core.constant;
  */
 public interface ServiceNameConstants {
 	/**
+	 * nacos
+	 */
+	String NACOS_SERVICE = "base-nacos";
+	/**
+	 * 网关
+	 */
+	String GATEWAY_SERVICE = "base-gateway";
+	/**
 	 * 认证中心
 	 */
 	String AUTH_SERVICE = "base-auth";

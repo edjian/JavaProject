@@ -25,7 +25,7 @@ public class SysOauthClientServiceImpl extends ServiceImpl<SysOauthClientMapper,
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#id")
+	@CacheEvict(value = CacheConstants.OAUTH_CLIENT_CACHE, key = "#id")
 	public Boolean removeClientDetailsById(String id) {
 		return this.removeById(id);
 	}
@@ -37,7 +37,7 @@ public class SysOauthClientServiceImpl extends ServiceImpl<SysOauthClientMapper,
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientDetails.id")
+	@CacheEvict(value = CacheConstants.OAUTH_CLIENT_CACHE, key = "#clientDetails.id")
 	public Boolean updateClientDetailsById(SysOauthClient clientDetails) {
 		return this.updateById(clientDetails);
 	}

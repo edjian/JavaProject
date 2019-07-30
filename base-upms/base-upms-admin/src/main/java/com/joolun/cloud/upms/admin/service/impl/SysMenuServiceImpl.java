@@ -32,14 +32,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	private final SysRoleMenuMapper sysRoleMenuMapper;
 
 	@Override
-	@Cacheable(value = CacheConstants.MENU_DETAILS, key = "#roleId  + '_menu'", unless = "#result == null")
+	@Cacheable(value = CacheConstants.MENU_CACHE, key = "#roleId  + '_menu'", unless = "#result == null")
 	public List<MenuVO> findMenuByRoleId(String roleId) {
 		return baseMapper.listMenusByRoleId(roleId);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@CacheEvict(value = CacheConstants.MENU_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.MENU_CACHE, allEntries = true)
 	public R removeMenuById(String id) {
 		// 查询父节点为当前节点的节点
 		List<SysMenu> menuList = this.list(Wrappers.<SysMenu>query()
@@ -57,13 +57,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 	}
 
 	@Override
-	@CacheEvict(value = CacheConstants.MENU_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.MENU_CACHE, allEntries = true)
 	public Boolean updateMenuById(SysMenu sysMenu) {
 		return this.updateById(sysMenu);
 	}
 
 	@Override
-	@CacheEvict(value = CacheConstants.MENU_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.MENU_CACHE, allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
 	public void saveMenu(SysMenu entity) {
 		String roleId = entity.getRoleId();

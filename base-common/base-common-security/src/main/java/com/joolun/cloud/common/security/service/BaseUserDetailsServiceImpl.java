@@ -47,7 +47,7 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
-		Cache cache = cacheManager.getCache(CacheConstants.USER_DETAILS);
+		Cache cache = cacheManager.getCache(CacheConstants.USER_CACHE);
 		if (cache != null && cache.get(username) != null) {
 			return (BaseUser) cache.get(username).get();
 		}

@@ -36,7 +36,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	@CacheEvict(value = CacheConstants.MENU_DETAILS, key = "#roleId + '_menu'")
+	@CacheEvict(value = CacheConstants.MENU_CACHE, key = "#roleId + '_menu'")
 	public Boolean saveRoleMenus(String role, String roleId, String menuIds) {
 		this.remove(Wrappers.<SysRoleMenu>query().lambda()
 				.eq(SysRoleMenu::getRoleId, roleId));
@@ -54,7 +54,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 				}).collect(Collectors.toList());
 
 		//清空userinfo
-		cacheManager.getCache(CacheConstants.USER_DETAILS).clear();
+		cacheManager.getCache(CacheConstants.USER_CACHE).clear();
 		return this.saveBatch(roleMenuList);
 	}
 }

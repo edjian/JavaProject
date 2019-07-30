@@ -63,7 +63,7 @@ public class SysDictController {
 	 * @return 同类型字典
 	 */
 	@GetMapping("/type/{type}")
-	@Cacheable(value = CacheConstants.DICT_DETAILS, key = "#type", unless = "#result == null")
+	@Cacheable(value = CacheConstants.DICT_CACHE, key = "#type", unless = "#result == null")
 	public R getDictByType(@PathVariable String type) {
 		return R.ok(sysDictValueService.list(Wrappers
 				.<SysDictValue>query().lambda()
@@ -141,7 +141,7 @@ public class SysDictController {
 	 */
 	@SysLog("新增字典项")
 	@PostMapping("/item")
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_CACHE, allEntries = true)
 	public R save(@RequestBody SysDictValue sysDictValue) {
 		return R.ok(sysDictValueService.save(sysDictValue));
 	}

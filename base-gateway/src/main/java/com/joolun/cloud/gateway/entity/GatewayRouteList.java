@@ -6,19 +6,22 @@
  * 购买后可获得全部源代码，并且可以商用（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
-package com.joolun.cloud.gateway;
+package com.joolun.cloud.gateway.entity;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import lombok.Data;
+import org.springframework.cloud.gateway.route.RouteDefinition;
+import java.util.List;
 
 /**
- * @author
- * 网关应用
+ * 路由定义模型
+ *
+ * @author JL
+ * @date 2019-03-23 21:26:35
  */
-@SpringCloudApplication
-public class BaseGateWayApplication {
+@Data
+public class GatewayRouteList {
+private static final long serialVersionUID = 1L;
 
-	public static void main(String[] args) {
-		SpringApplication.run(BaseGateWayApplication.class, args);
-	}
+	List<RouteDefinition> routes;
+  
 }

@@ -24,6 +24,7 @@
 		<weixin-java.version>3.4.0</weixin-java.version>
 		<spring-boot-starter-websocket.version>2.1.5.RELEASE</spring-boot-starter-websocket.version>
 		<oh-my-email.version>0.0.4</oh-my-email.version>
+		<snakeyaml.version>1.24</snakeyaml.version>
 	</properties>
 
 	<dependencyManagement>
@@ -37,11 +38,6 @@
 			<dependency>
 				<groupId>com.joolun</groupId>
 				<artifactId>base-common-data</artifactId>
-				<version>${base.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.joolun</groupId>
-				<artifactId>base-common-gateway</artifactId>
 				<version>${base.version}</version>
 			</dependency>
 			<dependency>
@@ -144,6 +140,13 @@
 				<artifactId>oh-my-email</artifactId>
 				<version>${oh-my-email.version}</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+			<dependency>
+				<groupId>org.yaml</groupId>
+				<artifactId>snakeyaml</artifactId>
+				<version>${snakeyaml.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>

@@ -103,7 +103,7 @@ public class TokenController {
 
 		OAuth2Authentication auth2Authentication = tokenStore.readAuthentication(accessToken);
 		// 清空用户信息
-		cacheManager.getCache(CacheConstants.USER_DETAILS)
+		cacheManager.getCache(CacheConstants.USER_CACHE)
 				.evict(auth2Authentication.getName());
 
 		// 清空access token

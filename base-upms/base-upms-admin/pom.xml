@@ -48,11 +48,6 @@
 			<groupId>com.joolun</groupId>
 			<artifactId>base-common-security</artifactId>
 		</dependency>
-		<!--支持动态路由配置 -->
-		<dependency>
-			<groupId>com.joolun</groupId>
-			<artifactId>base-common-gateway</artifactId>
-		</dependency>
 		<!--mybatis-->
 		<dependency>
 			<groupId>com.baomidou</groupId>

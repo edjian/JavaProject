@@ -51,7 +51,7 @@ public class SysThirdPartyServiceImpl extends ServiceImpl<SysThirdPartyMapper, S
 		}
 		sysUserMapper.updateById(sysUser);
 		//更新緩存
-		cacheManager.getCache(CacheConstants.USER_DETAILS).evict(sysUser.getUsername());
+		cacheManager.getCache(CacheConstants.USER_CACHE).evict(sysUser.getUsername());
 		return Boolean.TRUE;
 	}
 

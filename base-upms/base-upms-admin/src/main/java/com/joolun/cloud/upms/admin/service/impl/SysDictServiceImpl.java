@@ -1,6 +1,5 @@
 package com.joolun.cloud.upms.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.upms.admin.mapper.SysDictValueMapper;
@@ -33,7 +32,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_CACHE, allEntries = true)
 	@Transactional(rollbackFor = Exception.class)
 	public R removeDict(String id) {
 		baseMapper.deleteById(id);

@@ -25,7 +25,7 @@ public class SysDictValueServiceImpl extends ServiceImpl<SysDictValueMapper, Sys
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_CACHE, allEntries = true)
 	public R removeDictItem(String id) {
 		return R.ok(this.removeById(id));
 	}
@@ -37,7 +37,7 @@ public class SysDictValueServiceImpl extends ServiceImpl<SysDictValueMapper, Sys
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = CacheConstants.DICT_DETAILS, allEntries = true)
+	@CacheEvict(value = CacheConstants.DICT_CACHE, allEntries = true)
 	public R updateDictItem(SysDictValue item) {
 		return R.ok(this.updateById(item));
 	}

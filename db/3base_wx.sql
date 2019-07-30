@@ -1,8 +1,8 @@
 /*
-SQLyog Ultimate v12.08 (64 bit)
+SQLyog Ultimate v13.1.1 (64 bit)
 MySQL - 8.0.15 : Database - base_wx
 *********************************************************************
-*/
+*/
 
 /*!40101 SET NAMES utf8 */;
 

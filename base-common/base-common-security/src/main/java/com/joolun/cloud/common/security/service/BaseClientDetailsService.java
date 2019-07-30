@@ -27,7 +27,7 @@ public class BaseClientDetailsService extends JdbcClientDetailsService {
 	 * @throws InvalidClientException
 	 */
 	@Override
-	@Cacheable(value = CacheConstants.CLIENT_DETAILS_KEY, key = "#clientId", unless = "#result == null")
+	@Cacheable(value = CacheConstants.OAUTH_CLIENT_CACHE, key = "#clientId", unless = "#result == null")
 	public ClientDetails loadClientByClientId(String clientId) {
 		return super.loadClientByClientId(clientId);
 	}

@@ -10,17 +10,17 @@ public interface CacheConstants {
 	/**
 	 * 用户信息缓存
 	 */
-	String USER_DETAILS = "user_details";
+	String USER_CACHE = "user_cache";
 
 	/**
 	 * oauth 客户端信息
 	 */
-	String CLIENT_DETAILS_KEY = "base_oauth:client:details";
+	String OAUTH_CLIENT_CACHE = "base_oauth:client:cache";
 
 	/**
 	 * 菜单信息缓存
 	 */
-	String MENU_DETAILS = "menu_details";
+	String MENU_CACHE = "menu_cache";
 
 	/**
 	 * spring boot admin 事件key
@@ -28,25 +28,14 @@ public interface CacheConstants {
 	String EVENT_KEY = "event_key";
 
 	/**
-	 * 路由存放
+	 * 路由缓存
 	 */
-	String ROUTE_KEY = "gateway_route_key";
+	String ROUTE_CACHE = "gateway_route_cache";
 
 	/**
 	 * 字典缓存
 	 */
-	String DICT_DETAILS = "dict_details";
-
-	/**
-	 * 参数缓存
-	 */
-	String PARAMS_DETAILS = "params_details";
-
-	/**
-	 * 租户缓存
-	 */
-	String TENANT_DETAILS = "tenant_details";
-
+	String DICT_CACHE = "dict_cache";
 
 	/**
 	 * 默认验证码前缀
