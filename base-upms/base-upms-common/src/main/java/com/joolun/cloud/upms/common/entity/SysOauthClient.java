@@ -31,7 +31,7 @@ public class SysOauthClient extends Model<SysOauthClient> {
 	/**
 	 * 客户端密钥
 	 */
-	@NotNull(message = "client_secret 不能为空")
+	@NotNull(message = "客户端密钥 不能为空")
 	private String clientSecret;
 
 	/**
@@ -42,7 +42,7 @@ public class SysOauthClient extends Model<SysOauthClient> {
 	/**
 	 * 作用域
 	 */
-	@NotNull(message = "scope 不能为空")
+	@NotNull(message = "作用域 不能为空")
 	private String scope;
 
 	/**

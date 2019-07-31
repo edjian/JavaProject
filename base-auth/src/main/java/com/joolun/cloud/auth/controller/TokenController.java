@@ -7,7 +7,7 @@ import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.PaginationConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ConvertingCursor;
@@ -121,7 +121,7 @@ public class TokenController {
 	 * @param token token
 	 * @return
 	 */
-	@Inner
+	@Inside
 	@DeleteMapping("/{token}")
 	public R<Boolean> delToken(@PathVariable("token") String token) {
 		OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
@@ -136,7 +136,7 @@ public class TokenController {
 	 * @param params 分页参数
 	 * @return
 	 */
-	@Inner
+	@Inside
 	@PostMapping("/page")
 	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
 		//根据分页参数获取对应数据

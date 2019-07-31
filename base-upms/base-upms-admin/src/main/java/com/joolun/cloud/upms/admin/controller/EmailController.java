@@ -10,7 +10,7 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,7 +37,7 @@ public class EmailController {
 	 * @param email
 	 * @return
 	 */
-	@Inner(value = false)
+	@Inside(value = false)
 	@GetMapping("/{email}")
 	public R sendEmailCode(@PathVariable String email,@RequestParam("type") String type) {
 		String title = "";

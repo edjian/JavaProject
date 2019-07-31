@@ -1,7 +1,7 @@
 package com.joolun.cloud.common.security.component;
 
 import cn.hutool.core.util.StrUtil;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,14 +23,14 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 @AllArgsConstructor
-public class BaseSecurityInnerAspect {
+public class BaseSecurityInsideAspect {
 	private final HttpServletRequest request;
 
 	@SneakyThrows
-	@Around("@annotation(inner)")
-	public Object around(ProceedingJoinPoint point, Inner inner) {
+	@Around("@annotation(inside)")
+	public Object around(ProceedingJoinPoint point, Inside inside) {
 		String header = request.getHeader(SecurityConstants.FROM);
-		if (inner.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
+		if (inside.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
 			log.warn("访问接口 {} 没有权限", point.getSignature().getName());
 			throw new AccessDeniedException("Access is denied");
 		}

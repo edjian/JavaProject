@@ -6,7 +6,7 @@ import com.joolun.cloud.upms.admin.service.SysThirdPartyService;
 import com.joolun.cloud.upms.common.entity.SysThirdParty;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -98,7 +98,7 @@ public class SysThirdPartyController {
 	 * @param inStr appid@code
 	 * @return
 	 */
-	@Inner
+	@Inside
 	@GetMapping("/info/{inStr}")
 	public R getUserInfo(@PathVariable String inStr) {
 		return R.ok(sysThirdPartyService.getUserInfo(inStr));

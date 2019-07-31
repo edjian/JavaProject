@@ -2,7 +2,7 @@ package com.joolun.cloud.common.security.component;
 
 import cn.hutool.core.util.ReUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 @Configuration
-@ConditionalOnExpression("!'${security.oauth2.client.ignore-urls}'.isEmpty()")
+@ConditionalOnExpression("!'${security.oauth2.client.release-urls}'.isEmpty()")
 @ConfigurationProperties(prefix = "security.oauth2.client")
 public class PermitAllUrlProperties implements InitializingBean {
 	private static final Pattern PATTERN = Pattern.compile("\\{(.*?)\\}");
@@ -39,7 +39,7 @@ public class PermitAllUrlProperties implements InitializingBean {
 
 	@Getter
 	@Setter
-	private List<String> ignoreUrls = new ArrayList<>();
+	private List<String> releaseUrls = new ArrayList<>();
 
 	@Override
 	public void afterPropertiesSet() {
@@ -50,16 +50,16 @@ public class PermitAllUrlProperties implements InitializingBean {
 			HandlerMethod handlerMethod = map.get(info);
 
 			// 获取方法上边的注解 替代path variable 为 *
-			Inner method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Inner.class);
+			Inside method = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Inside.class);
 			Optional.ofNullable(method)
-					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
+					.ifPresent(inside -> info.getPatternsCondition().getPatterns()
+							.forEach(url -> releaseUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
 
 			// 获取类上边的注解, 替代path variable 为 *
-			Inner controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Inner.class);
+			Inside controller = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Inside.class);
 			Optional.ofNullable(controller)
-					.ifPresent(inner -> info.getPatternsCondition().getPatterns()
-							.forEach(url -> ignoreUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
+					.ifPresent(inside -> info.getPatternsCondition().getPatterns()
+							.forEach(url -> releaseUrls.add(ReUtil.replaceAll(url, PATTERN, StringPool.ASTERISK))));
 		});
 
 	}

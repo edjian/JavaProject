@@ -42,7 +42,7 @@ public class BaseResourceServerConfigurerAdapter extends ResourceServerConfigure
 		ExpressionUrlAuthorizationConfigurer<HttpSecurity>
 			.ExpressionInterceptUrlRegistry registry = httpSecurity
 			.authorizeRequests();
-		permitAllUrlProperties.getIgnoreUrls()
+		permitAllUrlProperties.getReleaseUrls()
 			.forEach(url -> registry.antMatchers(url).permitAll());
 		registry.anyRequest().authenticated()
 			.and().csrf().disable();

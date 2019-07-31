@@ -7,7 +7,7 @@ import com.joolun.cloud.upms.admin.service.SysLogService;
 import com.joolun.cloud.upms.common.entity.SysLog;
 import com.joolun.cloud.upms.common.vo.PreLogVo;
 import com.joolun.cloud.common.core.util.R;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,7 +60,7 @@ public class SysLogController {
 	 * @param sysLog 日志实体
 	 * @return ok/false
 	 */
-	@Inner
+	@Inside
 	@PostMapping("/save")
 	public R save(@Valid @RequestBody SysLog sysLog) {
 		return R.ok(sysLogService.save(sysLog));

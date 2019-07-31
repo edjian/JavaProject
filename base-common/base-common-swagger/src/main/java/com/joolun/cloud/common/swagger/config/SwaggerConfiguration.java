@@ -1,6 +1,7 @@
 package com.joolun.cloud.common.swagger.config;
 
 
+import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -29,8 +30,9 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 @EnableAutoConfiguration
+@EnableSwaggerBootstrapUI
 @ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
-public class SwaggerAutoConfiguration {
+public class SwaggerConfiguration {
 
 	/**
 	 * 	默认的排除路径，排除Spring Boot默认的错误处理路径和端点

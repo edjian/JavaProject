@@ -17,7 +17,7 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.upms.common.entity.SysUserRole;
 import io.swagger.annotations.Api;
@@ -70,7 +70,7 @@ public class SysUserController {
 	 *
 	 * @return 用户信息
 	 */
-	@Inner
+	@Inside
 	@GetMapping("/info/{username}")
 	public R info(@PathVariable String username) {
 		SysUser sysUser = sysUserMapper.getByUsernameForLogin(username);

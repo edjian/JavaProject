@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.joolun.cloud.common.security.annotation.Inner;
+import com.joolun.cloud.common.security.annotation.Inside;
 
 /**
  * @author JL
@@ -23,7 +23,7 @@ import com.joolun.cloud.common.security.annotation.Inner;
 public class MobileController {
 	private final MobileService mobileService;
 
-	@Inner(value = false)
+	@Inside(value = false)
 	@GetMapping("/{mobile}")
 	public R sendSmsCode(@PathVariable String mobile) {
 		return mobileService.sendSmsCode(mobile);
