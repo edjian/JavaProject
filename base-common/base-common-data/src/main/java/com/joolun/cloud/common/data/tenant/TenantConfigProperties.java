@@ -16,7 +16,7 @@ import java.util.List;
 @RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "base.tenant")
-public class BaseTenantConfigProperties {
+public class TenantConfigProperties {
 
 	/**
 	 * 维护租户列名称

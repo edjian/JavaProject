@@ -35,9 +35,9 @@ public class TenantContextHolderFilter extends GenericFilterBean {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		//需要token验权的请求，header中有token，通过token找租户ID
-		String Authorization = request.getHeader(CommonConstants.AUTHORIZATION);
-		if(StrUtil.isNotBlank(Authorization) && Authorization.contains(OAuth2AccessToken.BEARER_TYPE)){
-			String tokenValue = Authorization.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
+		String authorization = request.getHeader(CommonConstants.AUTHORIZATION);
+		if(StrUtil.isNotBlank(authorization) && authorization.contains(OAuth2AccessToken.BEARER_TYPE)){
+			String tokenValue = authorization.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
 			String key = StrUtil.concat(false,SecurityConstants.BASE_PREFIX,SecurityConstants.OAUTH_PREFIX,"access:",tokenValue);
 			OAuth2AccessToken oAuth2AccessToken = (OAuth2AccessToken) redisTemplate.opsForValue().get(key);
 			if(oAuth2AccessToken != null){

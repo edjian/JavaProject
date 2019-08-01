@@ -8,7 +8,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
  * @author
- * 用户统一管理系统
+ * 用户管理系统
  */
 @BaseEnableSwagger
 @SpringCloudApplication
@@ -18,5 +18,4 @@ public class BaseAdminApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BaseAdminApplication.class, args);
 	}
-
 }

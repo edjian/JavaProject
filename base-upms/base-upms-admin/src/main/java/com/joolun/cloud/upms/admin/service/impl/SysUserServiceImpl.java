@@ -29,7 +29,6 @@ import com.joolun.cloud.upms.common.vo.UserVO;
 import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
-import com.joolun.cloud.common.data.datascope.DataScope;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -126,7 +125,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	 */
 	@Override
 	public IPage getUsersWithRolePage(Page page, UserDTO userDTO) {
-		return baseMapper.getUserVosPage(page, userDTO, new DataScope());
+		return baseMapper.getUserVosPage(page, userDTO);
 	}
 
 	/**
@@ -261,7 +260,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		//新建角色
 		SysRole sysRole = new SysRole();
 		sysRole.setRoleName("管理员");
-		sysRole.setRoleCode(CommonConstants.ROLE_CODE_ADMIN + TenantContextHolder.getTenantId());
+		sysRole.setRoleCode(CommonConstants.ROLE_CODE_ADMIN);
 		sysRole.setRoleDesc(userRegister.getOrganname()+"管理员");
 		sysRole.setDsType(CommonConstants.DS_TYPE_0);
 		sysRoleService.save(sysRole);
@@ -277,7 +276,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 				.stream().map(sysRoleMenu -> {
 					sysRoleMenu.setRoleId(sysRole.getId());
 					return sysRoleMenu;
-				}).collect(Collectors.toList());;
+				}).collect(Collectors.toList());
 		sysRoleMenuService.saveBatch(listSysRoleMenu);
 		return R.ok();
 	}

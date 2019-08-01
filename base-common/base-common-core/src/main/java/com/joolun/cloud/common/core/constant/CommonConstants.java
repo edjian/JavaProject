@@ -21,6 +21,14 @@ public interface CommonConstants {
 	 */
 	String AUTHORIZATION = "Authorization";
 	/**
+	 * 数据权限字段
+	 */
+	String SCOPENAME = "organ_id";
+	/**
+	 * upms数据库
+	 */
+	String UPMS_DATABASE = "base_upms";
+	/**
 	 * 删除
 	 */
 	String STATUS_DEL = "1";

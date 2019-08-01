@@ -7,7 +7,6 @@ import java.lang.annotation.*;
 
 /**
  * @author JL
- * @date 2018/7/21
  * 开启 swagger
  */
 @Target({ElementType.TYPE})

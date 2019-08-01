@@ -10,7 +10,7 @@
 		<relativePath/>
 	</parent>
 
-	<artifactId>base-common-bom</artifactId>
+	<artifactId>base-common-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>${base.version}</version>
 	<description>公共版本控制</description>

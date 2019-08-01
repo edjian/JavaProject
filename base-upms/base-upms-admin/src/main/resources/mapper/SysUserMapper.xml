@@ -120,7 +120,7 @@
 		d.id AS organId
     </sql>
 
-	<select id="getByUsernameForLogin" resultMap="sysUserMap">
+	<select id="getByNoTenant" resultMap="sysUserMap">
 		SELECT
 			`user`.id,
 			`user`.username,
@@ -140,7 +140,14 @@
 			`user`.tenant_id AS tenantId
 		FROM
 			sys_user AS `user`
-		WHERE `user`.username = #{username}
+		<where>
+			<if test="username != null and username != ''">
+				and `user`.username = #{username}
+			</if>
+			<if test="email != null and email != ''">
+				and `user`.email = #{email}
+			</if>
+		</where>
 	</select>
 
 	<select id="getUserVoByUsername" resultMap="userVoResultMap">

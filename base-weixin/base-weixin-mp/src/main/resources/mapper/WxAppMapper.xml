@@ -19,6 +19,7 @@
 		<result property="updateTime" column="update_time"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="tenantId" column="tenant_id"/>
+		<result property="organId" column="organ_id"/>
 		<result property="weixinSign" column="weixin_sign"/>
 		<result property="appType" column="app_type"/>
 		<result property="secret" column="secret"/>

@@ -9,6 +9,7 @@
 package com.joolun.cloud.weixin.mp.controller;
 
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.entity.WxApp;
@@ -44,8 +45,9 @@ public class WxOpenAuthController {
     @GetMapping("/goto_auth_url")
     public void gotoPreAuthUrl(HttpServletRequest request, HttpServletResponse response,
 							   @RequestParam("tenantId") String tenantId,
+							   @RequestParam("organId") String organId,
 							   @RequestParam("host") String host){
-        String url = host+"wxmp/open/auth/jump?tenantId="+tenantId;
+        String url = host+"wxmp/open/auth/jump?tenantId="+tenantId+"&organId="+organId;
         try {
             url = WxOpenConfiguration.getOpenService().getWxOpenComponentService().getPreAuthUrl(url,"1",null);
 			// 添加来源，解决302跳转来源丢失的问题
@@ -59,7 +61,8 @@ public class WxOpenAuthController {
     @GetMapping("/jump")
     @ResponseBody
     public String jump(@RequestParam("auth_code") String authorizationCode,
-                                           @RequestParam("tenantId") String tenantId){
+					   @RequestParam("tenantId") String tenantId,
+					   @RequestParam("organId") String organId){
         try {
             WxOpenQueryAuthResult queryAuthResult = WxOpenConfiguration.getOpenService().getWxOpenComponentService().getQueryAuth(authorizationCode);
 			log.info("getQueryAuth", queryAuthResult);
@@ -69,9 +72,9 @@ public class WxOpenAuthController {
 			WxApp wxApp = new WxApp();
 			wxApp.setDelFlag(CommonConstants.STATUS_NORMAL);
 			wxApp.setId(appId);
-			TenantContextHolder.clear();
-			wxAppService.removeById(wxApp);
 			TenantContextHolder.setTenantId(tenantId);//加入租户ID
+			wxAppService.removeById(wxApp);
+			wxApp.setOrganId(organId);
 			wxApp.setIsComponent(CommonConstants.YES);
 			wxApp.setName(wxOpenAuthorizerInfo.getNickName());
 			wxApp.setWeixinHao(wxOpenAuthorizerInfo.getAlias());
@@ -92,6 +95,13 @@ public class WxOpenAuthController {
         } catch (WxErrorException e) {
 			log.error("gotoPreAuthUrl", e);
 			return "<p style='text-align: center;font-size: 18px;color:red'>抱歉！授权失败："+e.getMessage()+"</p>";
-        }
+        } catch (Exception e) {
+			log.error("gotoPreAuthUrl", e);
+        	if(e.getMessage().contains("PRIMARY")){
+				return "<p style='text-align: center;font-size: 18px;color:red'>授权失败：该公众号或小程序已经存在</p>";
+			}else{
+				return "<p style='text-align: center;font-size: 18px;color:red'>抱歉！授权失败："+e.getMessage()+"</p>";
+			}
+		}
     }
 }

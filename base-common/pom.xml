@@ -14,7 +14,7 @@
 	<description>公共聚合模块</description>
 
 	<modules>
-		<module>base-common-bom</module>
+		<module>base-common-parent</module>
 		<module>base-common-core</module>
 		<module>base-common-data</module>
 		<module>base-common-log</module>

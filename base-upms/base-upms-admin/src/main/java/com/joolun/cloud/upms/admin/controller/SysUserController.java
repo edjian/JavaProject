@@ -73,13 +73,14 @@ public class SysUserController {
 	@Inside
 	@GetMapping("/info/{username}")
 	public R info(@PathVariable String username) {
-		SysUser sysUser = sysUserMapper.getByUsernameForLogin(username);
+		SysUser sysUser = new SysUser();
+		sysUser.setUsername(username);
+		sysUser = sysUserMapper.getByNoTenant(sysUser);
 		if (sysUser == null) {
 			return R.failed(null, String.format("用户信息为空 %s", username));
 		}
 		TenantContextHolder.setTenantId(sysUser.getTenantId());
 		UserInfo userInfo = sysUserService.findUserInfo(sysUser);
-		TenantContextHolder.clear();
 		return R.ok(userInfo);
 	}
 

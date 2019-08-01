@@ -3,7 +3,7 @@ package com.joolun.cloud.common.security.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
-import com.joolun.cloud.common.security.service.BaseUser;
+import com.joolun.cloud.common.security.entity.BaseUser;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

@@ -3,8 +3,8 @@ package com.joolun.cloud.auth.config;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.security.component.BaseWebResponseExceptionTranslator;
-import com.joolun.cloud.common.security.service.BaseClientDetailsService;
-import com.joolun.cloud.common.security.service.BaseUser;
+import com.joolun.cloud.common.security.service.RedisClientDetailsService;
+import com.joolun.cloud.common.security.entity.BaseUser;
 import com.joolun.cloud.common.security.service.BaseUserDetailsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -45,7 +45,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	@SneakyThrows
 	public void configure(ClientDetailsServiceConfigurer clients) {
-		BaseClientDetailsService clientDetailsService = new BaseClientDetailsService(dataSource);
+		RedisClientDetailsService clientDetailsService = new RedisClientDetailsService(dataSource);
 		clientDetailsService.setSelectClientDetailsSql(SecurityConstants.DEFAULT_SELECT_STATEMENT);
 		clientDetailsService.setFindClientDetailsSql(SecurityConstants.DEFAULT_FIND_STATEMENT);
 		clients.withClientDetails(clientDetailsService);
@@ -79,7 +79,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {
-				return super.extractKey(authentication);
+				return super.extractKey(authentication) + ":" + TenantContextHolder.getTenantId();
 			}
 		});
 		return tokenStore;

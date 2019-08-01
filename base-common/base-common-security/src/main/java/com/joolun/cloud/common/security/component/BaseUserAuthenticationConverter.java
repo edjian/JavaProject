@@ -1,7 +1,7 @@
 package com.joolun.cloud.common.security.component;
 
 import com.joolun.cloud.common.core.constant.SecurityConstants;
-import com.joolun.cloud.common.security.service.BaseUser;
+import com.joolun.cloud.common.security.entity.BaseUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

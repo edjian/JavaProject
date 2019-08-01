@@ -7,6 +7,7 @@ import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.PaginationConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.security.annotation.Inside;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.CacheManager;
@@ -140,7 +141,7 @@ public class TokenController {
 	@PostMapping("/page")
 	public R<Page> tokenList(@RequestBody Map<String, Object> params) {
 		//根据分页参数获取对应数据
-		String key = BASE_OAUTH_ACCESS;
+		String key = String.format("%s*:%s", BASE_OAUTH_ACCESS, TenantContextHolder.getTenantId());
 		List<String> pages = findKeysForPage(key, MapUtil.getInt(params, PaginationConstants.CURRENT)
 				, MapUtil.getInt(params, PaginationConstants.SIZE));
 

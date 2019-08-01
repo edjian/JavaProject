@@ -13,9 +13,9 @@ import javax.sql.DataSource;
  * <p>
  * see JdbcClientDetailsService
  */
-public class BaseClientDetailsService extends JdbcClientDetailsService {
+public class RedisClientDetailsService extends JdbcClientDetailsService {
 
-	public BaseClientDetailsService(DataSource dataSource) {
+	public RedisClientDetailsService(DataSource dataSource) {
 		super(dataSource);
 	}
 

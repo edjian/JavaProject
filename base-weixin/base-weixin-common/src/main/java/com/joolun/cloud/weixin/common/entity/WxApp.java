@@ -60,6 +60,10 @@ private static final long serialVersionUID = 1L;
    * 所属租户
    */
     private String tenantId;
+	/**
+	 * 机构ID
+	 */
+	private String organId;
     /**
    * 微信原始标识
    */

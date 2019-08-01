@@ -1,7 +1,9 @@
-package com.joolun.cloud.common.security.service;
+package com.joolun.cloud.common.security.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.joolun.cloud.common.security.entity.BaseUser;
+import com.joolun.cloud.common.security.service.BaseUserDetailsService;
 import com.joolun.cloud.upms.common.dto.UserInfo;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import com.joolun.cloud.upms.common.feign.RemoteUserService;

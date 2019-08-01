@@ -6,10 +6,11 @@ import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.exception.CheckedException;
 import com.joolun.cloud.common.data.enums.DataScopeTypeEnum;
-import com.joolun.cloud.common.security.service.BaseUser;
+import com.joolun.cloud.common.security.entity.BaseUser;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 public class DataScopeInterceptor extends AbstractSqlParserHandler implements Interceptor {
 	private final DataSource dataSource;
 
+	private final DataScopeProperties dataScopeProperties;
 	@Override
 	@SneakyThrows
 	public Object intercept(Invocation invocation) {
@@ -51,57 +53,60 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 			return invocation.proceed();
 		}
 
-		BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
-		String originalSql = boundSql.getSql();
-		Object parameterObject = boundSql.getParameterObject();
-
-		//查找参数中包含DataScope类型的参数
-		DataScope dataScope = findDataScopeObject(parameterObject);
-		if (dataScope == null) {
+		//查询数据权限配置
+		List<String> mapperIds = dataScopeProperties.getMapperIds();
+		//未配置数据权限，直接放行
+		if (mapperIds==null || mapperIds.size()<=0) {
 			return invocation.proceed();
-		}
-
-		String scopeName = dataScope.getScopeName();
-		List<String> organIds = dataScope.getOrganIds();
-		// 优先获取赋值数据
-		if (CollUtil.isEmpty(organIds)) {
-			BaseUser user = SecurityUtils.getUser();
-			if (user == null) {
-				throw new CheckedException("auto datascope, set up security details true");
-			}
-
-			List<String> roleIdList = user.getAuthorities()
-					.stream().map(GrantedAuthority::getAuthority)
-					.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
-					.map(authority -> authority.split("_")[1])
-					.collect(Collectors.toList());
-			Entity query = Db.use(dataSource)
-					.query("SELECT * FROM sys_role where id IN ('" + CollUtil.join(roleIdList, "','") + "')")
-					.stream().min(Comparator.comparingInt(o -> o.getInt("ds_type"))).get();
-
-			Integer dsType = query.getInt("ds_type");
-			// 查询全部
-			if (DataScopeTypeEnum.ALL.getType() == dsType) {
+		}else{
+			String mappedStatementId = mappedStatement.getId();
+			if(!CollUtil.contains(mapperIds,mappedStatementId)){
 				return invocation.proceed();
 			}
-			// 自定义
-			if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
-				String dsScope = query.getStr("ds_scope");
-				organIds.addAll(Arrays.stream(dsScope.split(","))
-						.map(String::toString).collect(Collectors.toList()));
-			}
-			// 查询本级及其下级
-			if (DataScopeTypeEnum.OWN_CHILD_LEVEL.getType() == dsType) {
-				List<String> organIdList = Db.use(dataSource)
-						.findBy("sys_organ_relation", "ancestor", user.getOrganId())
-						.stream().map(entity -> entity.getStr("descendant"))
-						.collect(Collectors.toList());
-				organIds.addAll(organIdList);
-			}
-			// 只查询本级
-			if (DataScopeTypeEnum.OWN_LEVEL.getType() == dsType) {
-				organIds.add(user.getOrganId());
-			}
+		}
+
+		BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
+		String originalSql = boundSql.getSql();
+
+		String scopeName = CommonConstants.SCOPENAME;
+		List<String> organIds = new ArrayList<>();
+		// 优先获取赋值数据
+		BaseUser user = SecurityUtils.getUser();
+		if (user == null) {
+			throw new CheckedException("auto datascope, set up security details true");
+		}
+
+		List<String> roleIdList = user.getAuthorities()
+				.stream().map(GrantedAuthority::getAuthority)
+				.filter(authority -> authority.startsWith(SecurityConstants.ROLE))
+				.map(authority -> authority.split("_")[1])
+				.collect(Collectors.toList());
+		Entity query = Db.use(dataSource)
+				.query("SELECT * FROM "+CommonConstants.UPMS_DATABASE+".sys_role where id IN ('" + CollUtil.join(roleIdList, "','") + "')")
+				.stream().min(Comparator.comparingInt(o -> o.getInt("ds_type"))).get();
+
+		Integer dsType = query.getInt("ds_type");
+		// 查询全部
+		if (DataScopeTypeEnum.ALL.getType() == dsType) {
+			return invocation.proceed();
+		}
+		// 自定义
+		if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {
+			String dsScope = query.getStr("ds_scope");
+			organIds.addAll(Arrays.stream(dsScope.split(","))
+					.map(String::toString).collect(Collectors.toList()));
+		}
+		// 查询本级及其下级
+		if (DataScopeTypeEnum.OWN_CHILD_LEVEL.getType() == dsType) {
+			List<String> organIdList = Db.use(dataSource)
+					.findBy(CommonConstants.UPMS_DATABASE+".sys_organ_relation", "ancestor", user.getOrganId())
+					.stream().map(entity -> entity.getStr("descendant"))
+					.collect(Collectors.toList());
+			organIds.addAll(organIdList);
+		}
+		// 只查询本级
+		if (DataScopeTypeEnum.OWN_LEVEL.getType() == dsType) {
+			organIds.add(user.getOrganId());
 		}
 		String join = CollectionUtil.join(organIds, "','");
 		originalSql = "select * from (" + originalSql + ") temp_data_scope where temp_data_scope." + scopeName + " in ('" + join + "')";
@@ -132,24 +137,4 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 	public void setProperties(Properties properties) {
 
 	}
-
-	/**
-	 * 查找参数是否包括DataScope对象
-	 *
-	 * @param parameterObj 参数列表
-	 * @return DataScope
-	 */
-	private DataScope findDataScopeObject(Object parameterObj) {
-		if (parameterObj instanceof DataScope) {
-			return (DataScope) parameterObj;
-		} else if (parameterObj instanceof Map) {
-			for (Object val : ((Map<?, ?>) parameterObj).values()) {
-				if (val instanceof DataScope) {
-					return (DataScope) val;
-				}
-			}
-		}
-		return null;
-	}
-
 }

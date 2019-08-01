@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Slf4j
 public class BaseTenantHandler implements TenantHandler {
 	@Autowired
-	private BaseTenantConfigProperties properties;
+	private TenantConfigProperties tenantConfigProperties;
 
 	/**
 	 * 获取租户值
@@ -40,7 +40,7 @@ public class BaseTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public String getTenantIdColumn() {
-		return properties.getColumn();
+		return tenantConfigProperties.getColumn();
 	}
 
 	/**
@@ -51,6 +51,6 @@ public class BaseTenantHandler implements TenantHandler {
 	 */
 	@Override
 	public boolean doTableFilter(String tableName) {
-		return !properties.getTables().contains(tableName);
+		return !tenantConfigProperties.getTables().contains(tableName);
 	}
 }

@@ -1,4 +1,4 @@
-package com.joolun.cloud.common.security.service;
+package com.joolun.cloud.common.security.entity;
 
 import lombok.Getter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

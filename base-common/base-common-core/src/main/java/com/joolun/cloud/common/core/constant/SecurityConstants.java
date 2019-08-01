@@ -32,7 +32,7 @@ public interface SecurityConstants {
 	/**
 	 * 项目的license
 	 */
-	String BASE_LICENSE = "made by joolun";
+	String BASE_LICENSE = "Copyright © JooLun";
 
 	/**
 	 * 内部

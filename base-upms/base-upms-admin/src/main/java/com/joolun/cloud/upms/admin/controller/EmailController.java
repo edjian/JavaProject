@@ -2,6 +2,7 @@ package com.joolun.cloud.upms.admin.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.upms.admin.mapper.SysUserMapper;
 import com.joolun.cloud.upms.admin.service.SysUserService;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import com.joolun.cloud.upms.admin.service.EmailService;
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Api(value = "email", tags = "邮箱管理")
 public class EmailController {
 	private final EmailService emailService;
-	private final SysUserService sysUserService;
+	private final SysUserMapper sysUserMapper;
 	private final RedisTemplate redisTemplate;
 
 	/**
@@ -44,8 +45,9 @@ public class EmailController {
 		String content = "";
 		switch (type) {
 			case CommonConstants.EMAIL_SEND_TYPE_REGISTER ://注册
-				TenantContextHolder.clear();
-				SysUser sysUser = sysUserService.getOne(Wrappers.query(new SysUser()).eq("email",email));
+				SysUser sysUser = new SysUser();
+				sysUser.setEmail(email);
+				sysUser = sysUserMapper.getByNoTenant(sysUser);
 				if(sysUser != null){
 					return R.failed("该邮箱已被注册");
 				}

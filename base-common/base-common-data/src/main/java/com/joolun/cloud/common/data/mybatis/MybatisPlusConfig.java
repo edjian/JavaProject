@@ -7,7 +7,8 @@ import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.joolun.cloud.common.data.datascope.DataScopeInterceptor;
-import com.joolun.cloud.common.data.tenant.BaseTenantConfigProperties;
+import com.joolun.cloud.common.data.datascope.DataScopeProperties;
+import com.joolun.cloud.common.data.tenant.TenantConfigProperties;
 import com.joolun.cloud.common.data.tenant.BaseTenantHandler;
 import lombok.AllArgsConstructor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MybatisPlus配置
  * @author
  */
 @Configuration
@@ -35,7 +37,9 @@ import java.util.List;
 @MapperScan("com.joolun.cloud.**.mapper")
 public class MybatisPlusConfig {
 
-	private BaseTenantConfigProperties properties;
+	private TenantConfigProperties tenantConfigProperties;
+	private DataScopeProperties dataScopeProperties;
+
 	/**
 	 * 创建租户维护处理器对象
 	 *
@@ -68,7 +72,7 @@ public class MybatisPlusConfig {
 			public boolean doFilter(MetaObject metaObject) {
 				MappedStatement ms = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
 				// 过滤自定义查询此时无租户信息约束
-				if (properties.getIgnoreMss().contains(ms.getId())) {
+				if (tenantConfigProperties.getIgnoreMss().contains(ms.getId())) {
 					return true;
 				}
 				return false;
@@ -86,7 +90,7 @@ public class MybatisPlusConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public DataScopeInterceptor dataScopeInterceptor(DataSource dataSource) {
-		return new DataScopeInterceptor(dataSource);
+		return new DataScopeInterceptor(dataSource,dataScopeProperties);
 	}
 
 	/**
