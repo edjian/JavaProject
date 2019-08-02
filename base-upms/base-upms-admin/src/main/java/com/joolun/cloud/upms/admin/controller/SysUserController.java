@@ -172,6 +172,7 @@ public class SysUserController {
 					.eq(SysUserRole::getRoleId,sysRole.getId()));
 			if(listSysUserRole.size()<=1){//只有一条记录，判断是否当前用户拥有
 				listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
+						.eq(SysUserRole::getRoleId,sysRole.getId())
 						.eq(SysUserRole::getUserId,userDto.getId()));
 				if(listSysUserRole.size()>0){
 					return R.failed("至少需要一个用户拥有管理员角色");

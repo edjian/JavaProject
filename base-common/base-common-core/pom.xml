@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.joolun</groupId>
 		<artifactId>base-common</artifactId>
-		<version>2.6.0</version>
+		<version>2.1.6</version>
 	</parent>
 
 	<artifactId>base-common-core</artifactId>
@@ -13,12 +13,10 @@
 
 	<description>公共工具类核心包</description>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
-			<version>${hutool.version}</version>
 		</dependency>
 		<!--server-api-->
 		<dependency>
@@ -48,7 +46,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>transmittable-thread-local</artifactId>
-			<version>${ttl.version}</version>
 		</dependency>
 		<!--swagger 依赖-->
 		<dependency>
