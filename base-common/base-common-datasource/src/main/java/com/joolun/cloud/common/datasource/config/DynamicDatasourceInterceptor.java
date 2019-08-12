@@ -29,7 +29,7 @@ public class DynamicDatasourceInterceptor implements HandlerInterceptor {
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		DynamicDataSourceContextHolder.setDataSourceType(1);
+		DynamicDataSourceContextHolder.setDataSourceType("1");
 		return true;
 	}
 
