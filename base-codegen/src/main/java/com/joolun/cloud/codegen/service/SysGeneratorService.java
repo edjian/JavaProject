@@ -26,5 +26,5 @@ public interface SysGeneratorService {
 	 * @param id        数据源ID
 	 * @return
 	 */
-	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id);
+	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String id);
 }
