@@ -985,7 +985,7 @@ CREATE TABLE `sys_user` (
 /*Data for the table `sys_user` */
 
 insert  into `sys_user`(`id`,`username`,`email`,`password`,`salt`,`phone`,`avatar`,`organ_id`,`create_time`,`update_time`,`lock_flag`,`del_flag`,`wx_openid`,`qq_openid`,`gitee_login`,`osc_id`,`tenant_id`) values 
-('1','admin','8888@qq.com','$2a$10$3U7SVsfdZ6CDQiT2.mUfd.Fxgu.A9uIdzEV6JIteGEDi8VH.RKfru',NULL,'18652368888','http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/5.png','1','2018-04-20 07:15:18','2019-08-02 10:21:42','0','0','',NULL,NULL,NULL,'1'),
+('1','admin','8888@qq.com','$2a$10$vbhPmGL2fmnEDwAlDskgI.1C5ovXtlG5Vs51MocE/O67ni1hJOrDa',NULL,'18652368888','http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/5.png','1','2018-04-20 07:15:18','2019-08-02 10:21:42','0','0','',NULL,NULL,NULL,'1'),
 ('4','admin2',NULL,'$2a$10$QOfWxxFyAMmEEmnuw9UI/..1s4B4eF/u9PzE2ZaGO.ij9YfmcUy.u',NULL,NULL,'http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/2.png','2','2019-07-27 17:02:42','2019-07-27 17:06:47','0','0',NULL,NULL,NULL,NULL,'2'),
 ('5','test',NULL,'$2a$10$vbhPmGL2fmnEDwAlDskgI.1C5ovXtlG5Vs51MocE/O67ni1hJOrDa',NULL,'','http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/u%3D392081896%2C3689918515%26fm%3D173.jpg','1','2019-07-13 15:46:06','2019-08-02 10:22:33','0','0',NULL,NULL,NULL,NULL,'1'),
 ('cec1877f4c5c2723e5ee75a8eb615f9d','1023530620','1023530620@qq.com','$2a$10$nVXaGyO3IFPg9jbS4jv2eOexnIbg5CgjX/MixZmHGtd86Paltrlsq',NULL,NULL,NULL,'2abcb24cbc8d43b69e690fc1af0ec24c','2019-08-01 15:43:45',NULL,'0','0',NULL,NULL,NULL,NULL,'2abcb24cbc8d43b69e690fc1af0ec24c');
