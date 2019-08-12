@@ -11,7 +11,7 @@ public class GenConfig {
 	/**
 	 * 数据源ID
 	 */
-	private Integer id;
+	private String id;
 	/**
 	 * 包名
 	 */
