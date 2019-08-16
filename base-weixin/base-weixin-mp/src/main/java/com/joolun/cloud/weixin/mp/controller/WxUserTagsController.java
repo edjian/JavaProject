@@ -52,9 +52,7 @@ public class WxUserTagsController {
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
 		try {
 			List<WxUserTag> listWxUserTag =  wxMpUserTagService.tagGet();
-			//过滤掉0、1、2微信默认的标签
-			List<WxUserTag> rs = listWxUserTag.stream().filter(WxUserTag -> WxUserTag.getId()>=100).collect(Collectors.toList());
-			return R.ok(rs);
+			return R.ok(listWxUserTag);
 		} catch (WxErrorException e) {
 			e.printStackTrace();
 			log.error("获取微信用户标签失败", e);
@@ -73,11 +71,9 @@ public class WxUserTagsController {
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
 		try {
 			List<WxUserTag> listWxUserTag =  wxMpUserTagService.tagGet();
-			//过滤掉0、1、2微信默认的标签
-			List<WxUserTag> rs = listWxUserTag.stream().filter(WxUserTag -> WxUserTag.getId()>=100).collect(Collectors.toList());
 			List<WxUserTagsDict> listWxUserTagsDict = new ArrayList<>();
 			WxUserTagsDict wxUserTagsDict;
-			for(WxUserTag wxUserTag : rs){
+			for(WxUserTag wxUserTag : listWxUserTag){
 				wxUserTagsDict = new WxUserTagsDict();
 				wxUserTagsDict.setLabel(wxUserTag.getName());
 				wxUserTagsDict.setValue(wxUserTag.getId());

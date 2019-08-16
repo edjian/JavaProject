@@ -51,7 +51,13 @@ public class WxUserController {
 		Wrapper<WxUser> queryWrapper;
 		if(StringUtils.isNotBlank(tagId)){
 			queryWrapper = Wrappers.lambdaQuery(wxUser)
-					.like(WxUser::getTagidList,tagId);
+					.eq(WxUser::getTagidList,"["+tagId+"]")
+					.or()
+					.like(WxUser::getTagidList,","+tagId+",")
+					.or()
+					.likeRight(WxUser::getTagidList,"["+tagId+",")
+					.or()
+					.likeLeft(WxUser::getTagidList,","+tagId+"]");
 		}else{
 			queryWrapper = Wrappers.lambdaQuery(wxUser);
 		}
