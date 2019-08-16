@@ -32,7 +32,7 @@ public class SysGeneratorController {
 	 * @return 数据库表
 	 */
 	@GetMapping("/page")
-	public R getPage(Page page, String tableName, Integer id) {
+	public R getPage(Page page, String tableName, String id) {
 		return R.ok(sysGeneratorService.getPage(page, tableName, id));
 	}
 

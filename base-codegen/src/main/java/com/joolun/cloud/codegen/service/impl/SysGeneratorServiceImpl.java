@@ -34,7 +34,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	 * @return
 	 */
 	@Override
-	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, Integer id) {
+	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String id) {
 		DynamicDataSourceContextHolder.setDataSourceType(id);
 		return sysGeneratorMapper.queryList(page, tableName);
 	}

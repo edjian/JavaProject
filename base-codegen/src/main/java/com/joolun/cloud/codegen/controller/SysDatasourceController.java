@@ -51,7 +51,7 @@ public class SysDatasourceController {
 	 * @return R
 	 */
 	@GetMapping("/{id}")
-	public R getById(@PathVariable("id") Integer id) {
+	public R getById(@PathVariable("id") String id) {
 		return R.ok(sysDatasourceService.getById(id));
 	}
 
@@ -87,7 +87,7 @@ public class SysDatasourceController {
 	 */
 	@SysLog("删除数据源表")
 	@DeleteMapping("/{id}")
-	public R removeById(@PathVariable Integer id) {
+	public R removeById(@PathVariable String id) {
 		return R.ok(sysDatasourceService.removeById(id));
 	}
 

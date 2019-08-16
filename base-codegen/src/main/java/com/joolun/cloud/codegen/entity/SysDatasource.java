@@ -1,5 +1,6 @@
 package com.joolun.cloud.codegen.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +24,7 @@ public class SysDatasource extends Model<SysDatasource> {
 	/**
 	 * 主键
 	 */
-	@TableId
+	@TableId(type = IdType.UUID)
 	private String id;
 	/**
 	 * 名称

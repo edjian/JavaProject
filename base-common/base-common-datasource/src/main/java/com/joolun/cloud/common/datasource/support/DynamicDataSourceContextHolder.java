@@ -8,14 +8,14 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public class DynamicDataSourceContextHolder {
-	private final ThreadLocal<Integer> CONTEXT_HOLDER = new ThreadLocal<>();
+	private final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<>();
 
 	/**
 	 * 提供给AOP去设置当前的线程的数据源的信息
 	 *
 	 * @param dataSourceType
 	 */
-	public void setDataSourceType(Integer dataSourceType) {
+	public void setDataSourceType(String dataSourceType) {
 		CONTEXT_HOLDER.set(dataSourceType);
 	}
 
@@ -24,7 +24,7 @@ public class DynamicDataSourceContextHolder {
 	 *
 	 * @return
 	 */
-	public Integer getDataSourceType() {
+	public String getDataSourceType() {
 		return CONTEXT_HOLDER.get();
 	}
 
