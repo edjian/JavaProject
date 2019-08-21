@@ -138,10 +138,17 @@ public class WxUserTagsController {
 	@DeleteMapping
 	@PreAuthorize("@pms.hasPermission('wxmp_wxusertags_del')")
 	public R removeById(Long id,String appId){
-		List<WxUser> listWxUser = wxUserService.list(Wrappers.<WxUser>lambdaQuery()
+		int count = wxUserService.count(Wrappers.<WxUser>lambdaQuery()
 				.eq(WxUser::getAppId, appId)
-				.like(WxUser::getTagidList,id));
-		if(listWxUser!=null && listWxUser.size()>0){
+				.and(wrapper -> wrapper
+						.eq(WxUser::getTagidList,"["+id+"]")
+						.or()
+						.like(WxUser::getTagidList,","+id+",")
+						.or()
+						.likeRight(WxUser::getTagidList,"["+id+",")
+						.or()
+						.likeLeft(WxUser::getTagidList,","+id+"]")));
+		if(count>0){
 			return R.failed("该标签下有用户存在，无法删除");
 		}
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
