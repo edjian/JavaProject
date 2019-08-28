@@ -146,11 +146,7 @@ public class SysUserController {
 		try{
 			return R.ok(sysUserService.saveUser(userDto));
 		}catch (DuplicateKeyException e){
-			if(e.getMessage().contains("uk_username")){
-				return R.failed("用户名已被占用");
-			}else{
-				return R.failed(e.getMessage());
-			}
+			return judeParm(e);
 		}
 	}
 
@@ -164,22 +160,26 @@ public class SysUserController {
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('sys_user_edit')")
 	public R updateUser(@Valid @RequestBody UserDTO userDto) {
-		//查询出管理员角色，判断管理员角色是否至少有1个用户
-		SysRole sysRole = sysRoleService.getOne(Wrappers.<SysRole>update().lambda()
-				.eq(SysRole::getRoleCode,CommonConstants.ROLE_CODE_ADMIN));
-		if(!CollUtil.contains(userDto.getRole(),sysRole.getId())){
-			List<SysUserRole> listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
-					.eq(SysUserRole::getRoleId,sysRole.getId()));
-			if(listSysUserRole.size()<=1){//只有一条记录，判断是否当前用户拥有
-				listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
-						.eq(SysUserRole::getRoleId,sysRole.getId())
-						.eq(SysUserRole::getUserId,userDto.getId()));
-				if(listSysUserRole.size()>0){
-					return R.failed("至少需要一个用户拥有管理员角色");
+		try{
+			//查询出管理员角色，判断管理员角色是否至少有1个用户
+			SysRole sysRole = sysRoleService.getOne(Wrappers.<SysRole>update().lambda()
+					.eq(SysRole::getRoleCode,CommonConstants.ROLE_CODE_ADMIN));
+			if(!CollUtil.contains(userDto.getRole(),sysRole.getId())){
+				List<SysUserRole> listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
+						.eq(SysUserRole::getRoleId,sysRole.getId()));
+				if(listSysUserRole.size()<=1){//只有一条记录，判断是否当前用户拥有
+					listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
+							.eq(SysUserRole::getRoleId,sysRole.getId())
+							.eq(SysUserRole::getUserId,userDto.getId()));
+					if(listSysUserRole.size()>0){
+						return R.failed("至少需要一个用户拥有管理员角色");
+					}
 				}
 			}
+			return R.ok(sysUserService.updateUser(userDto));
+		}catch (DuplicateKeyException e){
+			return judeParm(e);
 		}
-		return R.ok(sysUserService.updateUser(userDto));
 	}
 
 	/**
@@ -247,12 +247,22 @@ public class SysUserController {
 		try{
 			return sysUserService.register(userRegister);
 		}catch (DuplicateKeyException e){
-			if(e.getMessage().contains("uk_username")){
-				return R.failed("用户名已被占用");
-			}else{
-				return R.failed(e.getMessage());
-			}
+			return judeParm(e);
 		}
 	}
 
+	/**
+	 *
+	 * @param e
+	 * @return
+	 */
+	R judeParm(DuplicateKeyException e){
+		if(e.getMessage().contains("uk_username")){
+			return R.failed("用户名已被占用");
+		}else if(e.getMessage().contains("uk_email")){
+			return R.failed("邮箱已被占用");
+		}else{
+			return R.failed(e.getMessage());
+		}
+	}
 }
