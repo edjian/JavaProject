@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper">
+	<resultMap id="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
+		<id property="id" column="id"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="spuCode" column="spu_code"/>
+		<result property="name" column="name"/>
+		<result property="sellPoint" column="sell_point"/>
+		<result property="description" column="description"/>
+		<result property="categoryFirst" column="category_first"/>
+		<result property="categorySecond" column="category_second"/>
+		<result property="picUrls" column="pic_urls"/>
+		<result property="shelf" column="shelf"/>
+		<result property="sort" column="sort"/>
+		<result property="priceDown" column="price_down"/>
+		<result property="priceUp" column="price_up"/>
+		<result property="saleNum" column="sale_num"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="specType" column="spec_type"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
+
+	<resultMap id="goodsSpuVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSpuVO">
+		<id property="id" column="id"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="spuCode" column="spu_code"/>
+		<result property="name" column="name"/>
+		<result property="sellPoint" column="sell_point"/>
+		<result property="description" column="description"/>
+		<result property="categoryFirst" column="category_first"/>
+		<result property="categorySecond" column="category_second"/>
+		<result property="picUrls" column="pic_urls"/>
+		<result property="shelf" column="shelf"/>
+		<result property="sort" column="sort"/>
+		<result property="priceDown" column="price_down"/>
+		<result property="priceUp" column="price_up"/>
+		<result property="saleNum" column="sale_num"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="specType" column="spec_type"/>
+		<result property="delFlag" column="del_flag"/>
+		<collection property="skus" ofType="com.joolun.cloud.mall.common.vo.GoodsSkuVO"
+					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper.listGoodsSkuVoBySpuId"
+					column="{spuId=id}">
+		</collection>
+	</resultMap>
+
+	<sql id="goodsSpuSql">
+		spu.`id`,
+		spu.`tenant_id`,
+		spu.`spu_code`,
+		spu.`name`,
+		spu.`sell_point`,
+		spu.`description`,
+		spu.`category_first`,
+		spu.`category_second`,
+		spu.`pic_urls`,
+		spu.`shelf`,
+		spu.`sort`,
+		spu.`price_down`,
+		spu.`price_up`,
+		spu.`sale_num`,
+		spu.`create_time`,
+		spu.`update_time`,
+		spu.`spec_type`,
+		spu.`del_flag`
+	</sql>
+
+	<sql id="goodsSpuVoPageSql">
+		spu.`id`,
+		spu.`tenant_id`,
+		spu.`spu_code`,
+		spu.`name`,
+		spu.`sell_point`,
+		spu.`description`,
+		spu.`category_first`,
+		spu.`category_second`,
+		spu.`pic_urls`,
+		spu.`shelf`,
+		spu.`sort`,
+		spu.`price_down`,
+		spu.`price_up`,
+		spu.`sale_num`,
+		spu.`create_time`,
+		spu.`update_time`,
+		spu.`spec_type`,
+		spu.`del_flag`
+	</sql>
+
+	<!--重写selectById关联查询其它表-->
+	<select id="selectById2" resultMap="goodsSpuVoMap">
+		SELECT
+			<include refid="goodsSpuVoPageSql"/>
+		FROM `goods_spu` spu
+		WHERE spu.`id` = #{id}
+	</select>
+
+	<select id="selectOneByShoppingCart" resultMap="goodsSpuMap">
+		SELECT
+			<include refid="goodsSpuSql"/>
+		FROM `goods_spu` spu
+		WHERE spu.`id` = #{id}
+	</select>
+
+</mapper>

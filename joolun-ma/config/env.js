@@ -10,5 +10,5 @@ export default {
   //租户ID
   tenantId: '1',
   //服务器地址
-  basePath: 'https://gateway.joolun.com'
+  basePath: 'https://localhost:9999'
 }

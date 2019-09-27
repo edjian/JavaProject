@@ -1,0 +1,79 @@
+export const tableOption = {
+  dialogDrag:true,
+  border: true,
+  index: true,
+  indexLabel: '序号',
+  stripe: true,
+  menuAlign: 'center',
+  align: 'center',
+  viewBtn: true,
+  excelBtn: true,
+  printBtn: true,
+  menuType:'text',
+  column: [{
+    label: 'ID',
+    prop: 'id',
+    hide: true,
+    addDisplay: false,
+    editDisabled: true
+  },
+  {
+    label: '类型',
+    prop: 'type',
+    type: 'select',
+    dicUrl: '/admin/dict/type/third_party_type',
+    search: true,
+    sortable:true,
+    rules: [{
+      required: true,
+      message: '请选择类型',
+      trigger: 'blur'
+    }]
+  },
+  {
+    label: '描述',
+    prop: 'remark'
+  },
+  {
+    label: 'appId',
+    prop: 'appId',
+    overHidden: true,
+    sortable:true,
+    rules: [{
+      required: true,
+      message: '请输入appId',
+      trigger: 'blur'
+    }]
+  },
+  {
+    label: 'appSecret',
+    prop: 'appSecret',
+    overHidden: true,
+    rules: [{
+      required: true,
+      message: '请输入appSecret',
+      trigger: 'blur'
+    }]
+  },
+  {
+    label: '回调地址',
+    prop: 'redirectUrl',
+    hide: true,
+    rules: [{
+      required: true,
+      message: '请输入回调地址',
+      trigger: 'blur'
+    }]
+  },
+  {
+    valueFormat: 'timestamp',
+    format: 'yyyy-MM-dd hh:mm:ss',
+    label: '创建时间',
+    prop: 'createTime',
+    align: 'center',
+    sortable:true,
+    addDisplay: false,
+    editDisabled: true
+  }
+  ]
+}
