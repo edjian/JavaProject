@@ -1,12 +1,5 @@
 server:
   port: 9999
-  # https配置，请自行申请证书
-  ssl:
-    # joolun.pfx换成你自己的证书名，证书默认放在base-gateway\src\main\resources文件夹下
-    key-store: classpath:javaboy.p12
-    key-alias: tomcathttps
-    # 你自己的证书密码
-    key-store-password: 12345678
 
 spring:
   application:
