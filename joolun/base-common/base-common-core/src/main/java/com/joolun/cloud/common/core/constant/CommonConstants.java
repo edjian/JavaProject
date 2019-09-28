@@ -15,7 +15,7 @@ public interface CommonConstants {
 	/**
 	 * header 中租户ID
 	 */
-	String TENANT_ID = "tenant_id";
+	String TENANT_ID = "tenant-id";
 	/**
 	 * header 中Authorization
 	 */
