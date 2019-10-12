@@ -2,8 +2,8 @@
  * 配置参考:
  * https://cli.vuejs.org/zh/config/
  */
-const url = 'https://127.0.0.1:9999'
-// const url = 'http://192.168.31.110:9999'
+const url = 'http://127.0.0.1:9999'
+const fs = require('fs')
 module.exports = {
   lintOnSave: true,
   productionSourceMap: false,
@@ -20,10 +20,16 @@ module.exports = {
       .add('classlist-polyfill')
       .end()
   },
-  // 配置转发代理
+  // 本地开发环境配置
   devServer: {
+    //https相关配置
+    // https: {
+    //   key: fs.readFileSync('E:/JL/GIT/all/file/2881827_test.joolun.com_nginx/2881827_test.joolun.com.key'),
+    //   cert: fs.readFileSync('E:/JL/GIT/all/file/2881827_test.joolun.com_nginx/2881827_test.joolun.com.pem')
+    // },
     disableHostCheck: true,
     port:8082,
+    //转发代理
     proxy: {
       '/auth': {
         target: url,

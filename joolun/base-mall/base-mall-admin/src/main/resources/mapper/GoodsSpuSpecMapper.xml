@@ -37,7 +37,7 @@
 		  gss.`spec_id`,
 		  gs.`name` AS spec_name
 		FROM
-		  `goods_spu_spec` gss
+		  goods_spu_spec gss
 		  LEFT JOIN `goods_spec` gs
 			ON gs.`id` = gss.`spec_id`
 		WHERE gss.`spu_id` = #{spuId}

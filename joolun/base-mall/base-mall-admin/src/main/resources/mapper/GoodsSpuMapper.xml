@@ -102,14 +102,14 @@
 	<select id="selectById2" resultMap="goodsSpuVoMap">
 		SELECT
 			<include refid="goodsSpuVoPageSql"/>
-		FROM `goods_spu` spu
+		FROM goods_spu spu
 		WHERE spu.`id` = #{id}
 	</select>
 
 	<select id="selectOneByShoppingCart" resultMap="goodsSpuMap">
 		SELECT
 			<include refid="goodsSpuSql"/>
-		FROM `goods_spu` spu
+		FROM goods_spu spu
 		WHERE spu.`id` = #{id}
 	</select>
 

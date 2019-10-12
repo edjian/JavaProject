@@ -14,11 +14,12 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel">
+                 @row-del="handleDel"
+                 @current-change="currentChange">
         <template slot="parentIdForm"
                   slot-scope="scope">
           <avue-input v-model="scope.row.parentId"
@@ -72,7 +73,10 @@
           this.parentTreeData = response.data.data
         })
       },
-      getList() {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
+      getPage() {
         this.tableLoading = true
         fetchTree().then(response => {
           this.tableData = response.data.data
@@ -102,7 +106,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList()
+          this.getPage()
           this.fetchParentTree()
         }).catch(function(err) { })
       },
@@ -122,7 +126,7 @@
             type: 'success'
           })
           done()
-          this.getList()
+          this.getPage()
           this.fetchParentTree()
         })
       },
@@ -141,7 +145,7 @@
             type: 'success'
           })
           done()
-          this.getList()
+          this.getPage()
           this.fetchParentTree()
         })
       },
@@ -149,7 +153,7 @@
        * 刷新回调
        */
       refreshChange() {
-        this.getList()
+        this.getPage()
         this.fetchParentTree()
       }
     }

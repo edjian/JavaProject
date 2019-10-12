@@ -14,6 +14,9 @@
     <view class="text-black margin-left" wx:if="{{orderInfo.status == '0'}}">
       请在{{countDown.min}}分{{countDown.sec}}秒内付款，超时订单将自动取消
     </view>
+    <view class="text-black margin-left" wx:if="{{orderInfo.status == '2'}}">
+      还剩{{countDown.day}}天{{countDown.hou}}时{{countDown.min}}分{{countDown.sec}}秒自动确认
+    </view>
   </view>
   <view class="cu-list cu-card menu-avatar">
     <navigator class="cu-item" url='/pages/order/order-logistics/index?id={{orderInfo.orderLogistics.id}}' wx:if="{{orderInfo.status == '2' || orderInfo.status == '3' || orderInfo.status == '4'}}">

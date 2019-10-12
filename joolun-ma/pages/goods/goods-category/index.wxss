@@ -1,5 +1,5 @@
 .VerticalNav.nav {
-  width: 200rpx;
+  width: 220rpx;
   white-space: initial;
 }
 .VerticalNav.nav .cu-item {

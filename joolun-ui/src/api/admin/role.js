@@ -69,3 +69,22 @@ export function fetchRoleTree (roleId) {
     method: 'get'
   })
 }
+
+export function fetchRoleTreeTenant (tenantId) {
+  return request({
+    url: '/admin/menu/tree/tenant/' + tenantId,
+    method: 'get'
+  })
+}
+
+export function permissionUpdTenant (tenantId,roleId, menuIds) {
+  return request({
+    url: '/admin/role/menu/tenant',
+    method: 'put',
+    params: {
+      tenantId: tenantId,
+      roleId: roleId,
+      menuIds: menuIds
+    }
+  })
+}

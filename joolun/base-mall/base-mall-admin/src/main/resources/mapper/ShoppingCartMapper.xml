@@ -73,7 +73,7 @@
 	<select id="selectVoPage" resultMap="shoppingCartMap2">
 		SELECT
 			<include refid="shoppingCartVOSql"/>
-		FROM `shopping_cart` obj
+		FROM shopping_cart obj
 		<where>
 			<if test="ew.userId != null and ew.userId != ''">
 				and obj.`user_id` = #{ew.userId}

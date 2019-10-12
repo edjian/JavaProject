@@ -36,7 +36,8 @@
                  :table-loading="tableLoading"
                  :option="tableOption"
                  @sort-change="sortChange"
-                 @refresh-change="refreshChange">
+                 @refresh-change="refreshChange"
+                 @current-change="currentChange">
         <template slot-scope="scope"
                   slot="menu">
           <el-button type="text"
@@ -117,6 +118,9 @@
       this.getdataSourceList();
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -129,9 +133,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -192,7 +196,7 @@
         this.box = true
       },
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       refreshDsChange() {
         this.getDsList(this.page)
@@ -208,7 +212,7 @@
         this.dsBox = true
       },
       searchChange() {
-        this.getList(this.page, this.filterForm(this.q))
+        this.getPage(this.page, this.filterForm(this.q))
       },
       getdataSourceList() {
         fetchSelectDsList().then(response => {

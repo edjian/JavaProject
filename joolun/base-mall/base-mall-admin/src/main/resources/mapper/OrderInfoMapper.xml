@@ -73,7 +73,7 @@
 	<select id="selectPage1" resultMap="orderInfoMap2">
 		SELECT
 		<include refid="orderInfoSql"/>
-		FROM `order_info` order_info
+		FROM order_info order_info
 		<where>
 			<if test="query.userId != null">
 				AND order_info.`user_id` = #{query.userId}
@@ -90,7 +90,7 @@
 	<select id="selectPage2" resultMap="orderInfoMap2">
 		SELECT
 		<include refid="orderInfoSql"/>
-		FROM `order_info` order_info
+		FROM order_info order_info
 		<where>
 			<if test="query.userId != null">
 				AND order_info.`user_id` = #{query.userId}
@@ -107,7 +107,7 @@
 	<select id="selectById2" resultMap="orderInfoMap2">
 		SELECT
 		<include refid="orderInfoSql"/>
-		FROM `order_info` order_info
+		FROM order_info order_info
 		WHERE order_info.`id` = #{id}
 	</select>
 </mapper>

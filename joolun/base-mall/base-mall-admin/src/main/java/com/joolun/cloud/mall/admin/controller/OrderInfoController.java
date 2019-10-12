@@ -10,15 +10,22 @@ package com.joolun.cloud.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
+import com.joolun.cloud.mall.common.entity.OrderLogistics;
+import com.joolun.cloud.mall.common.feign.FeignWxAppService;
+import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
+
+import java.util.Map;
 
 /**
  * 商城订单
@@ -34,6 +41,9 @@ import io.swagger.annotations.Api;
 public class OrderInfoController {
 
     private final OrderInfoService orderInfoService;
+	private final FeignWxUserService feignWxUserService;
+	private final FeignWxAppService feignWxAppService;
+	private final OrderLogisticsService orderLogisticsService;
 
     /**
     * 分页查询
@@ -55,7 +65,14 @@ public class OrderInfoController {
     @GetMapping("/{id}")
     @PreAuthorize("@ato.hasAuthority('mall_orderinfo_get')")
     public R getById(@PathVariable("id") String id){
-        return R.ok(orderInfoService.getById(id));
+		OrderInfo orderInfo = orderInfoService.getById(id);
+		R r = feignWxUserService.getById(orderInfo.getUserId(), SecurityConstants.FROM_IN);
+		R r2 = feignWxAppService.getById(orderInfo.getAppId(), SecurityConstants.FROM_IN);
+		orderInfo.setUser((Map<Object, Object>)r.getData());
+		orderInfo.setApp((Map<Object, Object>)r2.getData());
+		OrderLogistics orderLogistics = orderLogisticsService.getById(orderInfo.getLogisticsId());
+		orderInfo.setOrderLogistics(orderLogistics);
+        return R.ok(orderInfo);
     }
 
     /**

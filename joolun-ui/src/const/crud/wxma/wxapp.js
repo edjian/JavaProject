@@ -49,6 +49,16 @@ export const tableOption = {
       }]
     },
     {
+      label: '小程序码',
+      prop: 'qrCode',
+      type:'upload',
+      hide:true,
+      listType: 'picture-img',
+      oss: 'ali',
+      loadText: '图上上传中，请稍等',
+      tip: '只能上传jpg/png文件，且不超过100kb'
+    },
+    {
       label: '微信原始标识',
       prop: 'weixinSign',
       search:true,
@@ -94,23 +104,8 @@ export const tableOption = {
       addDisplay:false
     },
     {
-      label: 'token',
-      prop: 'token',
-      hide:true
-    },
-    {
-      label: 'EncodingAESKey',
-      prop: 'aesKey',
-      hide:true
-    },
-    {
       label: '主体名称',
       prop: 'principalName',
-      hide:true
-    },
-    {
-      label: '微社区URL',
-      prop: 'community',
       hide:true
     },
     {

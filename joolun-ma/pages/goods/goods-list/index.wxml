@@ -14,7 +14,9 @@
     </navigator>
   </view>
   <view class="action">
-     <text class="cuIcon-{{viewType ? 'list' : 'cascades'}} lg text-gray" bindtap="viewTypeEdit"></text>
+     <view class="text-xxl">
+      <text class="cuIcon-{{viewType ? 'list' : 'cascades'}} text-red" bindtap="viewTypeEdit"></text>
+     </view>
   </view>
 </view>
 

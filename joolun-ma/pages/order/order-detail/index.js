@@ -46,7 +46,10 @@ Page({
         this.setData({
           orderInfo: orderInfo
         })
-        if (orderInfo.status == '0'){
+        if (orderInfo.status == '0' || orderInfo.status == '2') {//订单取消、确认收货倒计时
+          this.setData({
+            outTime: 1000 * orderInfo.outTime
+          })
           this.countDown()
         }
         setTimeout(function () {
@@ -63,15 +66,12 @@ Page({
     })
   },
   countDown() { //倒计时函数
-    // 获取当前时间，同时得到活动结束时间数组
-    let newTime = new Date().getTime()
-    //30分钟后过期
-    let endTime = new Date(this.data.orderInfo.createTime.replace(/-/g, '/')).getTime() + 1800000
+    let outTime = this.data.outTime - 1000
     // 对结束时间进行处理渲染到页面
     let obj = null
     // 如果活动未结束，对时间进行处理
-    if (endTime - newTime > 0) {
-      let time = (endTime - newTime) / 1000
+    if (outTime && outTime > 0) {
+      let time = outTime / 1000
       // 获取天、时、分、秒
       let day = parseInt(time / (60 * 60 * 24))
       let hou = parseInt(time % (60 * 60 * 24) / 3600)
@@ -83,21 +83,21 @@ Page({
         min: this.timeFormat(min),
         sec: this.timeFormat(sec)
       }
-    } else { //活动已结束，全部设置为'00'
-      obj = {
-        day: '00',
-        hou: '00',
-        min: '00',
-        sec: '00'
-      }
+      // 渲染，然后每隔一秒执行一次倒计时函数
+      this.setData({
+        outTime: outTime,
+        countDown: obj
+      })
+      this.setData({
+        setTimeoutNumber: setTimeout(this.countDown, 1000)
+      })
+    } else { //结束
+      clearTimeout(this.data.setTimeoutNumber)
+      let that = this
+      setTimeout(function () {
+        that.orderGet(that.data.id)
+      }, 2000)
     }
-    // 渲染，然后每隔一秒执行一次倒计时函数
-    this.setData({
-      countDown: obj
-    })
-    this.setData({
-      setTimeoutNumber: setTimeout(this.countDown, 1000)
-    })
   },
   timeFormat(param) { //小于10的格式化函数
     return param < 10 ? '0' + param : param

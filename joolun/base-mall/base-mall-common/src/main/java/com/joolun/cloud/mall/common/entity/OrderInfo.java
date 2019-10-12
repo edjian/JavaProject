@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.annotations.ApiModel;
 
@@ -153,4 +154,19 @@ public class OrderInfo extends Model<OrderInfo> {
 	 */
 	@TableField(exist = false)
 	private String logisticsNo;
+	/**
+	 * 用户信息
+	 */
+	@TableField(exist = false)
+	private Map user;
+	/**
+	 * 订单来源
+	 */
+	@TableField(exist = false)
+	private Map app;
+	/**
+	 * 订单状态过期时间
+	 */
+	@TableField(exist = false)
+	private Long outTime;
 }

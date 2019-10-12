@@ -75,7 +75,7 @@
 		SELECT
 			<include refid="wxAppSql"/>
 		FROM
-		`wx_app` wa
+		wx_app wa
 		WHERE wa.`weixin_sign` = #{weixinSign}
 	</select>
 	<!--不需要租户信息约束的sql-->
@@ -83,7 +83,7 @@
 		SELECT
 		<include refid="wxAppSql"/>
 		FROM
-		`wx_app` wa
+		wx_app wa
 		WHERE wa.`id` = #{appId}
 	</select>
 </mapper>

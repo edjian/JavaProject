@@ -9,6 +9,6 @@
 export default {
   //租户ID
   tenantId: '1',
-  //接口地址，上线时要换成https
+  //服务器地址
   basePath: 'http://localhost:8082'
 }

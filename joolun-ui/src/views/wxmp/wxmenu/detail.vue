@@ -77,7 +77,7 @@
                   <el-button type="danger" icon="el-icon-delete" circle @click="deleteTempObj"></el-button>
                 </el-row>
               </div>
-              <div v-if="!tempObj.content">
+              <div v-if="!tempObj.content || !tempObj.content.articles">
                 <el-row>
                   <el-col :span="24" style="text-align: center">
                     <el-button type="success" @click="openMaterial">素材库选择<i class="el-icon-circle-check el-icon--right"></i></el-button>

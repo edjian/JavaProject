@@ -10,7 +10,7 @@
                        :permission="permissionList"
                        :table-loading="tableLoading"
                        :option="tableOption"
-                       @on-load="getList"
+                       @on-load="getPage"
                        @row-update="handleUpdate"
                        @row-save="handleSave"
                        @search-change="searchChange"
@@ -40,6 +40,7 @@
                        @row-update="handleItemUpdate"
                        @row-save="handleItemSave"
                        @row-del="rowItemDel"
+                       @current-change="currentChange"
                        :before-open="handleBeforeOpen"
                        :option="tableDictItemOption"
                        :table-loading="tableLoading2">
@@ -94,6 +95,9 @@
       }
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -106,9 +110,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -150,7 +154,7 @@
           return delObj(row)
         }).then(() => {
           this.tableDictItemData = []
-          this.getList(this.page)
+          this.getPage(this.page)
           _this.$message({
             showClose: true,
             message: '删除成功',
@@ -174,7 +178,7 @@
             message: '修改成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
           done()
         })
       },
@@ -192,7 +196,7 @@
             message: '添加成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
           done()
         })
       },
@@ -221,7 +225,7 @@
         })
       },
       searchChange(form) {
-        this.getList(this.page, this.filterForm(form))
+        this.getPage(this.page, this.filterForm(form))
       },
       /**
        * 加载键值列表

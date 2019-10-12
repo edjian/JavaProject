@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
 import com.joolun.cloud.weixin.admin.config.pay.WxPayConfiguration;
 import com.joolun.cloud.weixin.common.constant.ConfigConstant;
@@ -264,5 +265,17 @@ public class WxAppController {
 			log.error("获取接口分析数据失败",e);
 			return R.failed("获取接口分析数据失败");
 		}
+	}
+
+	/**
+	 * 通过id查询微信账号配置
+	 *
+	 * @param id
+	 * @return R
+	 */
+	@Inside
+	@GetMapping("/inside/{id}")
+	public R getByIdInside(@PathVariable("id") String id) {
+		return R.ok(wxAppService.getById(id));
 	}
 }

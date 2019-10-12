@@ -54,7 +54,7 @@
 		SELECT
 		<include refid="goodsSkuSpecValueVoSql"/>
 		FROM
-		`goods_sku_spec_value` ssv
+		goods_sku_spec_value ssv
 		LEFT JOIN `goods_spec_value` gsv
 		ON gsv.`id` = ssv.`spec_value_id`
 		WHERE ssv.`sku_id` = #{skuId}
@@ -65,7 +65,7 @@
 		  gsv.`id`,
 		  gsv.`name` AS spec_value_name
 		FROM
-			`goods_sku_spec_value` ssv
+			goods_sku_spec_value ssv
 			LEFT JOIN `goods_spec_value` gsv
 			  ON gsv.`id` = ssv.`spec_value_id`
 		  WHERE gsv.`spec_id` = #{specId}

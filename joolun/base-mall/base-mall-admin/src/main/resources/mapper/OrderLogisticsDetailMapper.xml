@@ -36,7 +36,7 @@
 	<select id="selectList2" resultMap="orderLogisticsDetailMap">
 		SELECT
 		<include refid="orderLogisticsDetailSql"/>
-		FROM `order_logistics_detail` order_logistics_detail
+		FROM order_logistics_detail order_logistics_detail
 		<where>
 			<if test="query.logisticsId != null">
 				AND order_logistics_detail.`logistics_id` = #{query.logisticsId}

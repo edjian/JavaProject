@@ -75,7 +75,7 @@
 	<select id="selectPage1" resultMap="goodsAppraisesMap2">
 		SELECT
 		<include refid="goodsAppraisesSql"/>
-		FROM `goods_appraises` goods_appraises
+		FROM goods_appraises goods_appraises
 		<where>
 			<if test="query.userId != null">
 				AND goods_appraises.`user_id` = #{query.userId}

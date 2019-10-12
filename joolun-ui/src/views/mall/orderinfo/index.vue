@@ -15,13 +15,14 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange">
+                 @search-change="searchChange"
+                 @current-change="currentChange">
         <template slot="status" slot-scope="scope">
           <el-tag :type="scope.row.status=='2' ||scope.row.status=='3' || scope.row.status=='4' ? 'success' : 'danger'" effect="dark" size="mini"> {{ scope.row.$status}} </el-tag>
         </template>
@@ -30,6 +31,17 @@
             :data="[scope.row]"
             border
             style="width: 100%; margin-top: 20px; margin-top: -10px">
+            <el-table-column
+              align="center"
+              prop="salesPrice"
+              label="订单来源">
+              <template slot-scope="scope">
+                <div v-if="scope.row.app">
+                  <img v-if="scope.row.app.qrCode" :src="scope.row.app.qrCode" width="100" height="100" />
+                  <div>{{scope.row.app.name}}</div>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               align="center"
               prop="orderNo"
@@ -168,26 +180,43 @@
           </el-table>
         </template>
         <template slot-scope="scope" slot="orderLogisticsForm">
-          <el-table
-            :data="[scope.row.orderLogistics]"
-            border
-            style="width: 100%">
-            <el-table-column
-              align="center"
-              prop="userName"
-              label="姓名">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="telNum"
-              label="电话">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="address"
-              label="地址">
-            </el-table-column>
-          </el-table>
+          <div>
+            <el-table
+              :data="[scope.row.orderLogistics]"
+              border
+              style="width: 100%">
+              <el-table-column
+                align="center"
+                prop="userName"
+                label="姓名">
+              </el-table-column>
+              <el-table-column
+                align="center"
+                prop="telNum"
+                label="电话">
+              </el-table-column>
+              <el-table-column
+                align="center"
+                prop="address"
+                label="地址">
+              </el-table-column>
+            </el-table>
+            <el-card class="box-card">
+              <el-timeline :reverse="false" v-if="scope.row.orderLogistics.listOrderLogisticsDetail.length > 0">
+                <el-timeline-item
+                  v-for="(obj, index) in scope.row.orderLogistics.listOrderLogisticsDetail"
+                  :key="index"
+                  :timestamp="obj.logisticsTime">
+                  {{obj.logisticsInformation}}
+                </el-timeline-item>
+              </el-timeline>
+              <el-timeline :reverse="false" v-else>
+                <el-timeline-item>
+                  暂无物流信息
+                </el-timeline-item>
+              </el-timeline>
+            </el-card>
+          </div>
         </template>
         <template slot-scope="props" slot="expand">
           <el-table
@@ -352,15 +381,16 @@
       }
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       openView(row,index){
-        if(!row.user){
-          getWxUser(row.userId).then(response => {
-            row.user = response.data.data
-            this.$refs.crud.rowView(row,index)
-          })
-        }else{
+        getObj(row.id).then(response => {
+          row.user = response.data.data.user
+          row.app = response.data.data.app
+          row.orderLogistics = response.data.data.orderLogistics
           this.$refs.crud.rowView(row,index)
-        }
+        })
       },
       showDialogLogistics(row, index, done){
         this.logisticsForm.row = row
@@ -381,7 +411,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
           this.dialogLogistics = false
         }).catch(() => {
           done()
@@ -391,7 +421,7 @@
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -405,9 +435,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -443,7 +473,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       /**
@@ -462,7 +492,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
@@ -480,14 +510,14 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

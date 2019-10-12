@@ -213,7 +213,7 @@
       }
     },
     created() {
-      this.getList();
+      this.getPage();
       this.organRoleList()
     },
     computed: {
@@ -233,7 +233,7 @@
           this.rolesOptions = response.data.data
         })
       },
-      getList() {
+      getPage() {
         fetchMenuTree(this.listQuery).then(response => {
           this.treeData = response.data.data
         })
@@ -306,7 +306,7 @@
           type: "warning"
         }).then(() => {
           delObj(this.currentId).then(() => {
-            this.getList()
+            this.getPage()
             this.resetForm()
             this.onCancel()
             this.$notify({
@@ -322,7 +322,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             putObj(this.form).then(() => {
-              this.getList();
+              this.getPage();
               this.$notify({
                 title: "成功",
                 message: "更新成功",
@@ -344,7 +344,7 @@
               return
             }
             addObj(this.form).then(() => {
-              this.getList()
+              this.getPage()
               this.$notify({
                 title: "成功",
                 message: "创建成功",

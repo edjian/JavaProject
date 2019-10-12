@@ -91,7 +91,7 @@
 		SELECT
 		<include refid="goodsSkuVoPageSql"/>
 		FROM
-		`goods_sku` sku
+		goods_sku sku
 		WHERE sku.`spu_id` = #{spuId}
 	</select>
 
@@ -99,7 +99,7 @@
 		SELECT
 		<include refid="goodsSkuSql"/>
 		FROM
-		`goods_sku` sku
+		goods_sku sku
 		WHERE sku.`enable` = 'true'
 			AND sku.`id` = #{id}
 	</select>

@@ -52,14 +52,14 @@
 		  a.*,
 		  b.count_msg
 		from
-		  `wx_msg` as a
+		  wx_msg as a
 		  right join
 			(select
 			  `wx_user_id`,
 			  max(`create_time`) as maxtime,
 			  count(`wx_user_id`) as count_msg
 			from
-			  `wx_msg`
+			  wx_msg
 			<where>
 				<if test="query.type != null and query.type != ''">
 					AND `type` = #{query.type}

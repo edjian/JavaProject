@@ -101,7 +101,7 @@ module.exports = {
     return request('/mall/api/ma/wxuser', 'get', null, false)
   },
   userInfoSave: (data) => {
-    return request('/mall/api/ma/wxuser', 'post', data, false)
+    return request('/mall/api/ma/wxuser', 'post', data, true)
   },
   goodsCategoryGet: (data) => {
     return request('/mall/api/ma/goodscategory/tree' , 'get', data, true)

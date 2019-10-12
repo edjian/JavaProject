@@ -238,9 +238,9 @@
       },
       loadingMore(){
         this.page.currentPage++
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -279,7 +279,7 @@
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   };

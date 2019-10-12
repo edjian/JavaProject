@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column prop="picUrl" label="图片" align="center">
           <template slot-scope="scope">
-            <avue-form :option="optionPic" v-model="scope.row" :disabled="!scope.row['enable']"></avue-form>
+            <avue-form :option="optionPic" v-model="scope.row.picUrlObj" :disabled="!scope.row['enable']"></avue-form>
           </template>
         </el-table-column>
         <el-table-column prop="skuCode" label="sku编码" align="center">
@@ -122,6 +122,9 @@ export default {
           if(is){
             that.$set(item,'id',item2.id ? item2.id : undefined)
             that.$set(item,'picUrl',item2.picUrl ? item2.picUrl : '')
+            that.$set(item,'picUrlObj',{
+              picUrl : item2.picUrl
+            })
             that.$set(item,'skuCode',item2.skuCode ? item2.skuCode : undefined)
             that.$set(item,'salesPrice',item2.salesPrice)
             that.$set(item,'marketPrice',item2.marketPrice)

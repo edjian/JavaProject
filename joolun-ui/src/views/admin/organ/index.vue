@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <basic-container>
       <avue-crud
-        @on-load="getList"
+        @on-load="getPage"
         :option="tableOption"
         :data="tableData"
         :permission="permissionList"
@@ -10,7 +10,8 @@
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
-        @row-del="rowDel">
+        @row-del="rowDel"
+        @current-change="currentChange">
         <template slot="parentIdForm"
                   slot-scope="scope">
           <avue-input v-model="scope.row.parentId"
@@ -56,7 +57,10 @@
       }
     },
     methods: {
-      getList() {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
+      getPage() {
         fetchTree().then(response => {
           this.tableData = response.data.data
         })
@@ -76,7 +80,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList()
+          this.getPage()
         }).catch(function(err) { })
       },
       /**
@@ -95,7 +99,7 @@
             type: 'success'
           })
           done()
-          this.getList()
+          this.getPage()
         })
       },
       /**
@@ -113,14 +117,14 @@
             type: 'success'
           })
           done()
-          this.getList()
+          this.getPage()
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList()
+        this.getPage()
       }
     }
   }

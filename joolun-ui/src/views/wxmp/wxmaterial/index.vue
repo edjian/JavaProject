@@ -400,7 +400,7 @@
     created() {
     },
     mounted: function() {
-      this.getList(this.page)
+      this.getPage(this.page)
     },
     computed: {
       ...mapGetters(['permissions'])
@@ -434,7 +434,7 @@
         this.articlesAdd[index-1] = temp
         this.isActiveAddNews = index-1
       },
-      getList1(){
+      getPage1(){
         this.tableLoading1 = true
         getPage({
           current: this.page1.currentPage,
@@ -457,7 +457,7 @@
       openMaterial(){
         this.imageListData = null
         this.page1.currentPage = 1
-        this.getList1()
+        this.getPage1()
         this.dialogImageVisible = true
       },
       activeNews(index){
@@ -559,7 +559,7 @@
                 }
               ]
               this.page.currentPage = 1
-              this.getList(this.page)
+              this.getPage(this.page)
             }else{
               this.$message.error('新增图文出错：' + response.data.msg)
             }
@@ -591,7 +591,7 @@
                   "thumbUrl":''
                 }
               ]
-              this.getList(this.page)
+              this.getPage(this.page)
             }else{
               this.$message.error('修改图文出错：' + response.data.msg)
             }
@@ -711,7 +711,7 @@
           }).then(response => {
             this.tableLoading = false
             if(response.data.code == '0'){
-              this.getList(this.page)
+              this.getPage(this.page)
             }else{
               this.tableLoading = false
               this.$message.error('删除出错：' + response.data.msg)
@@ -731,7 +731,7 @@
           this.uploadData.introduction = ''
           if(this.materialType != 'news'){
             this.page.currentPage = 1
-            this.getList(this.page)
+            this.getPage(this.page)
           }else{
             this.articlesAdd[this.isActiveAddNews].thumbMediaId = response.data.mediaId
             this.articlesAdd[this.isActiveAddNews].thumbUrl = response.data.url
@@ -744,13 +744,13 @@
         let materialType = tab.name
         this.page.currentPage = 1
         this.materialType = materialType
-        this.getList(this.page)
+        this.getPage(this.page)
         this.uploadData.mediaType = materialType
         if(materialType == 'news'){
           this.uploadData.mediaType = 'image'
         }
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableData = []
         this.tableLoading = true
         getPage(Object.assign({
@@ -769,17 +769,17 @@
       sizeChange(val) {
         this.page.currentPage = 1
         this.page.pageSize = val
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       currentChange(val) {
         this.page.currentPage = val
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

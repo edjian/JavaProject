@@ -8,13 +8,14 @@
                  v-model="form"
                  :table-loading="listLoading"
                  :before-open="handleOpenBefore"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @sort-change="sortChange"
-                 @search-change="handleFilter"
-                 @refresh-change="handleRefreshChange"
+                 @search-change="searchChange"
+                 @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel">
+                 @row-del="handleDel"
+                 @current-change="currentChange">
         <template slot="dsScopeForm" slot-scope="scope">
           <div v-if="form.dsType == 1">
             <el-tree class="filter-tree"
@@ -88,7 +89,7 @@
         page: {
           total: 0, // 总页数
           currentPage: 1, // 当前页数
-          pageSize: 20 // 每页显示多少条
+          pageSize: 10 // 每页显示多少条
         },
         menuIds: '',
         list: [],
@@ -114,6 +115,9 @@
       }
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -126,9 +130,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.listLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -143,12 +147,12 @@
           this.listLoading=false
         })
       },
-      handleRefreshChange() {
-        this.getList(this.page)
+      refreshChange() {
+        this.getPage(this.page)
       },
-      handleFilter(param) {
-        this.page.page = 1;
-        this.getList(this.page, this.filterForm(param));
+      searchChange(param) {
+        this.page.currentPage = 1;
+        this.getPage(this.page, this.filterForm(param));
       },
       handleOpenBefore(show, type) {
         fetchTree().then(response => {
@@ -211,7 +215,7 @@
         }).then(function () {
           return delObj(row.id)
         }).then(() => {
-          this.getList(this.page)
+          this.getPage(this.page)
           this.list.splice(index, 1);
           _this.$message({
             showClose: true,
@@ -226,7 +230,7 @@
           this.form.dsScope = this.$refs.scopeTree.getCheckedKeys().join(',')
         }
         addObj(this.form).then(() => {
-          this.getList(this.page)
+          this.getPage(this.page)
           done()
           this.$notify({
             title: '成功',
@@ -242,7 +246,7 @@
           this.form.dsScope = this.$refs.scopeTree.getCheckedKeys().join(',')
         }
         putObj(this.form).then(() => {
-          this.getList(this.page)
+          this.getPage(this.page)
           done();
           this.$notify({
             title: '成功',

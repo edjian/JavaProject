@@ -7,13 +7,14 @@
                  :table-loading="tableLoading"
                  :option="tableOption"
                  :permission="permissionList"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @sort-change="sortChange"
                  @refresh-change="refreshChange"
                  @search-change="searchChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel">
+                 @row-del="handleDel"
+                 @current-change="currentChange">
       </avue-crud>
     </basic-container>
   </div>
@@ -53,6 +54,9 @@
       }
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -65,9 +69,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -140,13 +144,13 @@
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       /**
        * 搜索回调
        */
       searchChange(form) {
-        this.getList(this.page, form)
+        this.getPage(this.page, form)
       }
     }
   }

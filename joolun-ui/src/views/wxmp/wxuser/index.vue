@@ -30,14 +30,15 @@
                      :table-loading="tableLoading"
                      :option="tableOption"
                      :permission="permissionList"
-                     @on-load="getList"
+                     @on-load="getPage"
                      @refresh-change="refreshChange"
                      @row-update="handleUpdate"
                      @row-save="handleSave"
                      @row-del="handleDel"
                      @sort-change="sortChange"
                      @search-change="searchChange"
-                     @selection-change="selectionChange">
+                     @selection-change="selectionChange"
+                     @current-change="currentChange">
             <template slot="subscribe" slot-scope="scope" >
               <el-tag size="mini" effect="dark" :type="scope.row.subscribe == '1' ? 'success' : scope.row.subscribe == '0' ? 'danger' : 'warning'">{{scope.row.$subscribe}}</el-tag>
             </template>
@@ -373,7 +374,7 @@
           this.tableLoading = false
           this.checkedTags = []
           if(response.data.code == '0'){
-            this.getList(this.page)
+            this.getPage(this.page)
           }else{
             this.$message.error('打标签出错：' + response.data.msg)
           }
@@ -454,13 +455,16 @@
           this.tagId = ''
         }
         this.page.currentPage = 1
-        this.getList(this.page, params)
+        this.getPage(this.page, params)
+      },
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
       },
       searchChange(params){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       synchroWxUser(){
         this.$confirm('同步用户需要一定时间，用户量越大、用时越久，请耐心等待，勿重复提交；确认此操作吗?', '提示', {
@@ -474,7 +478,7 @@
           }).then(response => {
             this.tableLoading = false
             if(response.data.code == '0'){
-              this.getList(this.page)
+              this.getPage(this.page)
             }else{
               this.$message.error('同步微信用户出错：' + response.data.msg)
             }
@@ -504,9 +508,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -541,7 +545,7 @@
                 message: '修改成功',
                 type: 'success'
               })
-              this.getList(this.page)
+              this.getPage(this.page)
             }else{
               this.$message.error(response.data.msg)
             }
@@ -565,7 +569,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       /**
@@ -584,7 +588,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
@@ -602,14 +606,14 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

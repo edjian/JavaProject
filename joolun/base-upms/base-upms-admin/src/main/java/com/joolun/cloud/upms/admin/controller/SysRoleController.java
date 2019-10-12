@@ -135,4 +135,20 @@ public class SysRoleController {
 		}
 		return Boolean.TRUE;
 	}
+
+	/**
+	 * 更新租户管理员角色菜单
+	 *
+	 * @param roleId  角色ID
+	 * @param menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
+	 * @return ok、false
+	 */
+	@SysLog("更新租户管理员角色菜单")
+	@PutMapping("/menu/tenant")
+	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
+	public R saveRoleMenusTenant(String tenantId, String roleId, @RequestParam(value = "menuIds", required = false) String menuIds) {
+		TenantContextHolder.setTenantId(tenantId);
+		SysRole sysRole = sysRoleService.getById(roleId);
+		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleId, menuIds));
+	}
 }

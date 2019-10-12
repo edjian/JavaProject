@@ -1,8 +1,13 @@
 package com.joolun.cloud.upms.admin.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.upms.admin.service.SysMenuService;
+import com.joolun.cloud.upms.admin.service.SysRoleService;
+import com.joolun.cloud.upms.admin.service.SysTenantService;
 import com.joolun.cloud.upms.common.dto.MenuTree;
 import com.joolun.cloud.upms.common.entity.SysMenu;
+import com.joolun.cloud.upms.common.entity.SysRole;
 import com.joolun.cloud.upms.common.vo.MenuVO;
 import com.joolun.cloud.upms.common.util.TreeUtil;
 import com.joolun.cloud.common.core.constant.CommonConstants;
@@ -28,6 +33,8 @@ import java.util.stream.Collectors;
 @Api(value = "menu", tags = "菜单管理模块")
 public class SysMenuController {
 	private final SysMenuService sysMenuService;
+	private final SysRoleService sysRoleService;
+	private final SysTenantService sysTenantService;
 
 	/**
 	 * 返回当前用户的树形菜单集合
@@ -129,4 +136,26 @@ public class SysMenuController {
 		return R.ok(sysMenuService.updateMenuById(sysMenu));
 	}
 
+	/**
+	 * 返回租户管理员角色的菜单集合
+	 *
+	 * @param tenantId 租户ID
+	 * @return 属性集合
+	 */
+	@GetMapping("/tree/tenant/{tenantId}")
+	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
+	public R getRoleTreeTenant(@PathVariable String tenantId) {
+		TenantContextHolder.setTenantId(tenantId);
+		//找出指定租户的管理员角色
+		SysRole sysRole = sysRoleService.getOne(Wrappers.<SysRole>lambdaQuery().eq(SysRole::getRoleCode,CommonConstants.ROLE_CODE_ADMIN));
+		List listMenuVO = sysMenuService.findMenuByRoleId(sysRole.getId())
+				.stream()
+				.map(MenuVO::getId)
+				.collect(Collectors.toList());
+		Map<String,Object> map = new HashMap<>();
+		map.put("sysRole",sysRole);
+		map.put("listMenuVO",listMenuVO);
+		//菜单集合
+		return R.ok(map);
+	}
 }

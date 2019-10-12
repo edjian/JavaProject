@@ -15,13 +15,14 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange">
+                 @search-change="searchChange"
+                 @current-change="currentChange">
         <template slot="menuLeft">
           <el-button type="primary"
                      size="small"
@@ -168,7 +169,13 @@
             spuId: row.id
           })
           this.specList()
-          this.goodsSku = response.data.data.skus
+          let skus = response.data.data.skus.filter(val =>{
+            val.picUrlObj = {
+              picUrl: val.picUrl
+            }
+            return val
+          })
+          this.goodsSku = skus
         })
       },
       fetchTree(params){
@@ -182,11 +189,14 @@
         })
       },
 
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       searchChange(params){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -200,9 +210,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         if(this.paramsSearch.categoryId){
           this.paramsSearch.categoryFirst = this.paramsSearch.categoryId[0]
@@ -249,7 +259,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       /**
@@ -264,6 +274,9 @@
         row.spuSpec = this.goodsSpuSpecData
         row.categoryFirst = row.categoryId[0]
         row.categorySecond = row.categoryId[1]
+        row.skus.forEach(function (val,index) {
+          val.picUrl = val.picUrlObj.picUrl
+        })
         putObj(row).then(data => {
           this.tableData.splice(index, 1, Object.assign({}, row))
           this.$message({
@@ -272,7 +285,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
@@ -286,6 +299,9 @@
         row.spuSpec = this.goodsSpuSpecData
         row.categoryFirst = row.categoryId[0]
         row.categorySecond = row.categoryId[1]
+        row.skus.forEach(function (val,index) {
+          val.picUrl = val.picUrlObj.picUrl
+        })
         addObj(row).then(data => {
           this.tableData.push(Object.assign({}, row))
           this.$message({
@@ -294,14 +310,14 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

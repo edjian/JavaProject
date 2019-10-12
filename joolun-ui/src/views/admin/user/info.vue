@@ -87,7 +87,7 @@
                      :table-loading="tableLoading"
                      :option="tableOption"
                      :permission="permissionList"
-                     @on-load="getList"
+                     @on-load="getPage"
                      @search-change="searchChange"
                      @refresh-change="refreshChange"
                      @sort-change="sortChange"
@@ -275,9 +275,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -300,7 +300,7 @@
         }).then(function () {
           return delObj(row.id)
         }).then(data => {
-          this.getList(this.page)
+          this.getPage(this.page)
           _this.$message({
             showClose: true,
             message: '删除成功',
@@ -313,13 +313,13 @@
        * 搜索回调
        */
       searchChange(form) {
-        this.getList(this.page, form)
+        this.getPage(this.page, form)
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

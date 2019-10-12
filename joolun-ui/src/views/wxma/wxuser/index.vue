@@ -15,13 +15,14 @@
                  :table-loading="tableLoading"
                  :option="tableOption"
                  :permission="permissionList"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange">
+                 @search-change="searchChange"
+                 @current-change="currentChange">
         <template slot="sex" slot-scope="scope" >
           <el-tag v-if="scope.row.sex" size="mini" effect="light" :type="scope.row.sex == '1' ? '' : scope.row.sex == '2' ? 'danger' : 'warning'">{{scope.row.$sex}}</el-tag>
         </template>
@@ -44,7 +45,7 @@
           currentPage: 1, // 当前页数
           pageSize: 20, // 每页显示多少条
           ascs: [],
-          descs: 'subscribe_time'
+          descs: 'create_time'
         },
         paramsSearch:{},
         tableLoading: false,
@@ -66,7 +67,7 @@
           menuWidth: 150,
           menuType:'text',
           defaultSort:{
-            prop: 'subscribeTime',
+            prop: 'createTime',
             order: 'descending'
           },
           column: [
@@ -144,7 +145,6 @@
               prop: 'createTime',
               type: 'datetime',
               sortable:true,
-              hide:true,
               editDisplay:false
             },
             {
@@ -182,11 +182,14 @@
       }
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       searchChange(params){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -200,9 +203,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -234,7 +237,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       /**
@@ -253,7 +256,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
@@ -271,14 +274,14 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

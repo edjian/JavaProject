@@ -44,7 +44,7 @@
 		SELECT
 		  user_collect.`id`
 		FROM
-		  `user_collect`
+		  user_collect
 		<where>
 			<if test="query.type != null">
 				AND user_collect.`type` = #{query.type}
@@ -61,7 +61,7 @@
 	<select id="selectPage2" resultMap="userCollectMap2">
 		SELECT
 		<include refid="userCollectSql"/>
-		FROM `user_collect` user_collect
+		FROM user_collect user_collect
 		${ew.customSqlSegment}
 	</select>
 </mapper>

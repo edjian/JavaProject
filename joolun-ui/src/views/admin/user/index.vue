@@ -19,13 +19,14 @@
                      :page="page"
                      :permission="permissionList"
                      :table-loading="listLoading"
-                     @on-load="getList"
+                     @on-load="getPage"
                      @sort-change="sortChange"
                      @search-change="handleFilter"
                      @refresh-change="handleRefreshChange"
                      @row-update="handleUpdate"
                      @row-save="handleSave"
                      @row-del="handleDel"
+                     @current-change="currentChange"
                      :before-open="handleOpenBefore"
                      :data="list">
             <template slot="username"
@@ -168,6 +169,9 @@
       this.init();
     },
     methods: {
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       subPassword(form2,done){
         form2.id = this.selectRow.id
         editPassword(form2).then(() => {
@@ -195,7 +199,7 @@
       },
       nodeClick(data) {
         this.page.page = 1;
-        this.getList(this.page, {organId: data.id});
+        this.getPage(this.page, {organId: data.id});
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -209,9 +213,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.listLoading = true;
         getPage(Object.assign({
           current: page.currentPage,
@@ -236,10 +240,10 @@
       },
       handleFilter(param) {
         this.page.page = 1;
-        this.getList(this.page, this.filterForm(param));
+        this.getPage(this.page, this.filterForm(param));
       },
       handleRefreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       handleOpenBefore(show, type) {
         window.boxType = type;
@@ -259,7 +263,7 @@
       },
       handleSave(row, done) {
         addObj(this.form).then(() => {
-          this.getList(this.page)
+          this.getPage(this.page)
           this.$notify({
             title: "成功",
             message: "创建成功",
@@ -273,7 +277,7 @@
       },
       handleUpdate(row, index, done) {
         putObj(this.form).then(() => {
-          this.getList(this.page)
+          this.getPage(this.page)
           done()
           this.$notify({
             title: "成功",

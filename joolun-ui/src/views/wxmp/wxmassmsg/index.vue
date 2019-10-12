@@ -15,13 +15,14 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
-                 @on-load="getList"
+                 @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange">
+                 @search-change="searchChange"
+                 @current-change="currentChange">
         <template slot-scope="scope" slot="menuLeft">
           <el-button type="primary"
                      @click="handleAdd"
@@ -122,7 +123,7 @@
                    :data="tableData2"
                    :table-loading="tableLoading2"
                    :option="tableOption2"
-                   @on-load="getList2"
+                   @on-load="getPage2"
                    @refresh-change="refreshChange2"
                    @sort-change="sortChange2"
                    @search-change="searchChange2"
@@ -346,7 +347,7 @@
       selectionChange2(list){
         this.selectionData = list
       },
-      getList2(page, params) {
+      getPage2(page, params) {
         this.tableLoading2 = true
         getPage2(Object.assign({
           current: page.currentPage,
@@ -422,17 +423,20 @@
           isToAll: '1'
         }
       },
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+      },
       searchChange(params){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       searchChange2(params){
         params = this.filterForm(params)
         this.paramsSearch2 = params
         this.page2.currentPage = 1
-        this.getList2(this.page2,params)
+        this.getPage2(this.page2,params)
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -446,7 +450,7 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       sortChange2(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -460,9 +464,9 @@
           this.page2.ascs = []
           this.page2.descs = []
         }
-        this.getList2(this.page2)
+        this.getPage2(this.page2)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -499,7 +503,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getList(this.page)
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       /**
@@ -518,7 +522,7 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
@@ -536,17 +540,17 @@
             type: 'success'
           })
           done()
-          this.getList(this.page)
+          this.getPage(this.page)
         })
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       refreshChange2() {
-        this.getList2(this.page2)
+        this.getPage2(this.page2)
       }
     }
   }

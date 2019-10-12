@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.api.ma;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.SecurityConstants;

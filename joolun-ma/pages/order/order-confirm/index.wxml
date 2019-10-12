@@ -58,7 +58,7 @@
   <view class="cu-card mar-top-30">
     <view class="cu-item cu-form-group align-start">
       <view class="title">给卖家留言</view>
-      <textarea maxlength="40" bindinput="userMessageInput" placeholder="请输入留言内容"></textarea>
+      <textarea maxlength="40" bindinput="userMessageInput" placeholder=""></textarea>
     </view>
 	</view>
 </scroll-view>

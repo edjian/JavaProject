@@ -25,6 +25,11 @@ public class SysRole extends Model<SysRole> {
 	@TableId(type = IdType.UUID)
 	private String id;
 
+	/**
+	 * 租户ID
+	 */
+	private String tenantId;
+
 	@NotNull(message = "角色名称 不能为空")
 	private String roleName;
 

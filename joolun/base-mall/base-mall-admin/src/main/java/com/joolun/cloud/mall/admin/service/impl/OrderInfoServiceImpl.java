@@ -127,7 +127,21 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
 	@Override
 	public OrderInfo getById2(Serializable id) {
-		return baseMapper.selectById2(id);
+		OrderInfo orderInfo = baseMapper.selectById2(id);
+		String keyRedis = null;
+		if(OrderInfoEnum.STATUS_0.getValue().equals(orderInfo.getStatus())){
+			keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_0, TenantContextHolder.getTenantId(),orderInfo.getId()));
+		}
+		if(OrderInfoEnum.STATUS_2.getValue().equals(orderInfo.getStatus())){
+			keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_2, TenantContextHolder.getTenantId(),orderInfo.getId()));
+		}
+		if(keyRedis != null){
+			Long outTime = redisTemplate.getExpire(keyRedis);
+			if(outTime != null && outTime > 0){
+				orderInfo.setOutTime(outTime);
+			}
+		}
+		return orderInfo;
 	}
 
 	@Override

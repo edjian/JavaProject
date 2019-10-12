@@ -122,7 +122,7 @@
         })
         this.tableData.splice(row.$index, 1)
       },
-      getList(page, params) {
+      getPage(page, params) {
         getPage(Object.assign({
           current: page.currentPage,
           size: page.pageSize,
@@ -139,7 +139,7 @@
        */
       refreshChange() {
         this.page.descs = 'create_time'
-        this.getList(this.page,{
+        this.getPage(this.page,{
           type:'1',
           readFlag:"0"
         })

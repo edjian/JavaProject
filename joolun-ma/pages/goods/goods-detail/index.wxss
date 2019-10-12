@@ -9,6 +9,3 @@
 .to-down{
   margin-bottom: 100rpx
 }
-.m-sku-bn{
-  width: 45%
-}

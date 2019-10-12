@@ -361,7 +361,7 @@
           this.dialogThumbVisible = true
         }
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -377,17 +377,17 @@
       sizeChange(val) {
         this.page.currentPage = 1
         this.page.pageSize = val
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       currentChange(val) {
         this.page.currentPage = val
-        this.getList(this.page)
+        this.getPage(this.page)
       },
       /**
        * 刷新回调
        */
       refreshChange() {
-        this.getList(this.page)
+        this.getPage(this.page)
       },
     }
   };

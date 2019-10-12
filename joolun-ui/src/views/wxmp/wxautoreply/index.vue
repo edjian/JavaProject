@@ -18,7 +18,8 @@
                      :permission="permissionList"
                      :table-loading="tableLoading"
                      :option="tableOption1"
-                     @refresh-change="refreshChange">
+                     @refresh-change="refreshChange"
+                     @current-change="currentChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but" v-if="tableData.length<=0">
                 <el-button type="primary"
@@ -52,7 +53,8 @@
                      :table-loading="tableLoading"
                      :option="tableOption2"
                      @refresh-change="refreshChange"
-                     @sort-change="sortChange">
+                     @sort-change="sortChange"
+                     @current-change="currentChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but">
                 <el-button type="primary"
@@ -87,7 +89,8 @@
                      :option="tableOption3"
                      @refresh-change="refreshChange"
                      @sort-change="sortChange"
-                     @search-change="searchChange">
+                     @search-change="searchChange"
+                     @current-change="currentChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but">
                 <el-button type="primary"
@@ -194,7 +197,7 @@
     created() {
       this.remoteDict('wx_req_type')
       this.remoteDict('wx_rep_mate')
-      this.getList(this.page)
+      this.getPage(this.page)
     },
     mounted: function() { },
     computed: {
@@ -238,13 +241,16 @@
         this.tableData = []
         this.page.currentPage = 1
         this.type = tab.name
-        this.getList(this.page)
+        this.getPage(this.page)
+      },
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
       },
       searchChange(params){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
-        this.getList(this.page,params)
+        this.getPage(this.page,params)
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -258,9 +264,9 @@
           this.page.ascs = []
           this.page.descs = []
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       },
-      getList(page, params) {
+      getPage(page, params) {
         this.tableLoading = true
         getPage(Object.assign({
           current: page.currentPage,
@@ -377,7 +383,7 @@
         this.objData={
             repType : 'text'
         }
-        this.getList(this.page)
+        this.getPage(this.page)
       }
     }
   }

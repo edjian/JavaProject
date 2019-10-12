@@ -52,13 +52,14 @@ Page({
   shoppingCartPage(){
     app.api.shoppingCartPage(this.data.page)
       .then(res => {
-        let shoppingCartData = res.data.records
+        let shoppingCartData = []
         //过滤出失效商品
         let shoppingCartDataInvalid = []
-        shoppingCartData.forEach(function (shoppingCart, index) {
-          if (shoppingCart.goodsSpu.shelf == '1'){//下架
-            shoppingCartData.splice(index,1)
+        res.data.records.forEach(function (shoppingCart, index) {
+          if (!shoppingCart.goodsSpu || shoppingCart.goodsSpu.shelf == '1'){//下架或删除了
             shoppingCartDataInvalid.push(shoppingCart)
+          }else{
+            shoppingCartData.push(shoppingCart)
           }
         })
         this.setData({

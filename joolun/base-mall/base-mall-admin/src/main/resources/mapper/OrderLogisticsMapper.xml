@@ -55,7 +55,7 @@
 	<select id="selectById2" resultMap="orderLogisticsMap2">
 		SELECT
 		<include refid="orderLogisticsSql"/>
-		FROM `order_logistics` order_logistics
+		FROM order_logistics order_logistics
 		WHERE order_logistics.`id` = #{id}
 	</select>
 </mapper>

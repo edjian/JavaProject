@@ -12,7 +12,7 @@
       <view class="cu-avatar lg" style="background-image:url({{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}});"></view>
       <view class="content">
         <view class="text-black text-cut">{{item.spuName}}</view>
-        <view class="text-gray text-sm text-cut"> {{item.specInfo}}</view>
+        <view class="text-gray text-sm text-cut" wx:if="{{item.specInfo}}">{{item.specInfo}}</view>
       </view>
     </view>
     <view class="cu-form-group">
