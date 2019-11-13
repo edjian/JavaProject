@@ -14,12 +14,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.common.data.mybatis.typehandler.JsonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * 微信消息群发
@@ -122,7 +124,7 @@ private static final long serialVersionUID = 1L;
 	/**
 	 * 图文消息的内容
 	 */
-	@TableField(el = "content, typeHandler=com.joolun.cloud.common.data.mybatis.typehandler.JsonTypeHandler, jdbcType=VARCHAR")
+	@TableField(typeHandler = JsonTypeHandler.class, jdbcType= JdbcType.VARCHAR)
 	private JSONObject content;
 	/**
 	 * 文章被判定为转载时，是否继续进行群发操作

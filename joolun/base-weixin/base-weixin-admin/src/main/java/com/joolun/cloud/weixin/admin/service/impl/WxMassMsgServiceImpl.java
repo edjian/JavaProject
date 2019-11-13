@@ -33,6 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class WxMassMsgServiceImpl extends ServiceImpl<WxMassMsgMapper, WxMassMsg> implements WxMassMsgService {
 
+	/**
+	 * 消息群发方法
+	 * @param entity
+	 * @return
+	 * @throws WxErrorException
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean massMessageSend(WxMassMsg entity) throws WxErrorException {

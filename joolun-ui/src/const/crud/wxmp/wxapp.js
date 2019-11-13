@@ -38,7 +38,6 @@ export const tableOption = {
       prop: 'organId',
       formslot: true,
       hide: true,
-      span: 24,
       sortable:true,
       rules: [{
         required: true,
@@ -141,7 +140,7 @@ export const tableOption = {
       hide:true
     },
     {
-      label: 'EncodingAESKey',
+      label: 'EnAESKey',
       prop: 'aesKey',
       hide:true
     },

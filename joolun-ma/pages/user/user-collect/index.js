@@ -51,7 +51,7 @@ Page({
         }
       })
   },
-  scrollToLower() {
+  onReachBottom() {
     if (this.data.loadmore) {
       this.setData({
         ['page.current']: this.data.page.current + 1

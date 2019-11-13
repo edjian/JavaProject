@@ -7,6 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 export const tableOption = {
+  // dateBtn:true,
   dialogType: 'drawer',
   dialogWidth: '80%',
   dialogDrag: true,
@@ -25,7 +26,6 @@ export const tableOption = {
   delBtn: false,
   addBtn: false,
   viewBtn: false,
-  expand: true,
   defaultExpandAll: true,
   card:true,
   column: [
@@ -35,11 +35,38 @@ export const tableOption = {
       sortable:true,
       hide: true
     },
-	  {
-      label: '订单单号',
+    {
+      label: '是否支付',
+      prop: 'isPay',
+      type: 'radio',
+      hide: true,
+      search:true,
+      dicData: [{
+        label: '是',
+        value: '1'
+      },
+        {
+        label: '否',
+        value: '0'
+      }]
+    },
+    {
+      label: '订单号',
       prop: 'orderNo',
       search:true,
-      sortable:true
+      hide: true
+    },
+	  {
+      label: '商品信息',
+      prop: 'goodsInfo',
+      width: 800,
+      slot:true
+    },
+    {
+      label: '时间/订单号',
+      prop: 'createTime',
+      sortable:true,
+      slot:true
     },
     {
       label: '付款方式',
@@ -56,48 +83,14 @@ export const tableOption = {
       label: '状态',
       prop: 'status',
       type: 'radio',
-      search:true,
       sortable:true,
-      slot:true,
-      dicData: [{
-        label: '待付款',
-        value: '0'
-      },{
-        label: '待发货',
-        value: '1'
-      },{
-        label: '待收货',
-        value: '2'
-      },{
-        label: '待评价',
-        value: '3'
-      },{
-        label: '已完成',
-        value: '4'
-      },{
-        label: '已取消',
-        value: '5'
-      }]
-    },
-    {
-      label: '创建时间',
-      prop: 'createTime',
-      sortable:true
+      slot:true
     },
 	  {
       label: '订单金额(￥)',
       prop: 'salesPrice',
-      sortable:true
-    },
-	  {
-      label: '物流金额(￥)',
-      prop: 'logisticsPrice',
-      sortable:true
-    },
-    {
-      label: '支付金额(￥)',
-      prop: 'paymentPrice',
-      sortable:true
+      sortable:true,
+      slot:true
     },
 	  {
       label: '付款时间',

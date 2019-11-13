@@ -14,10 +14,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-#if(${hasBigDecimal})
-import java.math.BigDecimal;
-#end
+    #if(${hasBigDecimal})
+    import java.math.BigDecimal;
+    #end
 import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -31,16 +32,16 @@ import io.swagger.annotations.ApiModel;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "${comments}")
 public class ${className} extends Model<${className}> {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID=1L;
 
-  #foreach ($column in $columns)
-  /**
-   * $column.comments
-   */
-  #if($column.columnName == $pk.columnName)
-  @TableId(type = IdType.UUID)
-  #end
-  private $column.attrType $column.lowerAttrName;
-  #end
+#foreach ($column in $columns)
+/**
+ * $column.comments
+ */
+    #if($column.columnName == $pk.columnName)
+    @TableId(type = IdType.UUID)
+    #end
+    private $column.attrType $column.lowerAttrName;
+#end
 
 }

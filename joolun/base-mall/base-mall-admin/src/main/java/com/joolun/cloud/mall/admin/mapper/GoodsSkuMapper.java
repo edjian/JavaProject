@@ -10,7 +10,6 @@ package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
-import com.joolun.cloud.mall.common.vo.GoodsSkuVO;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
  */
 public interface GoodsSkuMapper extends BaseMapper<GoodsSku> {
 
-	List<GoodsSkuVO> listGoodsSkuVoBySpuId(String spuId);
+	List<GoodsSku> listGoodsSkuBySpuId(String spuId);
 
 	GoodsSku selectOneByShoppingCart(String id);
 }

@@ -7,24 +7,24 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 export const tableOption = {
-  dialogDrag: true,
-  border: true,
-  index: true,
-  indexLabel: '序号',
-  stripe: true,
-  menuAlign: 'center',
-  align: 'center',
-  menuType: 'text',
-  searchShow: false,
-  excelBtn: true,
-  printBtn: true,
-  column: [
-#foreach ($column in $columns)
-	  {
-      label: '$column.comments',
-      prop: '$column.lowerAttrName',
-      sortable:true
-    },
-#end
-  ]
+    dialogDrag: true,
+    border: true,
+    index: true,
+    indexLabel: '序号',
+    stripe: true,
+    menuAlign: 'center',
+    align: 'center',
+    menuType: 'text',
+    searchShow: false,
+    excelBtn: true,
+    printBtn: true,
+    column: [
+        #foreach ($column in $columns)
+            {
+                label: '$column.comments',
+                prop: '$column.lowerAttrName',
+                sortable: true
+            },
+        #end
+    ]
 }

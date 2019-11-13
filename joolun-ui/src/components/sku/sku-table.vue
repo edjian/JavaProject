@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column prop="picUrl" label="图片" align="center">
           <template slot-scope="scope">
-            <avue-form :option="optionPic" v-model="scope.row.picUrlObj" :disabled="!scope.row['enable']"></avue-form>
+            <MaterialList v-model="scope.row.picUrls" type="image" :num=1 :width=60 :height=60></MaterialList>
           </template>
         </el-table-column>
         <el-table-column prop="skuCode" label="sku编码" align="center">
@@ -72,6 +72,8 @@
         <el-table-column label="是否启用" align="center" width="70">
           <template slot-scope="scope">
             <el-switch
+              active-value="1"
+              inactive-value="0"
               v-model="scope.row['enable']"
               active-color="#13ce66"
               inactive-color="#ff4949">
@@ -87,8 +89,12 @@
 <script>
 import { flatten } from '../../util/sku'
 import { diffArary } from '../../util'
+import MaterialList from '@/components/material/list.vue'
 
 export default {
+  components: {
+    MaterialList
+  },
   props: {
     specData: {
       type: Array,
@@ -122,9 +128,7 @@ export default {
           if(is){
             that.$set(item,'id',item2.id ? item2.id : undefined)
             that.$set(item,'picUrl',item2.picUrl ? item2.picUrl : '')
-            that.$set(item,'picUrlObj',{
-              picUrl : item2.picUrl
-            })
+            that.$set(item,'picUrls',item2.picUrl ? [item2.picUrl] : [])
             that.$set(item,'skuCode',item2.skuCode ? item2.skuCode : undefined)
             that.$set(item,'salesPrice',item2.salesPrice)
             that.$set(item,'marketPrice',item2.marketPrice)
@@ -155,7 +159,18 @@ export default {
         if (!oldSkus || !oldSkus.length) {
           return this.skuData = newSkus.map(item => ({
             ...item,
-            enable: item.enable == undefined ? true : item.enable
+            // 初始化属性
+            id: item.id ? item.id : undefined,
+            picUrl: item.picUrl ? item.picUrl : '',
+            picUrls: item.picUrls ? item.picUrls : [],
+            skuCode: item.skuCode ? item.skuCode : undefined,
+            salesPrice: item.salesPrice ? item.salesPrice : 0,
+            marketPrice: item.marketPrice ? item.marketPrice : undefined,
+            costPrice: item.costPrice ? item.costPrice : undefined,
+            stock: item.stock ? item.stock : 0,
+            weight: item.weight ? item.weight : undefined,
+            volume: item.volume ? item.volume : undefined,
+            enable: item.enable ? item.enable : '1'
           }))
         }
         // 当规格名的数量发生了变化
@@ -165,6 +180,7 @@ export default {
             // 初始化属性
             id: undefined,
             picUrl: '',
+            picUrls: [],
             skuCode: undefined,
             salesPrice: 0,
             marketPrice: undefined,
@@ -172,7 +188,7 @@ export default {
             stock: 0,
             weight: undefined,
             volume: undefined,
-            enable: true
+            enable: '1'
           }))
         }
         if (newSkus.length === oldSkus.length) {
@@ -196,6 +212,7 @@ export default {
                 ...item,
                 id: undefined,
                 picUrl: '',
+                picUrls: [],
                 skuCode: undefined,
                 salesPrice: 0,
                 marketPrice: undefined,
@@ -203,7 +220,7 @@ export default {
                 stock: 0,
                 weight: undefined,
                 volume: undefined,
-                enable: true
+                enable: '1'
               })
             }
           })
@@ -217,37 +234,18 @@ export default {
   },
   data: () => ({
     batchAddObj: {},
-    optionPic: {
-      emptyBtn: false,
-      submitBtn: false,
-      labelWidth: 1,
-      column: [
-        {
-          prop: 'picUrl',
-          type: 'upload',
-          listType: 'picture-img',
-          canvasOption: {
-            text: 'www.joolun.com',
-            ratio: 0.1
-          },
-          oss: 'ali',
-          loadText: '附件上传中，请稍等',
-          size: 'mini'
-        }
-      ]
-    },
     skuData: [],
     coefficient: {
       purchase_coefficient: 0,
       guide_coefficient: 0,
-    },
+    }
   }),
 
   methods: {
     batchAdd(){
       let that = this
       this.skuData.forEach(function (val,index) {
-        if(val.enable){
+        if(val.enable == '1'){
           if(that.batchAddObj.skuCode){
             that.$set(val,'skuCode',that.batchAddObj.skuCode)
           }

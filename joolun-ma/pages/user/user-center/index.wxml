@@ -29,7 +29,7 @@
       全部订单<text class="cuIcon-right"></text>
     </navigator>
   </view>
-  <view class="cu-list grid col-5 no-border">
+  <view class="cu-list grid col-4 no-border">
     <view class="cu-item">
       <navigator url="/pages/order/order-list/index?status=0" hover-class="none">
         <view class="cuIcon-pay text-red"></view>
@@ -49,15 +49,9 @@
       </navigator>
     </view>
     <view class="cu-item">
-      <navigator url="/pages/order/order-list/index?status=3" hover-class="none">
+      <navigator url="/pages/order/order-list/index?status=4" hover-class="none">
         <view class="cuIcon-evaluate text-red"></view>
         <text>待评价</text>
-      </navigator>
-    </view>
-    <view class="cu-item">
-      <navigator url="/pages/order/order-list/index?status=4" hover-class="none">
-        <view class="cuIcon-upstage text-red"></view>
-        <text>已完成</text>
       </navigator>
     </view>
   </view>

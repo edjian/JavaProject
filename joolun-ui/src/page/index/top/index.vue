@@ -19,6 +19,13 @@
       </span>
     </h1>
     <div class="top-bar__right">
+      <el-tooltip effect="dark"
+                  content="了解源码"
+                  placement="bottom">
+        <div class="top-bar__item">
+          <el-link type="success" href="http://www.joolun.com/" target="_blank">获取源码</el-link>
+        </div>
+      </el-tooltip>
       <el-tooltip v-if="showColor"
                   effect="dark"
                   content="主题色"

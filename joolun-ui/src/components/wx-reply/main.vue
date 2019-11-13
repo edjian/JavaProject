@@ -60,7 +60,7 @@
       <el-row>
         <div class="select-item2" v-if="objData.repName">
           <p class="item-name">{{objData.repName}}</p>
-          <div class="item-info">
+          <div class="item-infos">
             <WxVoicePlayer :objData="Object.assign(tempPlayerObj,{repMediaId: objData.media_id, repName: objData.repName})" :appId="appId"></WxVoicePlayer>
           </div>
           <el-row class="ope-row">
@@ -463,7 +463,7 @@
     display: inline-block;
     text-align: center;
   }
-  .item-info{
+  .item-infos{
     width: 30%;
     margin: auto
   }

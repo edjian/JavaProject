@@ -32,6 +32,10 @@ public class PlaceOrderDTO extends Model<ShoppingCart> {
    */
     private List<PlaceOrderSkuDTO> skus;
 	/**
+	 * 支付方式1、货到付款；2、在线支付
+	 */
+	private String paymentWay;
+	/**
 	 * 付款方式1、微信支付
 	 */
 	private String paymentType;
@@ -39,6 +43,10 @@ public class PlaceOrderDTO extends Model<ShoppingCart> {
 	 * 买家留言
 	 */
 	private String userMessage;
+	/**
+	 * 应用类型1、小程序
+	 */
+	private String appType;
 	/**
 	 * 应用ID
 	 */

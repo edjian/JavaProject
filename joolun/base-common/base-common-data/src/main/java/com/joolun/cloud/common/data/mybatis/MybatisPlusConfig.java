@@ -2,7 +2,6 @@ package com.joolun.cloud.common.data.mybatis;
 
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.joolun.cloud.common.data.datascope.DataScopeInterceptor;
@@ -74,16 +73,5 @@ public class MybatisPlusConfig {
 	@ConditionalOnMissingBean
 	public DataScopeInterceptor dataScopeInterceptor(DataSource dataSource) {
 		return new DataScopeInterceptor(dataSource,dataScopeProperties);
-	}
-
-	/**
-	 * 逻辑删除插件
-	 *
-	 * @return LogicSqlInjector
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	public ISqlInjector sqlInjector() {
-		return new LogicSqlInjector();
 	}
 }

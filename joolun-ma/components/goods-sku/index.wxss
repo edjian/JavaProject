@@ -8,7 +8,7 @@
   border-radius: 10rpx
 }
 .dialo-sku{
-  height: 80%
+  height: 80%;
 }
 .cu-modal{
   text-align: unset
@@ -16,6 +16,5 @@
 .close-icon{
   position:absolute;
   right:20rpx;
-  top:20rpx;
-  font-size: 40rpx
+  top:20rpx
 }

@@ -90,6 +90,7 @@ public class SysRoleController {
 	 * @return 角色列表
 	 */
 	@GetMapping("/list")
+	@PreAuthorize("@ato.hasAuthority('sys_role_index')")
 	public R listRoles() {
 		return R.ok(sysRoleService.list(Wrappers.emptyWrapper()));
 	}

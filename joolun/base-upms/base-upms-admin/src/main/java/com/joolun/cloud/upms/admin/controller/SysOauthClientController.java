@@ -32,6 +32,7 @@ public class SysOauthClientController {
 	 * @return SysOauthClient
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("@ato.hasAuthority('sys_client_get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysOauthClientService.getById(id));
 	}
@@ -45,6 +46,7 @@ public class SysOauthClientController {
 	 * @return
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_client_index')")
 	public R getOauthClientDetailsPage(Page page, SysOauthClient sysOauthClient) {
 		return R.ok(sysOauthClientService.page(page, Wrappers.query(sysOauthClient)));
 	}

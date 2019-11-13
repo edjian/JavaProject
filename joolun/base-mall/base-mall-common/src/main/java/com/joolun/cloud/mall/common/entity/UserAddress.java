@@ -84,7 +84,7 @@ public class UserAddress extends Model<UserAddress> {
    */
     private String telNum;
     /**
-   * 是否默认 0是1否
+   * 是否默认 1是0否
    */
     private String isDefault;
   

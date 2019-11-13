@@ -9,6 +9,32 @@
 <template>
   <div class="execution">
     <basic-container>
+      <el-tabs v-model="status" type="card" @tab-click="handleClickStatus">
+        <el-tab-pane name="-1">
+          <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
+        </el-tab-pane>
+        <el-tab-pane name="0">
+          <span slot="label"><i class="el-icon-refrigerator"></i> 待付款</span>
+        </el-tab-pane>
+        <el-tab-pane name="1">
+          <span slot="label"><i class="el-icon-refrigerator"></i> 待发货</span>
+        </el-tab-pane>
+        <el-tab-pane name="2">
+          <span slot="label"><i class="el-icon-truck"></i> 待收货</span>
+        </el-tab-pane>
+        <el-tab-pane name="3">
+          <span slot="label"><i class="el-icon-document"></i> 已完成</span>
+        </el-tab-pane>
+        <el-tab-pane name="4">
+          <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+        </el-tab-pane>
+        <el-tab-pane name="5">
+          <span slot="label"><i class="el-icon-circle-close"></i> 已取消</span>
+        </el-tab-pane>
+        <el-tab-pane name="6">
+          <span slot="label"><i class="el-icon-wallet"></i> 退款中</span>
+        </el-tab-pane>
+      </el-tabs>
       <avue-crud ref="crud"
                  :page="page"
                  :data="tableData"
@@ -23,8 +49,24 @@
                  @sort-change="sortChange"
                  @search-change="searchChange"
                  @current-change="currentChange">
-        <template slot="status" slot-scope="scope">
-          <el-tag :type="scope.row.status=='2' ||scope.row.status=='3' || scope.row.status=='4' ? 'success' : 'danger'" effect="dark" size="mini"> {{ scope.row.$status}} </el-tag>
+        <template slot-scope="scope" slot="status">
+          <div style="text-align: left">
+            <div class="grid-content">订单状态：
+              <el-tag :type="scope.row.status=='2' ||scope.row.status=='3' || scope.row.status=='4' ? 'success' : 'danger'"
+                      effect="dark" size="mini"> {{ scope.row.statusDesc}}
+              </el-tag>
+            </div>
+            <div class="grid-content">支付状态：
+              <el-tag :type="scope.row.isPay=='1' ? 'success' : 'danger'"
+                      effect="dark" size="mini">{{scope.row.isPay == '1' ? '已支付' : '未支付'}}
+              </el-tag>
+            </div>
+            <div class="grid-content" v-if="scope.row.appraisesStatus">评价状态：
+              <el-tag :type="scope.row.appraisesStatus != '0' ? 'success' : 'danger'"
+                      effect="dark" size="mini">{{scope.row.appraisesStatus == '0' ? '未评价' : scope.row.appraisesStatus == '1' ? '已评价' : scope.row.appraisesStatus == '2' ? '已追评' : ''}}
+              </el-tag>
+            </div>
+          </div>
         </template>
         <template slot-scope="scope" slot="orderNoForm">
           <el-table
@@ -37,8 +79,12 @@
               label="订单来源">
               <template slot-scope="scope">
                 <div v-if="scope.row.app">
-                  <img v-if="scope.row.app.qrCode" :src="scope.row.app.qrCode" width="100" height="100" />
+                  <img v-if="scope.row.app.qrCode" :src="scope.row.app.qrCode" width="100" height="100"/>
                   <div>{{scope.row.app.name}}</div>
+                  <div>
+                    <el-tag size="mini"> {{ scope.row.appType=='1' ? '小程序' : ''}}
+                    </el-tag>
+                  </div>
                 </div>
               </template>
             </el-table-column>
@@ -62,7 +108,23 @@
               prop="paymentType"
               label="订单状态">
               <template slot-scope="scope">
-                {{scope.row.$status}}
+                <div style="text-align: left">
+                  <div class="grid-content">订单状态：
+                    <el-tag :type="scope.row.status=='2' ||scope.row.status=='3' || scope.row.status=='4' ? 'success' : 'danger'"
+                            effect="dark" size="mini"> {{ scope.row.statusDesc}}
+                    </el-tag>
+                  </div>
+                  <div class="grid-content">支付状态：
+                    <el-tag :type="scope.row.isPay=='1' ? 'success' : 'danger'"
+                            effect="dark" size="mini">{{scope.row.isPay == '1' ? '已支付' : '未支付'}}
+                    </el-tag>
+                  </div>
+                  <div class="grid-content" v-if="scope.row.appraisesStatus">评价状态：
+                    <el-tag :type="scope.row.appraisesStatus != '0' ? 'success' : 'danger'"
+                            effect="dark" size="mini">{{scope.row.appraisesStatus == '0' ? '未评价' : scope.row.appraisesStatus == '1' ? '已评价' : scope.row.appraisesStatus == '2' ? '已追评' : ''}}
+                    </el-tag>
+                  </div>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -70,7 +132,11 @@
               prop="paymentType"
               label="支付方式">
               <template slot-scope="scope">
-                {{scope.row.$paymentType}}
+                <div>{{scope.row.$paymentType}}</div>
+                <div>
+                  <el-tag size="mini"> {{ scope.row.paymentWay == '2' ? '在线支付' : ''}}
+                  </el-tag>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
@@ -109,7 +175,7 @@
               label="图片"
               width="120">
               <template slot-scope="scope">
-                <img :src="scope.row.picUrl" width="100" height="100" />
+                <img :src="scope.row.picUrl" width="100" height="100"/>
               </template>
             </el-table-column>
             <el-table-column
@@ -218,59 +284,48 @@
             </el-card>
           </div>
         </template>
-        <template slot-scope="props" slot="expand">
-          <el-table
-            :data="props.row.listOrderItem"
-            border
-            :show-header="false"
-            style="width: 100%; margin-top: 20px; margin-top: -10px">
-            <el-table-column
-              prop="picUrl"
-              label="图片"
-              width="120">
-              <template slot-scope="scope">
-                <img :src="scope.row.picUrl" width="100" height="100" />
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="spuName"
-              label="商品名">
-            </el-table-column>
-            <el-table-column
-              prop="specInfo"
-              label="规格">
-            </el-table-column>
-            <el-table-column
-              prop="salesPrice"
-              label="单价"
-              width="200"
-              align="center">
-              <template slot-scope="scope">
-                单价：￥{{scope.row.salesPrice}}
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="quantity"
-              label="数量"
-              width="200"
-              align="center">
-              <template slot-scope="scope">
-                数量：{{scope.row.quantity}}
-              </template>
-            </el-table-column>
-          </el-table>
+        <template slot-scope="scope" slot="goodsInfo">
+          <el-row :gutter="10" v-for="(item, index) in scope.row.listOrderItem" :key="index"
+                  style="border:1px solid #eaeaea;padding: 5px">
+            <el-col :span="3">
+              <img :src="item.picUrl" width="100%"/>
+            </el-col>
+            <el-col :span="13" style="text-align: left">
+              <div class="spu-name">{{item.spuName}}</div>
+              <div class="spec-info">{{item.specInfo}}</div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">￥{{item.salesPrice}}</div>
+              <div class="grid-content">×{{item.quantity}}件</div>
+            </el-col>
+          </el-row>
+        </template>
+        <template slot-scope="scope" slot="createTime">
+          <div>
+            <div class="grid-content">{{scope.row.createTime}}</div>
+            <div class="grid-content">{{scope.row.orderNo}}</div>
+          </div>
+        </template>
+        <template slot-scope="scope" slot="salesPrice">
+          <div style="text-align: left">
+            <div class="grid-content">订单金额：￥{{scope.row.salesPrice}}</div>
+            <div class="grid-content">物流金额：￥{{scope.row.logisticsPrice}}</div>
+            <div class="grid-content">支付金额：￥{{scope.row.paymentPrice}}</div>
+          </div>
         </template>
         <template slot-scope="scope" slot="menu">
           <el-button icon="el-icon-edit"
                      size="small"
                      type="text"
                      v-if="permissions.mall_orderinfo_get"
-                     @click="openView(scope.row,scope.index)">订单详情</el-button>
+                     @click="openView(scope.row,scope.index)">订单详情
+          </el-button>
           <el-button icon="el-icon-position"
                      size="small"
                      type="text"
                      v-if="permissions.mall_orderinfo_edit && scope.row.status == '1'"
-                     @click="showDialogLogistics(scope.row,scope.index)">发货</el-button>
+                     @click="showDialogLogistics(scope.row,scope.index)">发货
+          </el-button>
         </template>
       </avue-crud>
       <el-dialog
@@ -284,244 +339,264 @@
 </template>
 
 <script>
-  import { getPage, getObj, addObj, putObj, delObj } from '@/api/mall/orderinfo'
-  import { getObj as getWxUser } from '@/api/wxmp/wxuser'
-  import { tableOption } from '@/const/crud/mall/orderinfo'
-  import { mapGetters } from 'vuex'
-  export default {
-    name: 'orderinfo',
-    data() {
-      return {
-        tableData: [],
-        page: {
-          total: 0, // 总页数
-          currentPage: 1, // 当前页数
-          pageSize: 20, // 每页显示多少条
-          ascs: [],//升序字段
-          descs: 'create_time'//降序字段
-        },
-        paramsSearch:{},
-        tableLoading: false,
-        tableOption: tableOption,
-        dialogLogistics: false,
-        logisticsForm: {
-          row: {},
-          logistics: null,
-          logisticsNo: null,
-          address: null
-        },
-        logisticsOption: {
-          emptyBtn: false,
-          card:true,
-          group:[
-            {
-              icon:'el-icon-user',
-              label: '收货人信息',
-              prop: 'group1',
-              column: [{
-                label: '收货人名字',
-                prop: 'userName',
-                span:24,
-                readonly: true
-              },{
-                label: '电话号码',
-                prop: 'telNum',
-                span:24,
-                readonly: true
-              },{
-                label: '收货地址',
-                prop: 'address',
-                type: 'textarea',
-                span:24,
-                readonly: true
-              }]
-            },{
-              icon:'el-icon-truck',
-              label: '快递信息',
-              prop: 'group2',
-              column: [{
-                label: '快递公司',
-                prop: 'logistics',
-                dicUrl:'/mall/orderlogistics/dict/LOGISTICS',
-                span:24,
-                type:'select',
-                rules: [{
-                  required: true,
-                  message: "请选择快递公司",
-                  trigger: "blur"
-                }]
-              },
-                {
-                  label: '快递单号',
-                  prop: 'logisticsNo',
-                  span:24,
-                  rules: [{
-                    required: true,
-                    message: "请输入快递单号",
-                    trigger: "blur"
-                  }]
-                }]
+    import {getPage, getObj, addObj, putObj, delObj} from '@/api/mall/orderinfo'
+    import {getObj as getWxUser} from '@/api/wxmp/wxuser'
+    import {tableOption} from '@/const/crud/mall/orderinfo'
+    import {mapGetters} from 'vuex'
+
+    export default {
+        name: 'orderinfo',
+        data() {
+            return {
+                status: '-1',
+                tableData: [],
+                page: {
+                    total: 0, // 总页数
+                    currentPage: 1, // 当前页数
+                    pageSize: 20, // 每页显示多少条
+                    ascs: [],//升序字段
+                    descs: 'create_time'//降序字段
+                },
+                paramsSearch: {},
+                tableLoading: false,
+                tableOption: tableOption,
+                dialogLogistics: false,
+                logisticsForm: {
+                    row: {},
+                    logistics: null,
+                    logisticsNo: null,
+                    address: null
+                },
+                logisticsOption: {
+                    emptyBtn: false,
+                    card: true,
+                    group: [
+                        {
+                            icon: 'el-icon-user',
+                            label: '收货人信息',
+                            prop: 'group1',
+                            column: [{
+                                label: '收货人名字',
+                                prop: 'userName',
+                                span: 24,
+                                readonly: true
+                            }, {
+                                label: '电话号码',
+                                prop: 'telNum',
+                                span: 24,
+                                readonly: true
+                            }, {
+                                label: '收货地址',
+                                prop: 'address',
+                                type: 'textarea',
+                                span: 24,
+                                readonly: true
+                            }]
+                        }, {
+                            icon: 'el-icon-truck',
+                            label: '快递信息',
+                            prop: 'group2',
+                            column: [{
+                                label: '快递公司',
+                                prop: 'logistics',
+                                dicUrl: '/mall/orderlogistics/dict/LOGISTICS',
+                                span: 24,
+                                type: 'select',
+                                rules: [{
+                                    required: true,
+                                    message: "请选择快递公司",
+                                    trigger: "blur"
+                                }]
+                            },
+                                {
+                                    label: '快递单号',
+                                    prop: 'logisticsNo',
+                                    span: 24,
+                                    rules: [{
+                                        required: true,
+                                        message: "请输入快递单号",
+                                        trigger: "blur"
+                                    }]
+                                }]
+                        }
+                    ]
+                }
             }
-          ]
+        },
+        created() {
+        },
+        mounted: function () {
+        },
+        computed: {
+            ...mapGetters(['permissions']),
+            permissionList() {
+                return {
+                    addBtn: this.vaildData(this.permissions.mall_orderinfo_add, false),
+                    delBtn: this.vaildData(this.permissions.mall_orderinfo_del, false),
+                    editBtn: this.vaildData(this.permissions.mall_orderinfo_edit, false),
+                    viewBtn: this.vaildData(this.permissions.mall_orderinfo_get, false)
+                };
+            }
+        },
+        methods: {
+            handleClickStatus(tab, event) {
+                this.status = tab.name
+                this.page.currentPage = 1
+                this.getPage(this.page)
+            },
+            currentChange(currentPage) {
+                this.page.currentPage = currentPage
+            },
+            openView(row, index) {
+                this.tableLoading = true
+                getObj(row.id).then(response => {
+                    row.user = response.data.data.user
+                    row.app = response.data.data.app
+                    row.orderLogistics = response.data.data.orderLogistics
+                    this.$refs.crud.rowView(row, index)
+                    this.tableLoading = false
+                })
+            },
+            showDialogLogistics(row, index, done) {
+                this.logisticsForm.row = row
+                this.logisticsForm.address = row.orderLogistics.address
+                this.logisticsForm.userName = row.orderLogistics.userName
+                this.logisticsForm.telNum = row.orderLogistics.telNum
+                this.dialogLogistics = true
+            },
+            delivery(form, done) {
+                let row = this.logisticsForm.row
+                row.status = '2',
+                    row.logistics = form.logistics,
+                    row.logisticsNo = form.logisticsNo
+                putObj(row).then(data => {
+                    this.$message({
+                        showClose: true,
+                        message: '发货成功',
+                        type: 'success'
+                    })
+                    done()
+                    this.getPage(this.page)
+                    this.dialogLogistics = false
+                }).catch(() => {
+                    done()
+                })
+            },
+            searchChange(params) {
+                params = this.filterForm(params)
+                this.paramsSearch = params
+                this.page.currentPage = 1
+                this.getPage(this.page, params)
+            },
+            sortChange(val) {
+                let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : '';
+                if (val.order == 'ascending') {
+                    this.page.descs = []
+                    this.page.ascs = prop
+                } else if (val.order == 'descending') {
+                    this.page.ascs = []
+                    this.page.descs = prop
+                } else {
+                    this.page.ascs = []
+                    this.page.descs = []
+                }
+                this.getPage(this.page)
+            },
+            getPage(page, params) {
+                this.tableLoading = true
+                getPage(Object.assign({
+                    current: page.currentPage,
+                    size: page.pageSize,
+                    descs: this.page.descs,
+                    ascs: this.page.ascs,
+                    status: this.status != '-1' ? this.status : null
+                }, params, this.paramsSearch)).then(response => {
+                    this.tableData = response.data.data.records
+                    this.page.total = response.data.data.total
+                    this.tableLoading = false
+                }).catch(() => {
+                    this.tableLoading = false
+                })
+            },
+            /**
+             * @title 数据删除
+             * @param row 为当前的数据
+             * @param index 为当前删除数据的行数
+             *
+             **/
+            handleDel: function (row, index) {
+                var _this = this
+                this.$confirm('是否确认删除此数据', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    return delObj(row.id)
+                }).then(data => {
+                    _this.tableData.splice(index, 1)
+                    _this.$message({
+                        showClose: true,
+                        message: '删除成功',
+                        type: 'success'
+                    })
+                    this.getPage(this.page)
+                }).catch(function (err) {
+                })
+            },
+            /**
+             * @title 数据更新
+             * @param row 为当前的数据
+             * @param index 为当前更新数据的行数
+             * @param done 为表单关闭函数
+             *
+             **/
+            handleUpdate: function (row, index, done) {
+                putObj(row).then(data => {
+                    this.tableData.splice(index, 1, Object.assign({}, row))
+                    this.$message({
+                        showClose: true,
+                        message: '修改成功',
+                        type: 'success'
+                    })
+                    done()
+                    this.getPage(this.page)
+                })
+            },
+            /**
+             * @title 数据添加
+             * @param row 为当前的数据
+             * @param done 为表单关闭函数
+             *
+             **/
+            handleSave: function (row, done) {
+                addObj(row).then(data => {
+                    this.tableData.push(Object.assign({}, row))
+                    this.$message({
+                        showClose: true,
+                        message: '添加成功',
+                        type: 'success'
+                    })
+                    done()
+                    this.getPage(this.page)
+                })
+            },
+            /**
+             * 刷新回调
+             */
+            refreshChange() {
+                this.getPage(this.page)
+            }
         }
-      }
-    },
-    created() {
-    },
-    mounted: function() { },
-    computed: {
-      ...mapGetters(['permissions']),
-      permissionList() {
-        return {
-          addBtn: this.vaildData(this.permissions.mall_orderinfo_add, false),
-          delBtn: this.vaildData(this.permissions.mall_orderinfo_del, false),
-          editBtn: this.vaildData(this.permissions.mall_orderinfo_edit, false),
-          viewBtn: this.vaildData(this.permissions.mall_orderinfo_get, false)
-        };
-      }
-    },
-    methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
-      openView(row,index){
-        getObj(row.id).then(response => {
-          row.user = response.data.data.user
-          row.app = response.data.data.app
-          row.orderLogistics = response.data.data.orderLogistics
-          this.$refs.crud.rowView(row,index)
-        })
-      },
-      showDialogLogistics(row, index, done){
-        this.logisticsForm.row = row
-        this.logisticsForm.address = row.orderLogistics.address
-        this.logisticsForm.userName = row.orderLogistics.userName
-        this.logisticsForm.telNum = row.orderLogistics.telNum
-        this.dialogLogistics = true
-      },
-      delivery(form,done){
-        let row = this.logisticsForm.row
-        row.status = '2',
-        row.logistics = form.logistics,
-        row.logisticsNo = form.logisticsNo
-        putObj(row).then(data => {
-          this.$message({
-            showClose: true,
-            message: '发货成功',
-            type: 'success'
-          })
-          done()
-          this.getPage(this.page)
-          this.dialogLogistics = false
-        }).catch(() => {
-          done()
-        })
-      },
-      searchChange(params){
-        params = this.filterForm(params)
-        this.paramsSearch = params
-        this.page.currentPage = 1
-        this.getPage(this.page,params)
-      },
-      sortChange(val){
-        let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
-        if(val.order=='ascending'){
-          this.page.descs = []
-          this.page.ascs = prop
-        }else if(val.order=='descending'){
-          this.page.ascs = []
-          this.page.descs = prop
-        }else{
-          this.page.ascs = []
-          this.page.descs = []
-        }
-        this.getPage(this.page)
-      },
-      getPage(page, params) {
-        this.tableLoading = true
-        getPage(Object.assign({
-          current: page.currentPage,
-          size: page.pageSize,
-          descs: this.page.descs,
-          ascs: this.page.ascs,
-        }, params, this.paramsSearch)).then(response => {
-          this.tableData = response.data.data.records
-          this.page.total = response.data.data.total
-          this.tableLoading = false
-        }).catch(() => {
-          this.tableLoading=false
-        })
-      },
-      /**
-       * @title 数据删除
-       * @param row 为当前的数据
-       * @param index 为当前删除数据的行数
-       *
-       **/
-      handleDel: function(row, index) {
-        var _this = this
-        this.$confirm('是否确认删除此数据', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(function() {
-            return delObj(row.id)
-          }).then(data => {
-          _this.tableData.splice(index, 1)
-          _this.$message({
-            showClose: true,
-            message: '删除成功',
-            type: 'success'
-          })
-          this.getPage(this.page)
-        }).catch(function(err) { })
-      },
-      /**
-       * @title 数据更新
-       * @param row 为当前的数据
-       * @param index 为当前更新数据的行数
-       * @param done 为表单关闭函数
-       *
-       **/
-      handleUpdate: function(row, index, done) {
-        putObj(row).then(data => {
-          this.tableData.splice(index, 1, Object.assign({}, row))
-          this.$message({
-            showClose: true,
-            message: '修改成功',
-            type: 'success'
-          })
-          done()
-          this.getPage(this.page)
-        })
-      },
-      /**
-       * @title 数据添加
-       * @param row 为当前的数据
-       * @param done 为表单关闭函数
-       *
-       **/
-      handleSave: function(row, done) {
-        addObj(row).then(data => {
-          this.tableData.push(Object.assign({}, row))
-          this.$message({
-            showClose: true,
-            message: '添加成功',
-            type: 'success'
-          })
-          done()
-          this.getPage(this.page)
-        })
-      },
-      /**
-       * 刷新回调
-       */
-      refreshChange() {
-        this.getPage(this.page)
-      }
     }
-  }
 </script>
 <style>
+  .spu-name {
+    font-size: 16px;
+  }
 
+  .spec-info {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #7b7b7b;
+  }
 </style>

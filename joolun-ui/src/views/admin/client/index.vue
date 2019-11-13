@@ -48,7 +48,8 @@
         return {
           addBtn: this.vaildData(this.permissions.sys_client_add, false),
           delBtn: this.vaildData(this.permissions.sys_client_del, false),
-          editBtn: this.vaildData(this.permissions.sys_client_edit, false)
+          editBtn: this.vaildData(this.permissions.sys_client_edit, false),
+          viewBtn: this.vaildData(this.permissions.sys_client_get, false)
         };
       }
     },

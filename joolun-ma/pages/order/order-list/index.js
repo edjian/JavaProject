@@ -28,13 +28,13 @@ Page({
         key: '2'
       }, {
         value: '待评价',
-        key: '3'
+        key: '4'
       }
     ],
     page: {
       searchCount: false,
       current: 1,
-      size: 14,
+      size: 10,
       ascs: '',//升序字段
       descs: 'create_time'
     },
@@ -82,7 +82,7 @@ Page({
         }
       })
   },
-  scrollToLower() {
+  onReachBottom() {
     if (this.data.loadmore) {
       this.setData({
         ['page.current']: this.data.page.current + 1
@@ -90,16 +90,30 @@ Page({
       this.orderPage()
     }
   },
-  tabSelect(e) {
-    let dataset = e.currentTarget.dataset
+  refresh(){
     this.setData({
-      tabCur: dataset.index,
-      ['parameter.status']: dataset.key,
       loadmore: true,
       orderList: [],
       ['page.current']: 1
     })
     this.orderPage()
+  },
+  onPullDownRefresh() {
+    // 显示顶部刷新图标
+    wx.showNavigationBarLoading()
+    this.refresh()
+    // 隐藏导航栏加载框
+    wx.hideNavigationBarLoading()
+    // 停止下拉动作
+    wx.stopPullDownRefresh()
+  },
+  tabSelect(e) {
+    let dataset = e.currentTarget.dataset
+    this.setData({
+      tabCur: dataset.index,
+      ['parameter.status']: dataset.key
+    })
+    this.refresh()
   },
   orderCancel(e) {
     let index = e.target.dataset.index

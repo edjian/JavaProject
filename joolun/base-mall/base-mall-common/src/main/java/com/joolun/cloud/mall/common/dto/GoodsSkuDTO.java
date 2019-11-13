@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.mall.common.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -81,6 +82,7 @@ public class GoodsSkuDTO implements Serializable {
    */
     private String delFlag;
 
+	@TableField(exist = false)
     private List<GoodsSkuSpecValueDTO> specs;
 
 }

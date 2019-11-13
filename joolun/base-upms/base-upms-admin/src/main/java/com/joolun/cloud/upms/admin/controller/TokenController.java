@@ -29,6 +29,7 @@ public class TokenController {
 	 * @return token集合
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_token_index')")
 	public R getTokenPage(@RequestParam Map<String, Object> params) {
 		return feignTokenService.getTokenPage(params, SecurityConstants.FROM_IN);
 	}

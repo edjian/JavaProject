@@ -308,7 +308,7 @@ Page({
     let params = []
     let shoppingCartData = this.data.shoppingCartData
     shoppingCartData.forEach(function (shoppingCart, index) {
-      if (shoppingCart.checked && shoppingCart.goodsSku && shoppingCart.goodsSku.enable == 'true'
+      if (shoppingCart.checked && shoppingCart.goodsSku && shoppingCart.goodsSku.enable == '1'
         && shoppingCart.goodsSpu && shoppingCart.goodsSpu.shelf == '0'
         && shoppingCart.quantity <= shoppingCart.goodsSku.stock){
         let param = {

@@ -29,29 +29,16 @@
 		<result property="updateTime" column="update_time"/>
 		<result property="specType" column="spec_type"/>
 		<result property="delFlag" column="del_flag"/>
+		<result property="pointsGiveSwitch" column="points_give_switch"/>
+		<result property="pointsGiveNum" column="points_give_num"/>
+		<result property="pointsDeductSwitch" column="points_deduct_switch"/>
+		<result property="pointsDeductScale" column="points_deduct_scale"/>
+		<result property="pointsDeductAmount" column="points_deduct_amount"/>
 	</resultMap>
 
-	<resultMap id="goodsSpuVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSpuVO">
-		<id property="id" column="id"/>
-		<result property="tenantId" column="tenant_id"/>
-		<result property="spuCode" column="spu_code"/>
-		<result property="name" column="name"/>
-		<result property="sellPoint" column="sell_point"/>
-		<result property="description" column="description"/>
-		<result property="categoryFirst" column="category_first"/>
-		<result property="categorySecond" column="category_second"/>
-		<result property="picUrls" column="pic_urls"/>
-		<result property="shelf" column="shelf"/>
-		<result property="sort" column="sort"/>
-		<result property="priceDown" column="price_down"/>
-		<result property="priceUp" column="price_up"/>
-		<result property="saleNum" column="sale_num"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="specType" column="spec_type"/>
-		<result property="delFlag" column="del_flag"/>
-		<collection property="skus" ofType="com.joolun.cloud.mall.common.vo.GoodsSkuVO"
-					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper.listGoodsSkuVoBySpuId"
+	<resultMap id="goodsSpuMap2" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
+		<collection property="skus" ofType="com.joolun.cloud.mall.common.entity.GoodsSku"
+					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper.listGoodsSkuBySpuId"
 					column="{spuId=id}">
 		</collection>
 	</resultMap>
@@ -74,34 +61,18 @@
 		spu.`create_time`,
 		spu.`update_time`,
 		spu.`spec_type`,
-		spu.`del_flag`
-	</sql>
-
-	<sql id="goodsSpuVoPageSql">
-		spu.`id`,
-		spu.`tenant_id`,
-		spu.`spu_code`,
-		spu.`name`,
-		spu.`sell_point`,
-		spu.`description`,
-		spu.`category_first`,
-		spu.`category_second`,
-		spu.`pic_urls`,
-		spu.`shelf`,
-		spu.`sort`,
-		spu.`price_down`,
-		spu.`price_up`,
-		spu.`sale_num`,
-		spu.`create_time`,
-		spu.`update_time`,
-		spu.`spec_type`,
-		spu.`del_flag`
+		spu.`del_flag`,
+		spu.`points_give_switch`,
+		spu.`points_give_num`,
+		spu.`points_deduct_switch`,
+		spu.`points_deduct_scale`,
+		spu.`points_deduct_amount`
 	</sql>
 
 	<!--重写selectById关联查询其它表-->
-	<select id="selectById2" resultMap="goodsSpuVoMap">
+	<select id="selectById2" resultMap="goodsSpuMap2">
 		SELECT
-			<include refid="goodsSpuVoPageSql"/>
+			<include refid="goodsSpuSql"/>
 		FROM goods_spu spu
 		WHERE spu.`id` = #{id}
 	</select>

@@ -2,6 +2,7 @@
  * 配置参考:
  * https://cli.vuejs.org/zh/config/
  */
+// const url = 'http://192.168.31.110:9999'
 const url = 'http://127.0.0.1:9999'
 const fs = require('fs')
 module.exports = {
@@ -78,6 +79,13 @@ module.exports = {
         ws: true,
         pathRewrite: {
           '^/mall': '/mall'
+        }
+      },
+      '/cms': {
+        target: url,
+        ws: true,
+        pathRewrite: {
+          '^/cms': '/cms'
         }
       }
     }

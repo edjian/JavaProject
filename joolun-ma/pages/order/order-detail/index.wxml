@@ -6,12 +6,12 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<scroll-view scroll-y scroll-with-animation style="height:calc(100vh - 100rpx)">
+<view class="margin-bottom-bar">
   <view class="bg-white padding">
     <view class="status-desc text-red margin-left text-bold cuIcon-{{orderInfo.status == '0' ? 'pay' : orderInfo.status == '1' ? 'send' : orderInfo.status == '2' ? 'deliver' : orderInfo.status == '3' ? 'evaluate' : orderInfo.status == '4' ? 'upstage' : orderInfo.status == '5' ? 'roundclose' : ''}}">
       {{orderInfo.statusDesc}}
     </view>
-    <view class="text-black margin-left" wx:if="{{orderInfo.status == '0'}}">
+    <view class="text-black margin-left" wx:if="{{orderInfo.isPay == '0' && !orderInfo.status}}">
       请在{{countDown.min}}分{{countDown.sec}}秒内付款，超时订单将自动取消
     </view>
     <view class="text-black margin-left" wx:if="{{orderInfo.status == '2'}}">
@@ -26,7 +26,7 @@
           <view class="text-black">{{orderInfo.orderLogistics.statusDesc}}</view>
           <view class="text-sm margin-left-sm">{{orderInfo.orderLogistics.logisticsDesc}}</view>
         </view>
-        <view class="text-black text-sm overflow_2 loc-info" wx:if="{{orderInfo.orderLogistics.message}}">
+        <view class="text-black text-sm overflow-2 loc-info" wx:if="{{orderInfo.orderLogistics.message}}">
 					{{orderInfo.orderLogistics.message}}
         </view>
       </view>
@@ -41,7 +41,7 @@
           <view class="text-black">{{orderInfo.orderLogistics.userName}}</view>
           <view class="text-gray text-sm margin-left-sm">{{orderInfo.orderLogistics.telNum}}</view>
         </view>
-        <view class="text-black text-sm overflow_2 loc-info">
+        <view class="text-black text-sm overflow-2 loc-info">
 					{{orderInfo.orderLogistics.address}}
         </view>
       </view>
@@ -55,17 +55,11 @@
             <view class="content">
               <image src="{{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
               <view class="desc row-info">
-                <view class="text-black margin-top-sm overflow_2">{{item.spuName}}</view>
-                <view class="text-gray text-sm margin-top-xs cu-tag round" wx:if="{{item.specInfo}}">
-                  {{item.specInfo}}
-                </view>
-                <view class="flex">
-                  <view class="flex-sub">
-                    <view class="text-price text-bold text-red margin-top-sm">{{item.salesPrice}}</view>
-                  </view>
-                  <view class="flex-twice text-right margin-right-sm">
-                    x{{item.quantity}}
-                  </view>
+                <view class="text-black margin-top-sm overflow-2">{{item.spuName}}</view>
+                <view class="text-gray text-sm margin-top-sm overflow-2" wx:if="{{item.specInfo}}">{{item.specInfo}}</view>
+                <view class="flex justify-between">
+                  <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item.salesPrice}}</view>
+                  <view class="text-gray text-sm margin-top-sm padding-lr-sm">X{{item.quantity}}</view>
                 </view>
               </view>
             </view>
@@ -127,7 +121,7 @@
       <textarea readonly value="{{orderInfo.userMessage}}"></textarea>
     </view>
 	</view>
-</scroll-view>
+</view>
 <view class="cu-bar bg-white border foot">
   <order-operate
     class="response"

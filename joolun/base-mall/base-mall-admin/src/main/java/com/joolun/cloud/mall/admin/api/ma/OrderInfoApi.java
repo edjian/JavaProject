@@ -17,6 +17,7 @@ import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
 import com.joolun.cloud.common.core.util.R;
@@ -24,6 +25,7 @@ import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.WxMallConfigProperties;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
@@ -105,6 +107,8 @@ public class OrderInfoApi {
 		if(StrUtil.isBlank(placeOrderDTO.getPaymentType())){
 			R.failed(MyReturnCode.ERR_70002.getCode(), MyReturnCode.ERR_70002.getMsg());
 		}
+		placeOrderDTO.setAppType(MallConstants.APP_TYPE_1);
+		placeOrderDTO.setPaymentWay(MallConstants.PAYMENT_WAY_2);
 		OrderInfo orderInfo = orderInfoService.orderSub(placeOrderDTO);
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70003.getCode(), MyReturnCode.ERR_70003.getMsg());
@@ -150,7 +154,7 @@ public class OrderInfoApi {
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
 		}
-		if(!OrderInfoEnum.STATUS_0.getValue().equals(orderInfo.getStatus())){
+		if(!CommonConstants.NO.equals(orderInfo.getIsPay())){//只有未支付订单能取消
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
 		}
 		orderInfoService.orderCancel(orderInfo);
@@ -173,7 +177,7 @@ public class OrderInfoApi {
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
 		}
-		if(!OrderInfoEnum.STATUS_2.getValue().equals(orderInfo.getStatus())){
+		if(!OrderInfoEnum.STATUS_2.getValue().equals(orderInfo.getStatus())){//只有待收货订单能确认收货
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
 		}
 		orderInfoService.orderReceive(orderInfo);
@@ -198,7 +202,7 @@ public class OrderInfoApi {
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
 		}
-		if(!OrderInfoEnum.STATUS_0.getValue().equals(orderInfo.getStatus())){
+		if(!CommonConstants.NO.equals(orderInfo.getIsPay())){//只有未支付的详单能发起支付
 			return R.failed(MyReturnCode.ERR_70004.getCode(), MyReturnCode.ERR_70004.getMsg());
 		}
 		if(orderInfo.getPaymentPrice().compareTo(BigDecimal.ZERO)==0){//0元购买不调支付

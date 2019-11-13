@@ -11,8 +11,7 @@ package com.joolun.cloud.mall.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
-import com.joolun.cloud.mall.common.vo.GoodsSkuSpecValueVO;
-import com.joolun.cloud.mall.common.vo.GoodsSpecVO;
+import com.joolun.cloud.mall.common.entity.GoodsSpec;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
  */
 public interface GoodsSkuSpecValueMapper extends BaseMapper<GoodsSkuSpecValue> {
 
-	List<GoodsSkuSpecValueVO> listGoodsSkuSpecValueVoBySkuId(String skuId);
+	List<GoodsSkuSpecValue> listGoodsSkuSpecValueBySkuId(String skuId);
 
-	List<GoodsSpecVO> selectBySpecId(GoodsSpuSpec goodsSpuSpec);
+	List<GoodsSpec> selectBySpecId(GoodsSpuSpec goodsSpuSpec);
 }

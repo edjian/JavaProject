@@ -7,19 +7,23 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <template>
-  <div id="baseEditor">
-    <avue-ueditor
-      v-model="content"
-      :upload="upload"
-      @change="onEditorChange($event)"></avue-ueditor>
+  <div id="baseEditor" v-if="config.imageUploadURL">
+    <froala :tag="'textarea'" :config="config" v-model="content"></froala>
   </div>
 </template>
 
 <script>
-  import { aliOss } from '@/config/env'
+  import 'froala-editor/js/plugins.pkgd.min.js'
+  import 'froala-editor/js/froala_editor.pkgd.min.js'
+  import 'froala-editor/js/plugins/link.min.js'
+  import 'froala-editor/js/plugins/image.min.js'
+  import store from "@/store"
 
   export default {
     props: {
+      uploadData: {
+        type: Object
+      },
       /*编辑器的内容*/
       value: {
         type: String
@@ -33,99 +37,70 @@
     name: 'baseEditor',
     data() {
       return {
-        upload: {
-          props: {
-            res: "data.0",
-            url: "url"
+        config: {
+          language: 'zh_cn',
+          requestHeaders: {
+            Authorization: 'Bearer ' + store.getters.access_token
           },
-          //阿里云oss配置
-          ali: aliOss
+          imageUploadURL: '/admin/file/upload',
+          imageUploadMethod: 'POST',
+          imageUploadParams: {
+            dir: 'editor/'
+          },
+          toolbarButtons: {
+            'moreText': {
+              'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+            },
+            'moreParagraph': {
+              'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+            },
+            'moreRich': {
+              'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertHR']
+            },
+            'moreMisc': {
+              'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+              'align': 'right',
+              'buttonsVisible': 2
+            }
+          },
+          fontFamilySelection: true,
+          fontSizeSelection: true,
+          paragraphFormatSelection: true,
+          quickInsertButtons: ['image', 'table', 'ul', 'ol', 'hr'],//快速插入项
+          linkInsertButtons: ['linkBack'],
+          imageInsertButtons: ['imageBack', '|', 'imageUpload'],
+          imageEditButtons: ['imageReplace', 'imageAlign', 'imageRemove', '|', 'imageLink', 'linkOpen', 'linkEdit', 'linkRemove', '-', 'imageDisplay', 'imageStyle', 'imageAlt', 'imageSize'],
+          videoInsertButtons: ['videoBack', '|', 'videoByURL'],
+          zIndex: 99999,
+          events: {
+            //https://www.froala.com/wysiwyg-editor/docs/events
+            'contentChanged': () => {
+              this.$emit('input', this.content)
+            },
+            'image.beforeUpload': function (images) {
+              console.log(this)
+              console.log(images)
+              // this.getSignature()
+            },
+            'image.uploaded': function (response) {
+              console.log(this)
+              console.log(response)
+            }
+          }
         },
         content: this.value
       }
     },
+    created() {
+
+    },
     methods: {
-      onEditorChange() {
-        //内容改变事件
-        this.$emit("input", this.content);
-      }
+
     }
   }
 </script>
 <style>
-  .editor {
-    line-height: normal !important;
-    height: 500px;
-  }
-  .ql-snow .ql-tooltip[data-mode=link]::before {
-    content: "请输入链接地址:";
-  }
-  .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
-    border-right: 0px;
-    content: '保存';
-    padding-right: 0px;
-  }
-
-  .ql-snow .ql-tooltip[data-mode=video]::before {
-    content: "请输入视频地址:";
-  }
-
-  .ql-snow .ql-picker.ql-size .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-    content: '14px';
-  }
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
-    content: '10px';
-  }
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
-    content: '18px';
-  }
-  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
-    content: '32px';
-  }
-
-  .ql-snow .ql-picker.ql-header .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item::before {
-    content: '文本';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
-    content: '标题1';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
-    content: '标题2';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
-    content: '标题3';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
-    content: '标题4';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
-    content: '标题5';
-  }
-  .ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
-  .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
-    content: '标题6';
-  }
-
-  .ql-snow .ql-picker.ql-font .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item::before {
-    content: '标准字体';
-  }
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
-    content: '衬线字体';
-  }
-  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
-  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
-    content: '等宽字体';
+  .fr-wrapper > div[style*='z-index: 9999'] {
+    display: none;
   }
 </style>

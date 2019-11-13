@@ -12,7 +12,7 @@
       <view class="img-box">
         <image src="{{item.picUrls[0] ? item.picUrls[0] : '/public/img/no_pic.png'}}" class="margin-top-xs"/>
       </view>
-      <view class="text-black margin-top-xs padding-lr-sm overflow_2">{{item.name}}</view>
+      <view class="text-black margin-top-xs padding-lr-sm overflow-2">{{item.name}}</view>
       <view class="flex justify-between">
         <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item.priceDown}}</view>
         <view class="text-gray text-sm margin-top-sm padding-lr-sm">已售{{item.saleNum}}</view>

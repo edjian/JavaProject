@@ -6,29 +6,34 @@
  * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
-package com.joolun.cloud.mall.common.vo;
+package com.joolun.cloud.mall.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.joolun.cloud.mall.common.entity.GoodsSku;
-import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import lombok.Data;
-import java.math.BigDecimal;
+import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
-import java.util.List;
+import io.swagger.annotations.ApiModel;
 
 /**
- * 购物车
+ * 素材
  *
  * @author JL
- * @date 2019-08-29 21:27:33
+ * @date 2019-10-26 19:23:45
  */
 @Data
-public class ShoppingCartVO extends Model<ShoppingCartVO> {
+@TableName("material")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(description = "素材")
+public class Material extends Model<Material> {
   private static final long serialVersionUID = 1L;
 
     /**
    * PK
    */
+    @TableId(type = IdType.UUID)
     private String id;
     /**
    * 所属租户
@@ -47,41 +52,24 @@ public class ShoppingCartVO extends Model<ShoppingCartVO> {
    */
     private LocalDateTime updateTime;
     /**
-   * 用户编号
+   * 创建者ID
    */
-    private String userId;
+    private String createId;
     /**
-   * 商品 SPU 编号
+   * 类型1、图片；2、视频
    */
-    private String spuId;
+    private String type;
     /**
-   * 商品 SKU 编号
+   * 分组ID
    */
-    private String skuId;
+    private String groupId;
     /**
-   * 商品购买数量
+   * 素材名
    */
-    private Integer quantity;
-	/**
-	 * 加入时价格
-	 */
-	private BigDecimal addPrice;
-	/**
-	 * 加入时的spu名字
-	 */
-	private String spuName;
-	/**
-	 * 加入时的规格信息
-	 */
-	private String specInfo;
-	/**
-	 * 图片
-	 */
-	private String picUrl;
-
-	private GoodsSpu goodsSpu;
-
-	private GoodsSku goodsSku;
-
-	private List<GoodsSkuSpecValueVO> specs;
+    private String name;
+    /**
+   * 素材链接
+   */
+    private String url;
+  
 }

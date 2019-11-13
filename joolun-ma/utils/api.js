@@ -113,7 +113,7 @@ module.exports = {
     return request('/mall/api/ma/goodsspu/' + id, 'get', null, false)
   },
   goodsSpecGet: (data) => {
-    return request('/mall/api/ma/goodsspuspec/tree', 'get', data, false)
+    return request('/mall/api/ma/goodsspuspec/tree', 'get', data, true)
   },
   shoppingCartPage: (data) => {
     return request('/mall/api/ma/shoppingcart/page', 'get', data, false)
@@ -174,5 +174,11 @@ module.exports = {
   },
   goodsAppraisesPage: (data) => {
     return request('/mall/api/ma/goodsappraises/page', 'get', data, false)
+  },
+  qrCodeUnlimited: (data) => {
+    return request('/weixin/api/ma/wxqrcode/unlimited', 'post', data, true)
+  },
+  noticeGet: (data) => {
+    return request('/mall/api/ma/notice', 'get', data, false)
   },
 }

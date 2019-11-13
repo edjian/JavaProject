@@ -19,30 +19,21 @@ Page({
     goodsList: [],
     goodsListNew: [],
     goodsListHot: [],
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'http://img14.360buyimg.com/cms/jfs/t1/41875/15/15234/177824/5d7e4bbdE9d92026d/a22352695fb54048.jpg',
-      page: '/pages/goods/goods-detail/index?id=2835671ff031c18cb181b1a199f86b01'
-    }, {
-        id: 2,
-        type: 'image',
-        url: 'http://img10.360buyimg.com/cms/jfs/t1/63177/15/10387/240991/5d7f9dceEeeb37fc9/836c313d04150d0f.jpg',
-        page: '/pages/goods/goods-list/index?categorySecond=862a74f109f7f14bcbfff1d5adf73cdc&title=%E5%8D%8E%E4%B8%BA'
-    }, {
-      id: 1,
-      type: 'image',
-      url: 'http://img12.360buyimg.com/cms/jfs/t1/52071/29/11410/442751/5d84357aE3604f88b/0da811f943ecd2d3.jpg',
-      page: '/pages/goods/goods-detail/index?id=58c12341a226b641435b9aa435a1133c'
-    }]
+    swiperData: [],
+    noticeData: []
   },
   onLoad() {
     app.initPage()
       .then(res => {
-        this.goodsNew()
-        this.goodsHot()
-        this.goodsPage()
+        this.loadData()
       })
+  },
+  loadData(){
+    this.swiperGet()
+    this.noticeGet()
+    this.goodsNew()
+    this.goodsHot()
+    this.goodsPage()
   },
   onShareAppMessage: function () {
     let title = 'JooLun商城源码-小程序演示'
@@ -59,6 +50,36 @@ Page({
         // 转发失败
       }
     }
+  },
+  //获取轮播图
+  swiperGet() {
+    app.api.noticeGet({
+      type: '1',
+      enable: '1'
+    })
+      .then(res => {
+        let notice = res.data
+        if (notice){
+          this.setData({
+            swiperData: notice.listNoticeItem
+          })
+        }
+      })
+  },
+  //获取广告通知
+  noticeGet() {
+    app.api.noticeGet({
+      type: '2',
+      enable: '1'
+    })
+      .then(res => {
+        let notice = res.data
+        if (notice) {
+          this.setData({
+            noticeData: notice.listNoticeItem
+          })
+        }
+      })
   },
   //新品首发
   goodsNew() {
@@ -104,7 +125,26 @@ Page({
         }
       })
   },
-  scrollToLower() {
+  refresh(){
+    this.setData({
+      loadmore: true,
+      ['page.current']: 1,
+      goodsList: [],
+      goodsListNew: [],
+      goodsListHot: []
+    })
+    this.loadData()
+  },
+  onPullDownRefresh(){
+    // 显示顶部刷新图标
+    wx.showNavigationBarLoading()
+    this.refresh()
+    // 隐藏导航栏加载框
+    wx.hideNavigationBarLoading()
+    // 停止下拉动作
+    wx.stopPullDownRefresh()
+  },
+  onReachBottom() {
     if (this.data.loadmore) {
       this.setData({
         ['page.current']: this.data.page.current + 1

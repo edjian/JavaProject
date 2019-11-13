@@ -10,7 +10,6 @@ package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
-import com.joolun.cloud.mall.common.vo.GoodsSpuVO;
 
 /**
  * spu商品
@@ -20,7 +19,7 @@ import com.joolun.cloud.mall.common.vo.GoodsSpuVO;
  */
 public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
-	GoodsSpuVO selectById2(String id);
+	GoodsSpu selectById2(String id);
 
 	GoodsSpu selectOneByShoppingCart(String id);
 }

@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.OrderLogisticsDetail;
 import org.apache.ibatis.annotations.Param;

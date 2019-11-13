@@ -14,7 +14,7 @@ import './error' // 日志
 import 'element-ui/lib/theme-chalk/index.css'
 import {loadStyle,filterForm} from './util/util'
 import * as urls from '@/config/env'
-import {iconfontUrl, iconfontVersion, aliOss} from '@/config/env'
+import {iconfontUrl, iconfontVersion} from '@/config/env'
 import * as filters from './filters' // 全局filter
 import './styles/common.scss'
 import basicContainer from './components/basic-container/main'
@@ -66,8 +66,6 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-Vue.use(Avue, {
-  ali: aliOss
-})
+Vue.use(Avue)
 Vue.use(VueFroala)
 Vue.use(AvueUeditor)

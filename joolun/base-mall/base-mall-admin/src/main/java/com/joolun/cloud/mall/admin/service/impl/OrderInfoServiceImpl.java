@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
@@ -17,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.WxMallConfigProperties;
@@ -29,7 +31,6 @@ import com.joolun.cloud.mall.admin.mapper.OrderInfoMapper;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.util.Kuaidi100Util;
-import com.joolun.cloud.mall.common.vo.GoodsSkuSpecValueVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -129,9 +130,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	public OrderInfo getById2(Serializable id) {
 		OrderInfo orderInfo = baseMapper.selectById2(id);
 		String keyRedis = null;
-		if(OrderInfoEnum.STATUS_0.getValue().equals(orderInfo.getStatus())){
-			keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_0, TenantContextHolder.getTenantId(),orderInfo.getId()));
+		//获取自动取消倒计时
+		if(CommonConstants.NO.equals(orderInfo.getIsPay())){
+			keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_IS_PAY_0, TenantContextHolder.getTenantId(),orderInfo.getId()));
 		}
+		//获取自动收货倒计时
 		if(OrderInfoEnum.STATUS_2.getValue().equals(orderInfo.getStatus())){
 			keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_2, TenantContextHolder.getTenantId(),orderInfo.getId()));
 		}
@@ -164,6 +167,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	@Transactional(rollbackFor = Exception.class)
 	public void orderReceive(OrderInfo orderInfo) {
 		orderInfo.setStatus(OrderInfoEnum.STATUS_3.getValue());
+		orderInfo.setAppraisesStatus(MallConstants.APPRAISES_STATUS_0);
 		orderInfo.setReceiverTime(LocalDateTime.now());
 		baseMapper.updateById(orderInfo);
 	}
@@ -180,11 +184,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	@Transactional(rollbackFor = Exception.class)
 	public OrderInfo orderSub(PlaceOrderDTO placeOrderDTO) {
 		OrderInfo orderInfo = new OrderInfo();
-		orderInfo.setAppId(placeOrderDTO.getAppId());
-		orderInfo.setUserId(placeOrderDTO.getUserId());
-		orderInfo.setPaymentType(placeOrderDTO.getPaymentType());
-		orderInfo.setUserMessage(placeOrderDTO.getUserMessage());
-		orderInfo.setStatus(OrderInfoEnum.STATUS_0.getValue());
+		BeanUtil.copyProperties(placeOrderDTO,orderInfo);
+		orderInfo.setIsPay(CommonConstants.NO);
 		orderInfo.setOrderNo(IdUtil.getSnowflake(0,0).nextIdStr());
 		orderInfo.setSalesPrice(new BigDecimal(0));
 		orderInfo.setLogisticsPrice(new BigDecimal(0));
@@ -195,7 +196,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					.eq(GoodsSku::getSpuId,placeOrderSkuDTO.getSpuId())
 					.eq(GoodsSku::getId,placeOrderSkuDTO.getSkuId())
 					.ge(GoodsSku::getStock,placeOrderSkuDTO.getQuantity())
-					.eq(GoodsSku::getEnable,Boolean.TRUE.toString()));
+					.eq(GoodsSku::getEnable,CommonConstants.YES));
 			if(goodsSku != null){
 				GoodsSpu goodsSpu = goodsSpuService.getOne(Wrappers.<GoodsSpu>lambdaQuery()
 						.eq(GoodsSpu::getId,goodsSku.getSpuId())
@@ -209,12 +210,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					orderItem.setPicUrl(StrUtil.isNotBlank(goodsSku.getPicUrl()) ? goodsSku.getPicUrl() : goodsSpu.getPicUrls()[0]);
 					orderItem.setQuantity(placeOrderSkuDTO.getQuantity());
 					orderItem.setSalesPrice(goodsSku.getSalesPrice());
-					List<GoodsSkuSpecValueVO> listGoodsSkuSpecValue = goodsSkuSpecValueMapper.listGoodsSkuSpecValueVoBySkuId(goodsSku.getId());
-					listGoodsSkuSpecValue.forEach(goodsSkuSpecValueVO -> {
+					List<GoodsSkuSpecValue> listGoodsSkuSpecValue = goodsSkuSpecValueMapper.listGoodsSkuSpecValueBySkuId(goodsSku.getId());
+					listGoodsSkuSpecValue.forEach(goodsSkuSpecValue -> {
 						String specInfo = orderItem.getSpecInfo();
 						specInfo = StrUtil.isNotBlank(specInfo) ? specInfo : "";
 						orderItem.setSpecInfo(specInfo
-								+ goodsSkuSpecValueVO.getSpecValueName()
+								+ goodsSkuSpecValue.getSpecValueName()
 								+  "，" );
 					});
 					String specInfo = orderItem.getSpecInfo();
@@ -248,7 +249,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			//！注意，这种库存操作会有并发问题，导致库存不准确。如对库存要求很精确，需单独新建库存表
 			goodsSkuService.updateBatchById(listGoodsSku);//更新库存
 			//加入redis，30分钟自动取消
-			String keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_0, TenantContextHolder.getTenantId(),orderInfo.getId()));
+			String keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_IS_PAY_0, TenantContextHolder.getTenantId(),orderInfo.getId()));
 			redisTemplate.opsForValue().set(keyRedis, orderInfo.getOrderNo() , MallConstants.ORDER_TIME_OUT_0, TimeUnit.MINUTES);//设置过期时间
 		}else{
 			return null;
@@ -259,6 +260,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void notifyOrder(OrderInfo orderInfo) {
+		orderInfo.setIsPay(CommonConstants.YES);
 		orderInfo.setStatus(OrderInfoEnum.STATUS_1.getValue());
 		baseMapper.updateById(orderInfo);//更新订单状态
 		List<OrderItem> listOrderItem = orderItemService.list(Wrappers.<OrderItem>lambdaQuery()

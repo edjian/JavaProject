@@ -8,17 +8,17 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.GoodsAppraises;
 import com.joolun.cloud.mall.admin.mapper.GoodsAppraisesMapper;
 import com.joolun.cloud.mall.admin.service.GoodsAppraisesService;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
-import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,11 +35,12 @@ public class GoodsAppraisesServiceImpl extends ServiceImpl<GoodsAppraisesMapper,
 	private final OrderInfoService orderInfoService;
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void doAppraises(List<GoodsAppraises> listGoodsAppraises) {
 		super.saveBatch(listGoodsAppraises);
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setId(listGoodsAppraises.get(0).getOrderId());
-		orderInfo.setStatus(OrderInfoEnum.STATUS_4.getValue());
+		orderInfo.setAppraisesStatus(MallConstants.APPRAISES_STATUS_1);
 		orderInfo.setClosingTime(LocalDateTime.now());
 		orderInfoService.updateById(orderInfo);
 	}

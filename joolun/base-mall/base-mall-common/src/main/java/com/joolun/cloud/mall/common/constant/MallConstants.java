@@ -35,9 +35,33 @@ public interface MallConstants {
 	/**
 	 * redis订单key
 	 */
-	String REDIS_ORDER_KEY_STATUS_0 = "mall:order:status_0:";
+	String REDIS_ORDER_KEY_IS_PAY_0 = "mall:order:is_pay_0:";
 	/**
 	 * redis订单key
 	 */
 	String REDIS_ORDER_KEY_STATUS_2 = "mall:order:status_2:";
+	/**
+	 * 应用类型1小程序
+	 */
+	String APP_TYPE_1 = "1";
+	/**
+	 * 支付方式1、货到付款；2、在线支付
+	 */
+	String PAYMENT_WAY_1 = "1";
+	/**
+	 * 支付方式1、货到付款；2、在线支付
+	 */
+	String PAYMENT_WAY_2 = "2";
+	/**
+	 * 评价状态0、未评；1、已评；2、已追评
+	 */
+	String APPRAISES_STATUS_0 = "0";
+	/**
+	 * 评价状态0、未评；1、已评；2、已追评
+	 */
+	String APPRAISES_STATUS_1 = "1";
+	/**
+	 * 评价状态0、未评；1、已评；2、已追评
+	 */
+	String APPRAISES_STATUS_2 = "2";
 }

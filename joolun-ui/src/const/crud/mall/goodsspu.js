@@ -32,9 +32,6 @@ export const tableOption = {
       label: '商品图片',
       prop: 'picUrls',
       width: 120,
-      dataType: 'array',
-      type: 'upload',
-      listType: 'picture-card',
       slot:true
     },
     {
@@ -95,7 +92,7 @@ export const tableOption = {
     {
       label: '虚拟销量',
       prop: 'saleNum',
-      sortable:true
+      sortable: true
     },
 	  {
       label: '创建时间',
@@ -110,7 +107,7 @@ export const tableOption = {
   ],
   group:[
     {
-      icon: 'el-icon-s-order',
+      icon: 'el-icon-goods',
       label: '基本信息',
       prop: 'group1',
       column: [
@@ -126,18 +123,9 @@ export const tableOption = {
         {
           label: '商品图片',
           prop: 'picUrls',
-          width: 120,
           dataType: 'array',
-          type: 'upload',
-          listType: 'picture-card',
-          canvasOption: {
-            text: 'JooLun',
-            ratio: 1
-          },
-          oss: 'ali',
-          loadText: '图上上传中，请稍等',
-          span: 24,
-          tip: '默认第一张为商品主图',
+          formslot: true,
+          span: 24
         },
         {
           label: '类目',
@@ -178,15 +166,17 @@ export const tableOption = {
         {
           label: '价位',
           prop: 'price',
-          editDisplay:false,
-          addDisplay:false
+          editDisplay: false,
+          addDisplay: false
         },
         {
           label: '商品编码',
           prop: 'spuCode'
         },{
           label: '虚拟销量',
-          prop: 'saleNum'
+          prop: 'saleNum',
+          type: 'number',
+          tip: '可以按自己需求设置，系统会按销售情况自动累加'
         },]
     },
     {
@@ -217,10 +207,79 @@ export const tableOption = {
           span: 24
         },]
     },
+    // {
+    //   icon: 'el-icon-medal',
+    //   label: '积分赠送',
+    //   prop: 'group3',
+    //   column: [
+    //     {
+    //       label: '是否开启',
+    //       prop: 'pointsGiveSwitch',
+    //       type: 'radio',
+    //       rules: [{
+    //         required: true,
+    //         message: '请选择是否开启积分赠送',
+    //         trigger: 'blur'
+    //       }],
+    //       dicData: [{
+    //         label: '是',
+    //         value: '1'
+    //       },{
+    //         label: '否',
+    //         value: '0'
+    //       }]
+    //     },
+    //     {
+    //       label: '赠送数量',
+    //       prop: 'pointsGiveNum',
+    //       type: 'number',
+    //       minRows: 0,
+    //       tip: '购买该商品赠送的积分数'
+    //     }]
+    // },
+    // {
+    //   icon: 'el-icon-medal-1',
+    //   label: '积分抵扣',
+    //   prop: 'group4',
+    //   column: [
+    //     {
+    //       label: '是否开启',
+    //       prop: 'pointsDeductSwitch',
+    //       type: 'radio',
+    //       rules: [{
+    //         required: true,
+    //         message: '请选择是否开启积分抵扣',
+    //         trigger: 'blur'
+    //       }],
+    //       dicData: [{
+    //         label: '是',
+    //         value: '1'
+    //       },{
+    //         label: '否',
+    //         value: '0'
+    //       }]
+    //     },
+    //     {
+    //       label: '抵扣比例',
+    //       prop: 'pointsDeductScale',
+    //       type: 'number',
+    //       tip: '积分可抵扣商品金额比例（0~100）',
+    //       minRows: 0,
+    //       maxRows: 100,
+    //     },
+    //     {
+    //       label: '抵扣规则',
+    //       prop: 'pointsDeductAmount',
+    //       type: 'number',
+    //       minRows: 0,
+    //       precision: '2',
+    //       tip: '1积分数可抵多少元'
+    //     }]
+    // },
     {
-      icon: 'el-icon-s-order',
+      icon: 'el-icon-grape',
       label: '辅助信息',
-      prop: 'group3',
+      prop: 'group5',
       column: [
         {
           label: '描述',

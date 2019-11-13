@@ -6,7 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<view class="cu-bar search bg-white">
+<view class="cu-bar search bg-white fixed">
   <view class="search-form round">
     <text class="cuIcon-search"></text>
     <navigator class="response" hover-class='none' url='/pages/base/search/index'>
@@ -14,13 +14,25 @@
     </navigator>
   </view>
 </view>
-<scroll-view scroll-y scroll-with-animation style="height:calc(100vh - 100rpx)" bindscrolltolower="scrollToLower">
-  <swiper class="screen-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-    <swiper-item wx:for="{{swiperList}}" wx:key bindtap="jumpPage" data-page="{{item.page}}">
-      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
-      <video src="{{item.url}}" wx:if="{{item.type=='video'}}" controls></video>
+<view class="margin-top-bar">
+  <swiper class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+    <swiper-item wx:for="{{swiperData}}" wx:key bindtap="jumpPage" data-page="{{item.page}}">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='1'}}"></image>
+      <video src="{{item.url}}" wx:if="{{item.type=='1'}}" controls></video>
     </swiper-item>
   </swiper>
+  <!-- 公告 -->
+  <view class='adsec bg-yellow light solid-bottom' wx-if="{{noticeData.length > 0}}">
+    <view class='adsec-icon text-xl margin-right-xs margin-left-xs'><text class="cuIcon-notification text-red"></text></view>
+    <swiper class="swiper_container" autoplay="true" circular="true" interval="6000">
+      <swiper-item wx:for="{{noticeData}}" wx:key bindtap="jumpPage" data-page="{{item.page}}">
+        <view class="text-orange text-sm">
+          <text class="cu-tag round sm bg-red" style="margin-bottom:8rpx">{{item.tag}}</text>
+          {{item.content}}<text wx:if="{{item.page}}" class='cuIcon-right'></text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
 
   <view class='wrapper bg-white'>
     <view class="cu-bar bg-white">
@@ -79,4 +91,4 @@
   
   <goods-row goodsList="{{goodsList}}"/>
   <view class="cu-load bg-gray {{loadmore?'loading':'over'}}"></view>
-</scroll-view>
+</view>

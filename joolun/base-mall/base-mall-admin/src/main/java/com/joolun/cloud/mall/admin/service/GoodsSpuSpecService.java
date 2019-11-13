@@ -10,7 +10,7 @@ package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
-import com.joolun.cloud.mall.common.vo.GoodsSpecVO;
+import com.joolun.cloud.mall.common.entity.GoodsSpec;
 
 import java.util.List;
 
@@ -22,5 +22,5 @@ import java.util.List;
  */
 public interface GoodsSpuSpecService extends IService<GoodsSpuSpec> {
 
-	List<GoodsSpecVO> tree(GoodsSpuSpec goodsSpuSpec);
+	List<GoodsSpec> tree(GoodsSpuSpec goodsSpuSpec);
 }

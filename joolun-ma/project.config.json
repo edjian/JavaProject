@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.8.3",
+	"libVersion": "2.9.2",
 	"appid": "wxd5b98bbec200013b",
 	"projectname": "joolun-ma",
 	"debugOptions": {

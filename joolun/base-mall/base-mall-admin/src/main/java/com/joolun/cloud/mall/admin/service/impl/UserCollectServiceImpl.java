@@ -28,10 +28,6 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
 
 	@Override
 	public IPage<UserCollect> page(IPage<UserCollect> page, Wrapper<UserCollect> queryWrapper) {
-		if(MallConstants.COLLECT_TYPE_1.equals(queryWrapper.getEntity().getType())){//商品收藏
-			return baseMapper.selectPage2(page, queryWrapper);
-		}else{
-			return null;
-		}
+		return baseMapper.selectPage2(page, queryWrapper.getEntity());
 	}
 }

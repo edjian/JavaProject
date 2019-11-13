@@ -11,7 +11,6 @@ package com.joolun.cloud.mall.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.GoodsSpec;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
-import com.joolun.cloud.mall.common.vo.GoodsSpecVO;
 
 import java.util.List;
 
@@ -23,5 +22,5 @@ import java.util.List;
  */
 public interface GoodsSpuSpecMapper extends BaseMapper<GoodsSpuSpec> {
 
-	List<GoodsSpecVO> selectTree(String spuId);
+	List<GoodsSpec> selectTree(String spuId);
 }

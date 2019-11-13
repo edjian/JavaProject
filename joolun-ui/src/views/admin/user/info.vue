@@ -151,7 +151,10 @@
                 text: 'www.joolun.com',
                 ratio: 0.1
               },
-              oss: 'ali',
+              action: '/admin/file/upload?dir=user/',
+              propsHttp: {
+                url: 'link'
+              },
               loadText: '附件上传中，请稍等',
               span: 24,
               tip: '只能上传jpg/png文件，且不超过500kb',

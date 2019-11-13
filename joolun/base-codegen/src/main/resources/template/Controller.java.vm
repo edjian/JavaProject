@@ -36,61 +36,61 @@ public class ${className}Controller {
     private final ${className}Service ${classname}Service;
 
     /**
-    * 分页查询
-    * @param page 分页对象
-    * @param ${classname} ${comments}
-    * @return
-    */
+     * 分页查询
+     * @param page 分页对象
+     * @param ${classname} ${comments}
+     * @return
+     */
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_index')"${moduleName}_${pathName}_index')"${moduleName}_${pathName}_index')")
+    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_index')")
     public R get${className}Page(Page page, ${className} ${classname}) {
-        return R.ok(${classname}Service.page(page,Wrappers.query(${classname})));
+        return R.ok(${classname}Service.page(page, Wrappers.query(${classname})));
     }
 
     /**
-    * 通过id查询${comments}
-    * @param ${pk.lowerAttrName}
-    * @return R
-    */
+     * 通过id查询${comments}
+     * @param ${pk.lowerAttrName}
+     * @return R
+     */
     @GetMapping("/{${pk.lowerAttrName}}")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_get')"${moduleName}_${pathName}_get')")
-    public R getById(@PathVariable("${pk.lowerAttrName}") ${pk.attrType} ${pk.lowerAttrName}){
+    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_get')")
+    public R getById(@PathVariable("${pk.lowerAttrName}") ${pk.attrType} ${pk.lowerAttrName}) {
         return R.ok(${classname}Service.getById(${pk.lowerAttrName}));
     }
 
     /**
-    * 新增${comments}
-    * @param ${classname} ${comments}
-    * @return R
-    */
+     * 新增${comments}
+     * @param ${classname} ${comments}
+     * @return R
+     */
     @SysLog("新增${comments}")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_add')"${moduleName}_${pathName}_add')"${moduleName}_${pathName}_add')")
-    public R save(@RequestBody ${className} ${classname}){
+    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_add')")
+    public R save(@RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.save(${classname}));
     }
 
     /**
-    * 修改${comments}
-    * @param ${classname} ${comments}
-    * @return R
-    */
+     * 修改${comments}
+     * @param ${classname} ${comments}
+     * @return R
+     */
     @SysLog("修改${comments}")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_edit')"${moduleName}_${pathName}_edit')"${moduleName}_${pathName}_edit')")
-    public R updateById(@RequestBody ${className} ${classname}){
+    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_edit')")
+    public R updateById(@RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.updateById(${classname}));
     }
 
     /**
-    * 通过id删除${comments}
-    * @param ${pk.lowerAttrName}
-    * @return R
-    */
+     * 通过id删除${comments}
+     * @param ${pk.lowerAttrName}
+     * @return R
+     */
     @SysLog("删除${comments}")
     @DeleteMapping("/{${pk.lowerAttrName}}")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_del')"${moduleName}_${pathName}_del')"${moduleName}_${pathName}_del')")
-    public R removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}){
+    @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_del')")
+    public R removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {
         return R.ok(${classname}Service.removeById(${pk.lowerAttrName}));
     }
 

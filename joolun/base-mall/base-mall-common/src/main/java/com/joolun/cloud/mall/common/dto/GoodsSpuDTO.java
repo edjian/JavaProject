@@ -9,7 +9,10 @@
 package com.joolun.cloud.mall.common.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler;
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -56,7 +59,7 @@ public class GoodsSpuDTO implements Serializable {
     /**
    * 商品主图
    */
-	@TableField(el = "picUrls, typeHandler=com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler, jdbcType=VARCHAR")
+	@TableField(typeHandler = ArrayStringTypeHandler.class, jdbcType= JdbcType.VARCHAR)
     private String[] picUrls;
     /**
    * 是否上架商品（0为已上架 1为已下架）

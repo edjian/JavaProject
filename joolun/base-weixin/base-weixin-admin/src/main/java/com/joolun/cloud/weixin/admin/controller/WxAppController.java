@@ -84,15 +84,18 @@ public class WxAppController {
 	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_add')")
 	public R save(@RequestBody WxApp wxApp) {
 		wxAppService.save(wxApp);
-		WxMpConfiguration.removeWxMpService(wxApp.getId());
-		try {
-			WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
-			String sceneStr = "1";
-			WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
-			wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("新增微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
+		//公众号二维码获取
+		if(ConfigConstant.WX_APP_TYPE_2.equals(wxApp.getAppType())){
+			WxMpConfiguration.removeWxMpService(wxApp.getId());
+			try {
+				WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
+				String sceneStr = "1";
+				WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
+				wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
+			} catch (WxErrorException e) {
+				e.printStackTrace();
+				log.error("新增微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
+			}
 		}
 		return R.ok();
 	}
@@ -111,14 +114,17 @@ public class WxAppController {
 		WxMpConfiguration.removeWxMpService(wxApp.getId());
 		WxPayConfiguration.removeWxPayService(wxApp.getId());
 		WxMaConfiguration.removeWxMaService(wxApp.getId());
-		try {
-			WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
-			String sceneStr = "1";
-			WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
-			wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("修改微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
+		//公众号二维码获取
+		if(ConfigConstant.WX_APP_TYPE_2.equals(wxApp.getAppType())){
+			try {
+				WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
+				String sceneStr = "1";
+				WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
+				wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
+			} catch (WxErrorException e) {
+				e.printStackTrace();
+				log.error("修改微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
+			}
 		}
 		return R.ok();
 	}

@@ -9,6 +9,7 @@
 package com.joolun.cloud.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -17,6 +18,8 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -85,4 +88,13 @@ public class ShoppingCart extends Model<ShoppingCart> {
 	 * 图片
 	 */
 	private String picUrl;
+
+	@TableField(exist = false)
+	private GoodsSpu goodsSpu;
+
+	@TableField(exist = false)
+	private GoodsSku goodsSku;
+
+	@TableField(exist = false)
+	private List<GoodsSkuSpecValue> specs;
 }

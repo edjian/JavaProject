@@ -6,7 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<scroll-view scroll-y scroll-with-animation bindscrolltolower="scrollToLower">
+<view>
   <view class="cu-list menu-avatar comment">
     <view class="cu-item" wx:for="{{goodsAppraises}}" wx:key>
       <view class="cu-avatar round" style="background-image:url({{item.headimgUrl}})">{{!item.headimgUrl ? '头' : ''}}</view>
@@ -31,4 +31,4 @@
     </view>
   </view>
   <view class="cu-load bg-gray {{loadmore?'loading':'over'}}"></view>
-</scroll-view>
+</view>

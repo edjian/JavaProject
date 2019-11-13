@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.dto.GoodsSkuDTO;
 import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
@@ -22,7 +23,6 @@ import com.joolun.cloud.mall.admin.service.GoodsSkuService;
 import com.joolun.cloud.mall.admin.service.GoodsSkuSpecValueService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
-import com.joolun.cloud.mall.common.vo.GoodsSpuVO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -49,6 +49,7 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	private final GoodsSkuSpecValueService goodsSkuSpecValueService;
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public boolean removeById(Serializable id) {
 		super.removeById(id);
 		//删除SpuSpec、SkuSpecValue、Sku
@@ -124,7 +125,7 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	}
 
 	@Override
-	public GoodsSpuVO getById2(String id) {
+	public GoodsSpu getById2(String id) {
 		return baseMapper.selectById2(id);
 	}
 
@@ -161,7 +162,7 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	 * @param goodsSkuDTO
 	 */
 	void priceUpDown(GoodsSpu goodsSpu,GoodsSkuDTO goodsSkuDTO){
-		if(String.valueOf(Boolean.TRUE).equals(goodsSkuDTO.getEnable())){
+		if(CommonConstants.YES.equals(goodsSkuDTO.getEnable())){
 			BigDecimal priceDown = goodsSpu.getPriceDown();
 			if(priceDown == null || priceDown.compareTo(goodsSkuDTO.getSalesPrice()) == 1){
 				goodsSpu.setPriceDown(goodsSkuDTO.getSalesPrice());

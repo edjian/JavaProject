@@ -108,6 +108,18 @@
                                      size="small"
                                      plain>用户管理</el-button>
                         </router-link>
+                        <router-link class="mag_left" v-if="permissions.mall_noticeitem_index" :to="{path:'/views/mall/noticeitem/index',query:{id:props.row.id ,noticeType:'1' , name : '['+props.row.name+']首页轮播图' }}">
+                          <el-button type="primary"
+                                     icon="el-icon-picture-outline"
+                                     size="small"
+                                     plain>首页轮播图</el-button>
+                        </router-link>
+                        <router-link class="mag_left" v-if="permissions.mall_noticeitem_index" :to="{path:'/views/mall/noticeitem/index-text',query:{id:props.row.id ,noticeType:'2' , name : '['+props.row.name+']首页公告' }}">
+                          <el-button type="primary"
+                                     icon="el-icon-chat-line-round"
+                                     size="small"
+                                     plain>首页公告</el-button>
+                        </router-link>
                       </div>
                     </div>
                   </el-col>

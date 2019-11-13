@@ -38,6 +38,7 @@ public class SysLogController {
 	 * @return
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_log_index')")
 	public R getLogPage(Page page, SysLog sysLog) {
 		return R.ok(sysLogService.page(page, Wrappers.query(sysLog)));
 	}

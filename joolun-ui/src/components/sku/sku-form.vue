@@ -132,7 +132,7 @@
     created() {
       if(this.goodsSku.length > 0){
         this.goodsSkuOne = this.goodsSku[0]
-        this.goodsSkuOne.enable = true
+        this.goodsSkuOne.enable = '1'
       }else{
         this.goodsSkuOne = {
           salesPrice: 0,
@@ -141,7 +141,7 @@
           stock: 0,
           weight: undefined,
           volume: undefined,
-          enable: true
+          enable: '1'
         }
       }
     },

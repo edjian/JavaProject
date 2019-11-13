@@ -36,6 +36,7 @@ public class SysThirdPartyController {
 	 * @return
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_third_party_index')")
 	public R getSysThirdPartyPage(Page page, SysThirdParty sysThirdParty) {
 		return R.ok(sysThirdPartyService.page(page, Wrappers.query(sysThirdParty)));
 	}
@@ -48,6 +49,7 @@ public class SysThirdPartyController {
 	 * @return R
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("@ato.hasAuthority('sys_third_party_get')")
 	public R getById(@PathVariable("id") String id) {
 		return R.ok(sysThirdPartyService.getById(id));
 	}

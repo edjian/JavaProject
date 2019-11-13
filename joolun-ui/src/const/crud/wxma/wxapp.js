@@ -24,19 +24,6 @@ export const tableOption = {
   defaultExpandAll: true,
   column: [
     {
-      label: '所属机构',
-      prop: 'organId',
-      formslot: true,
-      hide: true,
-      span: 24,
-      sortable:true,
-      rules: [{
-        required: true,
-        message: '请选择机构',
-        trigger: 'change'
-      }]
-    },
-    {
       label: '小程序名称',
       prop: 'name',
       align:'left',
@@ -49,79 +36,107 @@ export const tableOption = {
       }]
     },
     {
-      label: '小程序码',
-      prop: 'qrCode',
-      type:'upload',
-      hide:true,
-      listType: 'picture-img',
-      oss: 'ali',
-      loadText: '图上上传中，请稍等',
-      tip: '只能上传jpg/png文件，且不超过100kb'
-    },
-    {
       label: '微信原始标识',
       prop: 'weixinSign',
       search:true,
-      hide:true,
-      rules: [{
-        required: true,
-        message: "请输入微信原始标识",
-        trigger: "blur"
-      }]
+      hide:true
     },
     {
       label: 'AppID',
       prop: 'id',
       search:true,
-      hide:true,
-      rules: [{
-        required: true,
-        message: "请输入AppID",
-        trigger: "blur"
-      }]
-    },
-    {
-      label: 'AppSecret',
-      prop: 'secret',
       hide:true
+    }
+  ],
+  group:[
+    {
+      icon: 'el-icon-s-order',
+      label: '基本信息',
+      prop: 'group1',
+      column: [
+        {
+          label: '小程序码',
+          prop: 'qrCode',
+          type:'upload',
+          span: 24,
+          listType: 'picture-img',
+          action: '/admin/file/upload?dir=wx/',
+          propsHttp: {
+            url: 'link'
+          },
+          loadText: '图上上传中，请稍等',
+          tip: '只能上传jpg/png文件，且不超过100kb'
+        },
+        {
+          label: '所属机构',
+          prop: 'organId',
+          formslot: true,
+          rules: [{
+            required: true,
+            message: '请选择机构',
+            trigger: 'change'
+          }]
+        },
+        {
+          label: '小程序名称',
+          prop: 'name',
+          align:'left',
+          rules: [{
+            required: true,
+            message: "请输入小程序名称",
+            trigger: "blur"
+          }]
+        },
+        {
+          label: '微信原始标识',
+          prop: 'weixinSign',
+          rules: [{
+            required: true,
+            message: "请输入微信原始标识",
+            trigger: "blur"
+          }]
+        },
+        {
+          label: 'AppID',
+          prop: 'id',
+          rules: [{
+            required: true,
+            message: "请输入AppID",
+            trigger: "blur"
+          }]
+        },
+        {
+          label: 'AppSecret',
+          prop: 'secret',
+          rules: [{
+            required: true,
+            message: "请输入AppID",
+            trigger: "blur"
+          }]
+        },
+        {
+          label: '主体名称',
+          prop: 'principalName'
+        },
+        {
+          label: '备注信息',
+          prop: 'remarks'
+        },
+      ]
     },
     {
-      label: '创建时间',
-      prop: 'createTime',
-      type: 'datetime',
-      sortable:true,
-      hide:true,
-      editDisplay:false,
-      addDisplay:false
-    },
-    {
-      label: '更新时间',
-      prop: 'updateTime',
-      type: 'datetime',
-      sortable:true,
-      hide:true,
-      editDisplay:false,
-      addDisplay:false
-    },
-    {
-      label: '主体名称',
-      prop: 'principalName',
-      hide:true
-    },
-    {
-      label: '支付商户号',
-      prop: 'mchId',
-      hide:true
-    },
-    {
-      label: '支付商户密钥',
-      prop: 'mchKey',
-      hide:true
-    },
-    {
-      label: '备注信息',
-      prop: 'remarks',
-      hide:true
-    },
-  ]
+      icon: 'el-icon-s-order',
+      label: '支付配置',
+      prop: 'group2',
+      column: [
+        {
+          label: '商户号',
+          prop: 'mchId'
+        },
+        {
+          label: '商户密钥',
+          prop: 'mchKey'
+        },
+      ]
+    }]
 }

@@ -3,7 +3,7 @@
     <basic-container>
       <el-row :gutter="18">
         <el-col :span="4">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" style="margin-bottom: 10px">
             <el-select v-model="q.id" placeholder="请选择数据源" @change="searchChange">
               <el-option
                 v-for="item in dataSourceList"
@@ -35,6 +35,7 @@
                  :data="tableData"
                  :table-loading="tableLoading"
                  :option="tableOption"
+                 @on-load="getPage"
                  @sort-change="sortChange"
                  @refresh-change="refreshChange"
                  @current-change="currentChange">

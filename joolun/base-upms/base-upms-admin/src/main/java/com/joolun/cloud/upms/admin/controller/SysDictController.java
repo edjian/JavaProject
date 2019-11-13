@@ -41,6 +41,7 @@ public class SysDictController {
 	 * @return 字典信息
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("@ato.hasAuthority('sys_dict_get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysDictService.getById(id));
 	}
@@ -52,6 +53,7 @@ public class SysDictController {
 	 * @return 分页对象
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_dict_index')")
 	public R<IPage> getDictPage(Page page, SysDict sysDict) {
 		return R.ok(sysDictService.page(page, Wrappers.query(sysDict)));
 	}

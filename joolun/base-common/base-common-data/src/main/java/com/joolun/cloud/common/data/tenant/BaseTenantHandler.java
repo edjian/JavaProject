@@ -24,7 +24,7 @@ public class BaseTenantHandler implements TenantHandler {
 	 * @return 租户值
 	 */
 	@Override
-	public Expression getTenantId() {
+	public Expression getTenantId(boolean where) {
 		String tenantId = TenantContextHolder.getTenantId();
 		log.debug("当前租户为 >> {}", tenantId);
 		if (StrUtil.isBlank(tenantId)) {

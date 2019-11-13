@@ -12,7 +12,7 @@
     删除订单
   </button>
   <button class="cu-btn round line-grey margin-right" bindtap="orderCancel" loading="{{loading}}" 
-  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '0'}}">
+  disabled="{{loading}}" type="" wx:if="{{orderInfo.isPay == '0' && !orderInfo.status}}">
     取消订单
   </button>
   <button class="cu-btn round line-grey margin-right" bindtap="orderLogistics" loading="{{loading}}" 
@@ -20,7 +20,7 @@
     查看物流
   </button>
   <button class="cu-btn round line-red margin-right" bindtap="unifiedOrder" loading="{{loading}}" 
-  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '0'}}">
+  disabled="{{loading}}" type="" wx:if="{{orderInfo.isPay == '0' && !orderInfo.status}}">
     付款
   </button>
   <button class="cu-btn round line-red margin-right" bindtap="urgeOrder" loading="{{loading}}" 
@@ -32,7 +32,7 @@
     确认收货
   </button>
   <button class="cu-btn round line-red margin-right" bindtap="orderAppraise" loading="{{loading}}" 
-  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '3'}}">
+  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '3' && orderInfo.appraisesStatus == '0'}}">
     评价
   </button>
 </view>

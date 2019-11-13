@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.joolun</groupId>
 		<artifactId>joolun</artifactId>
-		<version>2.2.1</version>
+		<version>2.2.2</version>
 	</parent>
 
 	<artifactId>base-auth</artifactId>
@@ -16,12 +16,12 @@
 	<dependencies>
 		<!--注册中心客户端-->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
+			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 		<!--配置中心客户端-->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
+			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
 		<!--upms api、model 模块-->
@@ -49,15 +49,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<!--druid-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+		</dependency>
 		<!--freemarker-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-		<!--spring security 、oauth、jwt依赖-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-security</artifactId>
 		</dependency>
 		<!--web 模块-->
 		<dependency>
@@ -68,11 +68,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-undertow</artifactId>
-		</dependency>
-		<!-- druid 连接池 -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
 		</dependency>
 	</dependencies>
 

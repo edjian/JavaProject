@@ -29,24 +29,9 @@
 		<result property="enable" column="enable"/>
 	</resultMap>
 
-	<resultMap id="goodsSkuVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSkuVO">
-		<id property="id" column="id"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="tenantId" column="tenant_id"/>
-		<result property="skuCode" column="sku_code"/>
-		<result property="spuId" column="spu_id"/>
-		<result property="picUrl" column="pic_url"/>
-		<result property="salesPrice" column="sales_price"/>
-		<result property="marketPrice" column="market_price"/>
-		<result property="costPrice" column="cost_price"/>
-		<result property="stock" column="stock"/>
-		<result property="weight" column="weight"/>
-		<result property="volume" column="volume"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="enable" column="enable"/>
-		<collection property="specs" ofType="com.joolun.cloud.mall.common.vo.GoodsSkuSpecValueVO"
-					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper.listGoodsSkuSpecValueVoBySkuId"
+	<resultMap id="goodsSkuMap2" extends="goodsSkuMap" type="com.joolun.cloud.mall.common.entity.GoodsSku">
+		<collection property="specs" ofType="com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue"
+					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper.listGoodsSkuSpecValueBySkuId"
 					column="{skuId=id}">
 		</collection>
 	</resultMap>
@@ -69,27 +54,9 @@
 		sku.`enable`
 	</sql>
 
-	<sql id="goodsSkuVoPageSql">
-		sku.`id`,
-		sku.`create_time`,
-		sku.`update_time`,
-		sku.`tenant_id`,
-		sku.`sku_code`,
-		sku.`spu_id`,
-		sku.`pic_url`,
-		sku.`sales_price`,
-		sku.`market_price`,
-		sku.`cost_price`,
-		sku.`stock`,
-		sku.`weight`,
-		sku.`volume`,
-		sku.`del_flag`,
-		sku.`enable`
-	</sql>
-
-	<select id="listGoodsSkuVoBySpuId" resultMap="goodsSkuVoMap">
+	<select id="listGoodsSkuBySpuId" resultMap="goodsSkuMap2">
 		SELECT
-		<include refid="goodsSkuVoPageSql"/>
+		<include refid="goodsSkuSql"/>
 		FROM
 		goods_sku sku
 		WHERE sku.`spu_id` = #{spuId}
@@ -100,7 +67,7 @@
 		<include refid="goodsSkuSql"/>
 		FROM
 		goods_sku sku
-		WHERE sku.`enable` = 'true'
+		WHERE sku.`enable` = '1'
 			AND sku.`id` = #{id}
 	</select>
 </mapper>

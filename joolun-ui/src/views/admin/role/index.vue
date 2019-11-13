@@ -8,6 +8,7 @@
                  v-model="form"
                  :table-loading="listLoading"
                  :before-open="handleOpenBefore"
+                 :permission="permissionList"
                  @on-load="getPage"
                  @sort-change="sortChange"
                  @search-change="searchChange"

@@ -17,7 +17,6 @@ import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.UserCollect;
-import com.joolun.cloud.mall.common.vo.GoodsSpuVO;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,11 +93,11 @@ public class GoodsSpuApi {
 			return checkThirdSession;
 		}
 		//查询用户是否收藏
-		GoodsSpuVO goodsSpuVO = goodsSpuService.getById2(id);
+		GoodsSpu goodsSpu = goodsSpuService.getById2(id);
 		userCollect.setType(MallConstants.COLLECT_TYPE_1);
 		userCollect.setRelationId(id);
-		goodsSpuVO.setCollectId(userCollectMapper.selectCollectId(userCollect));
-        return R.ok(goodsSpuVO);
+		goodsSpu.setCollectId(userCollectMapper.selectCollectId(userCollect));
+        return R.ok(goodsSpu);
     }
 
 }

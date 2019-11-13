@@ -48,6 +48,7 @@ public class SysOrganController {
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/tree")
+	@PreAuthorize("@ato.hasAuthority('sys_organ_index')")
 	public R getTree() {
 		return R.ok(sysOrganService.selectTree());
 	}

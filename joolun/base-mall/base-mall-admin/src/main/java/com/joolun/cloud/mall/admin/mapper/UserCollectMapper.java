@@ -22,7 +22,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserCollectMapper extends BaseMapper<UserCollect> {
 
-	IPage<UserCollect> selectPage2(IPage<UserCollect> page, @Param("ew") Wrapper<UserCollect> queryWrapper);
+	IPage<UserCollect> selectPage2(IPage<UserCollect> page,  @Param("query") UserCollect userCollect);
 
 	String selectCollectId(@Param("query") UserCollect userCollect);
 }

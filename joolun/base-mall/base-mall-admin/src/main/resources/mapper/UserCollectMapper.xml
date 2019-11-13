@@ -62,6 +62,13 @@
 		SELECT
 		<include refid="userCollectSql"/>
 		FROM user_collect user_collect
-		${ew.customSqlSegment}
+		<where>
+			<if test="query.type != null">
+				AND user_collect.`type` = #{query.type}
+			</if>
+			<if test="query.userId != null">
+				AND user_collect.`user_id` = #{query.userId}
+			</if>
+		</where>
 	</select>
 </mapper>

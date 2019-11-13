@@ -7,7 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 /**
- * <version>2.2.1</version>
+ * <version>2.2.2</version>
  */
 import __config from './config/env'
 import api from './utils/api'
@@ -44,7 +44,7 @@ App({
           .then(res => {
             resolve("success")
           })
-      } else {//无thirdSession，说明已登录，返回初始化成功
+      } else {//有thirdSession，说明已登录，返回初始化成功
         resolve("success")
       }
     })

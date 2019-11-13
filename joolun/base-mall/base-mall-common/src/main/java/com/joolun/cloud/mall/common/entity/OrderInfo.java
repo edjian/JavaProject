@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,6 +59,10 @@ public class OrderInfo extends Model<OrderInfo> {
    */
     private LocalDateTime updateTime;
 	/**
+	 * 应用类型1、小程序
+	 */
+	private String appType;
+	/**
 	 * 应用ID
 	 */
 	private String appId;
@@ -77,6 +82,10 @@ public class OrderInfo extends Model<OrderInfo> {
    * 物流金额
    */
     private BigDecimal logisticsPrice;
+	/**
+	 * 支付方式1、货到付款；2、在线支付
+	 */
+	private String paymentWay;
     /**
    * 付款方式1、微信支付
    */
@@ -105,10 +114,22 @@ public class OrderInfo extends Model<OrderInfo> {
    * 备注
    */
     private String remark;
+	/**
+	 * 是否支付0、未支付 1、已支付
+	 */
+	private String isPay;
     /**
    * 状态0、待付款 1、待发货 2、待收货 3、已完成 4、已关闭
    */
     private String status;
+	/**
+	 * 是否退款1、是；0、否
+	 */
+	private String isRefund;
+	/**
+	 * 评价状态0、未评；1、已评；2、已追评
+	 */
+	private String appraisesStatus;
 	/**
 	 * 状态0、待付款 1、待发货 2、待收货 3、已完成 4、已关闭
 	 */
@@ -116,6 +137,9 @@ public class OrderInfo extends Model<OrderInfo> {
 	private String statusDesc;
 
 	public String getStatusDesc() {
+		if(CommonConstants.NO.equals(this.isPay) && this.status == null){
+			return "待付款";
+		}
 		if(this.status == null){
 			return null;
 		}

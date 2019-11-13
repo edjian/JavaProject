@@ -61,6 +61,7 @@ public class SysMenuController {
 	 * @return 树形菜单
 	 */
 	@GetMapping(value = "/tree")
+	@PreAuthorize("@ato.hasAuthority('sys_menu_index')")
 	public R getTree() {
 		Set<MenuVO> all = new HashSet<>();
 		SecurityUtils.getRoles()

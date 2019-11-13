@@ -9,12 +9,16 @@
 package com.joolun.cloud.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.mall.common.vo.GoodsSpecLeafVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -55,5 +59,14 @@ private static final long serialVersionUID = 1L;
    * 最后更新时间
    */
     private LocalDateTime updateTime;
+
+	@TableField(exist = false)
+	private String spuId;
+
+	@TableField(exist = false)
+	private String value;
+
+	@TableField(exist = false)
+	private List<GoodsSpecLeafVO> leaf;
   
 }

@@ -26,35 +26,22 @@
 		<result property="specInfo" column="spec_info"/>
 		<result property="picUrl" column="pic_url"/>
 	</resultMap>
-	<resultMap id="shoppingCartMap2" type="com.joolun.cloud.mall.common.vo.ShoppingCartVO">
-		<id property="id" column="id"/>
-		<result property="tenantId" column="tenant_id"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="userId" column="user_id"/>
-		<result property="spuId" column="spu_id"/>
-		<result property="skuId" column="sku_id"/>
-		<result property="quantity" column="quantity"/>
-		<result property="addPrice" column="add_price"/>
-		<result property="spuName" column="spu_name"/>
-		<result property="specInfo" column="spec_info"/>
-		<result property="picUrl" column="pic_url"/>
-		<collection property="goodsSpu" ofType="com.joolun.cloud.mall.common.vo.GoodsSpuVO"
+	<resultMap id="shoppingCartMap2" extends="shoppingCartMap" type="com.joolun.cloud.mall.common.entity.ShoppingCart">
+		<collection property="goodsSpu" ofType="com.joolun.cloud.mall.common.entity.GoodsSpu"
 					select="com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper.selectOneByShoppingCart"
 					column="{id=spu_id}">
 		</collection>
-		<collection property="goodsSku" ofType="com.joolun.cloud.mall.common.vo.GoodsSkuVO"
+		<collection property="goodsSku" ofType="com.joolun.cloud.mall.common.entity.GoodsSku"
 					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper.selectOneByShoppingCart"
 					column="{id=sku_id}">
 		</collection>
-		<collection property="specs" ofType="com.joolun.cloud.mall.common.vo.GoodsSkuSpecValueVO"
-					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper.listGoodsSkuSpecValueVoBySkuId"
+		<collection property="specs" ofType="com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue"
+					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper.listGoodsSkuSpecValueBySkuId"
 					column="{skuId=sku_id}">
 		</collection>
 	</resultMap>
 
-	<sql id="shoppingCartVOSql">
+	<sql id="shoppingCartSql2">
 		obj.`id`,
 		obj.`tenant_id`,
 		obj.`del_flag`,
@@ -72,7 +59,7 @@
 
 	<select id="selectVoPage" resultMap="shoppingCartMap2">
 		SELECT
-			<include refid="shoppingCartVOSql"/>
+			<include refid="shoppingCartSql2"/>
 		FROM shopping_cart obj
 		<where>
 			<if test="ew.userId != null and ew.userId != ''">

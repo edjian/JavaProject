@@ -21,16 +21,9 @@
 		<result property="updateTime" column="update_time"/>
 	</resultMap>
 
-	<resultMap id="goodsSkuSpecValueVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSkuSpecValueVO">
-		<id property="id" column="id"/>
-		<result property="tenantId" column="tenant_id"/>
-		<result property="spuId" column="spu_id"/>
-		<result property="skuId" column="sku_id"/>
+	<resultMap id="goodsSkuSpecValueMap2" extends="goodsSkuSpecValueMap" type="com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue">
 		<result property="specId" column="spec_id"/>
-		<result property="specValueId" column="spec_value_id"/>
 		<result property="specValueName" column="spec_value_name"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateTime" column="update_time"/>
 	</resultMap>
 
 	<resultMap id="goodsSpecVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSpecLeafVO">
@@ -38,7 +31,7 @@
 		<result property="value" column="spec_value_name"/>
 	</resultMap>
 
-	<sql id="goodsSkuSpecValueVoSql">
+	<sql id="goodsSkuSpecValueSql2">
 		ssv.`id`,
 		ssv.`tenant_id`,
 		ssv.`spu_id`,
@@ -50,9 +43,9 @@
 		gsv.`name` AS `spec_value_name`
 	</sql>
 
-	<select id="listGoodsSkuSpecValueVoBySkuId" resultMap="goodsSkuSpecValueVoMap">
+	<select id="listGoodsSkuSpecValueBySkuId" resultMap="goodsSkuSpecValueMap2">
 		SELECT
-		<include refid="goodsSkuSpecValueVoSql"/>
+		<include refid="goodsSkuSpecValueSql2"/>
 		FROM
 		goods_sku_spec_value ssv
 		LEFT JOIN `goods_spec_value` gsv

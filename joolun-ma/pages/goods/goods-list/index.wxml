@@ -6,7 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<view class="cu-bar search bg-white">
+<view class="cu-bar search bg-white fixed">
   <view class="search-form round">
     <text class="cuIcon-search"></text>
     <navigator class="response" hover-class='none' url='/pages/base/search/index'>
@@ -14,13 +14,12 @@
     </navigator>
   </view>
   <view class="action">
-     <view class="text-xxl">
+    <view class="text-xxl">
       <text class="cuIcon-{{viewType ? 'list' : 'cascades'}} text-red" bindtap="viewTypeEdit"></text>
-     </view>
+    </view>
   </view>
 </view>
-
-<view class="cu-bar justify-center bg-white">
+<view class="cu-bar justify-center bg-white fixed" style="margin-top:80rpx">
   <view class="grid response text-center align-start">
     <view class="flex-sub padding-sm margin-xs radius text-red text-bold">{{title}}</view>
     <view class="flex-sub padding-sm margin-xs radius">
@@ -50,8 +49,7 @@
     </view>
   </view>
 </view>
-
-<scroll-view scroll-y scroll-with-animation style="height:calc(100vh - 178rpx)" bindscrolltolower="scrollToLower">
+<view style="margin-top:160rpx">
   <view wx:if="{{viewType}}">
     <goods-card goodsList="{{goodsList}}"/>
   </view>
@@ -59,4 +57,4 @@
     <goods-row goodsList="{{goodsList}}"/>
   </view>
   <view class="cu-load bg-gray {{loadmore?'loading':'over'}}"></view>
-</scroll-view>
+</view>

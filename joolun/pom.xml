@@ -5,7 +5,7 @@
 
 	<groupId>com.joolun</groupId>
 	<artifactId>joolun</artifactId>
-	<version>2.2.1</version>
+	<version>2.2.2</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -14,14 +14,19 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.1.5.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+		<docker.version>1.2.0</docker.version>
+		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
+		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
+		<mybatis-plus.version>3.2.0</mybatis-plus.version>
+		<druid.version>1.1.21</druid.version>
+		<hutool.version>4.5.16</hutool.version>
+		<weixin-java.version>3.5.0</weixin-java.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<spring-boot-admin.version>2.1.4</spring-boot-admin.version>
-		<hutool.version>4.5.11</hutool.version>
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<swagger.fox.version>2.9.2</swagger.fox.version>
 		<swagger-bootstrap-ui.version>1.9.4</swagger-bootstrap-ui.version>
@@ -35,15 +40,12 @@
 		<security.oauth.auto.version>2.1.2.RELEASE</security.oauth.auto.version>
 		<activiti.version>5.22.0</activiti.version>
 		<poi.version>3.15</poi.version>
-		<mybatis-plus.version>3.1.0</mybatis-plus.version>
-		<druid.version>1.1.17</druid.version>
 		<mysql.connector.version>8.0.16</mysql.connector.version>
 		<swagger.core.version>1.5.22</swagger.core.version>
-		<weixin-java.version>3.5.0</weixin-java.version>
 		<spring-boot-starter-websocket.version>2.1.5.RELEASE</spring-boot-starter-websocket.version>
 		<oh-my-email.version>0.0.4</oh-my-email.version>
 		<snakeyaml.version>1.24</snakeyaml.version>
-		<spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
+		<aliyun-sdk-oss.version>3.5.0</aliyun-sdk-oss.version>
 	</properties>
 
 	<dependencies>
@@ -98,6 +100,7 @@
 		<module>base-codegen</module>
 		<module>base-weixin</module>
 		<module>base-mall</module>
+		<module>base-cms</module>
 	</modules>
 
 	<dependencyManagement>
@@ -153,6 +156,11 @@
 				<artifactId>base-mall-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.joolun</groupId>
+				<artifactId>base-cms-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -177,7 +185,7 @@
 			</dependency>
 			<!--spring cloud alibaba-->
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
+				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
 				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>
@@ -330,6 +338,12 @@
 				<artifactId>kaptcha</artifactId>
 				<version>${kaptcha.version}</version>
 			</dependency>
+			<!--阿里oss-->
+			<dependency>
+				<groupId>com.aliyun.oss</groupId>
+				<artifactId>aliyun-sdk-oss</artifactId>
+				<version>${aliyun-sdk-oss.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -354,6 +368,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

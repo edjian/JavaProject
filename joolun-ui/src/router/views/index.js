@@ -109,5 +109,27 @@ export default [{
       component: () =>
         import ( /* webpackChunkName: "views" */ '@/views/wxma/wxuser/index')
     }]
+}, {
+  path: '/views/mall',
+  component: Layout,
+  children: [
+    {
+      path: 'noticeitem/index',
+      name: '轮播通知',
+      meta: {
+        keepAlive: true
+      },
+      component: () =>
+        import ( /* webpackChunkName: "views" */ '@/views/mall/noticeitem/index')
+    },
+    {
+      path: 'noticeitem/index-text',
+      name: '公告通知',
+      meta: {
+        keepAlive: true
+      },
+      component: () =>
+        import ( /* webpackChunkName: "views" */ '@/views/mall/noticeitem/index-text')
+    }]
 }
 ]

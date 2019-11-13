@@ -46,7 +46,7 @@ Page({
         this.setData({
           orderInfo: orderInfo
         })
-        if (orderInfo.status == '0' || orderInfo.status == '2') {//订单取消、确认收货倒计时
+        if ((orderInfo.isPay == '0' && !orderInfo.status) || orderInfo.status == '2') {//订单取消、确认收货倒计时
           this.setData({
             outTime: 1000 * orderInfo.outTime
           })

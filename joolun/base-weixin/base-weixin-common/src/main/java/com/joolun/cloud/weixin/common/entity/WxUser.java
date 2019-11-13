@@ -13,8 +13,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.common.data.mybatis.typehandler.ArrayLongTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.JdbcType;
+
 import java.time.LocalDateTime;
 
 /**
@@ -137,7 +140,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 标签列表
    */
-	@TableField(el = "tagidList, typeHandler=com.joolun.cloud.common.data.mybatis.typehandler.ArrayLongTypeHandler, jdbcType=VARCHAR")
+	@TableField(typeHandler = ArrayLongTypeHandler.class, jdbcType= JdbcType.VARCHAR)
     private Long[] tagidList;
 	/**
 	 * 二维码扫码场景

@@ -44,7 +44,7 @@ public class GenUtils {
 	private final String SERVICE_IMPL_JAVA_VM = "ServiceImpl.java.vm";
 	private final String CONTROLLER_JAVA_VM = "Controller.java.vm";
 	private final String MAPPER_XML_VM = "Mapper.xml.vm";
-	private final String MENU_SQL_VM = "menu.sql.vm";
+//	private final String MENU_SQL_VM = "menu.sql.vm";
 	private final String INDEX_VUE_VM = "index.vue.vm";
 	private final String API_JS_VM = "api.js.vm";
 	private final String CRUD_JS_VM = "crud.js.vm";
@@ -57,7 +57,7 @@ public class GenUtils {
 		templates.add("template/Service.java.vm");
 		templates.add("template/ServiceImpl.java.vm");
 		templates.add("template/Controller.java.vm");
-		templates.add("template/menu.sql.vm");
+//		templates.add("template/menu.sql.vm");
 
 		templates.add("template/index.vue.vm");
 		templates.add("template/api.js.vm");
@@ -255,9 +255,9 @@ public class GenUtils {
 			return CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + className + "Mapper.xml";
 		}
 
-		if (template.contains(MENU_SQL_VM)) {
-			return className.toLowerCase() + "_menu.sql";
-		}
+//		if (template.contains(MENU_SQL_VM)) {
+//			return className.toLowerCase() + "_menu.sql";
+//		}
 
 		if (template.contains(INDEX_VUE_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +

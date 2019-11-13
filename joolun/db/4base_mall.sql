@@ -86,7 +86,7 @@ CREATE TABLE `goods_sku` (
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `weight` decimal(10,2) DEFAULT NULL COMMENT '重量',
   `volume` decimal(10,2) DEFAULT NULL COMMENT '体积',
-  `enable` char(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'true' COMMENT '启用true/禁用false',
+  `enable` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '是否启用1、是；0否',
   `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
@@ -158,7 +158,7 @@ CREATE TABLE `goods_spu` (
   `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
   `spu_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'spu编码',
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'spu名字',
-  `sell_point` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '卖点',
+  `sell_point` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '卖点',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
   `category_first` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '一级分类ID',
   `category_second` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '二级分类ID',
@@ -172,6 +172,11 @@ CREATE TABLE `goods_spu` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `spec_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '0统一规格；1多规格',
   `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `points_give_switch` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '积分赠送开关（1开 0关）',
+  `points_give_num` int(11) DEFAULT NULL COMMENT '积分赠送数量',
+  `points_deduct_switch` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '积分抵扣开关（1开 0关）',
+  `points_deduct_scale` int(11) DEFAULT NULL COMMENT '积分抵扣商品金额比例（0~100）',
+  `points_deduct_amount` decimal(10,2) DEFAULT NULL COMMENT '1积分数可抵多少元',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='spu表';
@@ -195,6 +200,98 @@ CREATE TABLE `goods_spu_spec` (
 
 /*Data for the table `goods_spu_spec` */
 
+/*Table structure for table `material` */
+
+DROP TABLE IF EXISTS `material`;
+
+CREATE TABLE `material` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者ID',
+  `type` char(2) NOT NULL COMMENT '类型1、图片；2、视频',
+  `group_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '分组ID',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '素材名',
+  `url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '素材链接',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='素材库';
+
+/*Data for the table `material` */
+
+/*Table structure for table `material_group` */
+
+DROP TABLE IF EXISTS `material_group`;
+
+CREATE TABLE `material_group` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者ID',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分组名',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='素材分组';
+
+/*Data for the table `material_group` */
+
+/*Table structure for table `notice` */
+
+DROP TABLE IF EXISTS `notice`;
+
+CREATE TABLE `notice` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者ID',
+  `app_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '应用ID',
+  `type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类型1、小程序首页轮播图；2、小程序首页公告',
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '通知名',
+  `remarks` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '备注',
+  `enable` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '（1：开启；0：关闭）',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商城通知';
+
+/*Data for the table `notice` */
+
+/*Table structure for table `notice_item` */
+
+DROP TABLE IF EXISTS `notice_item`;
+
+CREATE TABLE `notice_item` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者ID',
+  `notice_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '通知ID',
+  `type` char(2) NOT NULL COMMENT '类型1、图片；2、视频；3、文字',
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '名称',
+  `url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '通知链接',
+  `page` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '跳转页面',
+  `content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '内容',
+  `tag` varchar(10) DEFAULT NULL COMMENT '标签',
+  `enable` char(2) DEFAULT NULL COMMENT '（1：开启；0：关闭）',
+  `sort` int(11) DEFAULT NULL COMMENT '排序字段',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='商城通知详情';
+
+/*Data for the table `notice_item` */
+
+insert  into `notice_item`(`id`,`tenant_id`,`del_flag`,`create_time`,`update_time`,`create_id`,`notice_id`,`type`,`name`,`url`,`page`,`content`,`tag`,`enable`,`sort`) values 
+('21ea872de3a8f788115ada60a10d2e29','1','0','2019-11-10 21:07:51','2019-11-10 21:07:51',NULL,'c4ea63ba2e009a428ec25e1b145c3da4','2',NULL,'','','7564745765476sdg你爱我仍自然人锻造欠自然人称作欠脸色','科','1',3),
+('78b58bde3529ca583af819122680379c','1','0','2019-11-10 21:01:53','2019-11-12 14:03:39',NULL,'c4ea63ba2e009a428ec25e1b145c3da4','2',NULL,'','/pages/goods/goods-detail/index?id=2835671ff031c18cb181b1a199f86b01','遥谁持彩练当空舞 脸腑而又热又遥望43 43 334 你爱我仍人','厅事','0',1),
+('7e60a12a378b533fdce77c5b9b8de8d3','1','0','2019-11-10 21:50:20','2019-11-12 14:02:33',NULL,'6a2720cacf551f859bf3be5d3930a287','1',NULL,'http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/22.png','',NULL,NULL,'1',2);
+
 /*Table structure for table `order_info` */
 
 DROP TABLE IF EXISTS `order_info`;
@@ -205,18 +302,22 @@ CREATE TABLE `order_info` (
   `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `app_type` char(2) NOT NULL COMMENT '应用类型1、小程序',
   `app_id` varchar(32) NOT NULL COMMENT '应用ID',
   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户id',
   `order_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单单号',
   `sales_price` decimal(10,2) NOT NULL COMMENT '销售总金额',
   `logistics_price` decimal(10,2) NOT NULL COMMENT '物流金额',
-  `payment_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '付款方式1、微信支付',
+  `payment_way` char(2) NOT NULL COMMENT '支付方式1、货到付款；2、在线支付',
+  `payment_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '支付类型1、微信支付；2、支付宝支付',
+  `is_pay` char(2) NOT NULL COMMENT '是否支付0、未支付 1、已支付',
+  `status` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '订单状态1、待发货 2、待收货 3、确认收货/已完成 5、已关闭',
+  `appraises_status` char(2) DEFAULT NULL COMMENT '评价状态0、未评；1、已评；2、已追评',
   `payment_price` decimal(10,2) NOT NULL COMMENT '支付金额',
   `payment_time` datetime DEFAULT NULL COMMENT '付款时间',
   `delivery_time` datetime DEFAULT NULL COMMENT '发货时间',
   `receiver_time` datetime DEFAULT NULL COMMENT '收货时间',
   `closing_time` datetime DEFAULT NULL COMMENT '成交时间',
-  `status` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态0、待付款 1、待发货 2、待收货 3、待评价 4、已完成 5、已关闭',
   `user_message` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '买家留言',
   `logistics_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '物流id',
   `transaction_id` varchar(32) DEFAULT NULL COMMENT '支付交易ID',
@@ -296,6 +397,30 @@ CREATE TABLE `order_logistics_detail` (
 
 /*Data for the table `order_logistics_detail` */
 
+/*Table structure for table `order_refunds` */
+
+DROP TABLE IF EXISTS `order_refunds`;
+
+CREATE TABLE `order_refunds` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者ID',
+  `order_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单ID',
+  `order_item_id` varchar(32) DEFAULT NULL COMMENT '订单详情ID',
+  `status` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '退款状态1、申请中 2、同意 3、拒绝',
+  `refund_amount` decimal(10,2) NOT NULL COMMENT '退款金额',
+  `refund_trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '退款流水号',
+  `refund_reson` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '退款原因',
+  `refuse_refund_reson` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '拒绝退款原因',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='订单退款记录表';
+
+/*Data for the table `order_refunds` */
+
 /*Table structure for table `shopping_cart` */
 
 DROP TABLE IF EXISTS `shopping_cart`;
@@ -364,6 +489,33 @@ CREATE TABLE `user_collect` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='用户收藏';
 
 /*Data for the table `user_collect` */
+
+/*Table structure for table `vip_user` */
+
+DROP TABLE IF EXISTS `vip_user`;
+
+CREATE TABLE `vip_user` (
+  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号码',
+  `app_type` char(2) NOT NULL COMMENT '来源应用类型1、小程序；2、公众号',
+  `app_id` char(2) NOT NULL COMMENT '来源应用id',
+  `vip_grade` smallint(6) DEFAULT NULL COMMENT '会员等级',
+  `points_current` int(11) DEFAULT NULL COMMENT '当前积分',
+  `points_accrued` int(11) DEFAULT NULL COMMENT '累积积分',
+  `amount_accrued` decimal(10,2) DEFAULT NULL COMMENT '累积消费金额',
+  `number_accrued` int(11) DEFAULT NULL COMMENT '累积消费次数',
+  `nick_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '昵称',
+  `sex` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '性别（1：男，2：女，0：未知）',
+  `headimg_url` varbinary(1000) DEFAULT NULL COMMENT '头像',
+  PRIMARY KEY (`id`,`phone`),
+  KEY `ids_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='vip用户';
+
+/*Data for the table `vip_user` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

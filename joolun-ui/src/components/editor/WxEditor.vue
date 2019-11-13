@@ -98,3 +98,8 @@
     methods: {}
   }
 </script>
+<style>
+  .fr-wrapper > div[style*='z-index: 9999'] {
+    display: none;
+  }
+</style>

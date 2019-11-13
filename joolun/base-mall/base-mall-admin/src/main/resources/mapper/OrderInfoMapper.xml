@@ -17,11 +17,13 @@
 		<result property="delFlag" column="del_flag"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
+		<result property="appType" column="app_type"/>
 		<result property="appId" column="app_id"/>
 		<result property="userId" column="user_id"/>
 		<result property="orderNo" column="order_no"/>
 		<result property="salesPrice" column="sales_price"/>
 		<result property="logisticsPrice" column="logistics_price"/>
+		<result property="paymentWay" column="payment_way"/>
 		<result property="paymentType" column="payment_type"/>
 		<result property="paymentPrice" column="payment_price"/>
 		<result property="paymentTime" column="payment_time"/>
@@ -31,15 +33,18 @@
 		<result property="logisticsId" column="logistics_id"/>
 		<result property="transactionId" column="transaction_id"/>
 		<result property="remark" column="remark"/>
+		<result property="isPay" column="is_pay"/>
 		<result property="status" column="status"/>
+		<result property="isRefund" column="is_refund"/>
+		<result property="appraisesStatus" column="appraises_status"/>
 		<result property="userMessage" column="user_message"/>
+	</resultMap>
+
+	<resultMap id="orderInfoMap2" extends="orderInfoMap" type="com.joolun.cloud.mall.common.entity.OrderInfo">
 		<collection property="listOrderItem" ofType="com.joolun.cloud.mall.common.entity.OrderItem"
 					select="com.joolun.cloud.mall.admin.mapper.OrderItemMapper.selectList2"
 					column="{orderId=id}">
 		</collection>
-	</resultMap>
-
-	<resultMap id="orderInfoMap2" extends="orderInfoMap" type="com.joolun.cloud.mall.common.entity.OrderInfo">
 		<collection property="orderLogistics" ofType="com.joolun.cloud.mall.common.entity.OrderLogistics"
 					select="com.joolun.cloud.mall.admin.mapper.OrderLogisticsMapper.selectById"
 					column="{id=logistics_id}">
@@ -52,18 +57,23 @@
 		order_info.`del_flag`,
 		order_info.`create_time`,
 		order_info.`update_time`,
+		order_info.`app_type`,
 		order_info.`app_id`,
 		order_info.`user_id`,
 		order_info.`order_no`,
 		order_info.`sales_price`,
 		order_info.`logistics_price`,
+		order_info.`payment_way`,
 		order_info.`payment_type`,
 		order_info.`payment_price`,
 		order_info.`payment_time`,
 		order_info.`delivery_time`,
 		order_info.`receiver_time`,
 		order_info.`closing_time`,
+		order_info.`is_pay`,
 		order_info.`status`,
+		order_info.`is_refund`,
+		order_info.`appraises_status`,
 		order_info.`user_message`,
 		order_info.`logistics_id`,
 		order_info.`transaction_id`,
@@ -79,7 +89,20 @@
 				AND order_info.`user_id` = #{query.userId}
 			</if>
 			<if test="query.status != null">
-				AND order_info.`status` = #{query.status}
+				<if test="query.status == '0'.toString()">
+					AND order_info.`is_pay` = '0'
+					AND order_info.`status` is null
+				</if>
+				<if test="query.status == '4'.toString()">
+					AND order_info.`appraises_status` = '0'
+					AND order_info.`status` = '3'
+				</if>
+				<if test="query.status != '0'.toString() and query.status != '4'.toString()">
+					AND order_info.`status` = #{query.status}
+				</if>
+			</if>
+			<if test="query.isPay != null">
+				AND order_info.`is_pay` = #{query.isPay}
 			</if>
 			<if test="query.orderNo != null">
 				AND order_info.`order_no` = #{query.orderNo}
@@ -96,7 +119,17 @@
 				AND order_info.`user_id` = #{query.userId}
 			</if>
 			<if test="query.status != null">
-				AND order_info.`status` = #{query.status}
+				<if test="query.status == '0'.toString()">
+					AND order_info.`is_pay` = '0'
+					AND order_info.`status` is null
+				</if>
+				<if test="query.status == '4'.toString()">
+					AND order_info.`appraises_status` = '0'
+					AND order_info.`status` = '3'
+				</if>
+				<if test="query.status != '0'.toString() and query.status != '4'.toString()">
+					AND order_info.`status` = #{query.status}
+				</if>
 			</if>
 			<if test="query.orderNo != null">
 				AND order_info.`order_no` = #{query.orderNo}

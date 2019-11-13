@@ -11,7 +11,6 @@ package com.joolun.cloud.mall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
-import com.joolun.cloud.mall.common.vo.GoodsSpuVO;
 
 /**
  * spu商品
@@ -25,5 +24,5 @@ public interface GoodsSpuService extends IService<GoodsSpu> {
 
 	boolean updateById(GoodsSpuDTO goodsSpuDTO);
 
-	GoodsSpuVO getById2(String id);
+	GoodsSpu getById2(String id);
 }

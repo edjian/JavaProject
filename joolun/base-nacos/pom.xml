@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>com.joolun</groupId>
 		<artifactId>joolun</artifactId>
-		<version>2.2.1</version>
+		<version>2.2.2</version>
 	</parent>
 
 	<artifactId>base-nacos</artifactId>
@@ -27,7 +27,7 @@
 	<description>nacos 注册配置中心</description>
 
 	<properties>
-		<nacos.version>1.1.0</nacos.version>
+		<nacos.version>1.1.4</nacos.version>
 		<jsonwebtoken.version>0.10.5</jsonwebtoken.version>
 	</properties>
 
@@ -42,7 +42,6 @@
 			<artifactId>nacos-naming</artifactId>
 			<version>${nacos.version}</version>
 		</dependency>
-		<!-- log -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -76,5 +75,27 @@
 				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>static/report/**</exclude>
+					<exclude>**/*.woff</exclude>
+					<exclude>**/*.woff2</exclude>
+					<exclude>**/*.ttf</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>static/report/**</include>
+					<include>**/*.woff</include>
+					<include>**/*.woff2</include>
+					<include>**/*.ttf</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>

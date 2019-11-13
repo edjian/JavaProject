@@ -1,5 +1,6 @@
 package com.joolun.cloud.common.core.util;
 
+import cn.hutool.core.lang.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -17,7 +18,9 @@ public class FileUtil {
 	public static File multipartFileToFile(MultipartFile mulFile) throws IOException {
 		InputStream ins = mulFile.getInputStream();
 		String fileName = mulFile.getOriginalFilename();
-		File toFile = File.createTempFile(getFileNameNoEx(fileName),"."+getExtensionName(fileName));
+		String prefix = getFileNameNoEx(fileName)+ UUID.fastUUID();
+		String suffix = "."+getExtensionName(fileName);
+		File toFile = File.createTempFile(prefix,suffix);
 		OutputStream os = new FileOutputStream(toFile);
 		int bytesRead = 0;
 		byte[] buffer = new byte[8192];

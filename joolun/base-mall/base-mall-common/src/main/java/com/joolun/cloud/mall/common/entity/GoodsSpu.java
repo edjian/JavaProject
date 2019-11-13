@@ -13,12 +13,16 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * spu商品
@@ -69,7 +73,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 商品主图
    */
-	@TableField(el = "picUrls, typeHandler=com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler, jdbcType=VARCHAR")
+	@TableField(typeHandler = ArrayStringTypeHandler.class, jdbcType= JdbcType.VARCHAR)
     private String[] picUrls;
     /**
    * 是否上架商品（0为已上架 1为已下架）
@@ -107,5 +111,31 @@ private static final long serialVersionUID = 1L;
    * 逻辑删除标记（0：显示；1：隐藏）
    */
     private String delFlag;
+
+	@TableField(exist = false)
+	private List<GoodsSku> skus;
+
+	@TableField(exist = false)
+	private String collectId;
+	/**
+	 *积分赠送开关（1开 0关）
+	 */
+	private String pointsGiveSwitch;
+	/**
+	 * 积分赠送数量
+	 */
+	private Integer pointsGiveNum;
+	/**
+	 * 积分抵扣开关（1开 0关）
+	 */
+	private String pointsDeductSwitch;
+	/**
+	 * 积分抵扣商品金额比例（0~100）
+	 */
+	private Integer pointsDeductScale;
+	/**
+	 * 1积分数可抵多少元
+	 */
+	private BigDecimal pointsDeductAmount;
   
 }

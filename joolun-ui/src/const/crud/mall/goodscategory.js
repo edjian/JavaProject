@@ -32,6 +32,14 @@ export const tableOption = {
       prop: 'name',
       align: 'left',
     },
+    {
+      label: '图片',
+      prop: 'picUrl',
+      width: 250,
+      dataType: 'array',
+      slot: true,
+      formslot: true
+    },
 	  {
       label: '排序',
       type: 'number',
@@ -46,21 +54,6 @@ export const tableOption = {
       label: '描述',
       prop: 'description',
       hide: true
-    },
-    {
-      label: '图片',
-      prop: 'picUrl',
-      width: 120,
-      type: 'upload',
-      listType: 'picture-img',
-      canvasOption: {
-        text: 'JooLun',
-        ratio: 1
-      },
-      oss: 'ali',
-      loadText: '图上上传中，请稍等',
-      span: 24,
-      tip: '只能上传jpg/png文件，且不超过100kb',
     },
 	  {
       label: '创建时间',

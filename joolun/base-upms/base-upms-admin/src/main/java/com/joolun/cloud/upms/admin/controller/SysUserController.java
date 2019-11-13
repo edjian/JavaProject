@@ -206,6 +206,7 @@ public class SysUserController {
 	 * @return 用户集合
 	 */
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys_user_index')")
 	public R getUserPage(Page page, UserDTO userDTO) {
 		return R.ok(sysUserService.getUsersWithRolePage(page, userDTO));
 	}

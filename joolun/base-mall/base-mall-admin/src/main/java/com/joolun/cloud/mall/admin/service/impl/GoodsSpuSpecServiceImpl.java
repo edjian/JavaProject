@@ -10,7 +10,7 @@ package com.joolun.cloud.mall.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
-import com.joolun.cloud.mall.common.vo.GoodsSpecVO;
+import com.joolun.cloud.mall.common.entity.GoodsSpec;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuSpecMapper;
 import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import java.util.List;
 public class GoodsSpuSpecServiceImpl extends ServiceImpl<GoodsSpuSpecMapper, GoodsSpuSpec> implements GoodsSpuSpecService {
 
 	@Override
-	public List<GoodsSpecVO> tree(GoodsSpuSpec goodsSpuSpec) {
+	public List<GoodsSpec> tree(GoodsSpuSpec goodsSpuSpec) {
 		return baseMapper.selectTree(goodsSpuSpec.getSpuId());
 	}
 }

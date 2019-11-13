@@ -8,12 +8,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum OrderInfoEnum implements IEnum<String> {
 
-	STATUS_0("0","待付款"),
 	STATUS_1("1","待发货"),
 	STATUS_2("2","待收货"),
-	STATUS_3("3","待评价"),
-	STATUS_4("4","已完成"),
-	STATUS_5("5","已取消");
+	STATUS_3("3","已完成"),
+	STATUS_5("5","已取消"),
+	STATUS_4("6","退款中");
 
 	OrderInfoEnum(final String value, final String desc) {
 		this.value = value;

@@ -9,6 +9,7 @@
 package com.joolun.cloud.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -59,5 +60,15 @@ private static final long serialVersionUID = 1L;
    * 更新时间
    */
     private LocalDateTime updateTime;
+	/**
+	 * 规格id
+	 */
+	@TableField(exist = false)
+	private String specId;
+	/**
+	 * 规格值名
+	 */
+	@TableField(exist = false)
+	private String specValueName;
   
 }

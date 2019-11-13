@@ -9,6 +9,7 @@
 package com.joolun.cloud.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -16,6 +17,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -85,12 +88,14 @@ private static final long serialVersionUID = 1L;
    */
     private BigDecimal volume;
 	/**
-	 * 是否启用
+	 * 是否启用1、是；0否
 	 */
 	private String enable;
     /**
    * 逻辑删除标记（0：显示；1：隐藏）
    */
     private String delFlag;
-  
+
+	@TableField(exist = false)
+	private List<GoodsSkuSpecValue> specs;
 }

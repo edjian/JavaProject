@@ -11,12 +11,12 @@
 
 <mapper namespace="com.joolun.cloud.mall.admin.mapper.GoodsSpecMapper">
 
-  <resultMap id="goodsSpecMap" type="com.joolun.cloud.mall.common.entity.GoodsSpec">
-                  <id property="id" column="id"/>
-                        <result property="tenantId" column="tenant_id"/>
-                        <result property="name" column="name"/>
-                        <result property="delFlag" column="del_flag"/>
-                        <result property="createTime" column="create_time"/>
-                        <result property="updateTime" column="update_time"/>
-            </resultMap>
+	<resultMap id="goodsSpecMap" type="com.joolun.cloud.mall.common.entity.GoodsSpec">
+		<id property="id" column="id"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="name" column="name"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
 </mapper>
