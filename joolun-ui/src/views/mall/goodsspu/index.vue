@@ -300,7 +300,11 @@
         row.categoryFirst = row.categoryId[0]
         row.categorySecond = row.categoryId[1]
         row.skus.forEach(function (val,index) {
-          val.picUrl = val.picUrlObj.picUrl
+  		  let picUrl = null
+          if(val.picUrlObj && val.picUrlObj.picUrl){
+  			picUrl = val.picUrlObj.picUrl
+  		  }
+          val.picUrl = picUrl
         })
         addObj(row).then(data => {
           this.tableData.push(Object.assign({}, row))
