@@ -123,10 +123,6 @@ public class OrderInfo extends Model<OrderInfo> {
    */
     private String status;
 	/**
-	 * 是否退款1、是；0、否
-	 */
-	private String isRefund;
-	/**
 	 * 评价状态0、未评；1、已评；2、已追评
 	 */
 	private String appraisesStatus;
