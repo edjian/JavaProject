@@ -100,7 +100,6 @@
 		<module>base-codegen</module>
 		<module>base-weixin</module>
 		<module>base-mall</module>
-		<module>base-cms</module>
 	</modules>
 
 	<dependencyManagement>
