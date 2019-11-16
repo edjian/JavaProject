@@ -96,13 +96,13 @@
                     size: page.pageSize,
                     descs: this.page.descs,
                     ascs: this.page.ascs,
-                }, params, this.paramsSearch)).then(response = > {
+                }, params, this.paramsSearch)).then(response => {
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total
                     this.tableLoading = false
                 }
             ).
-                catch(() = > {
+                catch(() => {
                     this.tableLoading = false
                 }
             )
@@ -121,7 +121,7 @@
                     type: 'warning'
                 }).then(function () {
                     return delObj(row.$pk.lowerAttrName)
-                }).then(data = > {
+                }).then(data => {
                     _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
@@ -142,7 +142,7 @@
              *
              **/
             handleUpdate: function (row, index, done) {
-                putObj(row).then(data = > {
+                putObj(row).then(data => {
                     this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
@@ -161,7 +161,7 @@
              *
              **/
             handleSave: function (row, done) {
-                addObj(row).then(data = > {
+                addObj(row).then(data => {
                     this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
