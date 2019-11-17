@@ -1,4 +1,4 @@
-# **[阿里云服务器 86元/年](https://www.aliyun.com/1111/2019/group-buying-share?ptCode=E8624E91D154DAB73F1B72579C9096D5647C88CF896EF535&userCode=ktp7i3ac&share_source=copy_link)**
+# **[阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)**
 **问题和bug，请提交 【工单管理】。如问题解决请自行关闭工单，问题请带截图和操作步骤，问题没描述清楚的不处理**
 
 **版本升级时要重新导入新的脚本，并清理redis缓存**
