@@ -322,7 +322,7 @@
           })
       },
       toAccess(row){
-        this.$alert('<textarea rows="3" style="width: 100%">'+ this.host + 'wxmp/portal/'+ row.id +'</textarea>', '接入地址', {
+        this.$alert('<textarea rows="3" style="width: 100%">'+ this.host + 'weixin/portal/'+ row.id +'</textarea>', '接入地址', {
           dangerouslyUseHTMLString: true
         })
       },
