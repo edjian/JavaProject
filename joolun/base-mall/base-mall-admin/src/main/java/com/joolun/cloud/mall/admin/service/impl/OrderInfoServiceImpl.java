@@ -21,15 +21,18 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
-import com.joolun.cloud.mall.admin.config.WxMallConfigProperties;
+import com.joolun.cloud.mall.admin.config.MallConfigProperties;
 import com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper;
+import com.joolun.cloud.mall.admin.mapper.OrderRefundsMapper;
 import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.OrderInfoMapper;
+import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
+import com.joolun.cloud.mall.common.enums.OrderRefundsEnum;
 import com.joolun.cloud.mall.common.util.Kuaidi100Util;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +66,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	private final OrderLogisticsService orderLogisticsService;
 	private final UserAddressService userAddressService;
 	private final RedisTemplate<String, String> redisTemplate;
-	private final WxMallConfigProperties wxMallConfigProperties;
+	private final MallConfigProperties mallConfigProperties;
 	private final OrderLogisticsDetailService orderLogisticsDetailService;
 
 	@Override
@@ -83,11 +86,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			orderLogistics.setStatus(OrderLogisticsEnum.STATUS_1.getValue());
 			orderLogisticsService.updateById(orderLogistics);
 			//订阅快递100
-			String key = wxMallConfigProperties.getLogisticsKey();					//企业授权key
+			String key = mallConfigProperties.getLogisticsKey();					//企业授权key
 			String company = entity.getLogistics();			//快递公司编码
 			String number = entity.getLogisticsNo();	//快递单号
 			String phone = orderLogistics.getTelNum();					//手机号
-			String callbackurl = StrUtil.format("{}{}{}",wxMallConfigProperties.getNotifyHost(),
+			String callbackurl = StrUtil.format("{}{}{}", mallConfigProperties.getNotifyHost(),
 					"/mall/api/ma/orderinfo/notify-logisticsr?tenantId="+orderLogistics.getTenantId()+"&logisticsId=",orderLogistics.getId());//回调地址
 			String from = "";					//出发地城市
 			String to = "";						//目的地城市
@@ -157,8 +160,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 		//！注意，这种库存操作会有并发问题，导致库存不准确。如对库存要求很精确，需单独新建库存表
 		listOrderItem.forEach(orderItem -> {
 			GoodsSku goodsSku = goodsSkuService.getById(orderItem.getSkuId());
-			goodsSku.setStock(goodsSku.getStock() + orderItem.getQuantity());
-			goodsSkuService.updateById(goodsSku);
+			if(goodsSku != null){
+				goodsSku.setStock(goodsSku.getStock() + orderItem.getQuantity());
+				goodsSkuService.updateById(goodsSku);
+			}
 		});
 		baseMapper.updateById(orderInfo);
 	}
@@ -204,6 +209,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 				if(goodsSpu != null){
 					OrderItem orderItem = new OrderItem();
 					orderItem.setOrderId(orderInfo.getId());
+					orderItem.setStatus(OrderItemEnum.STATUS_0.getValue());
+					orderItem.setIsRefund(CommonConstants.NO);
 					orderItem.setSpuId(goodsSpu.getId());
 					orderItem.setSkuId(goodsSku.getId());
 					orderItem.setSpuName(goodsSpu.getName());
@@ -309,4 +316,5 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			orderLogisticsService.updateById(orderLogistics);
 		}
 	}
+
 }

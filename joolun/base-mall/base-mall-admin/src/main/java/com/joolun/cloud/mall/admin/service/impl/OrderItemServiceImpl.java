@@ -14,6 +14,8 @@ import com.joolun.cloud.mall.admin.mapper.OrderItemMapper;
 import com.joolun.cloud.mall.admin.service.OrderItemService;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 /**
  * 商城订单详情
  *
@@ -23,4 +25,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem> implements OrderItemService {
 
+	@Override
+	public OrderItem getById2(Serializable id) {
+		return baseMapper.selectById2(id);
+	}
 }

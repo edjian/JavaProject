@@ -9,13 +9,18 @@
 package com.joolun.cloud.mall.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 
 /**
@@ -88,5 +93,26 @@ public class OrderItem extends Model<OrderItem> {
    * 备注
    */
     private String remark;
-  
+	/**
+	 * 状态1：退款中；2、拒绝退款；3、同意退款
+	 */
+	private String status;
+	/**
+	 * 是否退款0:否 1：是
+	 */
+	private String isRefund;
+	/**
+	 * 状态1：申请退款；2、拒绝退款；3、同意退款
+	 */
+	@TableField(exist = false)
+	private String statusDesc;
+
+	public String getStatusDesc() {
+		if(this.status == null){
+			return null;
+		}
+		return OrderItemEnum.valueOf(OrderItemEnum.STATUS_PREFIX + "_" + this.status).getDesc();
+	}
+	@TableField(exist = false)
+	private List<OrderRefunds> listOrderRefunds;
 }

@@ -207,36 +207,36 @@ export const tableOption = {
           span: 24
         },]
     },
-    // {
-    //   icon: 'el-icon-medal',
-    //   label: '积分赠送',
-    //   prop: 'group3',
-    //   column: [
-    //     {
-    //       label: '是否开启',
-    //       prop: 'pointsGiveSwitch',
-    //       type: 'radio',
-    //       rules: [{
-    //         required: true,
-    //         message: '请选择是否开启积分赠送',
-    //         trigger: 'blur'
-    //       }],
-    //       dicData: [{
-    //         label: '是',
-    //         value: '1'
-    //       },{
-    //         label: '否',
-    //         value: '0'
-    //       }]
-    //     },
-    //     {
-    //       label: '赠送数量',
-    //       prop: 'pointsGiveNum',
-    //       type: 'number',
-    //       minRows: 0,
-    //       tip: '购买该商品赠送的积分数'
-    //     }]
-    // },
+    {
+      icon: 'el-icon-medal',
+      label: '积分赠送',
+      prop: 'group3',
+      column: [
+        {
+          label: '是否开启',
+          prop: 'pointsGiveSwitch',
+          type: 'radio',
+          rules: [{
+            required: true,
+            message: '请选择是否开启积分赠送',
+            trigger: 'blur'
+          }],
+          dicData: [{
+            label: '是',
+            value: '1'
+          },{
+            label: '否',
+            value: '0'
+          }]
+        },
+        {
+          label: '赠送数量',
+          prop: 'pointsGiveNum',
+          type: 'number',
+          minRows: 0,
+          tip: '购买该商品赠送的积分数'
+        }]
+    },
     // {
     //   icon: 'el-icon-medal-1',
     //   label: '积分抵扣',

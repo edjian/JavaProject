@@ -8,7 +8,7 @@ import java.io.*;
 /**
  * file工具
  */
-public class FileUtil {
+public class FileUtils {
 
 	/**
 	 * 将MultipartFile转为File

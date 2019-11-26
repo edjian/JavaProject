@@ -8,9 +8,15 @@
  */
 package com.joolun.cloud.weixin.admin.controller;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joolun.cloud.common.core.config.HomeDirConfigProperties;
+import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
@@ -29,8 +35,12 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,6 +56,7 @@ import java.util.Map;
 public class WxAppController {
 
 	private final WxAppService wxAppService;
+	private final HomeDirConfigProperties homeDirConfigProperties;
 
 	/**
 	 * 分页查询
@@ -283,5 +294,29 @@ public class WxAppController {
 	@GetMapping("/inside/{id}")
 	public R getByIdInside(@PathVariable("id") String id) {
 		return R.ok(wxAppService.getById(id));
+	}
+
+	/**
+	 * 上传支付证书
+	 * @param mulFile
+	 * @param appId
+	 * @return
+	 */
+	@PostMapping("/cert/upload")
+	public String uploadFile(@RequestParam("file") MultipartFile mulFile,
+							 @RequestParam("appId") String appId) throws IOException {
+		File file = FileUtils.multipartFileToFile(mulFile);
+		Map<Object, Object> responseData = new HashMap<>();
+		String home;
+		String os = System.getProperty("os.name");
+		if(os.toLowerCase().startsWith("win")){
+			home = homeDirConfigProperties.getWindows();
+		}else{
+			home = homeDirConfigProperties.getLinux();
+		}
+		String dir = StrUtil.format("{}/{}/{}/{}/", home,"cert",TenantContextHolder.getTenantId(),appId);
+		File file2 = FileUtil.writeBytes(FileUtil.readBytes(file), dir + file.getName());
+		responseData.put("link", file2.getPath());
+		return JSONUtil.toJsonStr(responseData);
 	}
 }

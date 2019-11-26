@@ -53,9 +53,9 @@ public class OrderItemController {
     * @return R
     */
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderitem_get')")
+    @PreAuthorize("@ato.hasAuthority('mall_orderinfo_get')")
     public R getById(@PathVariable("id") String id){
-        return R.ok(orderItemService.getById(id));
+        return R.ok(orderItemService.getById2(id));
     }
 
     /**

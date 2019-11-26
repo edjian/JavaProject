@@ -5,7 +5,7 @@
 
 	<groupId>com.joolun</groupId>
 	<artifactId>joolun</artifactId>
-	<version>2.2.2</version>
+	<version>2.3.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -14,15 +14,14 @@
 	</organization>
 
 	<properties>
-		<docker.version>1.2.0</docker.version>
 		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
 		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
 		<mybatis-plus.version>3.2.0</mybatis-plus.version>
 		<druid.version>1.1.21</druid.version>
-		<hutool.version>4.5.16</hutool.version>
-		<weixin-java.version>3.5.0</weixin-java.version>
+		<hutool.version>5.0.5</hutool.version>
+		<weixin-java.version>3.6.0</weixin-java.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -46,6 +45,7 @@
 		<oh-my-email.version>0.0.4</oh-my-email.version>
 		<snakeyaml.version>1.24</snakeyaml.version>
 		<aliyun-sdk-oss.version>3.5.0</aliyun-sdk-oss.version>
+		<docker.version>1.2.0</docker.version>
 	</properties>
 
 	<dependencies>

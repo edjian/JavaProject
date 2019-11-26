@@ -142,8 +142,8 @@
           current: page.currentPage,
           size: page.pageSize,
           descs: this.page.descs,
-          ascs: this.page.ascs
-        }, params)).then(response => {
+          ascs: this.page.ascs,
+        }, params,this.filterForm(this.q))).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
           this.tableLoading = false
@@ -213,7 +213,7 @@
         this.dsBox = true
       },
       searchChange() {
-        this.getPage(this.page, this.filterForm(this.q))
+        this.getPage(this.page)
       },
       getdataSourceList() {
         fetchSelectDsList().then(response => {

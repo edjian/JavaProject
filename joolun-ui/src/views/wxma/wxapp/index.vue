@@ -49,6 +49,23 @@
                           :dic="treeOrganData"
                           :props="organProps"></avue-input>
             </template>
+            <template slot="keyPathForm"
+                      slot-scope="scope">
+              <div v-if="scope.row.keyPath">
+                <el-tag closable @close="keyPathRemove">
+                  {{scope.row.keyPath}}
+                </el-tag>
+              </div>
+              <el-upload
+                      v-if="!scope.row.keyPath"
+                      :action="'/weixin/wxapp/cert/upload?appId='+form.id"
+                      :headers="headers"
+                      :limit="1"
+                      :on-success="uploadCertSuccess">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">请上传apiclient_cert.p12</div>
+              </el-upload>
+            </template>
             <template slot="name" slot-scope="scope">
               <div style="font-weight: bolder">
                 <i class="el-icon-s-cooperation"></i> {{scope.row.name}}
@@ -169,10 +186,15 @@
   import { tableOption } from '@/const/crud/wxma/wxapp'
   import {fetchTree} from "@/api/admin/organ"
   import { mapGetters, mapState } from 'vuex'
+  import store from "@/store"
+
   export default {
     name: 'wxapp',
     data() {
       return {
+        headers: {
+          Authorization: 'Bearer ' + store.getters.access_token
+        },
         treeOption: {
           nodeKey: 'id',
           addBtn: false,
@@ -223,6 +245,12 @@
       }
     },
     methods: {
+      keyPathRemove(){
+        this.form.keyPath = ''
+      },
+      uploadCertSuccess(response, file, fileList){
+        this.form.keyPath = response.link
+      },
       currentChange(currentPage){
         this.page.currentPage = currentPage
       },

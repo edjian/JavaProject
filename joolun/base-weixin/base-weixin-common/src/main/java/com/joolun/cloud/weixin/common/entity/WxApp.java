@@ -151,5 +151,4 @@ private static final long serialVersionUID = 1L;
 	 * p12证书的位置，可以指定绝对路径，也可以指定类路径（以classpath:开头）
 	 */
 	private String keyPath;
-  
 }

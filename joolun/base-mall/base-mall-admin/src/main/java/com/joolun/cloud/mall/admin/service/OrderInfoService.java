@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
+import com.joolun.cloud.mall.common.entity.OrderRefunds;
 
 import java.io.Serializable;
 
@@ -56,4 +57,5 @@ public interface OrderInfoService extends IService<OrderInfo> {
 	 * @param jsonObject
 	 */
 	void notifyLogisticsr(String logisticsId, JSONObject jsonObject);
+
 }

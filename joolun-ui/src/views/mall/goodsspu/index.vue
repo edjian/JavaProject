@@ -244,8 +244,12 @@
                     let tableData = response.data.data.records
                     tableData.forEach(function (item, index) {
                         let categoryId = []
-                        categoryId.push(item.categoryFirst)
-                        categoryId.push(item.categorySecond)
+                        if(item.categoryFirst){
+                          categoryId.push(item.categoryFirst)
+                        }
+                        if(item.categorySecond){
+                          categoryId.push(item.categorySecond)
+                        }
                         item.categoryId = categoryId
                     })
                     this.tableData = tableData

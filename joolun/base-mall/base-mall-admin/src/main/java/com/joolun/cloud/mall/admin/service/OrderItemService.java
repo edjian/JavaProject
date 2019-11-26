@@ -11,6 +11,8 @@ package com.joolun.cloud.mall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.OrderItem;
 
+import java.io.Serializable;
+
 /**
  * 商城订单详情
  *
@@ -19,4 +21,5 @@ import com.joolun.cloud.mall.common.entity.OrderItem;
  */
 public interface OrderItemService extends IService<OrderItem> {
 
+	OrderItem getById2(Serializable id);
 }

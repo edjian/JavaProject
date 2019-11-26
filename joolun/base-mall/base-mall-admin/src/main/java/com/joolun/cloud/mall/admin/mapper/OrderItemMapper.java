@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.OrderItem;
 import org.apache.ibatis.annotations.Param;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ import java.util.List;
 public interface OrderItemMapper extends BaseMapper<OrderItem> {
 
 	List<OrderItem> selectList2(OrderItem orderItem);
+
+	OrderItem selectById2(Serializable id);
 }

@@ -12,6 +12,6 @@ export default {
   //租户ID
   tenantId: '1',
   //服务器地址
-  // basePath: 'http://192.168.1.106:8082'
-  basePath: 'https://demo.joolun.com'
+  basePath: 'http://192.168.31.203:8082'
+  // basePath: 'https://demo.joolun.com'
 }

@@ -6,7 +6,7 @@
  * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
-package com.joolun.cloud.mall.admin.config;
+package com.joolun.cloud.common.core.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,17 +14,20 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 商城相关配置
+ * 文件存放目录配置
  *
  * @author
  */
 @Data
 @RefreshScope
 @Configuration
-@ConfigurationProperties(prefix = "base.mall")
-public class WxMallConfigProperties {
+@ConfigurationProperties(prefix = "home-dir")
+public class HomeDirConfigProperties {
 
-	private String notifyHost = "notify-host";
+	/**
+	 *
+	 */
+	private String windows = "windows";
 
-	private String logisticsKey = "logistics-key";
+	private String linux = "linux";
 }

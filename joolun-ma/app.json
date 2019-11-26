@@ -15,7 +15,9 @@
     "pages/user/user-address/form/index",
     "pages/user/user-collect/index",
     "pages/appraises/form/index",
-    "pages/appraises/list/index"
+    "pages/appraises/list/index",
+    "pages/order/order-refunds/form/index",
+    "pages/order/order-refunds/submit/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",

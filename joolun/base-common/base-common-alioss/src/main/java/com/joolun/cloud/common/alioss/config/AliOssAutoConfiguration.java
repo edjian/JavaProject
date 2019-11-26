@@ -1,18 +1,10 @@
-/*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- * Neither the name of the pig4cloud.com developer nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- * Author: lengleng (wangiegie@gmail.com)
+/**
+ * Copyright (C) 2018-2019
+ * All rights reserved, Designed By www.joolun.com
+ * 注意：
+ * 本软件为www.joolun.com开发研制，未经购买不得使用
+ * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+ * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 
 package com.joolun.cloud.common.alioss.config;
@@ -24,9 +16,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * ali OSS 自动配置类
- *
- * @author lengleng
+ * aliOSS 自动配置类
+ * @author JL
  */
 @AllArgsConstructor
 @EnableConfigurationProperties({AliOssConfigProperties.class})

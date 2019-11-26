@@ -181,4 +181,10 @@ module.exports = {
   noticeGet: (data) => {
     return request('/mall/api/ma/notice', 'get', data, false)
   },
+  orderItemGet: (id) => {
+    return request('/mall/api/ma/orderitem/' + id, 'get', null, false)
+  },
+  orderRefundsSave: (data) => {
+    return request('/mall/api/ma/orderrefunds', 'post', data, true)
+  },
 }

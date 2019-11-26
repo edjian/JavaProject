@@ -3,7 +3,7 @@ package com.joolun.cloud.upms.admin.controller;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.joolun.cloud.common.alioss.service.AliOssTemplate;
-import com.joolun.cloud.common.core.util.FileUtil;
+import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import io.swagger.annotations.Api;
@@ -56,7 +56,7 @@ public class UploadFileController {
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile mulFile,
 						@RequestParam("dir") String dir) throws IOException {
-			File file = FileUtil.multipartFileToFile(mulFile);
+			File file = FileUtils.multipartFileToFile(mulFile);
 			Map<Object, Object> responseData = new HashMap<>();
 			dir = StrUtil.format("{}/{}",TenantContextHolder.getTenantId(),  dir);
 			responseData.put("link", aliOssTemplate.uploadFile(file,dir));

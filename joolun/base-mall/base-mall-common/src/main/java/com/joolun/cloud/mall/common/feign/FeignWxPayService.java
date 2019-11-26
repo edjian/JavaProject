@@ -1,6 +1,8 @@
 package com.joolun.cloud.mall.common.feign;
 
+import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.constant.ServiceNameConstants;
 import com.joolun.cloud.common.core.util.R;
@@ -31,4 +33,27 @@ public interface FeignWxPayService {
 	 */
 	@PostMapping("/wxpay/notifyOrder")
 	R notifyOrder(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * <pre>
+	 * 微信支付-申请退款.
+	 * 详见 https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4
+	 * 接口链接：https://api.mch.weixin.qq.com/secapi/pay/refund
+	 * </pre>
+	 *
+	 * @param request 请求对象
+	 * @return 退款操作结果 wx pay refund result
+	 * @throws WxPayException the wx pay exception
+	 */
+	@PostMapping("/wxpay/refundOrder")
+	R refundOrder(@RequestBody WxPayRefundRequest request, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 退款回调
+	 * @param xmlData
+	 * @param from
+	 * @return
+	 */
+	@PostMapping("/wxpay/notifyRefunds")
+	R notifyRefunds(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
 }

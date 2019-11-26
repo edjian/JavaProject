@@ -24,7 +24,6 @@ import VueQr from 'vue-qr'
 import VideoPlayer from 'vue-video-player'
 //时间插件
 import moment from 'moment'//导入文件
-import AvueUeditor from 'avue-plugin-ueditor'
 //引入 Froala Editor js file.
 require('froala-editor/js/froala_editor.pkgd.min.js')
 //引入中文语言包
@@ -68,4 +67,3 @@ new Vue({
 }).$mount('#app')
 Vue.use(Avue)
 Vue.use(VueFroala)
-Vue.use(AvueUeditor)

@@ -17,7 +17,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.common.entity.ImageManager;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
-import com.joolun.cloud.common.core.util.FileUtil;
+import com.joolun.cloud.common.core.util.FileUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -70,7 +70,7 @@ public class WxMaterialController {
 				material.setVideoTitle(title);
 				material.setVideoIntroduction(introduction);
 			}
-			File file = FileUtil.multipartFileToFile(mulFile);
+			File file = FileUtils.multipartFileToFile(mulFile);
 			material.setFile(file);
 			WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
 			WxMpMaterialUploadResult wxMpMaterialUploadResult = wxMpMaterialService.materialFileUpload(mediaType,material);
@@ -161,7 +161,7 @@ public class WxMaterialController {
 	@PostMapping("/newsImgUpload")
 	//	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_add')")
 	public String newsImgUpload(@RequestParam("file") MultipartFile mulFile,@RequestParam("appId") String appId) throws Exception {
-		File file = FileUtil.multipartFileToFile(mulFile);
+		File file = FileUtils.multipartFileToFile(mulFile);
 		WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
 		WxMediaImgUploadResult wxMediaImgUploadResult = wxMpMaterialService.mediaImgUpload(file);
 		Map<Object, Object> responseData = new HashMap<>();

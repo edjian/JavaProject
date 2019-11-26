@@ -9,6 +9,8 @@
 package com.joolun.cloud.weixin.admin.controller;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
+import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
@@ -69,6 +71,49 @@ public class WxPayController {
 		WxPayService wxPayService = WxPayConfiguration.getPayService(appId);
 		try {
 			WxPayOrderNotifyResult notifyResult = wxPayService.parseOrderNotifyResult(xmlData);
+			WxApp wxApp = wxAppService.findByAppId(appId);
+			return R.ok(notifyResult,wxApp.getTenantId());
+		} catch (WxPayException e) {
+			e.printStackTrace();
+			return R.failed(e.getReturnMsg());
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 微信支付-申请退款.
+	 * 详见 https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4
+	 * 接口链接：https://api.mch.weixin.qq.com/secapi/pay/refund
+	 * </pre>
+	 *
+	 * @param request 请求对象
+	 * @return 退款操作结果 wx pay refund result
+	 * @throws WxPayException the wx pay exception
+	 */
+	@Inside
+	@PostMapping("/refundOrder")
+	public R refundOrder(@RequestBody WxPayRefundRequest request) {
+		WxPayService wxPayService = WxPayConfiguration.getPayService(request.getAppid());
+		try {
+			return R.ok(wxPayService.refund(request));
+		} catch (WxPayException e) {
+			e.printStackTrace();
+			return R.failed(e.getReturnMsg());
+		}
+	}
+
+	/**
+	 * 处理退款回调数据
+	 * @param xmlData
+	 * @return
+	 */
+	@Inside
+	@PostMapping("/notifyRefunds")
+	public R notifyRefunds(@RequestBody String xmlData) {
+		String appId = WxPayOrderNotifyResult.fromXML(xmlData).getAppid();
+		WxPayService wxPayService = WxPayConfiguration.getPayService(appId);
+		try {
+			WxPayRefundNotifyResult notifyResult = wxPayService.parseRefundNotifyResult(xmlData);
 			WxApp wxApp = wxAppService.findByAppId(appId);
 			return R.ok(notifyResult,wxApp.getTenantId());
 		} catch (WxPayException e) {

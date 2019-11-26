@@ -137,6 +137,11 @@ export const tableOption = {
           label: '商户密钥',
           prop: 'mchKey'
         },
+        {
+          label: 'p12证书',
+          prop: 'keyPath',
+          formslot: true
+        }
       ]
     }]
 }

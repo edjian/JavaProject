@@ -22,7 +22,7 @@ import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
-import com.joolun.cloud.mall.admin.config.WxMallConfigProperties;
+import com.joolun.cloud.mall.admin.config.MallConfigProperties;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
@@ -58,7 +58,7 @@ public class OrderInfoApi {
 
     private final OrderInfoService orderInfoService;
 	private final FeignWxPayService feignWxPayService;
-	private final WxMallConfigProperties wxMallConfigProperties;
+	private final MallConfigProperties mallConfigProperties;
 	private final OrderLogisticsService orderLogisticsService;
 
     /**
@@ -217,7 +217,7 @@ public class OrderInfoApi {
 		wxPayUnifiedOrderRequest.setOutTradeNo(orderInfo.getId());
 		wxPayUnifiedOrderRequest.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
 		wxPayUnifiedOrderRequest.setTradeType("JSAPI");
-		wxPayUnifiedOrderRequest.setNotifyUrl(wxMallConfigProperties.getNotifyHost()+"/mall/api/ma/orderinfo/notify-order");
+		wxPayUnifiedOrderRequest.setNotifyUrl(mallConfigProperties.getNotifyHost()+"/mall/api/ma/orderinfo/notify-order");
 		wxPayUnifiedOrderRequest.setSpbillCreateIp("127.0.0.1");
 		wxPayUnifiedOrderRequest.setOpenid(wxUser.getOpenId());
 		return feignWxPayService.unifiedOrder(wxPayUnifiedOrderRequest, SecurityConstants.FROM_IN);

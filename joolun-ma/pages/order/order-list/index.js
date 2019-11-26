@@ -109,11 +109,13 @@ Page({
   },
   tabSelect(e) {
     let dataset = e.currentTarget.dataset
-    this.setData({
-      tabCur: dataset.index,
-      ['parameter.status']: dataset.key
-    })
-    this.refresh()
+    if (dataset.index != this.data.tabCur){
+      this.setData({
+        tabCur: dataset.index,
+        ['parameter.status']: dataset.key
+      })
+      this.refresh()
+    }
   },
   orderCancel(e) {
     let index = e.target.dataset.index
