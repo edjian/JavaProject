@@ -98,7 +98,7 @@
     methods: {}
   }
 </script>
-<style>
+<style scoped>
   .fr-wrapper > div[style*='z-index: 9999'] {
     display: none;
   }

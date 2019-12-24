@@ -11,10 +11,14 @@ package com.joolun.cloud.mall.admin.api.ma;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.mapper.UserCollectMapper;
+import com.joolun.cloud.mall.admin.service.CouponInfoService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
+import com.joolun.cloud.mall.common.entity.CouponGoods;
+import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.UserCollect;
 import io.swagger.annotations.Api;
@@ -37,47 +41,31 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/goodsspu")
-@Api(value = "goods", tags = "商品接口")
+@Api(value = "goodsspu", tags = "商品接口")
 public class GoodsSpuApi {
 
     private final GoodsSpuService goodsSpuService;
 	private final UserCollectMapper userCollectMapper;
+	private final CouponInfoService couponInfoService;
 
-    /**
-    * 分页查询
-    * @param page 分页对象
-    * @param goodsSpu spu商品
-    * @return
-    */
+	/**
+	* 分页查询
+	* @param page 分页对象
+	* @param goodsSpu spu商品
+	* @return
+	*/
     @GetMapping("/page")
-    public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu) {
+    public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu, CouponGoods couponGoods) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
 		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 			return checkThirdSession;
 		}
-    	String name = goodsSpu.getName();
-		goodsSpu.setName(null);
-        return R.ok(goodsSpuService.page(page, Wrappers.query(goodsSpu).lambda()
-				.select(GoodsSpu::getId,
-						GoodsSpu::getName,
-						GoodsSpu::getTenantId,
-						GoodsSpu::getSpuCode,
-						GoodsSpu::getSellPoint,
-						GoodsSpu::getCategoryFirst,
-						GoodsSpu::getCategorySecond,
-						GoodsSpu::getPicUrls,
-						GoodsSpu::getShelf,
-						GoodsSpu::getSort,
-						GoodsSpu::getPriceDown,
-						GoodsSpu::getPriceUp,
-						GoodsSpu::getSaleNum,
-						GoodsSpu::getCreateTime,
-						GoodsSpu::getUpdateTime,
-						GoodsSpu::getSpecType)
-				.like(GoodsSpu::getName,StrUtil.isNotBlank(name) ? name : "")
-				.eq(GoodsSpu::getShelf,MallConstants.SPU_SHELF_0)
-			)
-		);
+		goodsSpu.setShelf(CommonConstants.YES);
+		CouponInfo couponInfo = null;
+		if(StrUtil.isNotBlank(couponGoods.getCouponId())){
+			couponInfo = couponInfoService.getById(couponGoods.getCouponId());
+		}
+        return R.ok(goodsSpuService.page2(page, goodsSpu, couponGoods, couponInfo));
     }
 
     /**
@@ -92,8 +80,8 @@ public class GoodsSpuApi {
 		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 			return checkThirdSession;
 		}
-		//查询用户是否收藏
 		GoodsSpu goodsSpu = goodsSpuService.getById2(id);
+		//查询用户是否收藏
 		userCollect.setType(MallConstants.COLLECT_TYPE_1);
 		userCollect.setRelationId(id);
 		goodsSpu.setCollectId(userCollectMapper.selectCollectId(userCollect));

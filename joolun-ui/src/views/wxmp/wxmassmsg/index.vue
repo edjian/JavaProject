@@ -21,8 +21,7 @@
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange"
-                 @current-change="currentChange">
+                 @search-change="searchChange">
         <template slot-scope="scope" slot="menuLeft">
           <el-button type="primary"
                      @click="handleAdd"
@@ -101,12 +100,12 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="用户" v-if="objData.sendType == '2'">
-            <span v-for="item in selectionData" :key="item.id" style="margin: 5px">
-              <el-avatar size="mini" :src="item.headimgUrl"></el-avatar>
-              <span class="title">{{item.nickName}}</span>
-            </span>
-            <p/><el-button type="primary" size="mini" icon="el-icon-plus" @click="selectUser">选择用户</el-button><p/>
+          <el-form-item label="用户" v-if="objData.sendType == '2' && objData.isToAll == '0'">
+            <el-button type="primary" size="mini" icon="el-icon-plus" @click="showWxUserList">选择用户</el-button><p></p>
+            <el-tag v-for="(item, index) in wxUserList" :key="item.id" effect="plain" style="margin: 5px; height: unset; padding-top: 5px;" closable @close="removeWxUser(index)">
+              <el-avatar :src="item.headimgUrl"></el-avatar>
+              <div class="title">{{item.nickName}}</div>
+            </el-tag>
           </el-form-item>
           <el-form-item label="回复消息">
             <WxReplySelect :appId="appId" :objData="objData" v-if="hackResetWxReplySelect"></WxReplySelect>
@@ -133,7 +132,7 @@
           </template>
         </avue-crud>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialog1Visible = false">取 消</el-button>
+          <el-button @click="dialog1VisibleUser = false">取 消</el-button>
           <el-button type="primary" @click="subUser">确 定</el-button>
         </span>
       </el-dialog>
@@ -146,6 +145,7 @@
   import { getPage as getPage2 } from '@/api/wxmp/wxuser'
   import { listUserTags} from '@/api/wxmp/wxuser'
   import { tableOption } from '@/const/crud/wxmp/wxmassmsg'
+  import { tableOption2 } from '@/const/crud/wxmp/wxuser'
   import { mapGetters } from 'vuex'
   import WxReplySelect from '@/components/wx-reply/main.vue'
   import WxNews from '@/components/wx-news/main.vue'
@@ -161,130 +161,7 @@
     },
     data() {
       return {
-        tableOption2: {
-          border: true,
-          index: false,
-          indexLabel: '序号',
-          stripe: true,
-          selection: true,
-          menuAlign: 'center',
-          align: 'center',
-          editBtn: false,
-          delBtn: false,
-          addBtn: false,
-          excelBtn: false,
-          printBtn: false,
-          viewBtn: false,
-          searchShow: true,
-          menu: false,
-          menuWidth: 150,
-          menuType:'text',
-          defaultSort:{
-            prop: 'subscribeTime',
-            order: 'descending'
-          },
-          column: [
-            {
-              label: '头像',
-              prop: 'headimgUrl',
-              type:'upload',
-              imgWidth:50,
-              listType:'picture-img',
-              editDisplay:false
-            },
-            {
-              label: '昵称',
-              prop: 'nickName',
-              width:100,
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '关注渠道',
-              prop: 'subscribeScene',
-              type: 'select',
-              sortable:true,
-              search:true,
-              editDisplay:false,
-              dicUrl: '/admin/dict/type/wx_subscribe_scene'
-            },
-            {
-              label: '关注时间',
-              prop: 'subscribeTime',
-              type: 'datetime',
-              width:95,
-              sortable:true,
-              editDisplay:false
-            },
-            {
-              label: '性别',
-              prop: 'sex',
-              width: 60,
-              type: 'select',
-              sortable:true,
-              search:true,
-              editDisplay:false,
-              slot:true,
-              dicUrl: '/admin/dict/type/wx_sex'
-            },
-            {
-              label: '所在国家',
-              prop: 'country',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '所在省份',
-              prop: 'province',
-              sortable:true,
-              editDisplay:false
-            },
-            {
-              label: '所在城市',
-              prop: 'city',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '用户语言',
-              prop: 'language',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '二维码扫码场景',
-              prop: 'qrSceneStr',
-              type: 'select',
-              dicUrl: '/admin/dict/type/wx_qr_scene_str',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '用户标识',
-              prop: 'openId',
-              hide:true,
-              editDisplay:false
-            },
-            {
-              label: 'union_id',
-              prop: 'unionId',
-              hide:true,
-              editDisplay:false
-            },
-            {
-              label: '关注次数',
-              prop: 'subscribeNum',
-              width:50,
-              sortable:true,
-              editDisplay:false
-            }
-          ]
-        },
+        tableOption2: tableOption2,
         tableData2: [],
         page2: {
           total: 0, // 总页数
@@ -317,8 +194,8 @@
         paramsSearch2:{},
         tableLoading: false,
         tableOption: tableOption,
-        selectionData: [],
-        openIdList: []
+        wxUserList: [],
+        selectionData: []
       }
     },
     created() {
@@ -337,11 +214,11 @@
       }
     },
     methods: {
+      removeWxUser(index){
+        this.wxUserList.splice(index, 1)
+      },
       subUser(){
-        this.openIdList = []
-        for(let i=0;i<this.selectionData.length;i++){
-          this.openIdList.push(this.selectionData[i].openId)
-        }
+        this.wxUserList = this.selectionData
         this.dialog1VisibleUser = false
       },
       selectionChange2(list){
@@ -359,13 +236,17 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData2 = response.data.data.records
           this.page2.total = response.data.data.total
+          this.page2.currentPage = page.currentPage
+          this.page2.pageSize = page.pageSize
           this.tableLoading2 = false
         }).catch(() => {
           this.tableLoading2 = false
         })
       },
-      selectUser(){
+      showWxUserList(){
+        this.tableData2 = []
         this.dialog1VisibleUser = true
+        this.getPage2(this.page2)
       },
       listUserTags() {
         listUserTags({
@@ -381,17 +262,21 @@
       handleSubmit(row){
         this.loadingSub = true
         if(this.handleType == 'add'){
+          let openIdList = []
+          for(let i=0; i < this.wxUserList.length; i++){
+            openIdList.push(this.wxUserList[i].openId)
+          }
           addObj(Object.assign({
-            appId:this.appId,
-            type:this.type,
-            openIds:this.openIdList
+            appId: this.appId,
+            type: this.type,
+            openIds: openIdList
           }, this.objData)).then(data => {
             this.$message({
               showClose: true,
               message: '添加成功',
               type: 'success'
             })
-            this.refreshChange()
+            this.getPage(this.page)
             this.dialog1Visible = false
             this.loadingSub = false
           }).catch(() => {
@@ -405,7 +290,7 @@
               message: '修改成功',
               type: 'success'
             })
-            this.refreshChange()
+            this.getPage(this.page)
             this.dialog1Visible = false
             this.loadingSub = false
           })
@@ -423,20 +308,19 @@
           isToAll: '1'
         }
       },
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
-      searchChange(params){
+      searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
         this.getPage(this.page,params)
+        done()
       },
-      searchChange2(params){
+      searchChange2(params,done){
         params = this.filterForm(params)
         this.paramsSearch2 = params
         this.page2.currentPage = 1
         this.getPage2(this.page2,params)
+        done()
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -477,6 +361,8 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading=false
@@ -523,6 +409,8 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -541,16 +429,18 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       },
-      refreshChange2() {
-        this.getPage2(this.page2)
+      refreshChange2(val) {
+        this.getPage2(val.page)
       }
     }
   }

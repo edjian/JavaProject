@@ -12,8 +12,7 @@
                  @row-update="handleUpdate"
                  @row-save="handleSave"
                  @row-del="handleDel"
-                 @sort-change="sortChange"
-                 @current-change="currentChange">
+                 @sort-change="sortChange">
       </avue-crud>
     </basic-container>
   </div>
@@ -54,9 +53,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -85,6 +81,8 @@
           })
           this.tableData = tableData
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -103,7 +101,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
         }).catch(function (err) {
         })
       },
@@ -123,7 +121,9 @@
             message: '修改成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
+          done()
+        }).catch(() => {
           done()
         })
       },
@@ -142,15 +142,17 @@
             message: '添加成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
+          done()
+        }).catch(() => {
           done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

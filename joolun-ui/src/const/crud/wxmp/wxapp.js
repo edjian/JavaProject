@@ -9,7 +9,6 @@
 export const tableOption = {
   dialogType: 'drawer',
   dialogWidth: '80%',
-  dialogDrag: true,
   border: true,
   stripe: true,
   menuAlign: 'center',

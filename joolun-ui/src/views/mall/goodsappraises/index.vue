@@ -21,8 +21,7 @@
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange"
-                 @current-change="currentChange">
+                 @search-change="searchChange">
         <template slot="nickName" slot-scope="scope">
           <el-avatar icon="el-icon-user-solid" :src="scope.row.headimgUrl"></el-avatar>
           <div>{{scope.row.nickName ? scope.row.nickName : '匿名'}}</div>
@@ -124,17 +123,15 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       reply(row, index){
         this.$refs.crud.rowEdit(row,index)
       },
-      searchChange(params){
+      searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
         this.getPage(this.page,params)
+        done()
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -160,6 +157,8 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading=false
@@ -207,6 +206,8 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -225,13 +226,15 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

@@ -44,7 +44,7 @@ public class OrderRefundsController {
     @GetMapping("/page")
     @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_index')")
     public R getOrderRefundsPage(Page page, OrderRefunds orderRefunds) {
-        return R.ok(orderRefundsService.page(page, Wrappers.query(orderRefunds)));
+        return R.ok(orderRefundsService.page1(page, orderRefunds));
     }
 
     /**

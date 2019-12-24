@@ -1,6 +1,7 @@
 package com.joolun.cloud.upms.admin.controller;
 
 import com.joolun.cloud.upms.admin.service.SysOrganService;
+import com.joolun.cloud.upms.common.dto.OrganTree;
 import com.joolun.cloud.upms.common.entity.SysOrgan;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -51,6 +53,16 @@ public class SysOrganController {
 	@PreAuthorize("@ato.hasAuthority('sys_organ_index')")
 	public R getTree() {
 		return R.ok(sysOrganService.selectTree());
+	}
+
+	/**
+	 *  返回树形父类集合
+	 * @return
+	 */
+	@GetMapping("/parentTree")
+	@PreAuthorize("@ato.hasAuthority('sys_organ_index')")
+	public List<OrganTree> getSysOrganParentTree() {
+		return sysOrganService.selectTree();
 	}
 
 	/**
@@ -112,7 +124,6 @@ public class SysOrganController {
 			if(CommonConstants.PARENT_ID.equals(sysOrgan2.getParentId())){
 				sysOrgan.setParentId(CommonConstants.PARENT_ID);
 			}
-			sysOrgan.setUpdateTime(LocalDateTime.now());
 			return R.ok(sysOrganService.updateOrganById(sysOrgan));
 		} catch (DuplicateKeyException e){
 			if(e.getMessage().contains("uk_tenant_id_code")){

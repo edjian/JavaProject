@@ -8,6 +8,8 @@
  */
 package com.joolun.cloud.mall.admin.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.UserCollect;
 
@@ -19,4 +21,5 @@ import com.joolun.cloud.mall.common.entity.UserCollect;
  */
 public interface UserCollectService extends IService<UserCollect> {
 
+	IPage<UserCollect> page2(IPage<UserCollect> page, Wrapper<UserCollect> queryWrapper);
 }

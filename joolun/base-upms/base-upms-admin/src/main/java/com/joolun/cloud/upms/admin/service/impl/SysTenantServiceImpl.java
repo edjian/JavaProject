@@ -38,7 +38,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
 	@Override
-	public IPage<SysTenant> page(IPage<SysTenant> page, Wrapper<SysTenant> queryWrapper) {
+	public IPage<SysTenant> page1(IPage<SysTenant> page, Wrapper<SysTenant> queryWrapper) {
 		return baseMapper.selectPage2(page, queryWrapper);
 	}
 

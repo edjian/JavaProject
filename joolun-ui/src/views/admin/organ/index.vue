@@ -10,16 +10,7 @@
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
-        @row-del="rowDel"
-        @current-change="currentChange">
-        <template slot="parentIdForm"
-                  slot-scope="scope">
-          <avue-input v-model="scope.row.parentId"
-                      type="tree"
-                      placeholder="请选择所属机构"
-                      :dic="tableData"
-                      :props="organProps"></avue-input>
-        </template>
+        @row-del="rowDel">
       </avue-crud>
     </basic-container>
   </div>
@@ -36,11 +27,7 @@
       return {
         tableOption: tableOption,
         tableData: [],
-        tableLoading: false,
-        organProps: {
-          label: 'name',
-          value: 'id',
-        },
+        tableLoading: false
       }
     },
     created() {
@@ -57,9 +44,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       getPage() {
         fetchTree().then(response => {
           this.tableData = response.data.data
@@ -100,6 +84,8 @@
           })
           done()
           this.getPage()
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -118,13 +104,15 @@
           })
           done()
           this.getPage()
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage()
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

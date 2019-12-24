@@ -47,11 +47,11 @@ public class SysLogController {
 	 * 删除日志
 	 *
 	 * @param id ID
-	 * @return ok/false
+	 * @return
 	 */
 	@DeleteMapping("/{id}")
 	@PreAuthorize("@ato.hasAuthority('sys_log_del')")
-	public R removeById(@PathVariable Long id) {
+	public R removeById(@PathVariable String id) {
 		return R.ok(sysLogService.removeById(id));
 	}
 

@@ -10,9 +10,14 @@ export const tableOption = {
     {
       label: '父类机构',
       prop: 'parentId',
-      formslot: true,
+      type: 'tree',
       hide: true,
       sortable:true,
+      dicUrl: '/admin/organ/parentTree',
+      props: {
+        label: 'name',
+        value: 'id'
+      },
       rules: [{
         required: true,
         message: '请选择父类机构',

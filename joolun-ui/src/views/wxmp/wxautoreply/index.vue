@@ -18,8 +18,7 @@
                      :permission="permissionList"
                      :table-loading="tableLoading"
                      :option="tableOption1"
-                     @refresh-change="refreshChange"
-                     @current-change="currentChange">
+                     @refresh-change="refreshChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but" v-if="tableData.length<=0">
                 <el-button type="primary"
@@ -53,8 +52,7 @@
                      :table-loading="tableLoading"
                      :option="tableOption2"
                      @refresh-change="refreshChange"
-                     @sort-change="sortChange"
-                     @current-change="currentChange">
+                     @sort-change="sortChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but">
                 <el-button type="primary"
@@ -89,8 +87,7 @@
                      :option="tableOption3"
                      @refresh-change="refreshChange"
                      @sort-change="sortChange"
-                     @search-change="searchChange"
-                     @current-change="currentChange">
+                     @search-change="searchChange">
             <template slot-scope="scope" slot="menuLeft">
               <div class="add_but">
                 <el-button type="primary"
@@ -243,14 +240,12 @@
         this.type = tab.name
         this.getPage(this.page)
       },
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
-      searchChange(params){
+      searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
         this.getPage(this.page,params)
+        done()
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -278,6 +273,8 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
           if(this.type == '2'){
             let wxReqType = this.dictData.get('wx_req_type')
@@ -309,7 +306,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
         }).catch(function(err) { })
       },
       handleSubmit(row){
@@ -323,7 +320,7 @@
               message: '添加成功',
               type: 'success'
             })
-            this.refreshChange()
+            this.getPage(this.page)
             this.dialog1Visible = false
           })
         }
@@ -334,7 +331,7 @@
               message: '修改成功',
               type: 'success'
             })
-            this.refreshChange()
+            this.getPage(this.page)
             this.dialog1Visible = false
           })
         }
@@ -355,7 +352,9 @@
             type: 'success'
           })
           done()
-          this.refreshChange()
+          this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -372,18 +371,20 @@
             message: '添加成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
           this.dialog1Visible = false
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
+      refreshChange(val) {
         this.objData={
             repType : 'text'
         }
-        this.getPage(this.page)
+        this.getPage(val.page)
       }
     }
   }

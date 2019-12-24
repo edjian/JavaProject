@@ -166,15 +166,19 @@ Component({
           /* 把参数信息异步存储到缓存当中 */
           wx.setStorage({
             key: 'param-orderConfirm',
-            data: [
-              {
+            data: [{
               spuId: goodsDetail.id,
               skuId: skuData.id,
               quantity: this.data.cartNum,
               salesPrice: skuData.salesPrice,
               spuName: goodsDetail.name,
               specInfo: specInfo,
-              picUrl: skuData.picUrl ? skuData.picUrl : goodsDetail.picUrls[0]
+              picUrl: skuData.picUrl ? skuData.picUrl : goodsDetail.picUrls[0],
+              pointsDeductSwitch: goodsDetail.pointsDeductSwitch,
+              pointsDeductScale: goodsDetail.pointsDeductScale,
+              pointsDeductAmount: goodsDetail.pointsDeductAmount,
+              pointsGiveSwitch: goodsDetail.pointsGiveSwitch,
+              pointsGiveNum: goodsDetail.pointsGiveNum
             }]
           })
           wx.navigateTo({

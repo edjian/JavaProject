@@ -97,10 +97,10 @@ module.exports = {
   login: (data) => {
     return request('/weixin/api/ma/wxuser/login', 'post', data, false)
   },
-  userInfoGet: (data) => {
+  wxUserGet: (data) => {
     return request('/mall/api/ma/wxuser', 'get', null, false)
   },
-  userInfoSave: (data) => {
+  wxUserSave: (data) => {
     return request('/mall/api/ma/wxuser', 'post', data, true)
   },
   goodsCategoryGet: (data) => {
@@ -186,5 +186,23 @@ module.exports = {
   },
   orderRefundsSave: (data) => {
     return request('/mall/api/ma/orderrefunds', 'post', data, true)
+  },
+  userInfoGet: () => {
+    return request('/mall/api/ma/userinfo', 'get', null, false)
+  },
+  pointsRecordPage: (data) => {
+    return request('/mall/api/ma/pointsrecord/page', 'get', data, false)
+  },
+  pointsConfigGet: () => {
+    return request('/mall/api/ma/pointsconfig', 'get', null, false)
+  },
+  couponUserSave: (data) => {
+    return request('/mall/api/ma/couponuser', 'post', data, true)
+  },
+  couponUserPage: (data) => {
+    return request('/mall/api/ma/couponuser/page', 'get', data, false)
+  },
+  couponInfoPage: (data) => {
+    return request('/mall/api/ma/couponinfo/page', 'get', data, false)
   },
 }

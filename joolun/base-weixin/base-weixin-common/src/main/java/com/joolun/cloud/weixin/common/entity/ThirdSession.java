@@ -22,4 +22,8 @@ public class ThirdSession implements Serializable {
 	 * 用户标识
 	 */
 	private String openId;
+	/**
+	 * 商城用户ID
+	 */
+	private String mallUserId;
 }

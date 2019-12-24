@@ -10,6 +10,7 @@ package com.joolun.cloud.weixin.admin.api.ma;
 
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
+import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/ma/wxuser")
 public class WxUserApi {
 
+	private final WxUserService wxUserService;
 	/**
 	 * 小程序用户登录
 	 * @param request
@@ -41,7 +43,7 @@ public class WxUserApi {
 				   @RequestBody LoginMaDTO loginMaDTO){
 		try {
 			WxApp wxApp = WxMaConfiguration.getApp(request);
-			WxUser wxUser = WxMaConfiguration.loginMa(wxApp,loginMaDTO.getJsCode());
+			WxUser wxUser = wxUserService.loginMa(wxApp,loginMaDTO.getJsCode());
 			return R.ok(wxUser);
 		} catch (Exception e) {
 			e.printStackTrace();

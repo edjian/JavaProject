@@ -36,6 +36,7 @@ Page({
     app.initPage()
       .then(res => {
         this.shoppingCartPage()
+        this.goodsRecom()
       })
   },
   onLoad: function () {
@@ -56,7 +57,7 @@ Page({
         //过滤出失效商品
         let shoppingCartDataInvalid = []
         res.data.records.forEach(function (shoppingCart, index) {
-          if (!shoppingCart.goodsSpu || shoppingCart.goodsSpu.shelf == '1'){//下架或删除了
+          if (!shoppingCart.goodsSpu || shoppingCart.goodsSpu.shelf == '0'){//下架或删除了
             shoppingCartDataInvalid.push(shoppingCart)
           }else{
             shoppingCartData.push(shoppingCart)
@@ -71,6 +72,21 @@ Page({
         if (selectValue.length > 0) {
           this.checkboxHandle(selectValue)
         }
+      })
+  },
+  //推荐商品
+  goodsRecom() {
+    app.api.goodsPage({
+      searchCount: false,
+      current: 1,
+      size: 4,
+      descs: 'create_time'
+    })
+      .then(res => {
+        let goodsListRecom = res.data.records
+        this.setData({
+          goodsListRecom: goodsListRecom
+        })
       })
   },
   //数量变化
@@ -309,7 +325,7 @@ Page({
     let shoppingCartData = this.data.shoppingCartData
     shoppingCartData.forEach(function (shoppingCart, index) {
       if (shoppingCart.checked && shoppingCart.goodsSku && shoppingCart.goodsSku.enable == '1'
-        && shoppingCart.goodsSpu && shoppingCart.goodsSpu.shelf == '0'
+        && shoppingCart.goodsSpu && shoppingCart.goodsSpu.shelf == '1'
         && shoppingCart.quantity <= shoppingCart.goodsSku.stock){
         let param = {
           spuId: shoppingCart.spuId,
@@ -318,7 +334,12 @@ Page({
           salesPrice: shoppingCart.goodsSku.salesPrice,
           spuName: shoppingCart.goodsSpu.name,
           specInfo: shoppingCart.specInfo,
-          picUrl: shoppingCart.goodsSku.picUrl ? shoppingCart.goodsSku.picUrl : shoppingCart.goodsSpu.picUrls[0]
+          picUrl: shoppingCart.goodsSku.picUrl ? shoppingCart.goodsSku.picUrl : shoppingCart.goodsSpu.picUrls[0],
+          pointsDeductSwitch: shoppingCart.goodsSpu.pointsDeductSwitch,
+          pointsDeductScale: shoppingCart.goodsSpu.pointsDeductScale,
+          pointsDeductAmount: shoppingCart.goodsSpu.pointsDeductAmount,
+          pointsGiveSwitch: shoppingCart.goodsSpu.pointsGiveSwitch,
+          pointsGiveNum: shoppingCart.goodsSpu.pointsGiveNum
         }
         params.push(param)
       }

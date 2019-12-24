@@ -26,8 +26,22 @@
     <text class="cuIcon-share text-red"></text>
   </button>
 </view>
+
+<view class="cu-bar bg-white" wx:if="{{couponInfoList.length > 0}}">
+  <view class="flex response margin-left-sm">
+    <view class="flex-treble">
+      <view class="cu-tag text-orange bg-orange.light radius">
+        {{couponInfoList[0].name}}
+      </view>
+    </view>
+    <view class="flex-sub text-orange text-right margin-right-sm" bindtap="showModalCoupon">
+      领券<text class="cuIcon-right"></text>
+    </view>
+  </view>
+</view>
+
 <view class="cu-bar bg-white">
-  <view class="text-lg padding-tb-xs padding-lr-sm">
+  <view class="text-lg text-bold padding-tb-xs padding-lr-sm">
     <text class="text-black">{{goodsDetail.name}}</text>
   </view>
 </view>
@@ -39,15 +53,34 @@
 
 <view class="cu-bar bg-white margin-top-sm">
   <view class="flex response">
-      <view class="flex-sub text-df">
-        <view class="text-gray margin-left-sm">发货</view>
-      </view>
-      <view class="flex-treble text-df">
-        <text class="cuIcon-location text-black">江苏南京</text> |
-        <text class="text-black">快递：免运费</text>
-      </view>
-      <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsDetail.saleNum}}</view>
+    <view class="flex-sub text-df">
+      <view class="text-gray margin-left-sm">发货</view>
     </view>
+    <view class="flex-treble text-df">
+      <text class="cuIcon-location text-black">江苏南京</text> |
+      <text class="text-black">快递：免运费</text>
+    </view>
+    <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsDetail.saleNum}}</view>
+  </view>
+</view>
+
+<view class="cu-bar bg-white margin-top-sm" wx:if="{{goodsDetail.pointsGiveSwitch == '1' || goodsDetail.pointsDeductSwitch == '1'}}">
+  <view class="flex response">
+    <view class="flex-sub text-df">
+      <view class="text-gray margin-left-sm">优惠</view>
+    </view>
+    <view class="flex-treble text-sm">
+      <view wx:if="{{goodsDetail.pointsGiveSwitch == '1'}}">
+        <text class="cu-tag bg-red light sm radius">积分赠送</text>
+        <text class="text-black margin-left-xs">购买可获得{{goodsDetail.pointsGiveNum}}积分</text>
+      </view>
+      <view class="margin-top-xs" wx:if="{{goodsDetail.pointsDeductSwitch == '1'}}">
+        <text class="cu-tag bg-red light sm radius">积分抵扣</text>
+        <text class="text-black margin-left-xs">1积分可抵{{goodsDetail.pointsDeductAmount}}元，最多可抵{{goodsDetail.pointsDeductScale}}%</text>
+      </view>
+    </view>
+    <view class="flex-sub text-df text-gray text-right"></view>
+  </view>
 </view>
 
 <view class="cu-bar bg-white margin-top-sm">
@@ -58,8 +91,8 @@
       <view class="flex-treble text-df">
         <text class="text-black">{{serviceList[0].name}} | {{serviceList[1].name}}</text>
       </view>
-      <view class="flex-sub text-df text-gray text-right margin-right-sm">
-        <text class="cuIcon-right"></text>
+      <view class="flex-sub text-df text-gray text-right">
+        <text class="cuIcon-right margin-right-sm"></text>
       </view>
     </view>
 </view>
@@ -80,6 +113,23 @@
   </view>
 </view>
 
+<view class="cu-modal bottom-modal {{modalCoupon}}">
+  <view class="cu-dialog bg-white">
+    <view class="padding-xl">
+      <view class="text-lg text-center">优惠券</view>
+      <view class="cu-list text-left">
+        <view class="cu-item padding-xs" wx:for="{{couponInfoList}}" wx:key>
+          <coupon-info
+            couponInfo="{{item}}"
+            toUse="{{false}}"
+          />
+        </view>
+      </view>
+      <button class="cu-btn bg-red margin-top response lg" bindtap="hideModalCoupon">确定</button>
+    </view>
+  </view>
+</view>
+
 <view class="cu-bar bg-white" wx:if="{{goodsDetail.specType == '1'}}">
   <view class="flex response" bindtap="showModalSku">
     <view class="flex-sub text-df">
@@ -94,8 +144,8 @@
         <view class="display-ib" wx:if="{{goodsSpecData.length != (index+1)}}">,</view>
       </view>
     </view>
-    <view class="flex-sub text-df text-gray text-right margin-right-sm">
-      <text class="cuIcon-right"></text>
+    <view class="flex-sub text-df text-gray text-right">
+      <text class="cuIcon-right margin-right-sm"></text>
     </view>
   </view>
 </view>
@@ -168,7 +218,7 @@
   bind:changeSpec="changeSpec"
   bind:operateCartEvent="operateCartEvent"
 />
-<view class="cu-modal {{goodsDetail.shelf=='1'?'show':''}}">
+<view class="cu-modal {{goodsDetail.shelf=='0'?'show':''}}">
   <view class="cu-dialog">
     <view class="cu-bar bg-white justify-end">
       <view class="content">提示</view>

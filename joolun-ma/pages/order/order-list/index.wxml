@@ -33,7 +33,7 @@
               <view class="text-black margin-top-sm overflow-2">{{item2.spuName}}</view>
               <view class="text-gray text-sm margin-top-sm overflow-2" wx:if="{{item2.specInfo}}">{{item2.specInfo}}</view>
               <view class="flex justify-between">
-                <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item2.salesPrice}}</view>
+                <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item2.paymentPrice}}</view>
                 <view class="text-black text-sm margin-top-sm padding-lr-sm">x{{item2.quantity}}</view>
               </view>
             </view>

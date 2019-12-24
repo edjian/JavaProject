@@ -40,8 +40,8 @@
                :data="tableData"
                :table-loading="tableLoading"
                :option="tableOptionVoice"
+               @on-load="getPage"
                @size-change="sizeChange"
-               @current-change="currentChange"
                @refresh-change="refreshChange">
       <template slot-scope="scope"
                 slot="menu">
@@ -59,8 +59,8 @@
                :data="tableData"
                :table-loading="tableLoading"
                :option="tableOptionVideo"
+               @on-load="getPage"
                @size-change="sizeChange"
-               @current-change="currentChange"
                @refresh-change="refreshChange">
       <template slot-scope="scope"
                 slot="menu">
@@ -87,7 +87,6 @@
     <span slot="footer" class="dialog-footer">
       <el-pagination
         @size-change="sizeChange"
-        @current-change="currentChange"
         :current-page.sync="page.currentPage"
         :page-sizes="[10, 20]"
         :page-size="page.pageSize"
@@ -157,6 +156,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.items
           this.page.total = response.data.data.totalCount
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -172,14 +173,14 @@
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
-      },
+      refreshChange(val) {
+        this.getPage(val.page)
+      }
     }
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   /*瀑布流样式*/
   .waterfall {
     width: 100%;

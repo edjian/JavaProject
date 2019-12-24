@@ -25,6 +25,11 @@
 		<result property="picUrl" column="pic_url"/>
 		<result property="quantity" column="quantity"/>
 		<result property="salesPrice" column="sales_price"/>
+		<result property="paymentPrice" column="payment_price"/>
+		<result property="paymentPoints" column="payment_points"/>
+		<result property="paymentCouponPrice" column="payment_coupon_price"/>
+		<result property="paymentPointsPrice" column="payment_points_price"/>
+		<result property="couponUserId" column="coupon_user_id"/>
 		<result property="remark" column="remark"/>
 		<result property="status" column="status"/>
 		<result property="isRefund" column="is_refund"/>
@@ -51,6 +56,11 @@
 		order_item.`pic_url`,
 		order_item.`quantity`,
 		order_item.`sales_price`,
+		order_item.`payment_price`,
+		order_item.`payment_points`,
+		order_item.`payment_coupon_price`,
+		order_item.`payment_points_price`,
+		order_item.`coupon_user_id`,
 		order_item.`remark`,
 		order_item.`status`,
 		order_item.`is_refund`

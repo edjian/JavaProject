@@ -23,7 +23,7 @@ public class SysLog implements Serializable {
 	/**
 	 * 编号
 	 */
-	@TableId(value = "id", type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	private String id;
 	/**
 	 * 日志类型

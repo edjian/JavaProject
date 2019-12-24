@@ -35,7 +35,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 主键
    */
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
    * 创建者
@@ -163,5 +163,8 @@ private static final long serialVersionUID = 1L;
    * 会话密钥
    */
     private String sessionKey;
-  
+	/**
+	 * 商城用户ID
+	 */
+	private String mallUserId;
 }

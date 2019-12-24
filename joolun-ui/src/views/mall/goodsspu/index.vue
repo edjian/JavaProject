@@ -15,6 +15,8 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
+                 :before-open="beforeOpen"
+                 v-model="form"
                  @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
@@ -22,13 +24,18 @@
                  @row-del="handleDel"
                  @sort-change="sortChange"
                  @search-change="searchChange"
-                 @current-change="currentChange">
+                 @selection-change="selectionChange">
         <template slot="menuLeft">
-          <el-button type="primary"
+          <el-button type="success"
+                     @click="batchShelf('1')"
                      size="small"
-                     icon="el-icon-plus"
-                     v-if="permissions.mall_goodsspu_add" @click="openAdd">添加商品
-          </el-button>
+                     icon="el-icon-document"
+                     v-if="permissions.mall_goodsspu_edit">批量上架</el-button>
+          <el-button type="warning"
+                     @click="batchShelf('0')"
+                     size="small"
+                     icon="el-icon-document"
+                     v-if="permissions.mall_goodsspu_edit">批量下架</el-button>
         </template>
         <template slot="picUrls" slot-scope="scope">
           <el-image
@@ -38,9 +45,14 @@
           </el-image>
         </template>
         <template slot="shelf" slot-scope="scope">
-          <el-tag :type="scope.row.shelf=='0' ? 'success' : 'danger'" effect="dark" size="mini"> {{ scope.row.shelf=='0'
-            ? '已上架' : '已下架' }}
-          </el-tag>
+          <el-switch
+                  active-value="1"
+                  inactive-value="0"
+                  v-model="scope.row.shelf"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="changeShelf(scope.row)">
+          </el-switch>
         </template>
         <template slot="price" slot-scope="scope">
           <div style="color: red">￥{{scope.row.priceDown}}{{scope.row.priceUp == scope.row.priceDown ? '' : '~￥'+
@@ -61,23 +73,10 @@
           </div>
         </template>
         <template slot-scope="scope" slot="menu">
-          <el-button icon="el-icon-edit"
-                     size="small"
-                     type="text"
-                     v-if="permissions.mall_goodsspu_edit"
-                     @click="openEdit(scope.row,scope.index)">编辑
-          </el-button>
           <!--          <el-button icon="el-icon-chat-dot-square"-->
           <!--                     size="small"-->
           <!--                     type="text"-->
           <!--                     @click="openAppraises(scope.row,scope.index)">商品评价</el-button>-->
-          <el-button type="text"
-                     v-if="permissions.mall_goodsspu_del"
-                     icon="el-icon-delete"
-                     size="small"
-                     plain
-                     @click="handleDel(scope.row)">删除
-          </el-button>
         </template>
       </avue-crud>
       <el-dialog
@@ -96,10 +95,11 @@
 </template>
 
 <script>
-    import {getPage, getObj, addObj, putObj, delObj} from '@/api/mall/goodsspu'
+    import {getPage, getObj, addObj, putObj, delObj, putObjShelf} from '@/api/mall/goodsspu'
     import {getList as specList} from '@/api/mall/goodsspec'
     import {getPage as appraisesPage} from '@/api/mall/goodsappraises'
     import {fetchTree} from '@/api/mall/goodsspuspec'
+    import {getObj2} from '@/api/mall/pointsconfig'
     import {tableOption} from '@/const/crud/mall/goodsspu'
     import {mapGetters} from 'vuex'
     import BaseEditor from '@/components/editor/BaseEditor.vue'
@@ -115,6 +115,7 @@
         },
         data() {
             return {
+                form: {},
                 tableData: [],
                 page: {
                     total: 0, // 总页数
@@ -139,8 +140,31 @@
                         author: 'headimgUrl',
                         body: 'content'
                     }
-                }
+                },
+              selectionData: '',
+              pointsConfig: null
             }
+        },
+        watch:{
+          'form.pointsGiveSwitch'(){
+            let column =this.tableOption.group[2].column[1]
+            if(this.form.pointsGiveSwitch==='1'){
+              column.display = true
+            }else{
+              column.display = false
+            }
+          },
+          'form.pointsDeductSwitch'(){
+            let column =this.tableOption.group[3].column[1]
+            let column2 =this.tableOption.group[3].column[2]
+            if(this.form.pointsDeductSwitch==='1'){
+              column.display = true
+              column2.display = true
+            }else{
+              column.display = false
+              column2.display = false
+            }
+          }
         },
         created() {
         },
@@ -158,6 +182,31 @@
             },
         },
         methods: {
+            selectionChange(list){
+              this.selectionData = list
+            },
+            batchShelf(shelf){
+              if(this.selectionData.length<=0){
+                this.$message.error('请选择商品')
+                return
+              }
+              let selectionIds = ''
+              this.selectionData.forEach(item => {
+                selectionIds += item.id+ ','
+              })
+              this.putObjShelf(selectionIds, shelf)
+            },
+            changeShelf(row){
+              this.putObjShelf(row.id, row.shelf)
+            },
+            putObjShelf(ids, shelf){
+                putObjShelf({
+                  ids: ids,
+                  shelf: shelf
+                }).then(data => {
+                  this.getPage(this.page)
+                })
+            },
             openAppraises(row, index) {
                 this.goodsAppraises = null
                 this.dialogAppraises = true
@@ -171,29 +220,31 @@
                 this.goodsSkuData = val
                 this.goodsSpuSpecData = val2
             },
-            openAdd() {
-                this.goodsSpuSpec = []
-                this.goodsSku = []
-                this.$refs.crud.rowAdd()
-                this.specList()
-            },
-            openEdit(row, index) {
-                this.tableLoading = true
-                this.goodsSpuSpec = null
-                getObj(row.id).then(response => {
-                    row.description = response.data.data.description
-                    this.$refs.crud.rowEdit(row, index)
-                    this.fetchTree({
-                        spuId: row.id
-                    })
+            beforeOpen(done,type){
+                if(type == 'add'){
+                    this.goodsSpuSpec = []
+                    this.goodsSku = []
                     this.specList()
-                    let skus = response.data.data.skus.filter(val => {
+                    done()
+                }else if(type == 'edit'){
+                    this.tableLoading = true
+                    this.goodsSpuSpec = null
+                    getObj(this.form.id).then(response => {
+                      this.$set(this.form,'description', response.data.data.description)
+                      this.fetchTree({
+                        spuId: this.form.id
+                      })
+                      this.specList()
+                      let skus = response.data.data.skus.filter(val => {
                         val.picUrls = val.picUrl ? [val.picUrl] : []
                         return val
+                      })
+                      this.goodsSku = skus
+                      this.tableLoading = false
+                      done()
                     })
-                    this.goodsSku = skus
-                    this.tableLoading = false
-                })
+                }
+
             },
             fetchTree(params) {
                 fetchTree(params).then(data => {
@@ -204,16 +255,28 @@
                 specList().then(data => {
                     this.goodsSpec = data.data.data
                 })
+                //自动填充默认积分设置
+                if(!this.pointsConfig){
+                    getObj2().then(response => {
+                      this.pointsConfig = response.data.data ? response.data.data : null
+                      if(!this.form.pointsDeductScale){
+                        this.form.pointsDeductScale = this.pointsConfig.defaultDeductScale
+                        this.form.pointsDeductAmount = this.pointsConfig.defaultDeductAmount
+                      }
+                    })
+                }else{
+                  if(!this.form.pointsDeductScale){
+                    this.form.pointsDeductScale = this.pointsConfig.defaultDeductScale
+                    this.form.pointsDeductAmount = this.pointsConfig.defaultDeductAmount
+                  }
+                }
             },
-
-            currentChange(currentPage) {
-                this.page.currentPage = currentPage
-            },
-            searchChange(params) {
+            searchChange(params,done) {
                 params = this.filterForm(params)
                 this.paramsSearch = params
                 this.page.currentPage = 1
                 this.getPage(this.page, params)
+                done()
             },
             sortChange(val) {
                 let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : '';
@@ -254,6 +317,8 @@
                     })
                     this.tableData = tableData
                     this.page.total = response.data.data.total
+                    this.page.currentPage = page.currentPage
+                    this.page.pageSize = page.pageSize
                     this.tableLoading = false
                 }).catch(() => {
                     this.tableLoading = false
@@ -310,6 +375,8 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                  done()
                 })
             },
             /**
@@ -337,13 +404,15 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                  done()
                 })
             },
             /**
              * 刷新回调
              */
-            refreshChange() {
-                this.getPage(this.page)
+            refreshChange(val) {
+              this.getPage(val.page)
             }
         }
     }

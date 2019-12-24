@@ -7,7 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 /**
- * <version>2.3.0</version>
+ * <version>2.4.0</version>
  */
 import __config from './config/env'
 import api from './utils/api'
@@ -59,9 +59,9 @@ App({
               jsCode: res.code
             })
               .then(res => {
-                let userInfo = res.data
-                that.globalData.thirdSession = userInfo.sessionKey
-                that.globalData.userInfo = userInfo
+                let wxUser = res.data
+                that.globalData.thirdSession = wxUser.sessionKey
+                that.globalData.wxUser = wxUser
                 resolve("success")
               })
           }

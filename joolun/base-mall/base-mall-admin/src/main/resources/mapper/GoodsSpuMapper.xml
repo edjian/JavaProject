@@ -44,44 +44,75 @@
 	</resultMap>
 
 	<sql id="goodsSpuSql">
-		spu.`id`,
-		spu.`tenant_id`,
-		spu.`spu_code`,
-		spu.`name`,
-		spu.`sell_point`,
-		spu.`description`,
-		spu.`category_first`,
-		spu.`category_second`,
-		spu.`pic_urls`,
-		spu.`shelf`,
-		spu.`sort`,
-		spu.`price_down`,
-		spu.`price_up`,
-		spu.`sale_num`,
-		spu.`create_time`,
-		spu.`update_time`,
-		spu.`spec_type`,
-		spu.`del_flag`,
-		spu.`points_give_switch`,
-		spu.`points_give_num`,
-		spu.`points_deduct_switch`,
-		spu.`points_deduct_scale`,
-		spu.`points_deduct_amount`
+		goods_spu.`id`,
+		goods_spu.`tenant_id`,
+		goods_spu.`spu_code`,
+		goods_spu.`name`,
+		goods_spu.`sell_point`,
+		goods_spu.`description`,
+		goods_spu.`category_first`,
+		goods_spu.`category_second`,
+		goods_spu.`pic_urls`,
+		goods_spu.`shelf`,
+		goods_spu.`sort`,
+		goods_spu.`price_down`,
+		goods_spu.`price_up`,
+		goods_spu.`sale_num`,
+		goods_spu.`create_time`,
+		goods_spu.`update_time`,
+		goods_spu.`spec_type`,
+		goods_spu.`del_flag`,
+		goods_spu.`points_give_switch`,
+		goods_spu.`points_give_num`,
+		goods_spu.`points_deduct_switch`,
+		goods_spu.`points_deduct_scale`,
+		goods_spu.`points_deduct_amount`
 	</sql>
 
-	<!--重写selectById关联查询其它表-->
 	<select id="selectById2" resultMap="goodsSpuMap2">
 		SELECT
 			<include refid="goodsSpuSql"/>
-		FROM goods_spu spu
-		WHERE spu.`id` = #{id}
+		FROM goods_spu goods_spu
+		WHERE goods_spu.`id` = #{id}
 	</select>
 
 	<select id="selectOneByShoppingCart" resultMap="goodsSpuMap">
 		SELECT
 			<include refid="goodsSpuSql"/>
-		FROM goods_spu spu
-		WHERE spu.`id` = #{id}
+		FROM goods_spu goods_spu
+		WHERE goods_spu.`id` = #{id}
 	</select>
 
+	<select id="selectListByCouponId" resultMap="goodsSpuMap">
+		SELECT
+			<include refid="goodsSpuSql"/>
+		FROM goods_spu goods_spu
+		LEFT JOIN coupon_goods coupon_goods
+		ON goods_spu.`id` = coupon_goods.`spu_id`
+		WHERE coupon_goods.`coupon_id` = #{couponId}
+	</select>
+
+	<select id="selectPage2" resultMap="goodsSpuMap">
+		SELECT
+		<include refid="goodsSpuSql"/>
+		FROM goods_spu goods_spu
+		<if test='query2.couponId != null and query3.suitType == "2"'>
+			LEFT JOIN coupon_goods coupon_goods
+			ON goods_spu.`id` = coupon_goods.`spu_id`
+		</if>
+		<where>
+			<if test="query.shelf != null">
+				AND goods_spu.`shelf` = #{query.shelf}
+			</if>
+			<if test="query.categorySecond != null">
+				AND goods_spu.`category_second` = #{query.categorySecond}
+			</if>
+			<if test="query.name != null">
+				AND goods_spu.`name` LIKE CONCAT('%',#{query.name},'%')
+			</if>
+			<if test='query2.couponId != null and query3.suitType == "2"'>
+				AND coupon_goods.`coupon_id` = #{query2.couponId}
+			</if>
+		</where>
+	</select>
 </mapper>

@@ -8,15 +8,18 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.google.common.collect.Maps;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.common.constant.MyReturnCode;
 import com.joolun.cloud.weixin.common.constant.WxMaConstants;
+import com.joolun.cloud.weixin.common.dto.MallUserInfoDTO;
 import com.joolun.cloud.weixin.common.entity.ThirdSession;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.feign.FeignMallUserInfoService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,11 +48,9 @@ public class WxMaConfiguration {
 
 	private static RedisTemplate redisTemplate;
 	private static WxAppService wxAppService;
-	private static WxUserService wxUserService;
-	public WxMaConfiguration(RedisTemplate redisTemplate, WxAppService wxAppService,WxUserService wxUserService){
+	public WxMaConfiguration(RedisTemplate redisTemplate, WxAppService wxAppService){
 		this.redisTemplate = redisTemplate;
 		this.wxAppService = wxAppService;
-		this.wxUserService = wxUserService;
 	}
 	/**
 	 *  获取全局缓存WxMaService
@@ -124,43 +125,4 @@ public class WxMaConfiguration {
 		return wxApp;
 	}
 
-	/**
-	 * 小程序登录
-	 * @param wxApp
-	 * @param jsCode
-	 * @return
-	 * @throws WxErrorException
-	 */
-	public static WxUser loginMa(WxApp wxApp, String jsCode) throws WxErrorException {
-		WxMaJscode2SessionResult jscode2session = WxMaConfiguration.getMaService(wxApp.getId()).jsCode2SessionInfo(jsCode);
-		WxUser wxUser = wxUserService.getByOpenId(wxApp.getId(),jscode2session.getOpenid());
-		if(wxUser==null) {//新增用户
-			wxUser = new WxUser();
-			wxUser.setAppId(wxApp.getId());
-			wxUser.setAppType(wxApp.getAppType());
-			wxUser.setOpenId(jscode2session.getOpenid());
-			wxUser.setSessionKey(jscode2session.getSessionKey());
-			wxUser.setUnionId(jscode2session.getUnionid());
-			wxUserService.save(wxUser);
-		}else {//更新SessionKey
-			wxUser.setAppId(wxApp.getId());
-			wxUser.setAppType(wxApp.getAppType());
-			wxUser.setOpenId(jscode2session.getOpenid());
-			wxUser.setSessionKey(jscode2session.getSessionKey());
-			wxUser.setUnionId(jscode2session.getUnionid());
-			wxUserService.updateById(wxUser);
-		}
-
-		String thirdSession = UUID.randomUUID().toString();
-		ThirdSession thirdSessionData = new ThirdSession();
-		thirdSessionData.setAppId(wxApp.getId());
-		thirdSessionData.setSessionKey(wxUser.getSessionKey());
-		thirdSessionData.setWxUserId(wxUser.getId());
-		thirdSessionData.setOpenId(wxUser.getOpenId());
-		//将3rd_session和用户信息存入redis，并设置过期时间
-		String key = WxMaConstants.THIRD_SESSION_BEGIN + ":" + thirdSession;
-		redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(thirdSessionData) , WxMaConstants.TIME_OUT_SESSION, TimeUnit.HOURS);
-		wxUser.setSessionKey(thirdSession);
-		return wxUser;
-	}
 }

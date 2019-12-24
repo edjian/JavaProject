@@ -13,14 +13,6 @@ public interface MallConstants {
 	 */
 	String SPU_SPEC_TYPE_1 = "1";
 	/**
-	 * 商品上架状态（0为已上架 1为已下架）
-	 */
-	String SPU_SHELF_0 = "0";
-	/**
-	 * 商品上架状态（0为已上架 1为已下架）
-	 */
-	String SPU_SHELF_1 = "1";
-	/**
 	 * 收藏类型1、商品
 	 */
 	String COLLECT_TYPE_1 = "1";
@@ -64,4 +56,41 @@ public interface MallConstants {
 	 * 评价状态0、未评；1、已评；2、已追评
 	 */
 	String APPRAISES_STATUS_2 = "2";
+	/**
+	 * 用户等级（0：普通用户，1：普通会员）
+	 */
+	Integer USER_GRADE_0 = 0;
+	/**
+	 * 用户等级（0：普通用户，1：普通会员）
+	 */
+	Integer USER_GRADE_1 = 1;
+	/**
+	 * 记录类型0、用户初始化；1、会员初始化；2、商品赠送；3、退款赠送减回；4、商品抵扣；5、订单取消抵扣加回；6、退款抵扣加回
+	 */
+	String POINTS_RECORD_TYPE_0 = "0";
+	String POINTS_RECORD_TYPE_1 = "1";
+	String POINTS_RECORD_TYPE_2 = "2";
+	String POINTS_RECORD_TYPE_3 = "3";
+	String POINTS_RECORD_TYPE_4 = "4";
+	String POINTS_RECORD_TYPE_5 = "5";
+	String POINTS_RECORD_TYPE_6 = "6";
+
+	/**
+	 * 电子券适用类型1、全部商品；2、指定商品可用；
+	 */
+	String COUPON_SUIT_TYPE_1 = "1";
+	String COUPON_SUIT_TYPE_2 = "2";
+
+	/**
+	 * 到期类型1、领券后生效；2：固定时间段
+	 */
+	String COUPON_EXPIRE_TYPE_1 = "1";
+	String COUPON_EXPIRE_TYPE_2 = "2";
+
+	/**
+	 * 用户电子券状态0、未使用；1、已使用；2、已过期
+	 */
+	String COUPON_USER_STATUS_0 = "0";
+	String COUPON_USER_STATUS_1 = "1";
+	String COUPON_USER_STATUS_2 = "2";
 }

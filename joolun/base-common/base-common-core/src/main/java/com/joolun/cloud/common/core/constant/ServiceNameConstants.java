@@ -21,12 +21,12 @@ public interface ServiceNameConstants {
 	/**
 	 * UMPS ADMIN模块
 	 */
-	String UMPS_SERVICE = "base-upms-admin";
+	String UMPS_ADMIN_SERVICE = "base-upms-admin";
 
 	/**
 	 * base-mall-admin模块
 	 */
-	String MALL_SERVICE = "base-mall-admin";
+	String MALL_ADMIN_SERVICE = "base-mall-admin";
 
 	/**
 	 * 微信第三方平台模块

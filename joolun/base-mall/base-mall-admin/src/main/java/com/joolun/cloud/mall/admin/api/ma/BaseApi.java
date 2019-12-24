@@ -4,10 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
-import com.joolun.cloud.mall.common.entity.OrderInfo;
-import com.joolun.cloud.mall.common.entity.ShoppingCart;
-import com.joolun.cloud.mall.common.entity.UserAddress;
-import com.joolun.cloud.mall.common.entity.UserCollect;
+import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.weixin.common.constant.MyReturnCode;
 import com.joolun.cloud.weixin.common.constant.WxMaConstants;
 import com.joolun.cloud.weixin.common.entity.ThirdSession;
@@ -51,22 +48,30 @@ public class BaseApi {
 			String userId_session = thirdSessionData.getWxUserId();
 			String sessionKey_session = thirdSessionData.getSessionKey();
 			String openId_session = thirdSessionData.getOpenId();
+			String mallUserId_session = thirdSessionData.getMallUserId();
 			if (baseEntity instanceof WxUser) {
 				((WxUser) baseEntity).setAppId(appId_session);
 				((WxUser) baseEntity).setId(userId_session);
 				((WxUser) baseEntity).setSessionKey(sessionKey_session);
 				((WxUser) baseEntity).setOpenId(openId_session);
+				((WxUser) baseEntity).setMallUserId(mallUserId_session);
 			}else if (baseEntity instanceof ShoppingCart){
-				((ShoppingCart) baseEntity).setUserId(userId_session);
+				((ShoppingCart) baseEntity).setUserId(mallUserId_session);
 			}else if (baseEntity instanceof PlaceOrderDTO){
-				((PlaceOrderDTO) baseEntity).setUserId(userId_session);
+				((PlaceOrderDTO) baseEntity).setUserId(mallUserId_session);
 				((PlaceOrderDTO) baseEntity).setAppId(appId_session);
 			}else if (baseEntity instanceof UserAddress){
-				((UserAddress) baseEntity).setUserId(userId_session);
+				((UserAddress) baseEntity).setUserId(mallUserId_session);
 			}else if (baseEntity instanceof OrderInfo){
-				((OrderInfo) baseEntity).setUserId(userId_session);
+				((OrderInfo) baseEntity).setUserId(mallUserId_session);
 			}else if (baseEntity instanceof UserCollect){
-				((UserCollect) baseEntity).setUserId(userId_session);
+				((UserCollect) baseEntity).setUserId(mallUserId_session);
+			}else if (baseEntity instanceof PointsRecord){
+				((PointsRecord) baseEntity).setUserId(mallUserId_session);
+			}else if (baseEntity instanceof UserInfo){
+				((UserInfo) baseEntity).setId(mallUserId_session);
+			}else if (baseEntity instanceof CouponUser){
+				((CouponUser) baseEntity).setUserId(mallUserId_session);
 			}
 			return R.ok(baseEntity);
 		}

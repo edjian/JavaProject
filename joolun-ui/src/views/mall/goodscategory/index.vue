@@ -18,17 +18,7 @@
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel"
-                 @current-change="currentChange">
-        <template slot="parentIdForm"
-                  slot-scope="scope">
-          <avue-input v-model="scope.row.parentId"
-                      type="tree"
-                      placeholder="请选择所属机构"
-                      :disabled="scope.row.id != undefined && scope.row.parentId != ''"
-                      :dic="parentTreeData"
-                      :props="categoryProps"></avue-input>
-        </template>
+                 @row-del="handleDel">
         <template slot="picUrlForm"
                   slot-scope="scope">
           <MaterialList v-model="scope.row.picUrl" type="image" :num=1 :width='scope.row.parentId == "0" ? 300 : 150' :height=150></MaterialList>
@@ -44,7 +34,7 @@
 </template>
 
 <script>
-    import {getPage, fetchTree, fetchParentTree, getObj, addObj, putObj, delObj} from '@/api/mall/goodscategory'
+    import {getPage, fetchTree, getObj, addObj, putObj, delObj} from '@/api/mall/goodscategory'
     import {tableOption} from '@/const/crud/mall/goodscategory'
     import {mapGetters} from 'vuex'
     import MaterialList from '@/components/material/list.vue'
@@ -59,15 +49,10 @@
                 tableData: [],
                 tableLoading: false,
                 tableOption: tableOption,
-                parentTreeData: [],
-                categoryProps: {
-                    label: 'name',
-                    value: 'id'
-                }
+                parentTreeData: []
             }
         },
         created() {
-            this.fetchParentTree()
         },
         mounted: function () {
         },
@@ -83,23 +68,15 @@
             }
         },
         methods: {
-            fetchParentTree() {
-                fetchParentTree().then(response => {
-                    this.parentTreeData = response.data.data
-                })
-            },
-            currentChange(currentPage) {
-                this.page.currentPage = currentPage
-            },
             getPage() {
                 this.tableLoading = true
                 fetchTree().then(response => {
                     let tableData = response.data.data
                     tableData.forEach(item => {
-                        item.picUrl = [item.picUrl]
+                        item.picUrl = item.picUrl ? [item.picUrl] : []
                         if(item.children){
                             item.children.forEach(item2 => {
-                                item2.picUrl = [item2.picUrl]
+                                item2.picUrl = item2.picUrl ? [item2.picUrl] : []
                             })
                         }
                     })
@@ -131,7 +108,6 @@
                         type: 'success'
                     })
                     this.getPage()
-                    this.fetchParentTree()
                 }).catch(function (err) {
                 })
             },
@@ -143,7 +119,7 @@
              *
              **/
             handleUpdate: function (row, index, done) {
-                row.picUrl = row.picUrl[0]
+                row.picUrl = row.picUrl.length > 0 ? row.picUrl[0] : ''
                 putObj(row).then(data => {
                     this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
@@ -153,7 +129,8 @@
                     })
                     done()
                     this.getPage()
-                    this.fetchParentTree()
+                }).catch(() => {
+                  done()
                 })
             },
             /**
@@ -173,15 +150,15 @@
                     })
                     done()
                     this.getPage()
-                    this.fetchParentTree()
+                }).catch(() => {
+                  done()
                 })
             },
             /**
              * 刷新回调
              */
-            refreshChange() {
-                this.getPage()
-                this.fetchParentTree()
+            refreshChange(val) {
+              this.getPage(val.page)
             }
         }
     }

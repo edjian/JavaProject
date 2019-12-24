@@ -6,6 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
+<wxs module="numberUtil" src="../../../utils/numberUtil.wxs"></wxs>
 <view class="margin-bottom-bar">
   <view class="cu-list cu-card menu-avatar">
     <navigator class="cu-item" url='/pages/user/user-address/list/index?select=true'>
@@ -30,10 +31,10 @@
   </view>
   <view class="cu-card article mar-top-30">
     <view class="cu-item">
-      <view class="cu-list">
-        <view class="cu-item" wx:for="{{ orderConfirmData }}" wx:key>
+      <view class="cu-list menu">
+        <view class="cu-item list-item" wx:for="{{ orderConfirmData }}" wx:key>
           <view class="flex align-center">
-            <view class="content">
+            <view class="content response">
               <image src="{{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
               <view class="desc row-info">
                 <view class="text-black margin-top-sm overflow-2">{{item.spuName}}</view>
@@ -42,7 +43,7 @@
                 </view>
                 <view class="flex">
                   <view class="flex-sub">
-                    <view class="text-price text-bold text-red margin-top-sm">{{item.salesPrice}}</view>
+                    <text class="text-price text-bold text-red margin-top-sm">{{item.salesPrice}}</text>
                   </view>
                   <view class="flex-twice text-right margin-right-sm">
                     x{{item.quantity}}
@@ -52,13 +53,73 @@
             </view>
           </view>
         </view>
+        <view class="cu-item margin-top-sm">
+          <view class="content">
+            <text class="text-grey">商品总价</text>
+          </view>
+          <view class="action">
+            <view class="text-price">{{totalPrice}}</view>
+          </view>
+        </view>
+        <view class="cu-item" wx:if="{{totalCouponDeductPrice > 0}}">
+          <view class="content">
+            <text class="text-grey">优惠券抵扣</text>
+          </view>
+          <view class="action text-red">
+            - <text class="text-price">{{totalCouponDeductPrice}}</text>
+          </view>
+        </view>
+        <view class="cu-item" wx:if="{{totalPointsDeductPrice > 0}}">
+          <view class="content">
+            <text class="text-grey">积分抵扣</text>
+          </view>
+          <view class="action text-red">
+            - <text class="text-price">{{totalPointsDeductPrice}}</text>
+          </view>
+        </view>
       </view>
     </view>
   </view>
   <view class="cu-card mar-top-30">
+    <view class="cu-item bg-white">
+      <view class="cu-bar flex response">
+        <view class="flex-sub text-df">
+          <view class="text-gray margin-left-sm">优惠券</view>
+        </view>
+        <view class="flex-treble text-df">
+          <text class="text-black" wx:if="{{!couponUser}}">{{couponUserList.length > 0 ? '有可用优惠券' : '无可用优惠券'}}</text>
+          <text class="text-black" wx:if="{{couponUser}}">{{couponUser.name}}</text>
+        </view>
+        <view class="flex-sub text-df text-orange text-right margin-right-sm">
+          <view wx:if="{{couponUserList.length > 0}}" bindtap="showModalCoupon">
+            选择券<text class="cuIcon-right margin-right-sm"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cu-item bg-white" wx:if="{{totalPointsDeduct > 0}}">
+      <view class="cu-bar flex response">
+        <view class="flex-sub text-df">
+          <view class="text-gray margin-left-sm">积分</view>
+        </view>
+        <view class="flex-treble text-df">
+          <text class="text-black" wx:if="{{pointsConfig.premiseAmount <= totalPrice}}">共{{userInfo.pointsCurrent}}，可用{{totalPointsDeduct}}抵{{totalPointsDeductPriceTemp}}元
+          </text>
+          <text class="text-black" wx:if="{{pointsConfig.premiseAmount > totalPrice}}">共{{userInfo.pointsCurrent}}，订单满{{pointsConfig.premiseAmount}}元可使用
+          </text>
+        </view>
+        <view class="flex-sub text-df text-gray text-right margin-right-sm">
+          <checkbox-group bindchange="pointsCheckedChange" 
+              wx:if="{{pointsConfig.premiseAmount <= totalPrice && userInfo.pointsCurrent >= totalPointsDeduct}}">
+            <checkbox class="round red" value="true" checked="{{totalPointsDeductPrice > 0}}"></checkbox>
+          </checkbox-group>
+        </view>
+      </view>
+    </view>
+	</view>
+  <view class="cu-card mar-top-30">
     <view class="cu-item cu-form-group align-start">
-      <view class="title">给卖家留言</view>
-      <textarea maxlength="40" bindinput="userMessageInput" placeholder=""></textarea>
+      <input bindinput="userMessageInput" placeholder="给卖家留言"></input>
     </view>
 	</view>
 </view>
@@ -68,10 +129,32 @@
     <view class="flex-treble bar-rt">
       <text class="text-sm text-gray">共{{ orderConfirmData.length }}件，</text>
       <text class="text-xs text-bold">合计：</text>
-      <text class="text-xl text-price text-red">{{totalPrice}}</text>
+      <text class="text-xl text-price text-red">{{paymentPrice}}</text>
       <button class="cu-btn bg-red round lg margin-left-sm" bindtap="orderSub" loading="{{loading}}" disabled="{{loading}}" type="">
         提交订单
       </button>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal bottom-modal {{modalCoupon}}">
+  <view class="cu-dialog bg-white">
+    <view class="padding-tb-xl">
+      <view class="text-lg text-center">优惠券</view>
+      <radio-group class="cu-list text-left response" bindchange="couponUserChange">
+        <view class="cu-item padding flex flex-wrap" wx:for="{{couponUserList}}" wx:key>
+          <coupon-user-info
+            class="basis-xl"
+            couponUserInfo="{{item}}"
+            toUse="{{false}}"
+          />
+          <radio class="radio red basis-xs text-center vertical-center" value="{{index}}" disabled="{{totalCouponDeductPrice == 0 && item.premiseAmount > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}"></radio>
+          <text class="text-red text-sm response text-center cuIcon-warn margin-xs" wx:if="{{totalCouponDeductPrice == 0 && item.premiseAmount > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}">订单金额未满¥{{item.premiseAmount}}，无法使用</text>
+        </view>
+      </radio-group>
+      <view class="margin">
+        <button class="cu-btn bg-red response lg" bindtap="hideModalCoupon">确定</button>
+      </view>
     </view>
   </view>
 </view>

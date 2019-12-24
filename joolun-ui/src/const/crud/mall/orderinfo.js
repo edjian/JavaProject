@@ -10,7 +10,6 @@ export const tableOption = {
   // dateBtn:true,
   dialogType: 'drawer',
   dialogWidth: '80%',
-  dialogDrag: true,
   border: true,
   index: false,
   indexLabel: '序号',
@@ -27,7 +26,6 @@ export const tableOption = {
   addBtn: false,
   viewBtn: false,
   defaultExpandAll: true,
-  card:true,
   column: [
 	  {
       label: '用户id',
@@ -59,13 +57,14 @@ export const tableOption = {
 	  {
       label: '商品信息',
       prop: 'goodsInfo',
-      width: 800,
+      width: 700,
       slot:true
     },
     {
       label: '时间/订单号',
       prop: 'createTime',
       sortable:true,
+      width: 250,
       slot:true
     },
     {
@@ -84,13 +83,15 @@ export const tableOption = {
       prop: 'status',
       type: 'radio',
       sortable:true,
-      slot:true
+      slot:true,
+      width: 150,
     },
 	  {
       label: '订单金额(￥)',
       prop: 'salesPrice',
       sortable:true,
-      slot:true
+      slot:true,
+      width: 180,
     },
 	  {
       label: '付款时间',

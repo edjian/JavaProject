@@ -40,7 +40,6 @@
                        @row-update="handleItemUpdate"
                        @row-save="handleItemSave"
                        @row-del="rowItemDel"
-                       @current-change="currentChange"
                        :before-open="handleBeforeOpen"
                        :option="tableDictItemOption"
                        :table-loading="tableLoading2">
@@ -95,9 +94,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -122,6 +118,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -180,6 +178,8 @@
           })
           this.getPage(this.page)
           done()
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -197,6 +197,8 @@
             type: 'success'
           })
           this.getPage(this.page)
+          done()
+        }).catch(() => {
           done()
         })
       },
@@ -224,8 +226,9 @@
           done()
         })
       },
-      searchChange(form) {
+      searchChange(form,done) {
         this.getPage(this.page, this.filterForm(form))
+        done()
       },
       /**
        * 加载键值列表

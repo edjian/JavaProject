@@ -38,9 +38,9 @@ public class ${className} extends Model<${className}> {
     /**
      * $column.comments
      */
-    #if($column.columnName == $pk.columnName)
-    @TableId(type = IdType.UUID)
-    #end
+#if($column.columnName == $pk.columnName)
+    @TableId(type = IdType.ASSIGN_UUID)
+#end
     private $column.attrType $column.lowerAttrName;
 #end
 

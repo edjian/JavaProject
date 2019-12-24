@@ -10,6 +10,7 @@ package com.joolun.cloud.weixin.admin.controller;
 
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
+import com.github.binarywang.wxpay.bean.request.WxPayOrderQueryRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -116,6 +117,23 @@ public class WxPayController {
 			WxPayRefundNotifyResult notifyResult = wxPayService.parseRefundNotifyResult(xmlData);
 			WxApp wxApp = wxAppService.findByAppId(appId);
 			return R.ok(notifyResult,wxApp.getTenantId());
+		} catch (WxPayException e) {
+			e.printStackTrace();
+			return R.failed(e.getReturnMsg());
+		}
+	}
+
+	/**
+	 * 查询订单
+	 * @param request
+	 * @return
+	 */
+	@Inside
+	@PostMapping("/queryOrder")
+	public R refundOrder(@RequestBody WxPayOrderQueryRequest request) {
+		WxPayService wxPayService = WxPayConfiguration.getPayService(request.getAppid());
+		try {
+			return R.ok(wxPayService.queryOrder(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
 			return R.failed(e.getReturnMsg());

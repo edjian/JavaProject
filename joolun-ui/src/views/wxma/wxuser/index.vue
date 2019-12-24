@@ -21,8 +21,7 @@
                  @row-save="handleSave"
                  @row-del="handleDel"
                  @sort-change="sortChange"
-                 @search-change="searchChange"
-                 @current-change="currentChange">
+                 @search-change="searchChange">
         <template slot="sex" slot-scope="scope" >
           <el-tag v-if="scope.row.sex" size="mini" effect="light" :type="scope.row.sex == '1' ? '' : scope.row.sex == '2' ? 'danger' : 'warning'">{{scope.row.$sex}}</el-tag>
         </template>
@@ -33,6 +32,7 @@
 
 <script>
   import { getPage, getObj, addObj, putObj, delObj} from '@/api/wxma/wxuser'
+  import { tableOption } from '@/const/crud/wxma/wxuser'
   import { mapGetters } from 'vuex'
   export default {
     name: 'wxuser',
@@ -49,114 +49,7 @@
         },
         paramsSearch:{},
         tableLoading: false,
-        tableOption: {
-          dialogDrag:true,
-          border: true,
-          index: false,
-          indexLabel: '序号',
-          stripe: true,
-          menuAlign: 'center',
-          align: 'center',
-          editBtn: false,
-          delBtn: false,
-          addBtn: false,
-          excelBtn: true,
-          printBtn: true,
-          viewBtn: true,
-          searchShow: false,
-          menuWidth: 150,
-          menuType:'text',
-          defaultSort:{
-            prop: 'createTime',
-            order: 'descending'
-          },
-          column: [
-            {
-              label: '用户标识',
-              prop: 'openId',
-              editDisplay:false
-            },
-            {
-              label: '头像',
-              prop: 'headimgUrl',
-              type:'upload',
-              imgWidth:50,
-              listType:'picture-img',
-              editDisplay:false
-            },
-            {
-              label: '昵称',
-              prop: 'nickName',
-              width:100,
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '性别',
-              prop: 'sex',
-              width: 60,
-              type: 'select',
-              sortable:true,
-              search:true,
-              editDisplay:false,
-              slot:true,
-              dicUrl: '/admin/dict/type/wx_sex'
-            },
-            {
-              label: '所在国家',
-              prop: 'country',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '所在省份',
-              prop: 'province',
-              sortable:true,
-              editDisplay:false
-            },
-            {
-              label: '所在城市',
-              prop: 'city',
-              sortable:true,
-              search:true,
-              editDisplay:false
-            },
-            {
-              label: '用户语言',
-              prop: 'language',
-              sortable:true,
-              editDisplay:false
-            },
-            {
-              label: '用户备注',
-              prop: 'remark',
-              hide:true
-            },
-            {
-              label: 'union_id',
-              prop: 'unionId',
-              hide:true,
-              editDisplay:false
-            },
-            {
-              label: '创建时间',
-              prop: 'createTime',
-              type: 'datetime',
-              sortable:true,
-              editDisplay:false
-            },
-            {
-              label: '更新时间',
-              prop: 'updateTime',
-              type: 'datetime',
-              sortable:true,
-              hide:true,
-              editDisplay:false
-            }
-          ]
-        },
+        tableOption: tableOption,
         appId:this.$route.query.id,
         selectionData:[],
         dialogTagging:false,
@@ -167,7 +60,7 @@
       }
     },
     created() {
-      this.listUserTags()
+
     },
     mounted: function() { },
     computed: {
@@ -182,14 +75,12 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
-      searchChange(params){
+      searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
         this.getPage(this.page,params)
+        done()
       },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
@@ -217,6 +108,8 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading = false
@@ -257,6 +150,8 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -275,13 +170,15 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

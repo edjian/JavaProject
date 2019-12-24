@@ -371,6 +371,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.items
           this.page.total = response.data.data.totalCount
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -378,22 +380,12 @@
         this.page.currentPage = 1
         this.page.pageSize = val
         this.getPage(this.page)
-      },
-      currentChange(val) {
-        this.page.currentPage = val
-        this.getPage(this.page)
-      },
-      /**
-       * 刷新回调
-       */
-      refreshChange() {
-        this.getPage(this.page)
-      },
+      }
     }
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .public-account-management{
     .el-input{
       width: 70%;

@@ -36,7 +36,7 @@ public class Notice extends Model<Notice> {
     /**
    * PK
    */
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
    * 所属租户

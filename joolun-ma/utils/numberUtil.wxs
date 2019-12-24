@@ -4,7 +4,11 @@ var numberUtil = {
     return value.toFixed(num)
   },
   numberSubtract: function (value1, value2) {//减法运算value1-value2
-    var v = value1 - value2
+    var v = parseInt(value1) - parseInt(value2)
+    return v.toFixed(2)
+  },
+  numberAddition: function (value1, value2) {//加法运算value1+value2
+    var v = parseInt(value1) + parseInt(value2)
     return v.toFixed(2)
   },
   getAreaDistance: function (lat1, lng1, lat2, lng2) {//计算经纬距离
@@ -29,5 +33,6 @@ var numberUtil = {
 module.exports = {//暴露接口调用
   numberFormat: numberUtil.numberFormat,
   numberSubtract: numberUtil.numberSubtract,
+  numberAddition: numberUtil.numberAddition,
   getAreaDistance: numberUtil.getAreaDistance
 }

@@ -9,7 +9,6 @@
 export const tableOption = {
   dialogType: 'drawer',
   dialogWidth: '80%',
-  dialogDrag: true,
   border: true,
   stripe: true,
   menuAlign: 'center',
@@ -135,6 +134,7 @@ export const tableOption = {
         },
         {
           label: '商户密钥',
+          type:'password',
           prop: 'mchKey'
         },
         {

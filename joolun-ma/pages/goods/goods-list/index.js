@@ -56,6 +56,11 @@ Page({
         })
       }
     }
+    if (options.couponId) {
+      this.setData({
+        ['parameter.couponId']: options.couponId
+      })
+    }
     app.initPage()
       .then(res => {
         this.goodsPage()

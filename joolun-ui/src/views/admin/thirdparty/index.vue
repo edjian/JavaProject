@@ -13,8 +13,7 @@
                  @search-change="searchChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel"
-                 @current-change="currentChange">
+                 @row-del="handleDel">
       </avue-crud>
     </basic-container>
   </div>
@@ -35,6 +34,7 @@
           currentPage: 1, // 当前页数
           pageSize: 20 // 每页显示多少条
         },
+        paramsSearch: {},
         tableLoading: false,
         tableOption: tableOption
       }
@@ -54,9 +54,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -81,6 +78,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -99,7 +98,7 @@
             message: '删除成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
         }).catch(function (err) {
         })
       },
@@ -118,7 +117,9 @@
             message: '修改成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
+          done()
+        }).catch(() => {
           done()
         })
       },
@@ -136,21 +137,27 @@
             message: '添加成功',
             type: 'success'
           })
-          this.refreshChange()
+          this.getPage(this.page)
+          done()
+        }).catch(() => {
           done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       },
       /**
        * 搜索回调
        */
-      searchChange(form) {
-        this.getPage(this.page, form)
+      searchChange(params,done) {
+        params = this.filterForm(params)
+        this.paramsSearch = params
+        this.page.currentPage = 1
+        this.getPage(this.page, params)
+        done()
       }
     }
   }

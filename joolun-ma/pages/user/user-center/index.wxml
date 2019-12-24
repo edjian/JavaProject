@@ -8,10 +8,12 @@
 -->
 <view class="cu-list menu-avatar">
   <view class="cu-item">
-    <view class="cu-avatar round lg" style="background-image:url({{userInfo.headimgUrl}})">{{!userInfo.headimgUrl ? '头' : ''}}</view>
+    <view class="cu-avatar round lg" style="background-image:url({{wxUser.headimgUrl}})">{{!wxUser.headimgUrl ? '头' : ''}}</view>
     <view class="content">
-      <view class="text-black" wx:if="{{userInfo.nickName}}">{{userInfo.nickName}}</view>
-      <button class="cu-btn" wx:if="{{!userInfo.nickName}}" open-type="getUserInfo" bind:getuserinfo="agreeGetUser" lang="zh_CN">点击授权</button>
+      <view class="text-black" wx:if="{{wxUser.nickName}}">{{wxUser.nickName}}</view>
+      <button class="cu-btn round sm line-red" open-type="getUserInfo" bind:getuserinfo="agreeGetUser" lang="zh_CN">
+      {{!wxUser.nickName ? '成为会员' : '更新昵称'}}
+      </button>
     </view>
     <view class='action'>
       <view class="text-xl margin-top" bindtap="settings">
@@ -20,7 +22,26 @@
     </view>
   </view>
 </view>
-<view class="cu-list menu card-menu margin-top-sm  radius">
+
+<view class="padding flex text-center text-grey bg-gradual-red shadow-warp" wx:if="{{userInfo}}">
+  <view class="flex flex-sub flex-direction solid-right">
+    <view class="text-xxl text-white">{{userInfo.userCode}}</view>
+    <view class="margin-top-sm text-white">
+      <text class="cuIcon-barcode"></text> {{userInfo.userGrade == '0' ? '用户' : '会员'}}编号</view>
+  </view>
+  <navigator class="flex flex-sub flex-direction solid-right" url="/pages/user/user-points-record/index" hover-class="none">
+    <view class="text-xxl text-white">{{userInfo.pointsCurrent}}</view>
+    <view class="margin-top-sm text-white">
+      <text class="cuIcon-medal"></text> 当前积分</view>
+  </navigator>
+  <navigator class="flex flex-sub flex-direction solid-right" url="/pages/coupon/coupon-user-list/index" hover-class="none">
+    <view class="text-xxl text-white">{{userInfo.couponNum}}</view>
+    <view class="margin-top-sm text-white">
+      <text class="cuIcon-cardboard"></text> 优惠券</view>
+  </navigator>
+</view>
+
+<view class="cu-list menu card-menu margin-top-sm radius">
   <view class="cu-bar bg-white solid-bottom">
     <view class="action">
       <text class="cuIcon-titles text-red"></text>我的订单
@@ -65,7 +86,7 @@
   </navigator>
   <navigator class="cu-item arrow" url="/pages/user/user-address/list/index" hover-class="none">
     <view class="content">
-      <text class="cuIcon-location text-orange"></text>
+      <text class="cuIcon-location text-green"></text>
       <text class="text-grey">收货地址</text>
     </view>
   </navigator>

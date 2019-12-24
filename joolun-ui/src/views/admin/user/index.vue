@@ -21,12 +21,11 @@
                      :table-loading="listLoading"
                      @on-load="getPage"
                      @sort-change="sortChange"
-                     @search-change="handleFilter"
-                     @refresh-change="handleRefreshChange"
+                     @search-change="searchChange"
+                     @refresh-change="refreshChange"
                      @row-update="handleUpdate"
                      @row-save="handleSave"
                      @row-del="handleDel"
-                     @current-change="currentChange"
                      :before-open="handleOpenBefore"
                      :data="list">
             <template slot="username"
@@ -169,9 +168,6 @@
       this.init();
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       subPassword(form2,done){
         form2.id = this.selectRow.id
         editPassword(form2).then(() => {
@@ -225,6 +221,8 @@
         }, params)).then(response => {
           this.list = response.data.data.records;
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.listLoading = false;
         });
       },
@@ -238,12 +236,15 @@
           this.treeOrganData = response.data.data;
         });
       },
-      handleFilter(param) {
-        this.page.page = 1;
-        this.getPage(this.page, this.filterForm(param));
+      searchChange(params,done) {
+        params = this.filterForm(params)
+        this.paramsSearch = params
+        this.page.currentPage = 1
+        this.getPage(this.page, params)
+        done()
       },
-      handleRefreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       },
       handleOpenBefore(show, type) {
         window.boxType = type;

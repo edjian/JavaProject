@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.mall.admin.controller;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,11 +17,14 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import com.joolun.cloud.weixin.common.entity.WxUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
+
+import java.util.List;
 
 /**
  * spu商品
@@ -64,7 +68,12 @@ public class GoodsSpuController {
 								GoodsSpu::getSaleNum,
 								GoodsSpu::getCreateTime,
 								GoodsSpu::getUpdateTime,
-								GoodsSpu::getSpecType)
+								GoodsSpu::getSpecType,
+								GoodsSpu::getPointsGiveSwitch,
+								GoodsSpu::getPointsGiveNum,
+								GoodsSpu::getPointsDeductSwitch,
+								GoodsSpu::getPointsDeductScale,
+								GoodsSpu::getPointsDeductAmount)
 						.like(GoodsSpu::getName, StrUtil.isNotBlank(name) ? name : "")
 				)
 		);
@@ -104,6 +113,22 @@ public class GoodsSpuController {
     public R updateById(@RequestBody GoodsSpuDTO goodsSpuDTO){
         return R.ok(goodsSpuService.updateById(goodsSpuDTO));
     }
+
+	/**
+	 * 商品上下架操作
+	 * @param shelf
+	 * @param ids
+	 * @return R
+	 */
+	@SysLog("商品上下架操作")
+	@PutMapping("/shelf")
+	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_edit')")
+	public R updateById(@RequestParam(value = "shelf") String shelf, @RequestParam(value = "ids") String ids){
+		GoodsSpu goodsSpu = new GoodsSpu();
+		goodsSpu.setShelf(shelf);
+		return R.ok(goodsSpuService.update(goodsSpu,Wrappers.<GoodsSpu>lambdaQuery()
+				.in(GoodsSpu::getId, Convert.toList(ids))));
+	}
 
     /**
     * 通过id删除spu商品

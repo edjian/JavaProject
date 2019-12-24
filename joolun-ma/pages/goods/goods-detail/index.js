@@ -34,7 +34,9 @@ Page({
         desc: ''
       }
     ],
-    modalService: ''
+    modalService: '',
+    modalCoupon: '',
+    couponInfoList: []
   },
   onLoad(options) {
     let id
@@ -50,6 +52,7 @@ Page({
       .then(res => {
         this.goodsGet(id)
         this.goodsSpecGet(id)
+        this.couponInfoPage(id)
         this.shoppingCartCount()
         this.goodsAppraisesPage()
       })
@@ -109,12 +112,27 @@ Page({
         })
       })
   },
+  //查询商品可用电子券
+  couponInfoPage(spuId) {
+    app.api.couponInfoPage({
+      current: 1,
+      size: 50,
+      descs: 'create_time',
+      spuId: spuId
+    })
+      .then(res => {
+        let couponInfoList = res.data.records
+        this.setData({
+          couponInfoList: couponInfoList
+        })
+      })
+  },
   change: function (e) {
     this.setData({
       currents: e.detail.current + 1
     })
   },
-  showModalService(){
+  showModalService() {
     this.setData({
       modalService: 'show'
     })
@@ -122,6 +140,16 @@ Page({
   hideModalService() {
     this.setData({
       modalService: ''
+    })
+  },
+  showModalCoupon(){
+    this.setData({
+      modalCoupon: 'show'
+    })
+  },
+  hideModalCoupon() {
+    this.setData({
+      modalCoupon: ''
     })
   },
   showModalSku(e) {
@@ -350,21 +378,21 @@ Page({
               }
             ]
           }
-          let userInfo = app.globalData.userInfo
-          if (userInfo && userInfo.headimgUrl){//如果有头像则显示
+          let wxUser = app.globalData.wxUser
+          if (wxUser && wxUser.headimgUrl){//如果有头像则显示
             posterConfig.images.push({
               width: 62,
               height: 62,
               x: 30,
               y: 30,
               borderRadius: 62,
-              url: userInfo.headimgUrl,
+              url: wxUser.headimgUrl,
             })
             posterConfig.texts.push({
               x: 113,
               y: 61,
               baseLine: 'middle',
-              text: userInfo.nickName,
+              text: wxUser.nickName,
               fontSize: 32,
               color: '#8d8d8d',
             })
@@ -403,4 +431,7 @@ Page({
       }
     })
   },
+  handleContact(e) {
+    console.log(e)
+  }
 })

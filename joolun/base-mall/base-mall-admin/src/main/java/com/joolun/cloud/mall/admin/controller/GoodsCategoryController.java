@@ -57,7 +57,7 @@ public class GoodsCategoryController {
 	 */
 	@GetMapping("/parentTree")
 	@PreAuthorize("@ato.hasAuthority('mall_goodscategory_index')")
-	public R getGoodsCategoryParentTree() {
+	public List<GoodsCategoryTree> getGoodsCategoryParentTree() {
 		GoodsCategory goodsCategory = new GoodsCategory();
 		goodsCategory.setParentId(CommonConstants.PARENT_ID);
 		List<GoodsCategoryTree> listGoodsCategoryTree = goodsCategoryService.selectTree(goodsCategory);
@@ -65,7 +65,7 @@ public class GoodsCategoryController {
 		goodsCategoryTree.setId(CommonConstants.PARENT_ID);
 		goodsCategoryTree.setName("顶级分类");
 		listGoodsCategoryTree.add(0,goodsCategoryTree);
-		return R.ok(listGoodsCategoryTree);
+		return listGoodsCategoryTree;
 	}
 
 	/**

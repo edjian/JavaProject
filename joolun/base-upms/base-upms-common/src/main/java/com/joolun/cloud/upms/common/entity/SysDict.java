@@ -22,7 +22,7 @@ public class SysDict extends Model<SysDict> {
 	/**
 	 * 编号
 	 */
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	private String id;
 	/**
 	 * 类型

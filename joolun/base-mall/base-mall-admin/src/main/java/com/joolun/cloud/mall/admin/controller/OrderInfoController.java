@@ -14,11 +14,11 @@ import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
+import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.common.entity.OrderLogistics;
 import com.joolun.cloud.mall.common.feign.FeignWxAppService;
-import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ import java.util.Map;
 public class OrderInfoController {
 
     private final OrderInfoService orderInfoService;
-	private final FeignWxUserService feignWxUserService;
+	private final UserInfoService userInfoService;
 	private final FeignWxAppService feignWxAppService;
 	private final OrderLogisticsService orderLogisticsService;
 
@@ -54,7 +54,7 @@ public class OrderInfoController {
     @GetMapping("/page")
     @PreAuthorize("@ato.hasAuthority('mall_orderinfo_index')")
     public R getOrderInfoPage(Page page, OrderInfo orderInfo) {
-        return R.ok(orderInfoService.page(page, Wrappers.query(orderInfo)));
+        return R.ok(orderInfoService.page1(page, Wrappers.query(orderInfo)));
     }
 
     /**
@@ -66,9 +66,8 @@ public class OrderInfoController {
     @PreAuthorize("@ato.hasAuthority('mall_orderinfo_get')")
     public R getById(@PathVariable("id") String id){
 		OrderInfo orderInfo = orderInfoService.getById(id);
-		R r = feignWxUserService.getById(orderInfo.getUserId(), SecurityConstants.FROM_IN);
 		R r2 = feignWxAppService.getById(orderInfo.getAppId(), SecurityConstants.FROM_IN);
-		orderInfo.setUser((Map<Object, Object>)r.getData());
+		orderInfo.setUserInfo(userInfoService.getById(orderInfo.getUserId()));
 		orderInfo.setApp((Map<Object, Object>)r2.getData());
 		OrderLogistics orderLogistics = orderLogisticsService.getById(orderInfo.getLogisticsId());
 		orderInfo.setOrderLogistics(orderLogistics);

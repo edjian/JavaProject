@@ -44,8 +44,7 @@
                        @row-save="handleSave"
                        @row-del="handleDel"
                        @sort-change="sortChange"
-                       @search-change="searchChange"
-                       @current-change="currentChange">
+                       @search-change="searchChange">
                 <template slot-scope="scope" slot="status">
                     <div style="text-align: left">
                         <div class="grid-content">订单状态：
@@ -98,9 +97,12 @@
                                 prop="salesPrice"
                                 label="订单总额">
                             <template slot-scope="scope">
-                                <div>订单金额：￥{{scope.row.salesPrice}}</div>
+                                <div>销售金额：￥{{scope.row.salesPrice}}</div>
                                 <div>物流金额：￥{{scope.row.logisticsPrice}}</div>
-                                <div>支付金额：￥{{scope.row.paymentPrice}}</div>
+                                <div style="color: red">支付金额：￥{{scope.row.paymentPrice}}</div>
+                                <div style="color: red">优惠券抵扣金额：￥{{scope.row.paymentCouponPrice}}</div>
+                                <div style="color: red">积分抵扣金额：￥{{scope.row.paymentPointsPrice}}</div>
+                                <div style="color: red">支付积分：{{scope.row.paymentPoints}}</div>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -203,16 +205,52 @@
                                 align="center"
                                 prop="quantity"
                                 label="数量"
-                                width="200">
+                                width="50">
                         </el-table-column>
                         <el-table-column
                                 align="center"
                                 prop="salesPriceTotal"
                                 label="商品总价"
-                                width="200">
+                                width="80">
                             <template slot-scope="scope">
-                                ￥{{scope.row.salesPrice * scope.row.quantity}}
+                                ￥{{(scope.row.salesPrice * scope.row.quantity).toFixed(2)}}
                             </template>
+                        </el-table-column>
+                        <el-table-column
+                          align="center"
+                          prop="salesPriceTotal"
+                          label="支付金额"
+                          width="80">
+                          <template slot-scope="scope">
+                            ￥{{scope.row.paymentPrice}}
+                          </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                prop="paymentCouponPrice"
+                                label="优惠券抵扣金额"
+                                width="80">
+                            <template slot-scope="scope">
+                                ￥{{scope.row.paymentCouponPrice}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                prop="paymentPointsPrice"
+                                label="积分抵扣金额"
+                                width="80">
+                            <template slot-scope="scope">
+                                ￥{{scope.row.paymentPointsPrice}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                          align="center"
+                          prop="salesPriceTotal"
+                          label="支付积分"
+                          width="80">
+                          <template slot-scope="scope">
+                            {{scope.row.paymentPoints}}
+                          </template>
                         </el-table-column>
                         <el-table-column
                                 align="center"
@@ -231,7 +269,7 @@
                 </template>
                 <template slot-scope="scope" slot="userIdForm">
                     <el-table
-                            :data="[scope.row.user]"
+                            :data="[scope.row.userInfo]"
                             border
                             style="width: 100%">
                         <el-table-column
@@ -244,19 +282,22 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                align="center"
-                                prop="country"
-                                label="国家">
+                          align="center"
+                          prop="sex"
+                          label="性别">
+                            <template slot-scope="scope">
+                                <div>{{scope.row.sex == '1' ? '男' : scope.row.sex == '2' ? '女' : '未知'}}</div>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 align="center"
-                                prop="province"
-                                label="省份">
+                                prop="userCode"
+                                label="用户编号">
                         </el-table-column>
                         <el-table-column
-                                align="center"
-                                prop="city"
-                                label="城市">
+                          align="center"
+                          prop="pointsCurrent"
+                          label="当前积分">
                         </el-table-column>
                     </el-table>
                 </template>
@@ -311,7 +352,7 @@
                             <div class="spec-info">{{item.specInfo}}</div>
                         </el-col>
                         <el-col :span="8">
-                            <div class="grid-content">￥{{item.salesPrice}}</div>
+                            <div class="grid-content" style="color:red;">￥{{item.paymentPrice}}{{item.paymentCouponPrice ? ' + 优惠券￥'+item.paymentCouponPrice : ''}}{{item.paymentPoints ? ' + 积分'+item.paymentPoints : ''}}</div>
                             <div class="grid-content">×{{item.quantity}}件</div>
                             <div class="grid-content" v-if="item.status != '0'">
                                 <el-tag type="danger" @click="handleOrderItemStatus(item)">{{item.statusDesc}}</el-tag>
@@ -327,9 +368,12 @@
                 </template>
                 <template slot-scope="scope" slot="salesPrice">
                     <div style="text-align: left">
-                        <div class="grid-content">订单金额：￥{{scope.row.salesPrice}}</div>
+                        <div class="grid-content">销售金额：￥{{scope.row.salesPrice}}</div>
                         <div class="grid-content">物流金额：￥{{scope.row.logisticsPrice}}</div>
-                        <div class="grid-content">支付金额：￥{{scope.row.paymentPrice}}</div>
+                        <div class="grid-content" style="color: red">支付金额：￥{{scope.row.paymentPrice}}</div>
+                        <div class="grid-content" style="color: red">优惠券抵扣金额：￥{{scope.row.paymentCouponPrice}}</div>
+                        <div class="grid-content" style="color: red">积分抵扣金额：￥{{scope.row.paymentPointsPrice}}</div>
+                        <div class="grid-content" style="color: red">支付积分：{{scope.row.paymentPoints}}</div>
                     </div>
                 </template>
                 <template slot-scope="scope" slot="menu">
@@ -391,7 +435,13 @@
                         </el-tooltip>
                     </div>
                     <div style="margin-top: 20px">
-                        退款总额：￥{{orderItemObj.quantity * orderItemObj.salesPrice}}
+                        销售总额：￥{{(orderItemObj.quantity * orderItemObj.salesPrice).toFixed(2)}}
+                    </div>
+                    <div style="margin-top: 20px; color: red">
+                        退款金额：￥{{orderItemObj.paymentPrice}}
+                    </div>
+                    <div style="margin-top: 20px; color: red">
+                        退款积分：{{orderItemObj.paymentPoints}}
                     </div>
                     <div style="margin-top: 20px">
                         退款数量：x{{orderItemObj.quantity}}
@@ -554,6 +604,8 @@
                             getOrderItem(orderRefunds.orderItemId).then(response => {
                                 let orderItemObj = response.data.data
                                 this.handleOrderItemStatus(orderItemObj)
+                            }).catch(() => {
+                                this.orderRefundsSubmitLoading = false
                             })
                         })
                     } else {
@@ -607,13 +659,10 @@
                 this.page.currentPage = 1
                 this.getPage(this.page)
             },
-            currentChange(currentPage) {
-                this.page.currentPage = currentPage
-            },
             openView(row, index) {
                 this.tableLoading = true
                 getObj(row.id).then(response => {
-                    row.user = response.data.data.user
+                    row.userInfo = response.data.data.userInfo
                     row.app = response.data.data.app
                     row.orderLogistics = response.data.data.orderLogistics
                     this.$refs.crud.rowView(row, index)
@@ -645,11 +694,12 @@
                     done()
                 })
             },
-            searchChange(params) {
+            searchChange(params,done) {
                 params = this.filterForm(params)
                 this.paramsSearch = params
                 this.page.currentPage = 1
                 this.getPage(this.page, params)
+                done()
             },
             sortChange(val) {
                 let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : '';
@@ -676,6 +726,8 @@
                 }, params, this.paramsSearch)).then(response => {
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total
+                    this.page.currentPage = page.currentPage
+                    this.page.pageSize = page.pageSize
                     this.tableLoading = false
                 }).catch(() => {
                     this.tableLoading = false
@@ -723,6 +775,8 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                    done()
                 })
             },
             /**
@@ -741,20 +795,22 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                    done()
                 })
             },
             /**
              * 刷新回调
              */
-            refreshChange() {
-                this.getPage(this.page)
+            refreshChange(val) {
+                this.getPage(val.page)
             }
         }
     }
 </script>
 <style>
     .spu-name {
-        font-size: 16px;
+        font-size: 13px;
     }
 
     .spec-info {

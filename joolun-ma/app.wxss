@@ -32,3 +32,6 @@
 .margin-bottom-bar{
   margin-bottom: 80rpx
 }
+.vertical-center{
+  margin: auto 0rpx
+}

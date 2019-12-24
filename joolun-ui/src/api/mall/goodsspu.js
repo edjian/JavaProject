@@ -45,3 +45,11 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function putObjShelf(obj) {
+  return request({
+    url: '/mall/goodsspu/shelf',
+    method: 'put',
+    params: obj
+  })
+}

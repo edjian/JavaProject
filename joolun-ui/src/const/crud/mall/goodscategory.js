@@ -18,9 +18,14 @@ export const tableOption = {
 	  {
       label: '父分类',
       prop: 'parentId',
-      formslot: true,
+      type: 'tree',
       hide: true,
       sortable: true,
+      dicUrl: '/mall/goodscategory/parentTree',
+      props: {
+        label: 'name',
+        value: 'id'
+      },
       rules: [{
         required: true,
         message: '请选择父分类',

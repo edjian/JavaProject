@@ -38,7 +38,7 @@ public class OrderRefunds extends Model<OrderRefunds> {
 	/**
 	 * PK
 	 */
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	private String id;
 	/**
 	 * 所属租户
@@ -98,4 +98,9 @@ public class OrderRefunds extends Model<OrderRefunds> {
 	 */
 	private String refuseRefundReson;
 
+	@TableField(exist = false)
+	private OrderInfo orderInfo;
+
+	@TableField(exist = false)
+	private OrderItem orderItem;
 }

@@ -38,7 +38,7 @@ public class OrderLogistics extends Model<OrderLogistics> {
     /**
    * PK
    */
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
    * 所属租户

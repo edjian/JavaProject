@@ -11,6 +11,7 @@ package com.joolun.cloud.mall.common.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 下单参数
@@ -35,4 +36,24 @@ public class PlaceOrderSkuDTO implements Serializable {
 	 * 数量
 	 */
 	private Integer quantity;
+	/**
+	 * 支付金额
+	 */
+	private BigDecimal paymentPrice;
+	/**
+	 * 支付积分
+	 */
+	private Integer paymentPoints;
+	/**
+	 * 电子券支付金额
+	 */
+	private BigDecimal paymentCouponPrice;
+	/**
+	 * 积分抵扣金额
+	 */
+	private BigDecimal paymentPointsPrice;
+	/**
+	 * 用户电子券ID
+	 */
+	private String couponUserId;
 }

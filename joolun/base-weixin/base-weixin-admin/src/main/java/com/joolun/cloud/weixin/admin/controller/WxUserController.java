@@ -8,9 +8,6 @@
  */
 package com.joolun.cloud.weixin.admin.controller;
 
-import cn.binarywang.wx.miniapp.api.WxMaUserService;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -19,7 +16,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.annotation.Inside;
-import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
@@ -195,15 +191,6 @@ public class WxUserController {
 	@Inside
 	@PostMapping("/inside")
 	public R saveInside(@RequestBody WxOpenDataDTO wxOpenDataDTO){
-		WxMaUserService wxMaUserService = WxMaConfiguration.getMaService(wxOpenDataDTO.getAppId()).getUserService();
-		WxMaUserInfo wxMaUserInfo = wxMaUserService.getUserInfo(wxOpenDataDTO.getSessionKey(), wxOpenDataDTO.getEncryptedData(), wxOpenDataDTO.getIv());
-		WxUser wxUser = new WxUser();
-		BeanUtil.copyProperties(wxMaUserInfo,wxUser);
-		wxUser.setId(wxOpenDataDTO.getUserId());
-		wxUser.setAppId(wxOpenDataDTO.getAppId());
-		wxUser.setSex(wxMaUserInfo.getGender());
-		wxUser.setHeadimgUrl(wxMaUserInfo.getAvatarUrl());
-		wxUserService.updateById(wxUser);
-		return R.ok(wxUser);
+		return R.ok(wxUserService.saveInside(wxOpenDataDTO));
 	}
 }

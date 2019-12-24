@@ -125,7 +125,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .wx-voice-div{
     padding: 5px;
     background-color: #eaeaea;

@@ -49,7 +49,7 @@ public class UserCollectApi {
 		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 			return checkThirdSession;
 		}
-        return R.ok(userCollectService.page(page,Wrappers.query(userCollect)));
+        return R.ok(userCollectService.page2(page,Wrappers.query(userCollect)));
     }
 
     /**

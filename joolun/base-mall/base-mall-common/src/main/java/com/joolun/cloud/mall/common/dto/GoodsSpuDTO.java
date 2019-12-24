@@ -62,7 +62,7 @@ public class GoodsSpuDTO implements Serializable {
 	@TableField(typeHandler = ArrayStringTypeHandler.class, jdbcType= JdbcType.VARCHAR)
     private String[] picUrls;
     /**
-   * 是否上架商品（0为已上架 1为已下架）
+   * 是否上架（0否 1是）
    */
     private String shelf;
     /**
@@ -97,6 +97,26 @@ public class GoodsSpuDTO implements Serializable {
    * 逻辑删除标记（0：显示；1：隐藏）
    */
     private String delFlag;
+	/**
+	 *积分赠送开关（1开 0关）
+	 */
+	private String pointsGiveSwitch;
+	/**
+	 * 积分赠送数量
+	 */
+	private Integer pointsGiveNum;
+	/**
+	 * 积分抵扣开关（1开 0关）
+	 */
+	private String pointsDeductSwitch;
+	/**
+	 * 积分抵扣商品金额比例（0~100）
+	 */
+	private Integer pointsDeductScale;
+	/**
+	 * 1积分数可抵多少元
+	 */
+	private BigDecimal pointsDeductAmount;
 
     private List<GoodsSkuDTO> skus;
 

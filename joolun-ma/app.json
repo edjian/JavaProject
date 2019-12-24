@@ -17,7 +17,10 @@
     "pages/appraises/form/index",
     "pages/appraises/list/index",
     "pages/order/order-refunds/form/index",
-    "pages/order/order-refunds/submit/index"
+    "pages/order/order-refunds/submit/index",
+    "pages/user/user-points-record/index",
+    "pages/coupon/coupon-user-list/index",
+    "pages/coupon/coupon-list/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",

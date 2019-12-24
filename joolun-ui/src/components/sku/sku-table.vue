@@ -294,7 +294,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .sku-table .avue-upload__avatar{
     width: 60px;
     height: 60px;

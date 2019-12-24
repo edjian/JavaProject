@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.api.ma;
 
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import com.joolun.cloud.mall.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 public class WxUserApi {
 
 	private final FeignWxUserService feignWxUserService;
+	private final UserInfoService userInfoService;
 
 	/**
 	 * 获取用户信息
@@ -65,6 +67,6 @@ public class WxUserApi {
 		wxOpenDataDTO.setAppId(wxUser.getAppId());
 		wxOpenDataDTO.setUserId(wxUser.getId());
 		wxOpenDataDTO.setSessionKey(wxUser.getSessionKey());
-		return feignWxUserService.save(wxOpenDataDTO, SecurityConstants.FROM_IN);
+		return userInfoService.saveByWxUser(wxOpenDataDTO);
 	}
 }

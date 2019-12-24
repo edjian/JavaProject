@@ -15,8 +15,7 @@
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
                  @row-save="handleSave"
-                 @row-del="handleDel"
-                 @current-change="currentChange">
+                 @row-del="handleDel">
         <template slot="dsScopeForm" slot-scope="scope">
           <div v-if="form.dsType == 1">
             <el-tree class="filter-tree"
@@ -60,7 +59,8 @@
       <div slot="footer"
            class="dialog-footer">
         <el-button type="primary"
-                   @click="updatePermession(id, roleCode)">更 新
+                   @click="updatePermession(id, roleCode)"
+                   v-loading = "dialogLoading">更 新
         </el-button>
       </div>
     </el-dialog>
@@ -100,6 +100,7 @@
         roleCode: undefined,
         rolesOptions: undefined,
         dialogPermissionVisible: false,
+        dialogLoading: false,
       }
     },
     created() {
@@ -116,9 +117,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -143,17 +141,20 @@
         }, params)).then(response => {
           this.list = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.listLoading = false
         }).catch(() => {
           this.listLoading=false
         })
       },
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       },
-      searchChange(param) {
-        this.page.currentPage = 1;
-        this.getPage(this.page, this.filterForm(param));
+      searchChange(param,done) {
+        this.page.currentPage = 1
+        this.getPage(this.page, this.filterForm(param))
+        done()
       },
       handleOpenBefore(show, type) {
         fetchTree().then(response => {
@@ -167,6 +168,7 @@
         show();
       },
       handlePermission(row) {
+        this.listLoading = true
         fetchRoleTree(row.id)
           .then(response => {
             this.checkedKeys = response.data.data
@@ -179,6 +181,7 @@
             this.dialogPermissionVisible = true
             this.id = row.id
             this.roleCode = row.roleCode
+            this.listLoading = false
           })
       },
       /**
@@ -240,6 +243,7 @@
             duration: 2000
           })
         }).catch(() => {
+          done()
         })
       },
       handleUpdate(row, index, done) {
@@ -248,7 +252,7 @@
         }
         putObj(this.form).then(() => {
           this.getPage(this.page)
-          done();
+          done()
           this.$notify({
             title: '成功',
             message: '修改成功',
@@ -256,20 +260,21 @@
             duration: 2000
           })
         }).catch(() => {
+          done()
         })
       },
       updatePermession(id, roleCode) {
+        this.dialogLoading = true
         this.menuIds = ''
         this.menuIds = this.$refs.menuTree.getCheckedKeys().join(',').concat(',').concat(this.$refs.menuTree.getHalfCheckedKeys().join(','))
         permissionUpd(id, this.menuIds).then(() => {
+          this.dialogLoading = false
           this.dialogPermissionVisible = false
           fetchMenuTree()
             .then(response => {
-              this.form = response.data.data
               return fetchRoleTree(id)
             })
             .then(response => {
-              this.checkedKeys = response.data
               this.$notify({
                 title: '成功',
                 message: '修改成功',
@@ -277,6 +282,8 @@
                 duration: 2000
               })
             })
+        }).catch(() => {
+          this.dialogLoading = false
         })
       }
     }

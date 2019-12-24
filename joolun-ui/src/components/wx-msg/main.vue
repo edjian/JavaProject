@@ -55,7 +55,7 @@
                 </el-link>
                 <div class="avue-card__info" style="height: unset">{{item.repDesc}}</div>
               </div>
-              <div v-if="item.repType == 'news'">
+              <div v-if="item.repType == 'news'" style="width: 300px">
                 <WxNews :objData="item.content.articles"></WxNews>
               </div>
               <div v-if="item.repType == 'music'">
@@ -270,6 +270,8 @@
               })
             }
           }
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
         })
       },
       /**
@@ -282,7 +284,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .msg-main{
     margin-top: -30px;
     padding: 10px;

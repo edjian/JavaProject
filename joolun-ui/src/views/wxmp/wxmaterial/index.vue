@@ -44,7 +44,6 @@
           </div>
           <el-pagination
             @size-change="sizeChange"
-            @current-change="currentChange"
             :current-page.sync="page.currentPage"
             :page-sizes="[10, 20]"
             :page-size="page.pageSize"
@@ -110,7 +109,6 @@
           </el-table>
           <el-pagination
             @size-change="sizeChange"
-            @current-change="currentChange"
             :current-page.sync="page.currentPage"
             :page-sizes="[10, 20]"
             :page-size="page.pageSize"
@@ -195,7 +193,6 @@
           </el-table>
           <el-pagination
             @size-change="sizeChange"
-            @current-change="currentChange"
             :current-page.sync="page.currentPage"
             :page-sizes="[10, 20]"
             :page-size="page.pageSize"
@@ -224,7 +221,7 @@
                 <div v-for="(news, index) in articlesAdd" :key='news.id'>
                   <div class="news-main father" v-if="index==0" :class="{'activeAddNews': isActiveAddNews == index}" @click="activeNews(index)">
                     <div class="news-content">
-                      <img class="material-img" v-if="news.thumbUrl" :src="news.thumbUrl" width="280px" height="120px"/>
+                      <img class="material-img" v-if="news.thumbUrl" :src="news.thumbUrl"/>
                       <div class="news-content-title">{{news.title}}</div>
                     </div>
                     <div class="child" v-if="articlesAdd.length>1">
@@ -306,7 +303,6 @@
           </div>
           <el-pagination
             @size-change="sizeChange"
-            @current-change="currentChange"
             :current-page.sync="page.currentPage"
             :page-sizes="[10, 20]"
             :page-size="page.pageSize"
@@ -761,6 +757,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.items
           this.page.total = response.data.data.totalCount
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading = false
@@ -778,8 +776,8 @@
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }
@@ -898,13 +896,13 @@
   /*瀑布流样式*/
   .news-main{
     background-color: #FFFFFF;
-    width: 280px;
+    width: 100%;
     margin: auto;
     height: 120px;
   }
   .news-content{
     background-color: #acadae;
-    width: 280px;
+    width: 100%;
     height: 120px;
     position: relative;
   }
@@ -916,8 +914,8 @@
     left: 0px;
     bottom: 0px;
     background-color: black;
-    width: 274px;
-    padding: 3px;
+    width: 98%;
+    padding: 1%;
     opacity: 0.65;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -928,29 +926,21 @@
     background-color: #FFFFFF;
     padding: 5px 0px;
     border-top: 1px solid #eaeaea;
-    width: 270px;
+    width: 100%;
     margin: auto;
-    height: 50px;
   }
   .news-content-item{
-    height: 60px;
     position: relative;
     margin-left: -3px
-  }
-  .news-content-item{
-    height: 50px;
-    position: relative;
   }
   .news-content-item-title{
     display: inline-block;
     font-size: 12px;
-    width: 180px;
+    width: 70%;
   }
   .news-content-item-img{
-    float: right;
     display: inline-block;
-    height: 50px;
-    width: 50px;
+    width: 25%;
     background-color: #acadae
   }
   .input-tt{
@@ -970,7 +960,7 @@
     font-size: 25px;
   }
   .select-item{
-    width: 280px;
+    width: 60%;
     padding: 10px;
     margin: 0 auto 10px auto;
     border: 1px solid #eaeaea;
@@ -991,5 +981,9 @@
   }
   .thumb-but{
     margin: 5px;
+  }
+  .material-img {
+    width: 100%;
+    height: 100%;
   }
 </style>

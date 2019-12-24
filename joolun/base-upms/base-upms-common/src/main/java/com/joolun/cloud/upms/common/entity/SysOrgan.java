@@ -23,7 +23,7 @@ public class SysOrgan extends Model<SysOrgan> {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId(type = IdType.UUID)
+	@TableId(type = IdType.ASSIGN_UUID)
 	private String id;
 	/**
 	 * 机构名称

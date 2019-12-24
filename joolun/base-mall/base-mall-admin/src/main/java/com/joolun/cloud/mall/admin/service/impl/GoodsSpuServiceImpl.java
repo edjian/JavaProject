@@ -8,16 +8,14 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.dto.GoodsSkuDTO;
 import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
-import com.joolun.cloud.mall.common.entity.GoodsSku;
-import com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue;
-import com.joolun.cloud.mall.common.entity.GoodsSpu;
-import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
+import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
 import com.joolun.cloud.mall.admin.service.GoodsSkuService;
 import com.joolun.cloud.mall.admin.service.GoodsSkuSpecValueService;
@@ -127,6 +125,11 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	@Override
 	public GoodsSpu getById2(String id) {
 		return baseMapper.selectById2(id);
+	}
+
+	@Override
+	public IPage<GoodsSpu> page2(IPage<GoodsSpu> page, GoodsSpu goodsSpu, CouponGoods couponGoods, CouponInfo couponInfo) {
+		return baseMapper.selectPage2(page, goodsSpu, couponGoods, couponInfo);
 	}
 
 	/**

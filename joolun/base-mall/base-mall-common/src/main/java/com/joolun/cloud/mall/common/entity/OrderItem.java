@@ -17,6 +17,7 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,65 +35,85 @@ import io.swagger.annotations.ApiModel;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "商城订单详情")
 public class OrderItem extends Model<OrderItem> {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-   * PK
-   */
-    @TableId(type = IdType.UUID)
-    private String id;
-    /**
-   * 所属租户
-   */
-    private String tenantId;
-    /**
-   * 逻辑删除标记（0：显示；1：隐藏）
-   */
-    private String delFlag;
-    /**
-   * 创建时间
-   */
-    private LocalDateTime createTime;
-    /**
-   * 最后更新时间
-   */
-    private LocalDateTime updateTime;
-    /**
-   * 订单编号
-   */
-    private String orderId;
-    /**
-   * 商品Id
-   */
-    private String spuId;
-    /**
-   * 商品名
-   */
-    private String spuName;
-    /**
-   * 规格信息
-   */
-    private String specInfo;
-    /**
-   * skuId
-   */
-    private String skuId;
-    /**
-   * 图片
-   */
-    private String picUrl;
-    /**
-   * 商品数量
-   */
-    private Integer quantity;
-    /**
-   * 购买单价
-   */
-    private BigDecimal salesPrice;
-    /**
-   * 备注
-   */
-    private String remark;
+	/**
+	 * PK
+	 */
+	@TableId(type = IdType.ASSIGN_UUID)
+	private String id;
+	/**
+	 * 所属租户
+	 */
+	private String tenantId;
+	/**
+	 * 逻辑删除标记（0：显示；1：隐藏）
+	 */
+	private String delFlag;
+	/**
+	 * 创建时间
+	 */
+	private LocalDateTime createTime;
+	/**
+	 * 最后更新时间
+	 */
+	private LocalDateTime updateTime;
+	/**
+	 * 订单编号
+	 */
+	private String orderId;
+	/**
+	 * 商品Id
+	 */
+	private String spuId;
+	/**
+	 * 商品名
+	 */
+	private String spuName;
+	/**
+	 * 规格信息
+	 */
+	private String specInfo;
+	/**
+	 * skuId
+	 */
+	private String skuId;
+	/**
+	 * 图片
+	 */
+	private String picUrl;
+	/**
+	 * 商品数量
+	 */
+	private Integer quantity;
+	/**
+	 * 购买单价
+	 */
+	private BigDecimal salesPrice;
+	/**
+	 * 支付金额
+	 */
+	private BigDecimal paymentPrice;
+	/**
+	 * 支付积分
+	 */
+	private Integer paymentPoints;
+	/**
+	 * 电子券支付金额
+	 */
+	private BigDecimal paymentCouponPrice;
+	/**
+	 * 积分抵扣金额
+	 */
+	private BigDecimal paymentPointsPrice;
+	/**
+	 * 用户电子券ID
+	 */
+	private String couponUserId;
+	/**
+	 * 备注
+	 */
+	private String remark;
 	/**
 	 * 状态1：退款中；2、拒绝退款；3、同意退款
 	 */
@@ -108,11 +129,12 @@ public class OrderItem extends Model<OrderItem> {
 	private String statusDesc;
 
 	public String getStatusDesc() {
-		if(this.status == null){
+		if (this.status == null) {
 			return null;
 		}
 		return OrderItemEnum.valueOf(OrderItemEnum.STATUS_PREFIX + "_" + this.status).getDesc();
 	}
+
 	@TableField(exist = false)
 	private List<OrderRefunds> listOrderRefunds;
 }

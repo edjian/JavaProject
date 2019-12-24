@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserCollect> implements UserCollectService {
 
 	@Override
-	public IPage<UserCollect> page(IPage<UserCollect> page, Wrapper<UserCollect> queryWrapper) {
+	public IPage<UserCollect> page2(IPage<UserCollect> page, Wrapper<UserCollect> queryWrapper) {
 		return baseMapper.selectPage2(page, queryWrapper.getEntity());
 	}
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 /**
  * @author
  */
-@FeignClient(contextId = "feignLogService", value = ServiceNameConstants.UMPS_SERVICE)
+@FeignClient(contextId = "feignLogService", value = ServiceNameConstants.UMPS_ADMIN_SERVICE)
 public interface FeignLogService {
 	/**
 	 * 保存日志

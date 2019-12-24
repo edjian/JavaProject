@@ -137,7 +137,6 @@
               </el-row>
               <el-pagination
                 @size-change="sizeChange"
-                @current-change="currentChange"
                 :current-page.sync="page.currentPage"
                 :page-sizes="[12, 24]"
                 :page-size="page.pageSize"
@@ -353,6 +352,8 @@
         })).then(response => {
           let tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableData = tableData
           this.tableLoading = false
         }).catch(() => {
@@ -362,10 +363,6 @@
       sizeChange(val) {
         this.page.currentPage = 1
         this.page.pageSize = val
-        this.getPage(this.page)
-      },
-      currentChange(val) {
-        this.page.currentPage = val
         this.getPage(this.page)
       },
       materialRename(item){
@@ -462,17 +459,9 @@
   };
 </script>
 
-<style lang="scss">
-  .material-name .el-checkbox__label{
-    display: unset;
-  }
+<style lang="scss" scoped>
   .material-name{
     padding: 8px 0px;
-    width: 100%;
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
   .col-do{
     text-align: center;

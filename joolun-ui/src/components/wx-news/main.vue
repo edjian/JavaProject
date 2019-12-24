@@ -60,20 +60,19 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .news-home{
     background-color: #FFFFFF;
-    width: 280px;
+    width: 100%;
     margin: auto;
   }
   .news-main{
-    width: 280px;
+    width: 100%;
     margin: auto;
   }
   .news-content{
     background-color: #acadae;
-    width: 280px;
-    height: 120px;
+    width: 100%;
     position: relative;
   }
   .news-content-title{
@@ -84,8 +83,8 @@
     left: 0px;
     bottom: 0px;
     background-color: black;
-    width: 274px;
-    padding: 3px;
+    width: 98%;
+    padding: 1%;
     opacity: 0.65;
     white-space: normal;
     box-sizing: unset!important
@@ -96,23 +95,20 @@
     border-top: 1px solid #eaeaea;
   }
   .news-content-item{
-    height: 50px;
     position: relative;
   }
   .news-content-item-title{
     display: inline-block;
     font-size: 10px;
-    width: 220px;
-    margin-left: 5px;
+    width: 70%;
+    margin-left: 1%;
     white-space: normal
   }
   .news-content-item-img{
-    float: right;
     display: inline-block;
-    height: 50px;
-    width: 50px;
+    width: 25%;
     background-color: #acadae;
-    margin-right: 5px;
+    margin-right: 1%;
   }
   .material-img {
     width: 100%;

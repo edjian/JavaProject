@@ -40,7 +40,7 @@ private static final long serialVersionUID = 1L;
     /**
    * PK
    */
-    @TableId(type = IdType.UUID)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
     /**
    * 所属租户
@@ -76,7 +76,7 @@ private static final long serialVersionUID = 1L;
 	@TableField(typeHandler = ArrayStringTypeHandler.class, jdbcType= JdbcType.VARCHAR)
     private String[] picUrls;
     /**
-   * 是否上架商品（0为已上架 1为已下架）
+   * 是否上架（0否 1是）
    */
     private String shelf;
     /**
@@ -111,12 +111,6 @@ private static final long serialVersionUID = 1L;
    * 逻辑删除标记（0：显示；1：隐藏）
    */
     private String delFlag;
-
-	@TableField(exist = false)
-	private List<GoodsSku> skus;
-
-	@TableField(exist = false)
-	private String collectId;
 	/**
 	 *积分赠送开关（1开 0关）
 	 */
@@ -137,5 +131,15 @@ private static final long serialVersionUID = 1L;
 	 * 1积分数可抵多少元
 	 */
 	private BigDecimal pointsDeductAmount;
-  
+
+	@TableField(exist = false)
+	private List<GoodsSku> skus;
+
+	@TableField(exist = false)
+	private String collectId;
+	/**
+	 * 可领电子券
+	 */
+	@TableField(exist = false)
+	private List<CouponInfo> listCouponInfo;
 }

@@ -20,11 +20,11 @@ export const tableOption = {
     printBtn: true,
     column: [
         #foreach ($column in $columns)
-            {
-                label: '$column.comments',
-                prop: '$column.lowerAttrName',
-                sortable: true
-            },
+        {
+            label: '$column.comments',
+            prop: '$column.lowerAttrName',
+            sortable: true
+        },
         #end
     ]
 }

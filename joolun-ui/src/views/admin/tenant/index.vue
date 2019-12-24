@@ -10,8 +10,7 @@
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
-        @row-del="rowDel"
-        @current-change="currentChange">
+        @row-del="rowDel">
         <template slot="menu"
                   slot-scope="scope">
           <el-button size="mini"
@@ -39,7 +38,8 @@
         <div slot="footer"
              class="dialog-footer">
           <el-button type="primary"
-                     @click="updatePermession(id, roleCode)">更 新
+                     @click="updatePermession(id, roleCode)"
+                     v-loading = "dialogLoading">更 新
           </el-button>
         </div>
       </el-dialog>
@@ -76,6 +76,7 @@
                     value: 'id'
                 },
                 treeData: [],
+                dialogLoading: false,
             }
         },
         created() {
@@ -92,9 +93,6 @@
             }
         },
         methods: {
-            currentChange(currentPage) {
-                this.page.currentPage = currentPage
-            },
             getPage(page, params) {
                 this.tableLoading = true
                 getPage(Object.assign({
@@ -105,6 +103,8 @@
                 }, params, this.paramsSearch)).then(response => {
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total
+                    this.page.currentPage = page.currentPage
+                    this.page.pageSize = page.pageSize
                     this.tableLoading = false
                 }).catch(() => {
                     this.tableLoading = false
@@ -146,6 +146,8 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                  done()
                 })
             },
             /**
@@ -164,13 +166,15 @@
                     })
                     done()
                     this.getPage(this.page)
+                }).catch(() => {
+                  done()
                 })
             },
             /**
              * 刷新回调
              */
-            refreshChange() {
-                this.getPage(this.page)
+            refreshChange(val) {
+              this.getPage(val.page)
             },
             handlePermission(row) {
                 this.tableLoading = true
@@ -214,9 +218,11 @@
                 return data.label.indexOf(value) !== -1
             },
             updatePermession(id, roleCode) {
+                this.dialogLoading = true
                 this.menuIds = ''
                 this.menuIds = this.$refs.menuTree.getCheckedKeys().join(',').concat(',').concat(this.$refs.menuTree.getHalfCheckedKeys().join(','))
                 permissionUpdTenant(this.checkedDysRole.tenantId, id, this.menuIds).then(() => {
+                    this.dialogLoading = false
                     this.dialogPermissionVisible = false
                     fetchMenuTree()
                         .then(response => {
@@ -224,7 +230,7 @@
                             return fetchRoleTreeTenant(this.checkedDysRole.tenantId)
                         })
                         .then(response => {
-                            this.checkedKeys = response.data
+                            this.checkedKeys = response.data.data.listMenuVO
                             this.$notify({
                                 title: '成功',
                                 message: '修改成功',
@@ -232,6 +238,8 @@
                                 duration: 2000
                             })
                         })
+                }).catch(() => {
+                  this.dialogLoading = false
                 })
             }
         }

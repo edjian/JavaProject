@@ -45,9 +45,9 @@ public class SysTenantController {
 	 * @return
 	 */
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('mall_tenant_index')")
+	@PreAuthorize("@ato.hasAuthority('sys_tenant_index')")
 	public R getUserPage(Page page, SysTenant sysTenant) {
-		return R.ok(sysTenantService.page(page, Wrappers.query(sysTenant).lambda().
+		return R.ok(sysTenantService.page1(page, Wrappers.query(sysTenant).lambda().
 				eq(SysTenant::getParentId,CommonConstants.PARENT_ID)));
 	}
 

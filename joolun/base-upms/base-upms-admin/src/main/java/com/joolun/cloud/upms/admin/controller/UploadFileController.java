@@ -48,7 +48,7 @@ public class UploadFileController {
 	}
 
 	/**
-	 * 上传文件(编辑器使用)
+	 * 上传文件
 	 * @param mulFile
 	 * @param dir
 	 * @return

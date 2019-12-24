@@ -5,7 +5,7 @@
 
 	<groupId>com.joolun</groupId>
 	<artifactId>joolun</artifactId>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -14,13 +14,13 @@
 	</organization>
 
 	<properties>
-		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+		<spring-boot.version>2.1.10.RELEASE</spring-boot.version>
 		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
-		<mybatis-plus.version>3.2.0</mybatis-plus.version>
+		<mybatis-plus.version>3.3.0</mybatis-plus.version>
 		<druid.version>1.1.21</druid.version>
-		<hutool.version>5.0.5</hutool.version>
+		<hutool.version>5.0.7</hutool.version>
 		<weixin-java.version>3.6.0</weixin-java.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -153,11 +153,6 @@
 			<dependency>
 				<groupId>com.joolun</groupId>
 				<artifactId>base-mall-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.joolun</groupId>
-				<artifactId>base-cms-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

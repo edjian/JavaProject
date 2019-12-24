@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.mall.admin.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 
@@ -38,4 +39,6 @@ public interface OrderRefundsService extends IService<OrderRefunds> {
 	 * @param orderRefunds
 	 */
 	void notifyRefunds(OrderRefunds orderRefunds);
+
+	IPage<OrderRefunds> page1(IPage<OrderRefunds> page, OrderRefunds orderRefunds);
 }

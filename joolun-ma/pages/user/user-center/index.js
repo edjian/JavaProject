@@ -10,12 +10,15 @@ const app = getApp()
 
 Page({
   data: {
-    userInfo: {}
+    wxUser: null,
+    userInfo: null
   },
   onShow(){
+    let wxUser = app.globalData.wxUser
     this.setData({
-      userInfo: app.globalData.userInfo
+      wxUser: wxUser
     })
+    this.userInfoGet()
   },
   onLoad(){
     
@@ -32,14 +35,24 @@ Page({
   },
   agreeGetUser(e) {
     if (e.detail.errMsg == 'getUserInfo:ok') {
-      app.api.userInfoSave(e.detail)
+      app.api.wxUserSave(e.detail)
         .then(res => {
-          let userInfo = res.data
+          let wxUser = res.data
           this.setData({
-            userInfo: userInfo
+            wxUser: wxUser
           })
-          app.globalData.userInfo = userInfo
+          app.globalData.wxUser = wxUser
+          this.userInfoGet()
         })
     }
   },
+  //获取商城用户信息
+  userInfoGet(){
+    app.api.userInfoGet()
+      .then(res => {
+        this.setData({
+          userInfo: res.data
+        })
+      })
+  }
 })

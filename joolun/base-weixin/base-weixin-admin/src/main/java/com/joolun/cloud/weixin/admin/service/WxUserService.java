@@ -9,6 +9,8 @@
 package com.joolun.cloud.weixin.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
+import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import me.chanjar.weixin.common.error.WxErrorException;
 
@@ -51,4 +53,17 @@ public interface WxUserService extends IService<WxUser> {
 	 */
 	void tagging(String taggingType,String appId,Long tagId,String[] openIds) throws WxErrorException;
 
+	/**
+	 * 保存微信用户
+	 * @param wxOpenDataDTO
+	 */
+	WxUser saveInside(WxOpenDataDTO wxOpenDataDTO);
+
+	/**
+	 * 小程序登录
+	 * @param wxApp
+	 * @param jsCode
+	 * @return
+	 */
+	WxUser loginMa(WxApp wxApp, String jsCode) throws WxErrorException;
 }

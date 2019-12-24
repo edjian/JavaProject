@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author
  */
-@FeignClient(contextId = "feignUserService", value = ServiceNameConstants.UMPS_SERVICE)
+@FeignClient(contextId = "feignUserService", value = ServiceNameConstants.UMPS_ADMIN_SERVICE)
 public interface FeignUserService {
 	/**
 	 * 通过用户名查询用户、角色信息

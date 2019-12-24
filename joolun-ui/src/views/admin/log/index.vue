@@ -11,8 +11,7 @@
                  @search-change="searchChange"
                  @refresh-change="refreshChange"
                  @sort-change="sortChange"
-                 @row-del="handleDel"
-                 @current-change="currentChange">
+                 @row-del="handleDel">
       </avue-crud>
     </basic-container>
   </div>
@@ -35,6 +34,7 @@
           ascs:[],
           descs: 'create_time'
         },
+        paramsSearch: {},
         tableLoading: false,
         tableOption: tableOption
       }
@@ -52,9 +52,6 @@
       }
     },
     methods: {
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
       sortChange(val){
         let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
         if(val.order=='ascending'){
@@ -79,6 +76,8 @@
         }, params)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         })
       },
@@ -103,14 +102,18 @@
       /**
        * 搜索回调
        */
-      searchChange(form) {
-        this.getPage(this.page, form)
+      searchChange(params,done) {
+        params = this.filterForm(params)
+        this.paramsSearch = params
+        this.page.currentPage = 1
+        this.getPage(this.page, params)
+        done()
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

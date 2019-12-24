@@ -27,6 +27,17 @@
 		<result property="refuseRefundReson" column="refuse_refund_reson"/>
 	</resultMap>
 
+	<resultMap id="orderRefundsMap2" extends="orderRefundsMap" type="com.joolun.cloud.mall.common.entity.OrderRefunds">
+		<collection property="orderInfo" ofType="com.joolun.cloud.mall.common.entity.OrderInfo"
+					select="com.joolun.cloud.mall.admin.mapper.OrderInfoMapper.selectById"
+					column="{id=order_id}">
+		</collection>
+		<collection property="orderItem" ofType="com.joolun.cloud.mall.common.entity.OrderItem"
+					select="com.joolun.cloud.mall.admin.mapper.OrderItemMapper.selectById"
+					column="{id=order_item_id}">
+		</collection>
+	</resultMap>
+
 	<sql id="orderRefundsSql">
 		obj.`id`,
 		obj.`tenant_id`,
@@ -56,5 +67,16 @@
 			</if>
 		</where>
 		ORDER BY obj.`create_time` desc
+	</select>
+
+	<select id="selectPage1" resultMap="orderRefundsMap2">
+		SELECT
+		<include refid="orderRefundsSql"/>
+		FROM order_refunds obj
+		<where>
+			<if test="query.status != null">
+				AND obj.`status` = #{query.status}
+			</if>
+		</where>
 	</select>
 </mapper>

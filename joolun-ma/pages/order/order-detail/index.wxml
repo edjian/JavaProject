@@ -103,6 +103,22 @@
             <view class="text-price text-red text-bold">{{orderInfo.paymentPrice}}</view>
           </view>
         </view>
+        <view class="cu-item" wx:if="{{orderInfo.paymentCouponPrice}}">
+          <view class="content">
+            <text class="text-grey">优惠券金额</text>
+          </view>
+          <view class="action">
+            <view class="text-price text-red text-bold">{{orderInfo.paymentCouponPrice}}</view>
+          </view>
+        </view>
+        <view class="cu-item" wx:if="{{orderInfo.paymentPoints}}">
+          <view class="content">
+            <text class="text-grey">积分抵扣金额</text>
+          </view>
+          <view class="action">
+            <view class="text-price text-red text-bold">{{orderInfo.paymentPointsPrice}}</view>
+          </view>
+        </view>
       </view>
     </view>
   </view>

@@ -15,23 +15,23 @@ Component({
     },
   },
   data: {
-    userInfo: null
+    wxUser: null
   },
   attached() {
     this.setData({
-      userInfo: app.globalData.userInfo
+      wxUser: app.globalData.wxUser
     })
   },
   methods: {
     agreeGetUser(e) {
       if (e.detail.errMsg == 'getUserInfo:ok') {
-        app.api.userInfoSave(e.detail)
+        app.api.wxUserSave(e.detail)
           .then(res => {
-            let userInfo = res.data
+            let wxUser = res.data
             this.setData({
-              userInfo: userInfo
+              wxUser: wxUser
             })
-            app.globalData.userInfo = userInfo
+            app.globalData.wxUser = wxUser
           })
       }
     },

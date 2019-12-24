@@ -15,14 +15,14 @@
                        :permission="permissionList"
                        :table-loading="tableLoading"
                        :option="tableOption"
+                       v-model="form"
                        @on-load="getPage"
                        @refresh-change="refreshChange"
                        @row-update="handleUpdate"
                        @row-save="handleSave"
                        @row-del="handleDel"
                        @sort-change="sortChange"
-                       @search-change="searchChange"
-                       @current-change="currentChange">
+                       @search-change="searchChange">
             </avue-crud>
         </basic-container>
     </div>
@@ -37,6 +37,7 @@
         name: '${pathName}',
         data() {
             return {
+                form: {},
                 tableData: [],
                 page: {
                     total: 0, // 总页数
@@ -66,17 +67,15 @@
             }
         },
         methods: {
-            currentChange(currentPage) {
-                this.page.currentPage = currentPage
-            },
-            searchChange(params) {
+            searchChange(params,done) {
                 params = this.filterForm(params)
                 this.paramsSearch = params
                 this.page.currentPage = 1
                 this.getPage(this.page, params)
+                done()
             },
             sortChange(val) {
-                let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : '';
+                let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : ''
                 if (val.order == 'ascending') {
                     this.page.descs = []
                     this.page.ascs = prop
@@ -99,13 +98,12 @@
                 }, params, this.paramsSearch)).then(response => {
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total
+                    this.page.currentPage = page.currentPage
+                    this.page.pageSize = page.pageSize
                     this.tableLoading = false
-                }
-            ).
-                catch(() => {
+                }).catch(() => {
                     this.tableLoading = false
-                }
-            )
+                })
             },
             /**
              * @title 数据删除
@@ -129,9 +127,7 @@
                         type: 'success'
                     })
                     this.getPage(this.page)
-                }
-            ).
-                catch(function (err) {
+                }).catch(function (err) {
                 })
             },
             /**
@@ -151,8 +147,9 @@
                     })
                     done()
                     this.getPage(this.page)
-                }
-            )
+                }).catch(() => {
+                    done()
+                })
             },
             /**
              * @title 数据添加
@@ -170,14 +167,15 @@
                     })
                     done()
                     this.getPage(this.page)
-                }
-            )
+                }).catch(() => {
+                    done()
+                })
             },
             /**
              * 刷新回调
              */
-            refreshChange() {
-                this.getPage(this.page)
+            refreshChange(val) {
+                this.getPage(val.page)
             }
         }
     }

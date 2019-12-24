@@ -9,6 +9,7 @@
 package com.joolun.cloud.mall.admin.service;
 
 import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
@@ -24,6 +25,8 @@ import java.io.Serializable;
  * @date 2019-09-10 15:21:22
  */
 public interface OrderInfoService extends IService<OrderInfo> {
+
+	IPage<OrderInfo> page1(IPage<OrderInfo> page, Wrapper<OrderInfo> queryWrapper);
 
 	/**
 	 * 下单

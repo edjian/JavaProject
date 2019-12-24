@@ -20,14 +20,14 @@
         </div>
         <avue-data-display :option="option3"></avue-data-display>
       </el-card>
+      <el-alert
+              title="本页面数据为随机模拟，并非真实数据，仅作展示"
+              type="info"
+              :closable="false"
+              center
+              show-icon>
+      </el-alert>
     </basic-container>
-    <el-alert
-      title="本页面数据为随机模拟，并非真实数据，仅作展示"
-      type="info"
-      :closable="false"
-      center
-      show-icon>
-    </el-alert>
   </div>
 </template>
 

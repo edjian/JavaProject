@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;

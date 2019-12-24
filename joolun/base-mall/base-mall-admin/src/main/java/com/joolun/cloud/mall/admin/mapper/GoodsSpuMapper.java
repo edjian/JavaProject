@@ -9,7 +9,13 @@
 package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.joolun.cloud.mall.common.entity.CouponGoods;
+import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * spu商品
@@ -22,4 +28,13 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 	GoodsSpu selectById2(String id);
 
 	GoodsSpu selectOneByShoppingCart(String id);
+
+	/**
+	 * 查询电子券的关联商品
+	 * @param couponId
+	 * @return
+	 */
+	List<GoodsSpu> selectListByCouponId(String couponId);
+
+	IPage<GoodsSpu> selectPage2(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu, @Param("query2") CouponGoods couponGoods, @Param("query3") CouponInfo couponInfo);
 }

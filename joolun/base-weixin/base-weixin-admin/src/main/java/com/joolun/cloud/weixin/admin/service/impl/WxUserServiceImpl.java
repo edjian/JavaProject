@@ -8,17 +8,31 @@
  */
 package com.joolun.cloud.weixin.admin.service.impl;
 
+import cn.binarywang.wx.miniapp.api.WxMaUserService;
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
+import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
 import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.admin.handler.SubscribeHandler;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.admin.mapper.WxUserMapper;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
+import com.joolun.cloud.weixin.common.constant.WxMaConstants;
+import com.joolun.cloud.weixin.common.dto.MallUserInfoDTO;
+import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
+import com.joolun.cloud.weixin.common.entity.ThirdSession;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.feign.FeignMallUserInfoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -26,11 +40,12 @@ import me.chanjar.weixin.mp.api.WxMpUserService;
 import me.chanjar.weixin.mp.api.WxMpUserTagService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 微信用户
@@ -44,6 +59,8 @@ import java.util.List;
 public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> implements WxUserService {
 
 	private final WxAppService wxAppService;
+	private final FeignMallUserInfoService feignMallUserInfoService;
+	private final RedisTemplate redisTemplate;
 
 	@Override
 	public WxUser getByOpenId(String appId, String openId){
@@ -106,6 +123,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void synchroWxUser(String appId) throws WxErrorException {
 		//先将已关注的用户取关
 		WxUser wxUser = new WxUser();
@@ -176,5 +194,77 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 		}
 		log.debug("本批次获取微信粉丝数：",list.size());
 		return list;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public WxUser saveInside(WxOpenDataDTO wxOpenDataDTO) {
+		WxMaUserService wxMaUserService = WxMaConfiguration.getMaService(wxOpenDataDTO.getAppId()).getUserService();
+		WxMaUserInfo wxMaUserInfo = wxMaUserService.getUserInfo(wxOpenDataDTO.getSessionKey(), wxOpenDataDTO.getEncryptedData(), wxOpenDataDTO.getIv());
+		WxUser wxUser = new WxUser();
+		BeanUtil.copyProperties(wxMaUserInfo,wxUser);
+		wxUser.setId(wxOpenDataDTO.getUserId());
+		wxUser.setAppId(wxOpenDataDTO.getAppId());
+		wxUser.setMallUserId(wxOpenDataDTO.getMallUserId());
+		wxUser.setSex(wxMaUserInfo.getGender());
+		wxUser.setHeadimgUrl(wxMaUserInfo.getAvatarUrl());
+		baseMapper.updateById(wxUser);
+		return baseMapper.selectById(wxUser.getId());
+	}
+
+	/**
+	 * 小程序登录
+	 * @param wxApp
+	 * @param jsCode
+	 * @return
+	 * @throws WxErrorException
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public WxUser loginMa(WxApp wxApp, String jsCode) throws WxErrorException {
+		WxMaJscode2SessionResult jscode2session = WxMaConfiguration.getMaService(wxApp.getId()).jsCode2SessionInfo(jsCode);
+		WxUser wxUser = this.getByOpenId(wxApp.getId(),jscode2session.getOpenid());
+		if(wxUser==null) {
+			//新增商城用户
+			MallUserInfoDTO mallUserInfoDTO = new MallUserInfoDTO();
+			mallUserInfoDTO.setAppType(wxApp.getAppType());
+			mallUserInfoDTO.setAppId(wxApp.getId());
+			R r = feignMallUserInfoService.saveInside(mallUserInfoDTO, SecurityConstants.FROM_IN);
+			if(!r.isOk()){
+				throw new RuntimeException(r.getMsg());
+			}
+			Map map = (Map<String, Object>) r.getData();
+			String mallUserId = String.valueOf(map.get("id"));
+			//新增微信用户
+			wxUser = new WxUser();
+			wxUser.setAppId(wxApp.getId());
+			wxUser.setAppType(wxApp.getAppType());
+			wxUser.setOpenId(jscode2session.getOpenid());
+			wxUser.setSessionKey(jscode2session.getSessionKey());
+			wxUser.setUnionId(jscode2session.getUnionid());
+			wxUser.setMallUserId(mallUserId);
+			this.save(wxUser);
+		}else {
+			//更新SessionKey
+			wxUser.setAppId(wxApp.getId());
+			wxUser.setAppType(wxApp.getAppType());
+			wxUser.setOpenId(jscode2session.getOpenid());
+			wxUser.setSessionKey(jscode2session.getSessionKey());
+			wxUser.setUnionId(jscode2session.getUnionid());
+			this.updateById(wxUser);
+		}
+
+		String thirdSessionKey = UUID.randomUUID().toString();
+		ThirdSession thirdSession = new ThirdSession();
+		thirdSession.setAppId(wxApp.getId());
+		thirdSession.setSessionKey(wxUser.getSessionKey());
+		thirdSession.setWxUserId(wxUser.getId());
+		thirdSession.setOpenId(wxUser.getOpenId());
+		thirdSession.setMallUserId(wxUser.getMallUserId());
+		//将3rd_session和用户信息存入redis，并设置过期时间
+		String key = WxMaConstants.THIRD_SESSION_BEGIN + ":" + thirdSessionKey;
+		redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(thirdSession) , WxMaConstants.TIME_OUT_SESSION, TimeUnit.HOURS);
+		wxUser.setSessionKey(thirdSessionKey);
+		return wxUser;
 	}
 }

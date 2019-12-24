@@ -37,8 +37,7 @@
                      @row-del="handleDel"
                      @sort-change="sortChange"
                      @search-change="searchChange"
-                     @selection-change="selectionChange"
-                     @current-change="currentChange">
+                     @selection-change="selectionChange">
             <template slot="subscribe" slot-scope="scope" >
               <el-tag size="mini" effect="dark" :type="scope.row.subscribe == '1' ? 'success' : scope.row.subscribe == '0' ? 'danger' : 'warning'">{{scope.row.$subscribe}}</el-tag>
             </template>
@@ -79,8 +78,7 @@
                 </span>
               </el-dialog>
             </template>
-            <template slot-scope="scope"
-                      slot="menu">
+            <template slot="menu" slot-scope="scope">
               <el-button type="text"
                          v-if="permissions.wxmp_wxuser_edit_remark"
                          icon="el-icon-edit"
@@ -94,8 +92,7 @@
                          plain
                          @click="wxMsgDo(scope.row,scope.index)">消息</el-button>
             </template>
-            <template slot-scope="scope"
-                      slot="tagidList">
+            <template slot="tagidList" slot-scope="scope">
               <span v-html="scope.label"></span>
             </template>
           </avue-crud>
@@ -110,6 +107,7 @@
 
 <script>
   import { getPage, getObj, addObj, putObj, delObj,synchroWxUser, listUserTags, addTags, putTags, delTags, updateRemark, tagging } from '@/api/wxmp/wxuser'
+  // import { tableOption } from '@/const/crud/wxmp/wxuser'
   import { mapGetters } from 'vuex'
   import WxMsg from '@/components/wx-msg/main.vue'
   export default {
@@ -140,6 +138,7 @@
         },
         paramsSearch:{},
         tableLoading: false,
+        appId: this.$route.query.id,
         tableOption: {
           dialogDrag:true,
           border: true,
@@ -251,7 +250,7 @@
               multiple: true,
               slot: true,
               dicUrl: '/weixin/wxusertags/dict?appId='+this.$route.query.id,
-              editDisplay:false
+              editDisplay: false
             },
             {
               label: '用户备注',
@@ -322,12 +321,11 @@
             }
           ]
         },
-        appId:this.$route.query.id,
-        selectionData:[],
-        dialogTagging:false,
-        checkedTags:[],
-        userTagsData:[],
-        taggingType:'',
+        selectionData: [],
+        dialogTagging: false,
+        checkedTags: [],
+        userTagsData: [],
+        taggingType: '',
         tagId: ''
       }
     },
@@ -457,14 +455,12 @@
         this.page.currentPage = 1
         this.getPage(this.page, params)
       },
-      currentChange(currentPage){
-        this.page.currentPage = currentPage
-      },
-      searchChange(params){
+      searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
         this.page.currentPage = 1
         this.getPage(this.page,params)
+        done()
       },
       synchroWxUser(){
         this.$confirm('同步用户需要一定时间，用户量越大、用时越久，请耐心等待，勿重复提交；确认此操作吗?', '提示', {
@@ -522,6 +518,8 @@
         }, params, this.paramsSearch)).then(response => {
           this.tableData = response.data.data.records
           this.page.total = response.data.data.total
+          this.page.currentPage = page.currentPage
+          this.page.pageSize = page.pageSize
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading = false
@@ -589,6 +587,8 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
@@ -607,13 +607,15 @@
           })
           done()
           this.getPage(this.page)
+        }).catch(() => {
+          done()
         })
       },
       /**
        * 刷新回调
        */
-      refreshChange() {
-        this.getPage(this.page)
+      refreshChange(val) {
+        this.getPage(val.page)
       }
     }
   }

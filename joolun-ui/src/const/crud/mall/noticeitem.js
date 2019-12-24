@@ -93,13 +93,7 @@ export const tableOption2 = {
       label: '是否启用',
       prop: 'enable',
       type: 'radio',
-      slot: true,
-      dicUrl: '/admin/dict/type/yes_no',
-      rules: [{
-        required: true,
-        message: '请选择是否启用',
-        trigger: 'blur'
-      }]
+      slot: true
     },
     {
       label: '排序',

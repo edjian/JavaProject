@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;

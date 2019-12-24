@@ -6,7 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<view class="cu-modal show" wx:if="{{switchOn && userInfo != null && !userInfo.headimgUrl}}">
+<view class="cu-modal show" wx:if="{{switchOn && wxUser != null && !wxUser.headimgUrl}}">
   <view class="cu-dialog">
     <view class="cu-bar bg-red justify-end">
       <view class="content">登录授权</view>

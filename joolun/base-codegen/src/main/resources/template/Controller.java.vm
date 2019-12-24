@@ -36,19 +36,19 @@ public class ${className}Controller {
     private final ${className}Service ${classname}Service;
 
     /**
-     * 分页查询
+     * 分页列表
      * @param page 分页对象
      * @param ${classname} ${comments}
      * @return
      */
     @GetMapping("/page")
     @PreAuthorize("@ato.hasAuthority('${moduleName}_${pathName}_index')")
-    public R get${className}Page(Page page, ${className} ${classname}) {
+    public R getPage(Page page, ${className} ${classname}) {
         return R.ok(${classname}Service.page(page, Wrappers.query(${classname})));
     }
 
     /**
-     * 通过id查询${comments}
+     * ${comments}查询
      * @param ${pk.lowerAttrName}
      * @return R
      */
@@ -59,7 +59,7 @@ public class ${className}Controller {
     }
 
     /**
-     * 新增${comments}
+     * ${comments}新增
      * @param ${classname} ${comments}
      * @return R
      */
@@ -71,7 +71,7 @@ public class ${className}Controller {
     }
 
     /**
-     * 修改${comments}
+     * ${comments}修改
      * @param ${classname} ${comments}
      * @return R
      */
@@ -83,7 +83,7 @@ public class ${className}Controller {
     }
 
     /**
-     * 通过id删除${comments}
+     * ${comments}删除
      * @param ${pk.lowerAttrName}
      * @return R
      */
