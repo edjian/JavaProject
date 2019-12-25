@@ -40,14 +40,6 @@
                 一键授权添加
               </el-button>
             </template>
-            <template slot="organIdForm"
-                      slot-scope="scope">
-              <avue-input v-model="form.organId"
-                          type="tree"
-                          placeholder="请选择所属机构"
-                          :dic="treeOrganData"
-                          :props="organProps"></avue-input>
-            </template>
             <template slot="name" slot-scope="scope">
               <div style="font-weight: bolder">
                 <i class="el-icon-s-cooperation"></i> {{scope.row.name}}

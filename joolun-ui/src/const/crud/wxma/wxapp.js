@@ -69,12 +69,18 @@ export const tableOption = {
         {
           label: '所属机构',
           prop: 'organId',
-          formslot: true,
           rules: [{
             required: true,
             message: '请选择机构',
             trigger: 'change'
-          }]
+          }],
+          type: 'tree',
+          search: true,
+          props: {
+            label: 'name',
+            value: 'id'
+          },
+          dicUrl: '/admin/organ/tree'
         },
         {
           label: '小程序名称',
