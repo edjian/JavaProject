@@ -15,10 +15,10 @@
           <el-input-number size="mini" v-model="goodsSkuOne.stock" :precision="0" :step="1" :min="0" :max="99999999"> </el-input-number>
         </el-form-item>
         <el-form-item label="重量(kg)">
-          <el-input-number size="mini" v-model="goodsSkuOne.weight" :precision="0" :step="1" :min="0" :max="99999999"> </el-input-number>
+          <el-input-number size="mini" v-model="goodsSkuOne.weight" :precision="2" :step="0.1" :min="0" :max="99999999"> </el-input-number>
         </el-form-item>
         <el-form-item label="体积(m³)">
-          <el-input-number size="mini" v-model="goodsSkuOne.volume" :precision="0" :step="1" :min="0" :max="99999999"> </el-input-number>
+          <el-input-number size="mini" v-model="goodsSkuOne.volume" :precision="2" :step="0.1" :min="0" :max="99999999"> </el-input-number>
         </el-form-item>
       </el-form>
     </div>

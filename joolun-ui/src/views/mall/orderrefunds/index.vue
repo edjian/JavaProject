@@ -34,7 +34,7 @@
                     <div style="text-align: left">
                         <div class="grid-content">订单编号：{{scope.row.orderInfo.orderNo}}</div>
                         <div class="grid-content">销售金额：￥{{scope.row.orderInfo.salesPrice}}</div>
-                        <div class="grid-content">物流金额：￥{{scope.row.orderInfo.logisticsPrice}}</div>
+                        <div class="grid-content">运费金额：￥{{scope.row.orderInfo.freightPrice}}</div>
                         <div class="grid-content">支付金额：￥{{scope.row.orderInfo.paymentPrice}}</div>
                         <div class="grid-content">支付积分：{{scope.row.orderInfo.paymentPoints}}</div>
                     </div>
@@ -88,17 +88,20 @@
                             <i class="el-icon-info"></i>
                         </el-tooltip>
                     </div>
+                    <div style="margin-top: 20px;">
+                        商品数量：x{{orderItemObj.quantity}}
+                    </div>
                     <div style="margin-top: 20px">
-                        销售总额：￥{{(orderItemObj.quantity * orderItemObj.salesPrice).toFixed(2)}}
+                        订单金额：￥{{(orderItemObj.quantity * orderItemObj.salesPrice).toFixed(2)}}
+                    </div>
+                    <div style="margin-top: 20px">
+                        运费金额：￥{{orderItemObj.freightPrice}}
                     </div>
                     <div style="margin-top: 20px; color: red">
                         退款金额：￥{{orderItemObj.paymentPrice}}
                     </div>
                     <div style="margin-top: 20px; color: red">
                         退款积分：{{orderItemObj.paymentPoints}}
-                    </div>
-                    <div style="margin-top: 20px">
-                        退款数量：x{{orderItemObj.quantity}}
                     </div>
                     <div style="margin-top: 20px" v-if="orderItemObj.listOrderRefunds">
                         退款原因：{{orderItemObj.listOrderRefunds[0].refundReson}}

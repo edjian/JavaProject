@@ -1,5 +1,6 @@
 package com.joolun.cloud.upms.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,4 +26,7 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
 	 * 菜单ID
 	 */
 	private String menuId;
+
+	@TableField(exist = false)
+	private String tenantId;
 }

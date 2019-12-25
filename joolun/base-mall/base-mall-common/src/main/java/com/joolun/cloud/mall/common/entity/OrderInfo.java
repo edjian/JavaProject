@@ -80,9 +80,9 @@ public class OrderInfo extends Model<OrderInfo> {
 	 */
 	private BigDecimal salesPrice;
 	/**
-	 * 物流金额
+	 * 运费金额
 	 */
-	private BigDecimal logisticsPrice;
+	private BigDecimal freightPrice;
 	/**
 	 * 支付方式1、货到付款；2、在线支付
 	 */
@@ -92,7 +92,7 @@ public class OrderInfo extends Model<OrderInfo> {
 	 */
 	private String paymentType;
 	/**
-	 * 支付金额（销售金额+物流金额）
+	 * 支付金额（销售金额+运费金额-积分抵扣金额-电子券抵扣金额）
 	 */
 	private BigDecimal paymentPrice;
 	/**

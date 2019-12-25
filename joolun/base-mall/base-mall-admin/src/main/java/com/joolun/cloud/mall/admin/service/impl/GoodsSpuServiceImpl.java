@@ -13,8 +13,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.common.constant.MallConstants;
-import com.joolun.cloud.mall.common.dto.GoodsSkuDTO;
-import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
 import com.joolun.cloud.mall.admin.service.GoodsSkuService;
@@ -22,7 +20,6 @@ import com.joolun.cloud.mall.admin.service.GoodsSkuSpecValueService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,27 +59,23 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public boolean save(GoodsSpuDTO goodsSpuDTO) {
-		GoodsSpu goodsSpu = new GoodsSpu();
-		BeanUtils.copyProperties(goodsSpuDTO,goodsSpu);
+	public boolean save1(GoodsSpu goodsSpu) {
 		goodsSpu.setPriceDown(null);
 		goodsSpu.setPriceUp(null);
 		baseMapper.insert(goodsSpu);
-		List<GoodsSkuDTO> listGoodsSkuDTO = goodsSpuDTO.getSkus();
-		if(listGoodsSkuDTO !=null && listGoodsSkuDTO.size()>0){
+		List<GoodsSku> listGoodsSku = goodsSpu.getSkus();
+		if(listGoodsSku !=null && listGoodsSku.size()>0){
 			//新增sku
-			listGoodsSkuDTO.forEach(goodsSkuDTO -> {
-				priceUpDown(goodsSpu,goodsSkuDTO);
-				GoodsSku goodsSku = new GoodsSku();
-				BeanUtils.copyProperties(goodsSkuDTO,goodsSku);
+			listGoodsSku.forEach(goodsSku -> {
+				priceUpDown(goodsSpu,goodsSku);
 				goodsSku.setSpuId(goodsSpu.getId());
 				goodsSkuService.save(goodsSku);
-				goodsSkuDTO.setId(goodsSku.getId());
+				goodsSku.setId(goodsSku.getId());
 			});
 			baseMapper.updateById(goodsSpu);
 			if(MallConstants.SPU_SPEC_TYPE_1.equals(goodsSpu.getSpecType())){//多规格处理
-				goodsSpuDTO.setId(goodsSpu.getId());
-				addSpec(goodsSpuDTO);
+				goodsSpu.setId(goodsSpu.getId());
+				addSpec(goodsSpu);
 			}
 		}
 		return true;
@@ -90,33 +83,30 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public boolean updateById(GoodsSpuDTO goodsSpuDTO) {
-		GoodsSpu goodsSpu = new GoodsSpu();
-		BeanUtils.copyProperties(goodsSpuDTO,goodsSpu);
+	public boolean updateById1(GoodsSpu goodsSpu) {
 		goodsSpu.setPriceDown(null);
 		goodsSpu.setPriceUp(null);
-		List<GoodsSkuDTO> listGoodsSkuDTO = goodsSpuDTO.getSkus();
-		if(listGoodsSkuDTO !=null && listGoodsSkuDTO.size()>0){
+		List<GoodsSku> listGoodsSku = goodsSpu.getSkus();
+		if(listGoodsSku !=null && listGoodsSku.size()>0){
 			//先删除旧sku
 			goodsSkuService.remove(Wrappers.<GoodsSku>update().lambda()
-					.eq(GoodsSku::getSpuId, goodsSpuDTO.getId()));
+					.eq(GoodsSku::getSpuId, goodsSpu.getId()));
 			//新增sku
-			listGoodsSkuDTO.forEach(goodsSkuDTO -> {
-				priceUpDown(goodsSpu,goodsSkuDTO);
-				GoodsSku goodsSku = new GoodsSku();
-				BeanUtils.copyProperties(goodsSkuDTO,goodsSku);
-				goodsSku.setSpuId(goodsSpuDTO.getId());
+			listGoodsSku.forEach(goodsSku -> {
+				priceUpDown(goodsSpu,goodsSku);
+				goodsSku.setSpuId(goodsSpu.getId());
+				goodsSku.setTenantId(null);
 				goodsSkuService.saveOrUpdate(goodsSku);
-				goodsSkuDTO.setId(goodsSku.getId());
+				goodsSku.setId(goodsSku.getId());
 			});
 			baseMapper.updateById(goodsSpu);
 			//统一删除SpuSpec、SkuSpecValue
 			goodsSpuSpecService.remove(Wrappers.<GoodsSpuSpec>update().lambda()
-					.eq(GoodsSpuSpec::getSpuId, goodsSpuDTO.getId()));
+					.eq(GoodsSpuSpec::getSpuId, goodsSpu.getId()));
 			goodsSkuSpecValueService.remove(Wrappers.<GoodsSkuSpecValue>update().lambda()
-					.eq(GoodsSkuSpecValue::getSpuId, goodsSpuDTO.getId()));
+					.eq(GoodsSkuSpecValue::getSpuId, goodsSpu.getId()));
 			if(MallConstants.SPU_SPEC_TYPE_1.equals(goodsSpu.getSpecType())) {//多规格处理
-				addSpec(goodsSpuDTO);
+				addSpec(goodsSpu);
 			}
 		}
 		return true;
@@ -134,25 +124,23 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 
 	/**
 	 * 多规格处理
-	 * @param goodsSpuDTO
+	 * @param goodsSpu
 	 */
-	void addSpec(GoodsSpuDTO goodsSpuDTO){
+	void addSpec(GoodsSpu goodsSpu){
 		//新增SpuSpec
-		List<GoodsSpuSpec> listGoodsSpuSpec = goodsSpuDTO.getSpuSpec().stream().map(spuSpecDTO->{
+		List<GoodsSpuSpec> listGoodsSpuSpec = goodsSpu.getSpuSpec().stream().map(spuSpec->{
 			GoodsSpuSpec goodsSpuSpec = new GoodsSpuSpec();
-			goodsSpuSpec.setSpuId(goodsSpuDTO.getId());
-			goodsSpuSpec.setSpecId(spuSpecDTO.getId());
+			goodsSpuSpec.setSpuId(goodsSpu.getId());
+			goodsSpuSpec.setSpecId(spuSpec.getId());
 			return goodsSpuSpec;
 		}).collect(Collectors.toList());
 		goodsSpuSpecService.saveBatch(listGoodsSpuSpec);
 		//新增SkuSpecValue
 		List<GoodsSkuSpecValue> listGoodsSkuSpecValue = new ArrayList<>();
-		goodsSpuDTO.getSkus().forEach(goodsSkuDTO -> {
-			goodsSkuDTO.getSpecs().forEach(goodsSkuSpecValueDTO -> {
-				GoodsSkuSpecValue goodsSkuSpecValue = new GoodsSkuSpecValue();
-				BeanUtils.copyProperties(goodsSkuSpecValueDTO,goodsSkuSpecValue);
-				goodsSkuSpecValue.setSpuId(goodsSpuDTO.getId());
-				goodsSkuSpecValue.setSkuId(goodsSkuDTO.getId());
+		goodsSpu.getSkus().forEach(goodsSku -> {
+			goodsSku.getSpecs().forEach(goodsSkuSpecValue -> {
+				goodsSkuSpecValue.setSpuId(goodsSpu.getId());
+				goodsSkuSpecValue.setSkuId(goodsSku.getId());
 				listGoodsSkuSpecValue.add(goodsSkuSpecValue);
 			});
 		});
@@ -162,17 +150,17 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	/**
 	 * 获取商品最高最低价
 	 * @param goodsSpu
-	 * @param goodsSkuDTO
+	 * @param goodsSku
 	 */
-	void priceUpDown(GoodsSpu goodsSpu,GoodsSkuDTO goodsSkuDTO){
-		if(CommonConstants.YES.equals(goodsSkuDTO.getEnable())){
+	void priceUpDown(GoodsSpu goodsSpu,GoodsSku goodsSku){
+		if(CommonConstants.YES.equals(goodsSku.getEnable())){
 			BigDecimal priceDown = goodsSpu.getPriceDown();
-			if(priceDown == null || priceDown.compareTo(goodsSkuDTO.getSalesPrice()) == 1){
-				goodsSpu.setPriceDown(goodsSkuDTO.getSalesPrice());
+			if(priceDown == null || priceDown.compareTo(goodsSku.getSalesPrice()) == 1){
+				goodsSpu.setPriceDown(goodsSku.getSalesPrice());
 			}
 			BigDecimal priceUp = goodsSpu.getPriceUp();
-			if(priceUp == null || priceUp.compareTo(goodsSkuDTO.getSalesPrice()) == -1){
-				goodsSpu.setPriceUp(goodsSkuDTO.getSalesPrice());
+			if(priceUp == null || priceUp.compareTo(goodsSku.getSalesPrice()) == -1){
+				goodsSpu.setPriceUp(goodsSku.getSalesPrice());
 			}
 		}
 	}

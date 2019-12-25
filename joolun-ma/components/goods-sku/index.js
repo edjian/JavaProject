@@ -178,7 +178,10 @@ Component({
               pointsDeductScale: goodsDetail.pointsDeductScale,
               pointsDeductAmount: goodsDetail.pointsDeductAmount,
               pointsGiveSwitch: goodsDetail.pointsGiveSwitch,
-              pointsGiveNum: goodsDetail.pointsGiveNum
+              pointsGiveNum: goodsDetail.pointsGiveNum,
+              freightTemplat: goodsDetail.freightTemplat,
+              weight: skuData.weight,
+              volume: skuData.volume
             }]
           })
           wx.navigateTo({

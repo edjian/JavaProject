@@ -93,15 +93,16 @@
                                 label="订单单号">
                         </el-table-column>
                         <el-table-column
-                                align="center"
+                                align="left"
                                 prop="salesPrice"
-                                label="订单总额">
+                                label="订单金额"
+                                width="200">
                             <template slot-scope="scope">
-                                <div>销售金额：￥{{scope.row.salesPrice}}</div>
-                                <div>物流金额：￥{{scope.row.logisticsPrice}}</div>
+                                <div>订单金额：￥{{scope.row.salesPrice}}</div>
+                                <div>运费金额：+ ￥{{scope.row.freightPrice}}</div>
+                                <div>优惠券抵扣金额：- ￥{{scope.row.paymentCouponPrice}}</div>
+                                <div>积分抵扣金额：- ￥{{scope.row.paymentPointsPrice}}</div>
                                 <div style="color: red">支付金额：￥{{scope.row.paymentPrice}}</div>
-                                <div style="color: red">优惠券抵扣金额：￥{{scope.row.paymentCouponPrice}}</div>
-                                <div style="color: red">积分抵扣金额：￥{{scope.row.paymentPointsPrice}}</div>
                                 <div style="color: red">支付积分：{{scope.row.paymentPoints}}</div>
                             </template>
                         </el-table-column>
@@ -145,7 +146,7 @@
                         </el-table-column>
                         <el-table-column
                                 align="center"
-                                prop="salesPrice"
+                                prop="orderTime"
                                 label="订单时间"
                                 width="250">
                             <template slot-scope="scope">
@@ -211,25 +212,25 @@
                                 align="center"
                                 prop="salesPriceTotal"
                                 label="商品总价"
-                                width="80">
+                                width="100">
                             <template slot-scope="scope">
                                 ￥{{(scope.row.salesPrice * scope.row.quantity).toFixed(2)}}
                             </template>
                         </el-table-column>
                         <el-table-column
-                          align="center"
-                          prop="salesPriceTotal"
-                          label="支付金额"
-                          width="80">
-                          <template slot-scope="scope">
-                            ￥{{scope.row.paymentPrice}}
-                          </template>
+                                align="center"
+                                prop="freightPrice"
+                                label="运费金额"
+                                width="100">
+                            <template slot-scope="scope">
+                                ￥{{scope.row.freightPrice}}
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 align="center"
                                 prop="paymentCouponPrice"
                                 label="优惠券抵扣金额"
-                                width="80">
+                                width="100">
                             <template slot-scope="scope">
                                 ￥{{scope.row.paymentCouponPrice}}
                             </template>
@@ -238,9 +239,18 @@
                                 align="center"
                                 prop="paymentPointsPrice"
                                 label="积分抵扣金额"
-                                width="80">
+                                width="100">
                             <template slot-scope="scope">
                                 ￥{{scope.row.paymentPointsPrice}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                prop="salesPriceTotal"
+                                label="支付金额"
+                                width="80">
+                            <template slot-scope="scope">
+                                ￥{{scope.row.paymentPrice}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -368,11 +378,11 @@
                 </template>
                 <template slot-scope="scope" slot="salesPrice">
                     <div style="text-align: left">
-                        <div class="grid-content">销售金额：￥{{scope.row.salesPrice}}</div>
-                        <div class="grid-content">物流金额：￥{{scope.row.logisticsPrice}}</div>
+                        <div class="grid-content">订单金额：￥{{scope.row.salesPrice}}</div>
+                        <div class="grid-content">运费金额：+ ￥{{scope.row.freightPrice}}</div>
+                        <div class="grid-content">优惠券抵扣金额：- ￥{{scope.row.paymentCouponPrice}}</div>
+                        <div class="grid-content">积分抵扣金额：- ￥{{scope.row.paymentPointsPrice}}</div>
                         <div class="grid-content" style="color: red">支付金额：￥{{scope.row.paymentPrice}}</div>
-                        <div class="grid-content" style="color: red">优惠券抵扣金额：￥{{scope.row.paymentCouponPrice}}</div>
-                        <div class="grid-content" style="color: red">积分抵扣金额：￥{{scope.row.paymentPointsPrice}}</div>
                         <div class="grid-content" style="color: red">支付积分：{{scope.row.paymentPoints}}</div>
                     </div>
                 </template>
@@ -435,16 +445,19 @@
                         </el-tooltip>
                     </div>
                     <div style="margin-top: 20px">
-                        销售总额：￥{{(orderItemObj.quantity * orderItemObj.salesPrice).toFixed(2)}}
+                        商品数量：x{{orderItemObj.quantity}}
+                    </div>
+                    <div style="margin-top: 20px">
+                        订单金额：￥{{(orderItemObj.quantity * orderItemObj.salesPrice).toFixed(2)}}
+                    </div>
+                    <div style="margin-top: 20px">
+                        运费金额：￥{{orderItemObj.freightPrice}}
                     </div>
                     <div style="margin-top: 20px; color: red">
                         退款金额：￥{{orderItemObj.paymentPrice}}
                     </div>
                     <div style="margin-top: 20px; color: red">
                         退款积分：{{orderItemObj.paymentPoints}}
-                    </div>
-                    <div style="margin-top: 20px">
-                        退款数量：x{{orderItemObj.quantity}}
                     </div>
                     <div style="margin-top: 20px" v-if="orderItemObj.listOrderRefunds">
                         退款原因：{{orderItemObj.listOrderRefunds[0].refundReson}}

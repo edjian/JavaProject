@@ -57,13 +57,13 @@
 		obj.`pic_url`
 	</sql>
 
-	<select id="selectVoPage" resultMap="shoppingCartMap2">
+	<select id="selectPage2" resultMap="shoppingCartMap2">
 		SELECT
 			<include refid="shoppingCartSql2"/>
 		FROM shopping_cart obj
 		<where>
-			<if test="ew.userId != null and ew.userId != ''">
-				and obj.`user_id` = #{ew.userId}
+			<if test="query.userId != null and query.userId != ''">
+				and obj.`user_id` = #{query.userId}
 			</if>
 		</where>
 	</select>

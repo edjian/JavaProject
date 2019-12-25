@@ -91,7 +91,7 @@ export const tableOption = {
       prop: 'salesPrice',
       sortable:true,
       slot:true,
-      width: 180,
+      width: 200,
     },
 	  {
       label: '付款时间',
@@ -141,8 +141,8 @@ export const tableOption = {
           span: 24
         }]
     },{
-      icon:'el-icon-user',
-      label: '用户信息',
+      icon:'el-icon-order',
+      label: '订单明细',
       prop: 'group2',
       column: [{
         prop: 'userId',

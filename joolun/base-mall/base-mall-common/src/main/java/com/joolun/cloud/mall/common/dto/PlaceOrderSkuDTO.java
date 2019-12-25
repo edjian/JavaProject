@@ -41,6 +41,10 @@ public class PlaceOrderSkuDTO implements Serializable {
 	 */
 	private BigDecimal paymentPrice;
 	/**
+	 * 运费金额
+	 */
+	private BigDecimal freightPrice;
+	/**
 	 * 支付积分
 	 */
 	private Integer paymentPoints;

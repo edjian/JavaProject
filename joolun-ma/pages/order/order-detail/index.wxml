@@ -81,10 +81,10 @@
         </view>
         <view class="cu-item">
           <view class="content">
-            <text class="text-grey">商品总价</text>
+            <text class="text-grey">订单金额</text>
           </view>
           <view class="action">
-            <view class="text-price">{{orderInfo.salesPrice}}</view>
+            <text class="text-price">{{orderInfo.salesPrice}}</text>
           </view>
         </view>
         <view class="cu-item">
@@ -92,23 +92,15 @@
             <text class="text-grey">运费</text>
           </view>
           <view class="action">
-            <view class="text-price">{{orderInfo.logisticsPrice}}</view>
-          </view>
-        </view>
-        <view class="cu-item">
-          <view class="content">
-            <text class="text-grey">付款金额</text>
-          </view>
-          <view class="action">
-            <view class="text-price text-red text-bold">{{orderInfo.paymentPrice}}</view>
+            + <text class="text-price">{{orderInfo.freightPrice}}</text>
           </view>
         </view>
         <view class="cu-item" wx:if="{{orderInfo.paymentCouponPrice}}">
           <view class="content">
-            <text class="text-grey">优惠券金额</text>
+            <text class="text-grey">优惠券抵扣金额</text>
           </view>
           <view class="action">
-            <view class="text-price text-red text-bold">{{orderInfo.paymentCouponPrice}}</view>
+            - <text class="text-price">{{orderInfo.paymentCouponPrice}}</text>
           </view>
         </view>
         <view class="cu-item" wx:if="{{orderInfo.paymentPoints}}">
@@ -116,7 +108,15 @@
             <text class="text-grey">积分抵扣金额</text>
           </view>
           <view class="action">
-            <view class="text-price text-red text-bold">{{orderInfo.paymentPointsPrice}}</view>
+            - <text class="text-price">{{orderInfo.paymentPointsPrice}}</text>
+          </view>
+        </view>
+        <view class="cu-item">
+          <view class="content">
+            <text class="text-grey">支付金额</text>
+          </view>
+          <view class="action">
+            <text class="text-price text-red text-bold">{{orderInfo.paymentPrice}}</text>
           </view>
         </view>
       </view>

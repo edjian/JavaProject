@@ -198,10 +198,19 @@ export const tableOption = {
           span: 24,
         },
         {
-          label: '价位',
-          prop: 'price',
-          editDisplay: false,
-          addDisplay: false
+          label: '运费模板',
+          prop: 'freightTemplatId',
+          type: 'select',
+          rules: [{
+            required: true,
+            message: '请选择运费模板',
+            trigger: 'blur'
+          }],
+          props: {
+            label: 'name',
+            value: 'id'
+          },
+          dicUrl: '/mall/freighttemplat/list'
         },]
     },
     {

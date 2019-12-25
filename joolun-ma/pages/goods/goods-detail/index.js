@@ -13,7 +13,7 @@ const app = getApp()
 
 Page({
   data: {
-    goodsDetail: [],
+    goodsDetail: {},
     goodsSpecData: [],
     goodsAppraises: [],
     currents: 1,
@@ -30,7 +30,7 @@ Page({
         desc: '满足7天无理由退换货申请的前提下，包邮商品需要买家承担退货邮费，非包邮商品需要买家承担发货和退货邮费。'
       },
       {
-        name: '全国包邮',
+        name: '5年质量保证',
         desc: ''
       }
     ],

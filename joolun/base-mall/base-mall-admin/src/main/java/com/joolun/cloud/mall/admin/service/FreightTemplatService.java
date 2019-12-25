@@ -8,17 +8,15 @@
  */
 package com.joolun.cloud.mall.admin.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.joolun.cloud.mall.common.entity.ShoppingCart;
+import com.joolun.cloud.mall.common.entity.FreightTemplat;
 
 /**
- * 购物车
+ * 运费模板
  *
  * @author JL
- * @date 2019-08-29 21:27:33
+ * @date 2019-12-24 16:09:31
  */
-public interface ShoppingCartService extends IService<ShoppingCart> {
+public interface FreightTemplatService extends IService<FreightTemplat> {
 
-	IPage<ShoppingCart> page2(IPage<ShoppingCart> page, ShoppingCart shoppingCart);
 }

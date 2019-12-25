@@ -10,7 +10,6 @@ package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
@@ -23,9 +22,9 @@ import com.joolun.cloud.mall.common.entity.GoodsSpu;
  */
 public interface GoodsSpuService extends IService<GoodsSpu> {
 
-	boolean save(GoodsSpuDTO goodsSpuDTO);
+	boolean save1(GoodsSpu goodsSpu);
 
-	boolean updateById(GoodsSpuDTO goodsSpuDTO);
+	boolean updateById1(GoodsSpu goodsSpu);
 
 	GoodsSpu getById2(String id);
 

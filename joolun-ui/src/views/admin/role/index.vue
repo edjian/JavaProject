@@ -267,7 +267,10 @@
         this.dialogLoading = true
         this.menuIds = ''
         this.menuIds = this.$refs.menuTree.getCheckedKeys().join(',').concat(',').concat(this.$refs.menuTree.getHalfCheckedKeys().join(','))
-        permissionUpd(id, this.menuIds).then(() => {
+        permissionUpd({
+          roleId: id,
+          menuId: this.menuIds
+        }).then(() => {
           this.dialogLoading = false
           this.dialogPermissionVisible = false
           fetchMenuTree()

@@ -22,7 +22,7 @@
 		<result property="userId" column="user_id"/>
 		<result property="orderNo" column="order_no"/>
 		<result property="salesPrice" column="sales_price"/>
-		<result property="logisticsPrice" column="logistics_price"/>
+		<result property="freightPrice" column="freight_price"/>
 		<result property="paymentWay" column="payment_way"/>
 		<result property="paymentType" column="payment_type"/>
 		<result property="paymentPrice" column="payment_price"/>
@@ -64,7 +64,7 @@
 		order_info.`user_id`,
 		order_info.`order_no`,
 		order_info.`sales_price`,
-		order_info.`logistics_price`,
+		order_info.`freight_price`,
 		order_info.`payment_way`,
 		order_info.`payment_type`,
 		order_info.`payment_price`,

@@ -238,7 +238,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 		orderInfo.setOrderNo(IdUtil.getSnowflake(0,0).nextIdStr());
 		orderInfo.setSalesPrice(BigDecimal.ZERO);
 		orderInfo.setPaymentPrice(BigDecimal.ZERO);
-		orderInfo.setLogisticsPrice(BigDecimal.ZERO);
+		orderInfo.setFreightPrice(BigDecimal.ZERO);
 		orderInfo.setPaymentPoints(0);
 		orderInfo.setPaymentCouponPrice(BigDecimal.ZERO);
 		orderInfo.setPaymentPointsPrice(BigDecimal.ZERO);
@@ -267,7 +267,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					orderItem.setPicUrl(StrUtil.isNotBlank(goodsSku.getPicUrl()) ? goodsSku.getPicUrl() : goodsSpu.getPicUrls()[0]);
 					orderItem.setQuantity(placeOrderSkuDTO.getQuantity());
 					orderItem.setSalesPrice(goodsSku.getSalesPrice());
-					orderItem.setPaymentPrice(placeOrderSkuDTO.getPaymentPrice());
+					orderItem.setFreightPrice(placeOrderSkuDTO.getFreightPrice());
+					orderItem.setPaymentPrice(placeOrderSkuDTO.getPaymentPrice().add(placeOrderSkuDTO.getFreightPrice()));
 					orderItem.setPaymentPoints(placeOrderSkuDTO.getPaymentPoints());
 					orderItem.setPaymentCouponPrice(placeOrderSkuDTO.getPaymentCouponPrice());
 					orderItem.setPaymentPointsPrice(placeOrderSkuDTO.getPaymentPointsPrice());
@@ -309,7 +310,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					}
 					listOrderItem.add(orderItem);
 					orderInfo.setSalesPrice(orderInfo.getSalesPrice().add(goodsSku.getSalesPrice().multiply(quantity)));
-					orderInfo.setPaymentPrice(orderInfo.getPaymentPrice().add((placeOrderSkuDTO.getPaymentPrice() != null ? placeOrderSkuDTO.getPaymentPrice() : BigDecimal.ZERO)));
+					orderInfo.setFreightPrice(orderInfo.getFreightPrice().add(placeOrderSkuDTO.getFreightPrice()));
+					orderInfo.setPaymentPrice(orderInfo.getPaymentPrice().add(placeOrderSkuDTO.getPaymentPrice().add(placeOrderSkuDTO.getFreightPrice())));
 					orderInfo.setPaymentPoints(orderInfo.getPaymentPoints() + (placeOrderSkuDTO.getPaymentPoints() != null ? placeOrderSkuDTO.getPaymentPoints() : 0));
 					orderInfo.setPaymentCouponPrice(orderInfo.getPaymentCouponPrice().add((placeOrderSkuDTO.getPaymentCouponPrice() != null ? placeOrderSkuDTO.getPaymentCouponPrice() : BigDecimal.ZERO)));
 					orderInfo.setPaymentPointsPrice(orderInfo.getPaymentPointsPrice().add((placeOrderSkuDTO.getPaymentPointsPrice() != null ? placeOrderSkuDTO.getPaymentPointsPrice() : BigDecimal.ZERO)));
@@ -333,7 +335,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			//新增订单物流
 			orderLogisticsService.save(orderLogistics);
 			orderInfo.setLogisticsId(orderLogistics.getId());
-			orderInfo.setPaymentPrice(orderInfo.getPaymentPrice().add(orderInfo.getLogisticsPrice()));
 			super.save(orderInfo);//保存订单
 			listOrderItem.forEach(orderItem -> orderItem.setOrderId(orderInfo.getId()));
 			//保存订单详情

@@ -3,6 +3,7 @@
  * https://cli.vuejs.org/zh/config/
  */
 // const url = 'http://192.168.31.110:9999'
+//后台网关地址
 const url = 'http://localhost:9999'
 const fs = require('fs')
 module.exports = {

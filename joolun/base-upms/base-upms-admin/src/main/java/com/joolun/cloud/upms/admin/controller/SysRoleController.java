@@ -1,5 +1,6 @@
 package com.joolun.cloud.upms.admin.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.upms.admin.service.SysRoleMenuService;
@@ -9,6 +10,7 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.upms.common.entity.SysRoleMenu;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -109,14 +111,19 @@ public class SysRoleController {
 	/**
 	 * 更新角色菜单
 	 *
-	 * @param roleId  角色ID
-	 * @param menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
+	 * @param sysRoleMenu roleId  角色ID
+	 * @param sysRoleMenu menuId 菜单ID拼成的字符串，每个id之间根据逗号分隔
 	 * @return ok、false
 	 */
 	@SysLog("更新角色菜单")
 	@PutMapping("/menu")
 	@PreAuthorize("@ato.hasAuthority('sys_role_perm')")
-	public R saveRoleMenus(String roleId, @RequestParam(value = "menuIds", required = false) String menuIds) {
+	public R saveRoleMenus(@RequestBody SysRoleMenu sysRoleMenu) {
+		String roleId = sysRoleMenu.getRoleId();
+		String menuIds = sysRoleMenu.getMenuId();
+		if(StrUtil.isBlank(roleId) || StrUtil.isBlank(menuIds)){
+			return R.ok();
+		}
 		if(!this.judeAdmin(roleId)){
 			return R.failed("管理员角色不能操作");
 		}
@@ -140,14 +147,20 @@ public class SysRoleController {
 	/**
 	 * 更新租户管理员角色菜单
 	 *
-	 * @param roleId  角色ID
-	 * @param menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
+	 * @param sysRoleMenu roleId  角色ID
+	 * @param sysRoleMenu menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
 	 * @return ok、false
 	 */
 	@SysLog("更新租户管理员角色菜单")
 	@PutMapping("/menu/tenant")
 	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
-	public R saveRoleMenusTenant(String tenantId, String roleId, @RequestParam(value = "menuIds", required = false) String menuIds) {
+	public R saveRoleMenusTenant(@RequestBody SysRoleMenu sysRoleMenu) {
+		String tenantId = sysRoleMenu.getTenantId();
+		String roleId = sysRoleMenu.getRoleId();
+		String menuIds = sysRoleMenu.getMenuId();
+		if(StrUtil.isBlank(tenantId) || StrUtil.isBlank(menuIds) || StrUtil.isBlank(menuIds)){
+			return R.ok();
+		}
 		TenantContextHolder.setTenantId(tenantId);
 		SysRole sysRole = sysRoleService.getById(roleId);
 		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleId, menuIds));

@@ -9,17 +9,14 @@
 package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.joolun.cloud.mall.common.entity.ShoppingCart;
-import org.apache.ibatis.annotations.Param;
+import com.joolun.cloud.mall.common.entity.FreightTemplat;
 
 /**
- * 购物车
+ * 运费模板
  *
  * @author JL
- * @date 2019-08-29 21:27:33
+ * @date 2019-12-24 16:09:31
  */
-public interface ShoppingCartMapper extends BaseMapper<ShoppingCart> {
+public interface FreightTemplatMapper extends BaseMapper<FreightTemplat> {
 
-	IPage<ShoppingCart> selectPage2(IPage<ShoppingCart> page, @Param("query") ShoppingCart shoppingCart);
 }

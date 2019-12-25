@@ -55,10 +55,18 @@
         </view>
         <view class="cu-item margin-top-sm">
           <view class="content">
-            <text class="text-grey">商品总价</text>
+            <text class="text-grey">订单金额</text>
           </view>
           <view class="action">
-            <view class="text-price">{{totalPrice}}</view>
+            <view class="text-price">{{salesPrice}}</view>
+          </view>
+        </view>
+        <view class="cu-item margin-top-sm">
+          <view class="content">
+            <text class="text-grey">运费金额</text>
+          </view>
+          <view class="action">
+            <view class="text-price">{{freightPrice}}</view>
           </view>
         </view>
         <view class="cu-item" wx:if="{{totalCouponDeductPrice > 0}}">
@@ -103,14 +111,14 @@
           <view class="text-gray margin-left-sm">积分</view>
         </view>
         <view class="flex-treble text-df">
-          <text class="text-black" wx:if="{{pointsConfig.premiseAmount <= totalPrice}}">共{{userInfo.pointsCurrent}}，可用{{totalPointsDeduct}}抵{{totalPointsDeductPriceTemp}}元
+          <text class="text-black" wx:if="{{pointsConfig.premiseAmount <= salesPrice}}">共{{userInfo.pointsCurrent}}，可用{{totalPointsDeduct}}抵{{totalPointsDeductPriceTemp}}元
           </text>
-          <text class="text-black" wx:if="{{pointsConfig.premiseAmount > totalPrice}}">共{{userInfo.pointsCurrent}}，订单满{{pointsConfig.premiseAmount}}元可使用
+          <text class="text-black" wx:if="{{pointsConfig.premiseAmount > salesPrice}}">共{{userInfo.pointsCurrent}}，订单满{{pointsConfig.premiseAmount}}元可使用
           </text>
         </view>
         <view class="flex-sub text-df text-gray text-right margin-right-sm">
           <checkbox-group bindchange="pointsCheckedChange" 
-              wx:if="{{pointsConfig.premiseAmount <= totalPrice && userInfo.pointsCurrent >= totalPointsDeduct}}">
+              wx:if="{{pointsConfig.premiseAmount <= salesPrice && userInfo.pointsCurrent >= totalPointsDeduct}}">
             <checkbox class="round red" value="true" checked="{{totalPointsDeductPrice > 0}}"></checkbox>
           </checkbox-group>
         </view>
@@ -129,7 +137,7 @@
     <view class="flex-treble bar-rt">
       <text class="text-sm text-gray">共{{ orderConfirmData.length }}件，</text>
       <text class="text-xs text-bold">合计：</text>
-      <text class="text-xl text-price text-red">{{paymentPrice}}</text>
+      <text class="text-xl text-price text-red">{{numberUtil.numberAddition(paymentPrice,freightPrice)}}</text>
       <button class="cu-btn bg-red round lg margin-left-sm" bindtap="orderSub" loading="{{loading}}" disabled="{{loading}}" type="">
         提交订单
       </button>

@@ -49,7 +49,6 @@ export const tableOption = {
     type: 'checkbox',
     dicUrl: '/admin/dict/type/authorized_grant_types',
     overHidden: true,
-    hide: true,
     rules: [{
       required: true,
       message: '请输入授权模式',

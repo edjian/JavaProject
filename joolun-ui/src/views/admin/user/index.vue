@@ -26,43 +26,10 @@
                      @row-update="handleUpdate"
                      @row-save="handleSave"
                      @row-del="handleDel"
-                     :before-open="handleOpenBefore"
                      :data="list">
-            <template slot="username"
-                      slot-scope="scope">
-              <span>{{scope.row.username}}</span>
-            </template>
-            <template slot="role"
-                      slot-scope="scope">
-              <span v-for="(role,index) in scope.row.roleList"
-                    :key="index">
-                <el-tag size="mini">{{role.roleName}} </el-tag>&nbsp;&nbsp;
-              </span>
-            </template>
-            <template slot="organId"
-                      slot-scope="scope">
-              {{scope.row.organName}}
-            </template>
             <template slot="lockFlag"
                       slot-scope="scope">
               <el-tag size="mini" effect="light" :type="scope.row.lockFlag == '0' ? 'success' :  'danger'">{{scope.label}}</el-tag>
-            </template>
-            <template slot="organIdForm"
-                      slot-scope="scope">
-              <avue-input v-model="form.organId"
-                               type="tree"
-                               placeholder="请选择所属机构"
-                               :node-click="getNodeData"
-                               :dic="treeOrganData"
-                               :props="organProps"></avue-input>
-            </template>
-            <template slot="roleForm"
-                      slot-scope="scope">
-              <avue-select v-model="role"
-                                multiple
-                                placeholder="请选择角色"
-                                :dic="rolesOptions"
-                                :props="roleProps"></avue-select>
             </template>
             <template slot-scope="scope"
                       slot="menu">
@@ -90,7 +57,6 @@
 
 <script>
   import {addObj, delObj, getPage, getObj, putObj, editPassword} from "@/api/admin/user"
-  import {organRoleList} from "@/api/admin/role"
   import {fetchTree} from "@/api/admin/organ"
   import {tableOption} from '@/const/crud/admin/user'
   import {mapGetters} from "vuex"
@@ -125,16 +91,7 @@
         },
         treeData: [],
         option: tableOption,
-        treeOrganData: [],
         checkedKeys: [],
-        roleProps: {
-          label: 'roleName',
-          value: 'id'
-        },
-        organProps: {
-          label: 'name',
-          value: 'id',
-        },
         page: {
           total: 0, // 总页数
           currentPage: 1, // 当前页数
@@ -144,8 +101,7 @@
         list: [],
         listLoading: true,
         role: [],
-        form: {},
-        rolesOptions: [],
+        form: {}
       };
     },
     computed: {
@@ -160,9 +116,7 @@
       }
     },
     watch: {
-      role() {
-        this.form.role = this.role
-      }
+
     },
     created() {
       this.init();
@@ -189,16 +143,16 @@
         this.dialogVisible = true
       },
       init() {
-        fetchTree().then(response => {2
-          this.treeData = response.data.data;
-        });
+        fetchTree().then(response => {
+          this.treeData = response.data.data
+        })
       },
       nodeClick(data) {
-        this.page.page = 1;
+        this.page.page = 1
         this.getPage(this.page, {organId: data.id});
       },
       sortChange(val){
-        let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : '';
+        let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : ''
         if(val.order=='ascending'){
           this.page.descs = []
           this.page.ascs = prop
@@ -226,16 +180,6 @@
           this.listLoading = false;
         });
       },
-      getNodeData(data) {
-        organRoleList().then(response => {
-          this.rolesOptions = response.data.data;
-        });
-      },
-      handleOrgan() {
-        fetchTree().then(response => {
-          this.treeOrganData = response.data.data;
-        });
-      },
       searchChange(params,done) {
         params = this.filterForm(params)
         this.paramsSearch = params
@@ -245,22 +189,6 @@
       },
       refreshChange(val) {
         this.getPage(val.page)
-      },
-      handleOpenBefore(show, type) {
-        window.boxType = type;
-        this.handleOrgan();
-        if (['edit', 'views'].includes(type)) {
-          this.role = [];
-          for (var i = 0; i < this.form.roleList.length; i++) {
-            this.role[i] = this.form.roleList[i].id;
-          }
-          organRoleList().then(response => {
-            this.rolesOptions = response.data.data;
-          });
-        } else if (type === 'add') {
-          this.role = [];
-        }
-        show();
       },
       handleSave(row, done) {
         addObj(this.form).then(() => {

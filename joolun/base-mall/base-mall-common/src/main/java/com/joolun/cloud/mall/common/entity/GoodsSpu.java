@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler;
+import com.joolun.cloud.mall.common.dto.SpuSpecDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -131,6 +132,10 @@ private static final long serialVersionUID = 1L;
 	 * 1积分数可抵多少元
 	 */
 	private BigDecimal pointsDeductAmount;
+	/**
+	 * 运费模板ID
+	 */
+	private String freightTemplatId;
 
 	@TableField(exist = false)
 	private List<GoodsSku> skus;
@@ -142,4 +147,10 @@ private static final long serialVersionUID = 1L;
 	 */
 	@TableField(exist = false)
 	private List<CouponInfo> listCouponInfo;
+
+	@TableField(exist = false)
+	private List<SpuSpecDTO> spuSpec;
+
+	@TableField(exist = false)
+	private FreightTemplat freightTemplat;
 }

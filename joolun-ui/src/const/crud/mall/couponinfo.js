@@ -71,7 +71,7 @@ export const tableOption = {
                 message: '请输入订单金额',
                 trigger: 'blur'
             }],
-            tip: '订单金额（支付金额+积分抵扣金额）满多少可使用'
+            tip: '订单金额（不包含运费，包含积分抵扣金额）满多少可使用'
         },
         {
             label: '类型',

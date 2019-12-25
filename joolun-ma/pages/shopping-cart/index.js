@@ -36,11 +36,13 @@ Page({
     app.initPage()
       .then(res => {
         this.shoppingCartPage()
-        this.goodsRecom()
       })
   },
   onLoad: function () {
-
+    app.initPage()
+      .then(res => {
+        this.goodsRecom()
+      })
   },
   //管理按键事件
   operation() {
@@ -339,7 +341,10 @@ Page({
           pointsDeductScale: shoppingCart.goodsSpu.pointsDeductScale,
           pointsDeductAmount: shoppingCart.goodsSpu.pointsDeductAmount,
           pointsGiveSwitch: shoppingCart.goodsSpu.pointsGiveSwitch,
-          pointsGiveNum: shoppingCart.goodsSpu.pointsGiveNum
+          pointsGiveNum: shoppingCart.goodsSpu.pointsGiveNum,
+          freightTemplat: shoppingCart.goodsSpu.freightTemplat,
+          weight: shoppingCart.goodsSku.weight,
+          volume: shoppingCart.goodsSku.volume
         }
         params.push(param)
       }

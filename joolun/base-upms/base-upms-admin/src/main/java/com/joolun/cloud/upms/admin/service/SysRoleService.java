@@ -20,7 +20,7 @@ public interface SysRoleService extends IService<SysRole> {
 	 * @param userId
 	 * @return
 	 */
-	List<SysRole> findRolesByUserId(String userId);
+	List<String> findRoleIdsByUserId(String userId);
 
 	/**
 	 * 通过角色ID，删除角色

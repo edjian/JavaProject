@@ -91,7 +91,11 @@ public class OrderItem extends Model<OrderItem> {
 	 */
 	private BigDecimal salesPrice;
 	/**
-	 * 支付金额
+	 * 运费金额
+	 */
+	private BigDecimal freightPrice;
+	/**
+	 * 支付金额（购买单价*商品数量+运费金额-积分抵扣金额-电子券抵扣金额）
 	 */
 	private BigDecimal paymentPrice;
 	/**

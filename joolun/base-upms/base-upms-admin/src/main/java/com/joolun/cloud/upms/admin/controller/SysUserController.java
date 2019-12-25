@@ -164,7 +164,7 @@ public class SysUserController {
 			//查询出管理员角色，判断管理员角色是否至少有1个用户
 			SysRole sysRole = sysRoleService.getOne(Wrappers.<SysRole>update().lambda()
 					.eq(SysRole::getRoleCode,CommonConstants.ROLE_CODE_ADMIN));
-			if(!CollUtil.contains(userDto.getRole(),sysRole.getId())){
+			if(!CollUtil.contains(userDto.getRoleIds(),sysRole.getId())){
 				List<SysUserRole> listSysUserRole = sysUserRoleService.list(Wrappers.<SysUserRole>update().lambda()
 						.eq(SysUserRole::getRoleId,sysRole.getId()));
 				if(listSysUserRole.size()<=1){//只有一条记录，判断是否当前用户拥有

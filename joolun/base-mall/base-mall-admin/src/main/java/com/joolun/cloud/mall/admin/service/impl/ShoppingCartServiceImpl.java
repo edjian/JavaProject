@@ -59,7 +59,7 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
 	}
 
 	@Override
-	public IPage<ShoppingCart> pageVo(IPage<ShoppingCart> page, ShoppingCart shoppingCart) {
-		return baseMapper.selectVoPage(page, shoppingCart);
+	public IPage<ShoppingCart> page2(IPage<ShoppingCart> page, ShoppingCart shoppingCart) {
+		return baseMapper.selectPage2(page, shoppingCart);
 	}
 }

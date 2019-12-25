@@ -90,4 +90,9 @@ public class UserVO implements Serializable {
 	 * 角色列表
 	 */
 	private List<SysRole> roleList;
+
+	/**
+	 * 角色
+	 */
+	private List<String> roleIds;
 }

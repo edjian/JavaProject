@@ -15,7 +15,7 @@ public class UserDTO extends SysUser {
 	/**
 	 * 角色ID
 	 */
-	private List<String> role;
+	private List<String> roleIds;
 
 	private String organId;
 

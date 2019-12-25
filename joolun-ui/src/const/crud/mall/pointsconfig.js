@@ -46,7 +46,7 @@ export const tableOption = {
         {
             label: '订单满',
             prop: 'premiseAmount',
-            tip: '订单金额满多少可使用抵扣',
+            tip: '订单金额（不包含运费）满多少可使用抵扣',
             type: 'number',
             minRows: 0,
             precision: 2,

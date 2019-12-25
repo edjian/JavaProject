@@ -75,7 +75,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
 		sysUser.setPassword(ENCODER.encode(userDto.getPassword()));
 		baseMapper.insert(sysUser);
-		List<SysUserRole> userRoleList = userDto.getRole()
+		List<SysUserRole> userRoleList = userDto.getRoleIds()
 				.stream().map(roleId -> {
 					SysUserRole userRole = new SysUserRole();
 					userRole.setUserId(sysUser.getId());
@@ -96,10 +96,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		UserInfo userInfo = new UserInfo();
 		userInfo.setSysUser(sysUser);
 		//设置角色列表  （ID）
-		List<String> roleIds = sysRoleService.findRolesByUserId(sysUser.getId())
-				.stream()
-				.map(SysRole::getId)
-				.collect(Collectors.toList());
+		List<String> roleIds = sysRoleService.findRoleIdsByUserId(sysUser.getId());
 		userInfo.setRoles(ArrayUtil.toArray(roleIds, String.class));
 
 		//设置权限列表（menu.permission）
@@ -186,7 +183,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 		sysUserRoleService.remove(Wrappers.<SysUserRole>update().lambda()
 				.eq(SysUserRole::getUserId, userDto.getId()));
-		userDto.getRole().forEach(roleId -> {
+		userDto.getRoleIds().forEach(roleId -> {
 			SysUserRole userRole = new SysUserRole();
 			userRole.setUserId(sysUser.getId());
 			userRole.setRoleId(roleId);

@@ -14,10 +14,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
-import com.joolun.cloud.mall.common.dto.GoodsSpuDTO;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
-import com.joolun.cloud.weixin.common.entity.WxUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +71,8 @@ public class GoodsSpuController {
 								GoodsSpu::getPointsGiveNum,
 								GoodsSpu::getPointsDeductSwitch,
 								GoodsSpu::getPointsDeductScale,
-								GoodsSpu::getPointsDeductAmount)
+								GoodsSpu::getPointsDeductAmount,
+								GoodsSpu::getFreightTemplatId)
 						.like(GoodsSpu::getName, StrUtil.isNotBlank(name) ? name : "")
 				)
 		);
@@ -92,26 +91,26 @@ public class GoodsSpuController {
 
     /**
     * 新增spu商品
-    * @param goodsSpuDTO spu商品
+    * @param goodsSpu spu商品
     * @return R
     */
     @SysLog("新增spu商品")
     @PostMapping
     @PreAuthorize("@ato.hasAuthority('mall_goodsspu_add')")
-    public R save(@RequestBody GoodsSpuDTO goodsSpuDTO){
-        return R.ok(goodsSpuService.save(goodsSpuDTO));
+    public R save(@RequestBody GoodsSpu goodsSpu){
+        return R.ok(goodsSpuService.save1(goodsSpu));
     }
 
     /**
     * 修改spu商品
-    * @param goodsSpuDTO spu商品
+    * @param goodsSpu spu商品
     * @return R
     */
     @SysLog("修改spu商品")
     @PutMapping
     @PreAuthorize("@ato.hasAuthority('mall_goodsspu_edit')")
-    public R updateById(@RequestBody GoodsSpuDTO goodsSpuDTO){
-        return R.ok(goodsSpuService.updateById(goodsSpuDTO));
+    public R updateById(@RequestBody GoodsSpu goodsSpu){
+        return R.ok(goodsSpuService.updateById1(goodsSpu));
     }
 
 	/**

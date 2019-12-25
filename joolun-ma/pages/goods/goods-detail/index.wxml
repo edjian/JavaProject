@@ -57,8 +57,8 @@
       <view class="text-gray margin-left-sm">发货</view>
     </view>
     <view class="flex-treble text-df">
-      <text class="cuIcon-location text-black">江苏南京</text> |
-      <text class="text-black">快递：免运费</text>
+      <text class="cuIcon-location text-black">江苏南京</text>
+      <text class="text-black" wx:if="{{goodsDetail.freightTemplat}}"> | 运费：{{goodsDetail.freightTemplat.type == '2' ? '全国包邮' : '￥'+goodsDetail.freightTemplat.firstFreight}}</text>
     </view>
     <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsDetail.saleNum}}</view>
   </view>

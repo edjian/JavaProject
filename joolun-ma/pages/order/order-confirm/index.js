@@ -11,8 +11,9 @@ const app = getApp()
 Page({
   data: {
     orderConfirmData: [],
-    totalPrice: 0,
+    salesPrice: 0,
     paymentPrice: 0,
+    freightPrice: 0,
     userAddress: null,
     orderSubParm: {
       paymentType: '1'
@@ -42,9 +43,10 @@ Page({
       key: 'param-orderConfirm',
       success: function (res) {
         let orderConfirmData = res.data
-        let totalPrice = 0
+        let salesPrice = 0 //订单金额
         let totalPointsDeduct = 0 //最多可用积分数
         let totalPointsDeductPriceTemp = 0 //最多可用积分数抵扣金额
+        let freightPrice = 0 //运费
         let spuIds = null
         orderConfirmData.forEach((orderConfirm, index) => {
           if (spuIds){
@@ -52,8 +54,30 @@ Page({
           }else{
             spuIds = orderConfirm.spuId
           }
-          totalPrice = (Number(totalPrice) + orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2)
+          salesPrice = (Number(salesPrice) + orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2)
           orderConfirm.paymentPrice = (orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2)
+          //计算运费
+          let freightTemplat = orderConfirm.freightTemplat
+          if (freightTemplat){
+            if (freightTemplat.type == '1') {//模板类型1、买家承担运费
+              let quantity = orderConfirm.quantity
+              if (freightTemplat.chargeType == '1') {//1、按件数；
+                that.countFreight(orderConfirm, freightTemplat, quantity)
+              } else if (freightTemplat.chargeType == '2') {//2、按重量
+                let weight = orderConfirm.weight
+                that.countFreight(orderConfirm, freightTemplat, (weight * quantity).toFixed(2))
+              } else if (freightTemplat.chargeType == '3') {//3、按体积
+                let volume = orderConfirm.volume
+                that.countFreight(orderConfirm, freightTemplat, (volume * quantity).toFixed(2))
+              }
+            } else {
+              orderConfirm.freightPrice = 0
+            }
+          }else{
+            orderConfirm.freightPrice = 0
+          }
+          freightPrice = (Number(freightPrice) + Number(orderConfirm.freightPrice)).toFixed(2)
+          //计算积分抵扣
           if (orderConfirm.pointsDeductSwitch == '1'){
             let pointsDeductPrice = Math.floor(orderConfirm.salesPrice * orderConfirm.pointsDeductScale / 100 * orderConfirm.quantity)
             let pointsDeduct = pointsDeductPrice / orderConfirm.pointsDeductAmount
@@ -68,8 +92,9 @@ Page({
         })
         that.setData({
           orderConfirmData: orderConfirmData,
-          totalPrice: totalPrice,
-          paymentPrice: totalPrice,
+          salesPrice: salesPrice,
+          freightPrice: freightPrice,
+          paymentPrice: salesPrice,
           totalPointsDeduct: totalPointsDeduct,
           totalPointsDeductPriceTemp: totalPointsDeductPriceTemp,
           spuIds: spuIds
@@ -78,6 +103,20 @@ Page({
       }
     })
   },
+  //计算运费
+  countFreight(orderConfirm, freightTemplat, quantity){
+    let firstNum = freightTemplat.firstNum
+    let firstFreight = freightTemplat.firstFreight
+    let continueNum = freightTemplat.continueNum
+    let continueFreight = freightTemplat.continueFreight
+    if (quantity <= firstNum) {//首件之内数量
+      orderConfirm.freightPrice = firstFreight
+    } else {//首件之外数量
+      let num = quantity - firstNum
+      orderConfirm.freightPrice = (Number(firstFreight) + Math.ceil(num / continueNum) * continueFreight).toFixed(2)
+    }
+  },
+  //获取默认收货地址
   userAddressPage() {
     app.api.userAddressPage(
       {
@@ -150,6 +189,7 @@ Page({
         })
       })
   },
+  //选择使用积分
   pointsCheckedChange: function (e) {
     if (e.detail.value == 'true'){
       let orderConfirmData = this.data.orderConfirmData
@@ -163,7 +203,7 @@ Page({
       })
       this.setData({
         totalPointsDeductPrice: this.data.totalPointsDeductPriceTemp,
-        paymentPrice: (Number(this.data.totalPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPriceTemp)).toFixed(2),
+        paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPriceTemp)).toFixed(2),
         orderConfirmData: orderConfirmData
       })
     }else{
@@ -178,7 +218,7 @@ Page({
       })
       this.setData({
         totalPointsDeductPrice: 0,
-        paymentPrice: (Number(this.data.totalPrice) - Number(this.data.totalCouponDeductPrice)).toFixed(2),
+        paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice)).toFixed(2),
         orderConfirmData: orderConfirmData
       })
     }
@@ -209,6 +249,7 @@ Page({
       modalCoupon: ''
     })
   },
+  //选择电子券
   couponUserChange(e){
     let couponUser = this.data.couponUserList[e.detail.value]
     let orderConfirmData = this.data.orderConfirmData
@@ -239,7 +280,7 @@ Page({
     }
     this.setData({
       couponUser: couponUser,
-      paymentPrice: (Number(this.data.totalPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPrice)).toFixed(2)
+      paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPrice)).toFixed(2)
     })
   },
   setPaymentCouponPrice(orderConfirm, couponUser){

@@ -52,14 +52,11 @@ export function delObj (id) {
   })
 }
 
-export function permissionUpd (roleId, menuIds) {
+export function permissionUpd (obj) {
   return request({
     url: '/admin/role/menu',
     method: 'put',
-    params: {
-      roleId: roleId,
-      menuIds: menuIds
-    }
+    data: obj
   })
 }
 
@@ -77,14 +74,10 @@ export function fetchRoleTreeTenant (tenantId) {
   })
 }
 
-export function permissionUpdTenant (tenantId,roleId, menuIds) {
+export function permissionUpdTenant (obj) {
   return request({
     url: '/admin/role/menu/tenant',
     method: 'put',
-    params: {
-      tenantId: tenantId,
-      roleId: roleId,
-      menuIds: menuIds
-    }
+    data: obj
   })
 }

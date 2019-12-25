@@ -48,7 +48,7 @@ public class ShoppingCartApi{
 		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 			return checkThirdSession;
 		}
-		return R.ok(shoppingCartService.pageVo(page, shoppingCart));
+		return R.ok(shoppingCartService.page2(page, shoppingCart));
     }
 
 	/**

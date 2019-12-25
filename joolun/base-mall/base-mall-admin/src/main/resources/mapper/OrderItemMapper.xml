@@ -25,6 +25,7 @@
 		<result property="picUrl" column="pic_url"/>
 		<result property="quantity" column="quantity"/>
 		<result property="salesPrice" column="sales_price"/>
+		<result property="freightPrice" column="freight_price"/>
 		<result property="paymentPrice" column="payment_price"/>
 		<result property="paymentPoints" column="payment_points"/>
 		<result property="paymentCouponPrice" column="payment_coupon_price"/>
@@ -56,6 +57,7 @@
 		order_item.`pic_url`,
 		order_item.`quantity`,
 		order_item.`sales_price`,
+		order_item.`freight_price`,
 		order_item.`payment_price`,
 		order_item.`payment_points`,
 		order_item.`payment_coupon_price`,
