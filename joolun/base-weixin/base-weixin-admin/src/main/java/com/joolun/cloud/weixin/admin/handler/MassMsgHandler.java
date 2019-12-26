@@ -45,10 +45,9 @@ public class MassMsgHandler extends AbstractHandler {
 		WxApp wxApp = wxAppService.findByWeixinSign(wxMessage.getToUser());
 		TenantContextHolder.setTenantId(wxApp.getTenantId());//加入租户ID
 		String msgId = String.valueOf(wxMessage.getMsgId());
-		WxMassMsg wxMassMsg = wxMassMsgService.getOne(Wrappers.query(new WxMassMsg())
-//				.eq("tenant_id",wxApp.getTenantId())
-				.eq("app_id",wxApp.getId())
-				.eq("msg_id",msgId));
+		WxMassMsg wxMassMsg = wxMassMsgService.getOne(Wrappers.<WxMassMsg>query().lambda()
+				.eq(WxMassMsg::getAppId,wxApp.getId())
+				.eq(WxMassMsg::getMsgId,msgId));
 		String errCode = wxMessage.getStatus();
 		wxMassMsg.setMsgStatus(WxConsts.MassMsgStatus.SEND_SUCCESS.equals(errCode) ? ConfigConstant.WX_MASS_STATUS_SEND_SUCCESS : ConfigConstant.WX_MASS_STATUS_SEND_FAIL);
 		wxMassMsg.setErrorCode(errCode);
