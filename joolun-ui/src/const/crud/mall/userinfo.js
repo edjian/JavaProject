@@ -19,6 +19,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   addBtn: false,
+  delBtn: false,
   column: [
     {
       label: '用户编码',
