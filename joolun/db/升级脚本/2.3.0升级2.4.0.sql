@@ -1,62 +1,62 @@
-ALTER TABLE `base_mall`.`vip_user` ADD COLUMN `vip_code` INT NOT NULL AUTO_INCREMENT COMMENT '»áÔ±Âë' AFTER `update_time`, ADD KEY(`vip_code`), DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `vip_code`); 
-ALTER TABLE `base_mall`.`vip_user` CHANGE `headimg_url` `headimg_url` VARCHAR(1000) NULL COMMENT 'Í·Ïñ'; 
-ALTER TABLE `base_mall`.`vip_user` CHANGE `vip_grade` `vip_grade` SMALLINT(6) DEFAULT 0 NULL COMMENT '»áÔ±µÈ¼¶', CHANGE `points_current` `points_current` INT(11) DEFAULT 0 NULL COMMENT 'µ±Ç°»ı·Ö', CHANGE `points_accrued` `points_accrued` INT(11) DEFAULT 0 NULL COMMENT 'ÀÛ»ı»ı·Ö', CHANGE `amount_accrued` `amount_accrued` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'ÀÛ»ıÏû·Ñ½ğ¶î', CHANGE `number_accrued` `number_accrued` INT(11) DEFAULT 0 NULL COMMENT 'ÀÛ»ıÏû·Ñ´ÎÊı'; 
-ALTER TABLE `base_wx`.`wx_user` ADD COLUMN `vip_id` VARCHAR(32) NULL COMMENT '»áÔ±ID' AFTER `session_key`; 
-ALTER TABLE `base_wx`.`wx_user` CHANGE `vip_id` `vip_user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '»áÔ±ÓÃ»§ID'; 
-ALTER TABLE `base_mall`.`vip_user` CHANGE `app_id` `app_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'À´Ô´Ó¦ÓÃid'; 
-ALTER TABLE `base_mall`.`vip_user` CHANGE `phone` `phone` VARCHAR(15) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'ÊÖ»úºÅÂë' AFTER `app_id`; 
+ALTER TABLE `base_mall`.`vip_user` ADD COLUMN `vip_code` INT NOT NULL AUTO_INCREMENT COMMENT 'ä¼šå‘˜ç ' AFTER `update_time`, ADD KEY(`vip_code`), DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `vip_code`); 
+ALTER TABLE `base_mall`.`vip_user` CHANGE `headimg_url` `headimg_url` VARCHAR(1000) NULL COMMENT 'å¤´åƒ'; 
+ALTER TABLE `base_mall`.`vip_user` CHANGE `vip_grade` `vip_grade` SMALLINT(6) DEFAULT 0 NULL COMMENT 'ä¼šå‘˜ç­‰çº§', CHANGE `points_current` `points_current` INT(11) DEFAULT 0 NULL COMMENT 'å½“å‰ç§¯åˆ†', CHANGE `points_accrued` `points_accrued` INT(11) DEFAULT 0 NULL COMMENT 'ç´¯ç§¯ç§¯åˆ†', CHANGE `amount_accrued` `amount_accrued` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'ç´¯ç§¯æ¶ˆè´¹é‡‘é¢', CHANGE `number_accrued` `number_accrued` INT(11) DEFAULT 0 NULL COMMENT 'ç´¯ç§¯æ¶ˆè´¹æ¬¡æ•°'; 
+ALTER TABLE `base_wx`.`wx_user` ADD COLUMN `vip_id` VARCHAR(32) NULL COMMENT 'ä¼šå‘˜ID' AFTER `session_key`; 
+ALTER TABLE `base_wx`.`wx_user` CHANGE `vip_id` `vip_user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ä¼šå‘˜ç”¨æˆ·ID'; 
+ALTER TABLE `base_mall`.`vip_user` CHANGE `app_id` `app_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ¥æºåº”ç”¨id'; 
+ALTER TABLE `base_mall`.`vip_user` CHANGE `phone` `phone` VARCHAR(15) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'æ‰‹æœºå·ç ' AFTER `app_id`; 
 
-ALTER TABLE `base_mall`.`goods_spu` CHANGE `shelf` `shelf` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NOT NULL COMMENT 'ÊÇ·ñÉÏ¼Ü£¨0·ñ 1ÊÇ£©';
+ALTER TABLE `base_mall`.`goods_spu` CHANGE `shelf` `shelf` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NOT NULL COMMENT 'æ˜¯å¦ä¸Šæ¶ï¼ˆ0å¦ 1æ˜¯ï¼‰';
 
 CREATE TABLE `base_mall`.`points_record` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `vip_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '»áÔ±ÓÃ»§ID',
-  `amount` int(11) DEFAULT NULL COMMENT 'ÊıÁ¿',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÃèÊö',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `vip_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ä¼šå‘˜ç”¨æˆ·ID',
+  `amount` int(11) DEFAULT NULL COMMENT 'æ•°é‡',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æè¿°',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='»ı·Ö±ä¶¯¼ÇÂ¼';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ç§¯åˆ†å˜åŠ¨è®°å½•';
 
-ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_points` INT NULL COMMENT 'Ö§¸¶»ı·Ö' AFTER `payment_price`; 
-ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_points` INT NULL COMMENT 'Ö§¸¶»ı·Ö' AFTER `sales_price`; 
+ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_points` INT NULL COMMENT 'æ”¯ä»˜ç§¯åˆ†' AFTER `payment_price`; 
+ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_points` INT NULL COMMENT 'æ”¯ä»˜ç§¯åˆ†' AFTER `sales_price`; 
 
 CREATE TABLE `points_config` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `init_posts` int(11) DEFAULT '0' COMMENT '»áÔ±³õÊ¼»¯»ı·ÖÊı',
-  `premise_num` int(11) DEFAULT '0' COMMENT '¶©µ¥»ı·ÖÂú¶àÉÙ¿ÉÊ¹ÓÃµÖ¿Û',
-  `default_deduct_scale` int(11) DEFAULT NULL COMMENT 'Ä¬ÈÏµÖ¿Û±ÈÀı',
-  `default_deduct_amount` decimal(10,2) DEFAULT NULL COMMENT 'Ä¬ÈÏ1»ı·ÖÊı¿ÉµÖ¶àÉÙÔª',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `init_posts` int(11) DEFAULT '0' COMMENT 'ä¼šå‘˜åˆå§‹åŒ–ç§¯åˆ†æ•°',
+  `premise_num` int(11) DEFAULT '0' COMMENT 'è®¢å•ç§¯åˆ†æ»¡å¤šå°‘å¯ä½¿ç”¨æŠµæ‰£',
+  `default_deduct_scale` int(11) DEFAULT NULL COMMENT 'é»˜è®¤æŠµæ‰£æ¯”ä¾‹',
+  `default_deduct_amount` decimal(10,2) DEFAULT NULL COMMENT 'é»˜è®¤1ç§¯åˆ†æ•°å¯æŠµå¤šå°‘å…ƒ',
   PRIMARY KEY (`id`,`tenant_id`),
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='»ı·ÖÉèÖÃ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ç§¯åˆ†è®¾ç½®';
 
-ALTER TABLE `base_mall`.`points_record` CHANGE `vip_user_id` `user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÓÃ»§ID';
+ALTER TABLE `base_mall`.`points_record` CHANGE `vip_user_id` `user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ç”¨æˆ·ID';
 
 RENAME TABLE `base_mall`.`vip_user` TO `base_mall`.`mall_user`; 
 
-ALTER TABLE `base_wx`.`wx_user` CHANGE `vip_user_id` `mall_user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÉÌ³ÇÓÃ»§ID';
+ALTER TABLE `base_wx`.`wx_user` CHANGE `vip_user_id` `mall_user_id` VARCHAR(32) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'å•†åŸç”¨æˆ·ID';
 
-ALTER TABLE `base_mall`.`mall_user` COMMENT='ÉÌ³ÇÓÃ»§'; 
+ALTER TABLE `base_mall`.`mall_user` COMMENT='å•†åŸç”¨æˆ·'; 
 
 RENAME TABLE `base_mall`.`mall_user` TO `base_mall`.`user_info`; 
 
 ALTER TABLE `base_wx`.`wx_user` DROP INDEX `uk_openid`, DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `open_id`);
 
-ALTER TABLE `base_mall`.`user_info` CHANGE `vip_grade` `user_grade` SMALLINT(6) DEFAULT 0 NULL COMMENT 'ÓÃ»§µÈ¼¶£¨0£ºÆÕÍ¨ÓÃ»§£¬1£ºÆÕÍ¨»áÔ±£©'; 
+ALTER TABLE `base_mall`.`user_info` CHANGE `vip_grade` `user_grade` SMALLINT(6) DEFAULT 0 NULL COMMENT 'ç”¨æˆ·ç­‰çº§ï¼ˆ0ï¼šæ™®é€šç”¨æˆ·ï¼Œ1ï¼šæ™®é€šä¼šå‘˜ï¼‰'; 
 
-ALTER TABLE `base_mall`.`points_config` CHANGE `init_posts` `init_posts` INT(11) DEFAULT 0 NULL COMMENT 'ÓÃ»§³õÊ¼»ı·ÖÊı', ADD COLUMN `init_vip_posts` INT NULL COMMENT '»áÔ±³õÊ¼»ı·ÖÊı' AFTER `init_posts`; 
+ALTER TABLE `base_mall`.`points_config` CHANGE `init_posts` `init_posts` INT(11) DEFAULT 0 NULL COMMENT 'ç”¨æˆ·åˆå§‹ç§¯åˆ†æ•°', ADD COLUMN `init_vip_posts` INT NULL COMMENT 'ä¼šå‘˜åˆå§‹ç§¯åˆ†æ•°' AFTER `init_posts`; 
 
-ALTER TABLE `base_mall`.`points_config` CHANGE `init_vip_posts` `init_vip_posts` INT(11) DEFAULT 0 NULL COMMENT '»áÔ±³õÊ¼»ı·ÖÊı'; 
+ALTER TABLE `base_mall`.`points_config` CHANGE `init_vip_posts` `init_vip_posts` INT(11) DEFAULT 0 NULL COMMENT 'ä¼šå‘˜åˆå§‹ç§¯åˆ†æ•°'; 
 
-#¼æÈİÖ®Ç°°æ±¾µÄÊı¾İ
+#å…¼å®¹ä¹‹å‰ç‰ˆæœ¬çš„æ•°æ®
 INSERT INTO `base_mall`.`user_info` (
   `id`,
   `tenant_id`,
@@ -102,7 +102,7 @@ FROM
   `base_wx`.`wx_user`
   where `mall_user_id` is null and `app_type` = '1';
 
-#¼æÈİÖ®Ç°°æ±¾µÄÊı¾İ
+#å…¼å®¹ä¹‹å‰ç‰ˆæœ¬çš„æ•°æ®
 update
   `base_wx`.`wx_user`
 SET
@@ -112,129 +112,131 @@ where `mall_user_id` is null
 
 ALTER TABLE `base_mall`.`user_info` DROP COLUMN `points_accrued`, DROP COLUMN `amount_accrued`, DROP COLUMN `number_accrued`;
 
-ALTER TABLE `base_mall`.`points_record` ADD COLUMN `spu_id` VARCHAR(32) NULL COMMENT 'ÉÌÆ·ID' AFTER `description`, ADD COLUMN `order_item_id` VARCHAR(32) NULL COMMENT '¶©µ¥ÏêÇéID' AFTER `spu_id`; 
+ALTER TABLE `base_mall`.`points_record` ADD COLUMN `spu_id` VARCHAR(32) NULL COMMENT 'å•†å“ID' AFTER `description`, ADD COLUMN `order_item_id` VARCHAR(32) NULL COMMENT 'è®¢å•è¯¦æƒ…ID' AFTER `spu_id`; 
 
-ALTER TABLE `base_mall`.`points_record` ADD COLUMN `record_type` CHAR(2) NULL COMMENT '¼ÇÂ¼ÀàĞÍ1¡¢ÏµÍ³³õÊ¼»¯£»2¡¢ÉÌÆ·ÔùËÍ£»3¡¢ÍË¿îÔùËÍ¼õ»Ø£»4¡¢ÉÌÆ·µÖ¿Û£»5¡¢ÍË¿îµÖ¿Û¼Ó»Ø' AFTER `order_item_id`; 
-ALTER TABLE `base_mall`.`points_record` CHANGE `record_type` `record_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '¼ÇÂ¼ÀàĞÍ0¡¢ÓÃ»§³õÊ¼»¯£»1¡¢»áÔ±³õÊ¼»¯£»2¡¢ÉÌÆ·ÔùËÍ£»3¡¢ÍË¿îÔùËÍ¼õ»Ø£»4¡¢ÉÌÆ·µÖ¿Û£»5¡¢ÍË¿îµÖ¿Û¼Ó»Ø'; 
+ALTER TABLE `base_mall`.`points_record` ADD COLUMN `record_type` CHAR(2) NULL COMMENT 'è®°å½•ç±»å‹1ã€ç³»ç»Ÿåˆå§‹åŒ–ï¼›2ã€å•†å“èµ é€ï¼›3ã€é€€æ¬¾èµ é€å‡å›ï¼›4ã€å•†å“æŠµæ‰£ï¼›5ã€é€€æ¬¾æŠµæ‰£åŠ å›' AFTER `order_item_id`; 
+ALTER TABLE `base_mall`.`points_record` CHANGE `record_type` `record_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'è®°å½•ç±»å‹0ã€ç”¨æˆ·åˆå§‹åŒ–ï¼›1ã€ä¼šå‘˜åˆå§‹åŒ–ï¼›2ã€å•†å“èµ é€ï¼›3ã€é€€æ¬¾èµ é€å‡å›ï¼›4ã€å•†å“æŠµæ‰£ï¼›5ã€é€€æ¬¾æŠµæ‰£åŠ å›'; 
 
-ALTER TABLE `base_mall`.`points_config` CHANGE `premise_num` `premise_amount` DECIMAL(10,2) NULL COMMENT '¶©µ¥½ğ¶îÂú¶àÉÙ¿ÉÊ¹ÓÃµÖ¿Û'; 
+ALTER TABLE `base_mall`.`points_config` CHANGE `premise_num` `premise_amount` DECIMAL(10,2) NULL COMMENT 'è®¢å•é‡‘é¢æ»¡å¤šå°‘å¯ä½¿ç”¨æŠµæ‰£'; 
 
-ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_price` DECIMAL(10,2) NULL COMMENT 'Ö§¸¶½ğ¶î' AFTER `sales_price`; 
+ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_price` DECIMAL(10,2) NULL COMMENT 'æ”¯ä»˜é‡‘é¢' AFTER `sales_price`; 
 
 UPDATE `base_mall`.`order_item` SET `payment_price` = `sales_price`*`quantity`;
 
-ALTER TABLE `base_mall`.`order_info` CHANGE `sales_price` `sales_price` DECIMAL(10,2) NOT NULL COMMENT 'ÏúÊÛ½ğ¶î' AFTER `appraises_status`, CHANGE `logistics_price` `logistics_price` DECIMAL(10,2) NOT NULL COMMENT 'ÎïÁ÷½ğ¶î' AFTER `sales_price`, CHANGE `payment_price` `payment_price` DECIMAL(10,2) NOT NULL COMMENT 'Ö§¸¶½ğ¶î£¨ÏúÊÛ½ğ¶î+ÎïÁ÷½ğ¶î£©'; 
+ALTER TABLE `base_mall`.`order_info` CHANGE `sales_price` `sales_price` DECIMAL(10,2) NOT NULL COMMENT 'é”€å”®é‡‘é¢' AFTER `appraises_status`, CHANGE `logistics_price` `logistics_price` DECIMAL(10,2) NOT NULL COMMENT 'ç‰©æµé‡‘é¢' AFTER `sales_price`, CHANGE `payment_price` `payment_price` DECIMAL(10,2) NOT NULL COMMENT 'æ”¯ä»˜é‡‘é¢ï¼ˆé”€å”®é‡‘é¢+ç‰©æµé‡‘é¢ï¼‰'; 
 
-ALTER TABLE `base_mall`.`points_record` CHANGE `record_type` `record_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '¼ÇÂ¼ÀàĞÍ0¡¢ÓÃ»§³õÊ¼»¯£»1¡¢»áÔ±³õÊ¼»¯£»2¡¢ÉÌÆ·ÔùËÍ£»3¡¢ÍË¿îÔùËÍ¼õ»Ø£»4¡¢ÉÌÆ·µÖ¿Û£»5¡¢¶©µ¥È¡ÏûµÖ¿Û¼Ó»Ø£»6¡¢ÍË¿îµÖ¿Û¼Ó»Ø'; 
+ALTER TABLE `base_mall`.`points_record` CHANGE `record_type` `record_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'è®°å½•ç±»å‹0ã€ç”¨æˆ·åˆå§‹åŒ–ï¼›1ã€ä¼šå‘˜åˆå§‹åŒ–ï¼›2ã€å•†å“èµ é€ï¼›3ã€é€€æ¬¾èµ é€å‡å›ï¼›4ã€å•†å“æŠµæ‰£ï¼›5ã€è®¢å•å–æ¶ˆæŠµæ‰£åŠ å›ï¼›6ã€é€€æ¬¾æŠµæ‰£åŠ å›'; 
 
-ALTER TABLE `base_mall`.`user_info` ADD COLUMN `city` VARCHAR(64) NULL COMMENT 'ËùÔÚ³ÇÊĞ' AFTER `headimg_url`, ADD COLUMN `country` VARCHAR(64) NULL COMMENT 'ËùÔÚ¹ú¼Ò' AFTER `city`, ADD COLUMN `province` VARCHAR(64) NULL COMMENT 'ËùÔÚÊ¡·İ' AFTER `country`; 
+ALTER TABLE `base_mall`.`user_info` ADD COLUMN `city` VARCHAR(64) NULL COMMENT 'æ‰€åœ¨åŸå¸‚' AFTER `headimg_url`, ADD COLUMN `country` VARCHAR(64) NULL COMMENT 'æ‰€åœ¨å›½å®¶' AFTER `city`, ADD COLUMN `province` VARCHAR(64) NULL COMMENT 'æ‰€åœ¨çœä»½' AFTER `country`; 
 
-ALTER TABLE `base_mall`.`user_info` CHANGE `vip_code` `user_code` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'ÓÃ»§±àÂë'; 
+ALTER TABLE `base_mall`.`user_info` CHANGE `vip_code` `user_code` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'ç”¨æˆ·ç¼–ç '; 
 
 UPDATE `base_mall`.`goods_spu` SET `points_give_switch` = '0' WHERE `points_give_switch` IS NULL;
 UPDATE `base_mall`.`goods_spu` SET `points_deduct_switch` = '0' WHERE `points_deduct_switch` IS NULL;
-ALTER TABLE `base_mall`.`order_item` CHANGE `payment_points` `payment_points` INT(11) DEFAULT 0 NULL COMMENT 'Ö§¸¶»ı·Ö'; 
-ALTER TABLE `base_mall`.`order_info` CHANGE `payment_points` `payment_points` INT(11) DEFAULT 0 NULL COMMENT 'Ö§¸¶»ı·Ö'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `payment_points` `payment_points` INT(11) DEFAULT 0 NULL COMMENT 'æ”¯ä»˜ç§¯åˆ†'; 
+ALTER TABLE `base_mall`.`order_info` CHANGE `payment_points` `payment_points` INT(11) DEFAULT 0 NULL COMMENT 'æ”¯ä»˜ç§¯åˆ†'; 
 
 
 CREATE TABLE `base_mall`.`coupon_info` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '´´½¨ÕßID',
-  `sort` int(11) NOT NULL DEFAULT '0' COMMENT 'ÅÅĞò×Ö¶Î',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Ãû³Æ',
-  `type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÀàĞÍ1¡¢´ú½ğÈ¯£»2£ºÕÛ¿ÛÈ¯',
-  `premise_amount` decimal(10,2) DEFAULT NULL COMMENT '¶©µ¥½ğ¶îÂú¶àÉÙ¿ÉÊ¹ÓÃ',
-  `expire_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'µ½ÆÚÀàĞÍ1¡¢ÁìÈ¯ºóÉúĞ§£»2£º¹Ì¶¨Ê±¼ä¶Î',
-  `stock` int(11) NOT NULL DEFAULT '0' COMMENT '¿â´æ',
-  `reduce_amount` decimal(10,2) NOT NULL COMMENT '¼õÃâ½ğ¶î£¨´ú½ğÈ¯ÌØÓĞ£©',
-  `discount` decimal(10,1) NOT NULL COMMENT 'ÕÛ¿ÛÂÊ£¨ÕÛ¿ÛÈ¯ÌØÓĞ£©',
-  `valid_days` int(3) NOT NULL COMMENT 'ÓĞĞ§ÌìÊı£¨ÁìÈ¯ºóÉúĞ§ÌØÓĞ£©',
-  `valid_begin_time` datetime NOT NULL COMMENT 'ÓĞĞ§¿ªÊ¼Ê±¼ä£¨¹Ì¶¨Ê±¼ä¶ÎÌØÓĞ£©',
-  `valid_end_time` datetime NOT NULL COMMENT 'ÓĞĞ§½áÊøÊ±¼ä£¨¹Ì¶¨Ê±¼ä¶ÎÌØÓĞ£©',
-  `remarks` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '±¸×¢',
-  `enable` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '£¨1£º¿ªÆô£»0£º¹Ø±Õ£©',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'åˆ›å»ºè€…ID',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT 'æ’åºå­—æ®µ',
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'åç§°',
+  `type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ç±»å‹1ã€ä»£é‡‘åˆ¸ï¼›2ï¼šæŠ˜æ‰£åˆ¸',
+  `premise_amount` decimal(10,2) DEFAULT NULL COMMENT 'è®¢å•é‡‘é¢æ»¡å¤šå°‘å¯ä½¿ç”¨',
+  `expire_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'åˆ°æœŸç±»å‹1ã€é¢†åˆ¸åç”Ÿæ•ˆï¼›2ï¼šå›ºå®šæ—¶é—´æ®µ',
+  `stock` int(11) NOT NULL DEFAULT '0' COMMENT 'åº“å­˜',
+  `reduce_amount` decimal(10,2) NOT NULL COMMENT 'å‡å…é‡‘é¢ï¼ˆä»£é‡‘åˆ¸ç‰¹æœ‰ï¼‰',
+  `discount` decimal(10,1) NOT NULL COMMENT 'æŠ˜æ‰£ç‡ï¼ˆæŠ˜æ‰£åˆ¸ç‰¹æœ‰ï¼‰',
+  `valid_days` int(3) NOT NULL COMMENT 'æœ‰æ•ˆå¤©æ•°ï¼ˆé¢†åˆ¸åç”Ÿæ•ˆç‰¹æœ‰ï¼‰',
+  `valid_begin_time` datetime NOT NULL COMMENT 'æœ‰æ•ˆå¼€å§‹æ—¶é—´ï¼ˆå›ºå®šæ—¶é—´æ®µç‰¹æœ‰ï¼‰',
+  `valid_end_time` datetime NOT NULL COMMENT 'æœ‰æ•ˆç»“æŸæ—¶é—´ï¼ˆå›ºå®šæ—¶é—´æ®µç‰¹æœ‰ï¼‰',
+  `remarks` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'å¤‡æ³¨',
+  `enable` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'ï¼ˆ1ï¼šå¼€å¯ï¼›0ï¼šå…³é—­ï¼‰',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='µç×ÓÈ¯';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='ç”µå­åˆ¸';
 
 CREATE TABLE `base_mall`.`coupon_goods` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '´´½¨ÕßID',
-  `coupon_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'µç×ÓÈ¯ID',
-  `spu_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ÉÌÆ·Id',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'åˆ›å»ºè€…ID',
+  `coupon_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ç”µå­åˆ¸ID',
+  `spu_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'å•†å“Id',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='µç×ÓÈ¯ÉÌÆ·¹ØÁª';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='ç”µå­åˆ¸å•†å“å…³è”';
 
-ALTER TABLE `base_mall`.`coupon_info` CHANGE `name` `name` VARCHAR(30) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ãû³Æ', CHANGE `reduce_amount` `reduce_amount` DECIMAL(10,2) NULL COMMENT '¼õÃâ½ğ¶î£¨´ú½ğÈ¯ÌØÓĞ£©', CHANGE `discount` `discount` DECIMAL(10,1) NULL COMMENT 'ÕÛ¿ÛÂÊ£¨ÕÛ¿ÛÈ¯ÌØÓĞ£©', CHANGE `valid_days` `valid_days` INT(3) NULL COMMENT 'ÓĞĞ§ÌìÊı£¨ÁìÈ¯ºóÉúĞ§ÌØÓĞ£©', CHANGE `valid_begin_time` `valid_begin_time` DATETIME NULL COMMENT 'ÓĞĞ§¿ªÊ¼Ê±¼ä£¨¹Ì¶¨Ê±¼ä¶ÎÌØÓĞ£©', CHANGE `valid_end_time` `valid_end_time` DATETIME NULL COMMENT 'ÓĞĞ§½áÊøÊ±¼ä£¨¹Ì¶¨Ê±¼ä¶ÎÌØÓĞ£©', CHANGE `enable` `enable` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '£¨1£º¿ªÆô£»0£º¹Ø±Õ£©'; 
+ALTER TABLE `base_mall`.`coupon_info` CHANGE `name` `name` VARCHAR(30) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'åç§°', CHANGE `reduce_amount` `reduce_amount` DECIMAL(10,2) NULL COMMENT 'å‡å…é‡‘é¢ï¼ˆä»£é‡‘åˆ¸ç‰¹æœ‰ï¼‰', CHANGE `discount` `discount` DECIMAL(10,1) NULL COMMENT 'æŠ˜æ‰£ç‡ï¼ˆæŠ˜æ‰£åˆ¸ç‰¹æœ‰ï¼‰', CHANGE `valid_days` `valid_days` INT(3) NULL COMMENT 'æœ‰æ•ˆå¤©æ•°ï¼ˆé¢†åˆ¸åç”Ÿæ•ˆç‰¹æœ‰ï¼‰', CHANGE `valid_begin_time` `valid_begin_time` DATETIME NULL COMMENT 'æœ‰æ•ˆå¼€å§‹æ—¶é—´ï¼ˆå›ºå®šæ—¶é—´æ®µç‰¹æœ‰ï¼‰', CHANGE `valid_end_time` `valid_end_time` DATETIME NULL COMMENT 'æœ‰æ•ˆç»“æŸæ—¶é—´ï¼ˆå›ºå®šæ—¶é—´æ®µç‰¹æœ‰ï¼‰', CHANGE `enable` `enable` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ï¼ˆ1ï¼šå¼€å¯ï¼›0ï¼šå…³é—­ï¼‰'; 
 
 CREATE TABLE `base_mall`.`coupon_user` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '´´½¨ÕßID',
-  `coupon_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'µç×ÓÈ¯ID',
-  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ÓÃ»§id',
-  `coupon_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'µç×ÓÈ¯Âë',
-  `status` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' COMMENT '×´Ì¬0¡¢Î´Ê¹ÓÃ£»1¡¢ÒÑÊ¹ÓÃ',
-  `used_time` datetime DEFAULT NULL COMMENT 'Ê¹ÓÃÊ±¼ä',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'åˆ›å»ºè€…ID',
+  `coupon_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ç”µå­åˆ¸ID',
+  `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ç”¨æˆ·id',
+  `coupon_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ç”µå­åˆ¸ç ',
+  `status` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' COMMENT 'çŠ¶æ€0ã€æœªä½¿ç”¨ï¼›1ã€å·²ä½¿ç”¨',
+  `used_time` datetime DEFAULT NULL COMMENT 'ä½¿ç”¨æ—¶é—´',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='µç×ÓÈ¯ÓÃ»§¼ÇÂ¼';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='ç”µå­åˆ¸ç”¨æˆ·è®°å½•';
 
 ALTER TABLE `base_mall`.`coupon_user` ADD KEY `ids_user` (`user_id`); 
 
-ALTER TABLE `base_upms`.`sys_role_menu` ADD COLUMN `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL COMMENT '´´½¨Ê±¼ä' AFTER `menu_id`; 
+ALTER TABLE `base_upms`.`sys_role_menu` ADD COLUMN `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL COMMENT 'åˆ›å»ºæ—¶é—´' AFTER `menu_id`; 
 
-ALTER TABLE `base_mall`.`coupon_info` ADD COLUMN `suit_type` CHAR(2) NULL COMMENT 'ÊÊÓÃÀàĞÍ1¡¢È«²¿ÉÌÆ·£»2¡¢²¿·ÖÉÌÆ·' AFTER `valid_end_time`; 
+ALTER TABLE `base_mall`.`coupon_info` ADD COLUMN `suit_type` CHAR(2) NULL COMMENT 'é€‚ç”¨ç±»å‹1ã€å…¨éƒ¨å•†å“ï¼›2ã€éƒ¨åˆ†å•†å“' AFTER `valid_end_time`; 
 
-ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `valid_begin_time` DATETIME NULL COMMENT 'ÓĞĞ§¿ªÊ¼Ê±¼ä' AFTER `coupon_code`, ADD COLUMN `valid_end_time` DATETIME NULL COMMENT 'ÓĞĞ§½áÊøÊ±¼ä' AFTER `valid_begin_time`, CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT '×´Ì¬0¡¢Î´Ê¹ÓÃ£»1¡¢ÒÑÊ¹ÓÃ' AFTER `valid_end_time`; 
+ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `valid_begin_time` DATETIME NULL COMMENT 'æœ‰æ•ˆå¼€å§‹æ—¶é—´' AFTER `coupon_code`, ADD COLUMN `valid_end_time` DATETIME NULL COMMENT 'æœ‰æ•ˆç»“æŸæ—¶é—´' AFTER `valid_begin_time`, CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT 'çŠ¶æ€0ã€æœªä½¿ç”¨ï¼›1ã€å·²ä½¿ç”¨' AFTER `valid_end_time`; 
 
 ALTER TABLE `base_mall`.`coupon_user` DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `coupon_code`); 
 
-ALTER TABLE `base_mall`.`coupon_user` CHANGE `coupon_code` `coupon_code` INT NOT NULL AUTO_INCREMENT COMMENT 'µç×ÓÈ¯Âë', ADD KEY(`coupon_code`); 
-ALTER TABLE `base_mall`.`coupon_info` CHANGE `suit_type` `suit_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÊÊÓÃÀàĞÍ1¡¢È«²¿ÉÌÆ·£»2¡¢Ö¸¶¨ÉÌÆ·¿ÉÓÃ'; 
-ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `name` VARCHAR(30) NOT NULL COMMENT 'Ãû³Æ' AFTER `used_time`, ADD COLUMN `type` CHAR(2) NULL COMMENT 'ÀàĞÍ1¡¢´ú½ğÈ¯£»2£ºÕÛ¿ÛÈ¯' AFTER `name`, ADD COLUMN `premise_amount` DECIMAL(10,2) NULL COMMENT '¶©µ¥½ğ¶îÂú¶àÉÙ¿ÉÊ¹ÓÃ' AFTER `type`, ADD COLUMN `reduce_amount` DECIMAL(10,2) NULL COMMENT '¼õÃâ½ğ¶î£¨´ú½ğÈ¯ÌØÓĞ£©' AFTER `premise_amount`, ADD COLUMN `discount` DECIMAL(10,1) NULL COMMENT 'ÕÛ¿ÛÂÊ£¨ÕÛ¿ÛÈ¯ÌØÓĞ£©' AFTER `reduce_amount`; 
-ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `suit_type` CHAR(2) NULL COMMENT 'ÊÊÓÃÀàĞÍ1¡¢È«²¿ÉÌÆ·£»2¡¢Ö¸¶¨ÉÌÆ·¿ÉÓÃ' AFTER `discount`; 
-ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_coupon` DECIMAL(10,2) NULL COMMENT 'µç×ÓÈ¯Ö§¸¶½ğ¶î' AFTER `payment_points`; 
-ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_coupon` DECIMAL(10,2) NULL COMMENT 'µç×ÓÈ¯Ö§¸¶½ğ¶î' AFTER `payment_points`, ADD COLUMN `coupon_user_id` VARCHAR(32) NULL COMMENT 'ÓÃ»§µç×ÓÈ¯ID' AFTER `payment_coupon`; 
-ALTER TABLE `base_mall`.`coupon_info` ADD COLUMN `version` INT DEFAULT 0 NULL COMMENT '°æ±¾ºÅ' AFTER `enable`; 
+ALTER TABLE `base_mall`.`coupon_user` CHANGE `coupon_code` `coupon_code` INT NOT NULL AUTO_INCREMENT COMMENT 'ç”µå­åˆ¸ç ', ADD KEY(`coupon_code`); 
+ALTER TABLE `base_mall`.`coupon_info` CHANGE `suit_type` `suit_type` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'é€‚ç”¨ç±»å‹1ã€å…¨éƒ¨å•†å“ï¼›2ã€æŒ‡å®šå•†å“å¯ç”¨'; 
+ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `name` VARCHAR(30) NOT NULL COMMENT 'åç§°' AFTER `used_time`, ADD COLUMN `type` CHAR(2) NULL COMMENT 'ç±»å‹1ã€ä»£é‡‘åˆ¸ï¼›2ï¼šæŠ˜æ‰£åˆ¸' AFTER `name`, ADD COLUMN `premise_amount` DECIMAL(10,2) NULL COMMENT 'è®¢å•é‡‘é¢æ»¡å¤šå°‘å¯ä½¿ç”¨' AFTER `type`, ADD COLUMN `reduce_amount` DECIMAL(10,2) NULL COMMENT 'å‡å…é‡‘é¢ï¼ˆä»£é‡‘åˆ¸ç‰¹æœ‰ï¼‰' AFTER `premise_amount`, ADD COLUMN `discount` DECIMAL(10,1) NULL COMMENT 'æŠ˜æ‰£ç‡ï¼ˆæŠ˜æ‰£åˆ¸ç‰¹æœ‰ï¼‰' AFTER `reduce_amount`; 
+ALTER TABLE `base_mall`.`coupon_user` ADD COLUMN `suit_type` CHAR(2) NULL COMMENT 'é€‚ç”¨ç±»å‹1ã€å…¨éƒ¨å•†å“ï¼›2ã€æŒ‡å®šå•†å“å¯ç”¨' AFTER `discount`; 
+ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_coupon` DECIMAL(10,2) NULL COMMENT 'ç”µå­åˆ¸æ”¯ä»˜é‡‘é¢' AFTER `payment_points`; 
+ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_coupon` DECIMAL(10,2) NULL COMMENT 'ç”µå­åˆ¸æ”¯ä»˜é‡‘é¢' AFTER `payment_points`, ADD COLUMN `coupon_user_id` VARCHAR(32) NULL COMMENT 'ç”¨æˆ·ç”µå­åˆ¸ID' AFTER `payment_coupon`; 
+ALTER TABLE `base_mall`.`coupon_info` ADD COLUMN `version` INT DEFAULT 0 NULL COMMENT 'ç‰ˆæœ¬å·' AFTER `enable`; 
 
-ALTER TABLE `base_mall`.`order_info` CHANGE `sales_price` `sales_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'ÏúÊÛ½ğ¶î', CHANGE `logistics_price` `logistics_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'ÎïÁ÷½ğ¶î', CHANGE `payment_price` `payment_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'Ö§¸¶½ğ¶î£¨ÏúÊÛ½ğ¶î+ÎïÁ÷½ğ¶î£©', CHANGE `payment_coupon` `payment_coupon` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'µç×ÓÈ¯Ö§¸¶½ğ¶î'; 
-ALTER TABLE `base_mall`.`order_item` CHANGE `payment_price` `payment_price` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'Ö§¸¶½ğ¶î', CHANGE `payment_coupon` `payment_coupon` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'µç×ÓÈ¯Ö§¸¶½ğ¶î'; 
+ALTER TABLE `base_mall`.`order_info` CHANGE `sales_price` `sales_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'é”€å”®é‡‘é¢', CHANGE `logistics_price` `logistics_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'ç‰©æµé‡‘é¢', CHANGE `payment_price` `payment_price` DECIMAL(10,2) DEFAULT 0 NOT NULL COMMENT 'æ”¯ä»˜é‡‘é¢ï¼ˆé”€å”®é‡‘é¢+ç‰©æµé‡‘é¢ï¼‰', CHANGE `payment_coupon` `payment_coupon` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'ç”µå­åˆ¸æ”¯ä»˜é‡‘é¢'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `payment_price` `payment_price` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'æ”¯ä»˜é‡‘é¢', CHANGE `payment_coupon` `payment_coupon` DECIMAL(10,2) DEFAULT 0 NULL COMMENT 'ç”µå­åˆ¸æ”¯ä»˜é‡‘é¢'; 
 UPDATE `base_mall`.`order_info` SET `payment_coupon` = 0 WHERE `payment_coupon` IS NULL;
 UPDATE `base_mall`.`order_item` SET `payment_coupon` = 0 WHERE `payment_coupon` IS NULL;
 
-ALTER TABLE `base_mall`.`order_info` CHANGE `payment_coupon` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'µç×ÓÈ¯µÖ¿Û½ğ¶î'; 
-ALTER TABLE `base_mall`.`order_item` CHANGE `payment_coupon` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'µç×ÓÈ¯µÖ¿Û½ğ¶î'; 
-ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_points_price` DECIMAL(10,2) NULL COMMENT '»ı·ÖµÖ¿Û½ğ¶î' AFTER `payment_price`, CHANGE `payment_coupon_price` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'µç×ÓÈ¯Ö§¸¶½ğ¶î' AFTER `payment_points_price`; 
-ALTER TABLE `base_mall`.`order_item` CHANGE `payment_points_price` `payment_points_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT '»ı·ÖµÖ¿Û½ğ¶î'; 
-ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_points_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT '»ı·ÖµÖ¿Û½ğ¶î' AFTER `payment_price`, CHANGE `payment_coupon_price` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'µç×ÓÈ¯µÖ¿Û½ğ¶î' AFTER `payment_points_price`; 
+ALTER TABLE `base_mall`.`order_info` CHANGE `payment_coupon` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç”µå­åˆ¸æŠµæ‰£é‡‘é¢'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `payment_coupon` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç”µå­åˆ¸æŠµæ‰£é‡‘é¢'; 
+ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_points_price` DECIMAL(10,2) NULL COMMENT 'ç§¯åˆ†æŠµæ‰£é‡‘é¢' AFTER `payment_price`, CHANGE `payment_coupon_price` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç”µå­åˆ¸æ”¯ä»˜é‡‘é¢' AFTER `payment_points_price`; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `payment_points_price` `payment_points_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç§¯åˆ†æŠµæ‰£é‡‘é¢'; 
+ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_points_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç§¯åˆ†æŠµæ‰£é‡‘é¢' AFTER `payment_price`, CHANGE `payment_coupon_price` `payment_coupon_price` DECIMAL(10,2) DEFAULT 0.00 NULL COMMENT 'ç”µå­åˆ¸æŠµæ‰£é‡‘é¢' AFTER `payment_points_price`; 
 
 CREATE TABLE `base_mall`.`freight_templat` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
-  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ËùÊô×â»§',
-  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Âß¼­É¾³ı±ê¼Ç£¨0£ºÏÔÊ¾£»1£ºÒş²Ø£©',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '×îºó¸üĞÂÊ±¼ä',
-  `sort` int(11) NOT NULL COMMENT 'ÅÅĞò×Ö¶Î',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Ãû³Æ',
-  `type` char(2) NOT NULL COMMENT 'Ä£°åÀàĞÍ1¡¢Âò¼Ò³Ğµ£ÔË·Ñ£»2¡¢Âô¼Ò°üÓÊ',
-  `charge_type` char(2) NOT NULL COMMENT '¼Æ·Ñ·½Ê½1¡¢°´¼şÊı£»2¡¢°´ÖØÁ¿£»3¡¢°´Ìå»ı',
-  `first_num` decimal(10,2) DEFAULT '0.00' COMMENT 'Ê×¼ş¡¢Ê×Ìå»ı¡¢Ê×ÖØÁ¿',
-  `first_freight` decimal(10,2) DEFAULT '0.00' COMMENT 'Ê×ÔË·Ñ',
-  `continue_num` decimal(10,2) DEFAULT '0.00' COMMENT 'Ğø¼ş¡¢ĞøÌå»ı¡¢ĞøÖØÁ¿',
-  `continue_freight` decimal(10,2) DEFAULT '0.00' COMMENT 'ĞøÔË·Ñ',
+  `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'æ‰€å±ç§Ÿæˆ·',
+  `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'é€»è¾‘åˆ é™¤æ ‡è®°ï¼ˆ0ï¼šæ˜¾ç¤ºï¼›1ï¼šéšè—ï¼‰',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'æœ€åæ›´æ–°æ—¶é—´',
+  `sort` int(11) NOT NULL COMMENT 'æ’åºå­—æ®µ',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'åç§°',
+  `type` char(2) NOT NULL COMMENT 'æ¨¡æ¿ç±»å‹1ã€ä¹°å®¶æ‰¿æ‹…è¿è´¹ï¼›2ã€å–å®¶åŒ…é‚®',
+  `charge_type` char(2) NOT NULL COMMENT 'è®¡è´¹æ–¹å¼1ã€æŒ‰ä»¶æ•°ï¼›2ã€æŒ‰é‡é‡ï¼›3ã€æŒ‰ä½“ç§¯',
+  `first_num` decimal(10,2) DEFAULT '0.00' COMMENT 'é¦–ä»¶ã€é¦–ä½“ç§¯ã€é¦–é‡é‡',
+  `first_freight` decimal(10,2) DEFAULT '0.00' COMMENT 'é¦–è¿è´¹',
+  `continue_num` decimal(10,2) DEFAULT '0.00' COMMENT 'ç»­ä»¶ã€ç»­ä½“ç§¯ã€ç»­é‡é‡',
+  `continue_freight` decimal(10,2) DEFAULT '0.00' COMMENT 'ç»­è¿è´¹',
   PRIMARY KEY (`id`),
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='ÔË·ÑÄ£°å';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='è¿è´¹æ¨¡æ¿';
+
+UPDATE `base_upms`.`sys_menu` SET `permission` = 'sys_tenant_index' WHERE `id` = '2304aae6101ef1b56160e5cfe63b997a';
