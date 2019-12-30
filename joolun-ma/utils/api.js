@@ -160,6 +160,9 @@ module.exports = {
   userAddressSave: (data) => {
     return request('/mall/api/ma/useraddress', 'post', data, true)
   },
+  userAddressDel: (id) => {
+    return request('/mall/api/ma/useraddress/' + id, 'delete', null, false)
+  },
   userCollectAdd: (data) => {
     return request('/mall/api/ma/usercollect', 'post', data, true)
   },
