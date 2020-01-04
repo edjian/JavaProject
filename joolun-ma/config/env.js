@@ -11,6 +11,8 @@ export default {
   //（wx3679bc0b81bfce6e：f5c359e514a34617b27cef72dea646d5）
   //租户ID
   tenantId: '1',
+  //小程序appID
+  appId: 'wxd5b98bbec200013b',
   //服务器地址，即后台访问地址
   basePath: 'http://192.168.0.101:8082'
   // basePath: 'https://demo.joolun.com'

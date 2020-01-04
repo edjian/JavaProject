@@ -103,10 +103,7 @@ public class WxMaConfiguration {
 	 * @throws Exception
 	 */
 	public static String getAppId(HttpServletRequest request) {
-		//https://servicewechat.com/wxd7da5b5a941bcc1c/devtools/page-frame.html
-		String referer = request.getHeader("Referer");
-		String appId = referer.replace("https://servicewechat.com/", "");
-		appId = appId.substring(0, appId.indexOf("/"));
+		String appId = request.getHeader("app-id");
 		return appId;
 	}
 

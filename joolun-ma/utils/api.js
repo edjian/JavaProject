@@ -22,6 +22,7 @@ const request = (url, method, data, showLoading) => {
       data: data,
       header: {
         'tenant-id' : __config.tenantId,
+		'app-id': __config.appId,
         'thirdSession': getApp().globalData.thirdSession
       },
       success(res) {
