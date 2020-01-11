@@ -40,6 +40,8 @@
 		<result property="status" column="status"/>
 		<result property="appraisesStatus" column="appraises_status"/>
 		<result property="userMessage" column="user_message"/>
+		<result property="orderType" column="order_type"/>
+		<result property="relationId" column="relation_id"/>
 	</resultMap>
 
 	<resultMap id="orderInfoMap2" extends="orderInfoMap" type="com.joolun.cloud.mall.common.entity.OrderInfo">
@@ -81,7 +83,9 @@
 		order_info.`user_message`,
 		order_info.`logistics_id`,
 		order_info.`transaction_id`,
-		order_info.`remark`
+		order_info.`remark`,
+		order_info.`order_type`,
+		order_info.`relation_id`
 	</sql>
 
 	<select id="selectPage1" resultMap="orderInfoMap2">

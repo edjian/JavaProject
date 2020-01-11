@@ -25,12 +25,12 @@ Page({
     isAllSelect: false,//全选
     selectValue: [],
     settlePrice: 0, //结算金额
-    goodsDetail: [],
+    goodsSpu: [],
     goodsSpecData: [],
     modalSku: false,
     modalSkuType: '1',
     shoppingCartSelect: [],
-    skuData: []
+    goodsSku: []
   },
   onShow() {
     app.initPage()
@@ -278,7 +278,7 @@ Page({
     let spuId = e.currentTarget.dataset.spuid
     let index = e.currentTarget.dataset.index
     this.setData({
-      goodsDetail: [],
+      goodsSpu: [],
       goodsSpecData: [],
       modalSku: true,
       shoppingCartSelect: this.data.shoppingCartData[index]
@@ -289,9 +289,9 @@ Page({
   goodsGet(id) {
     app.api.goodsGet(id)
       .then(res => {
-        let goodsDetail = res.data
+        let goodsSpu = res.data
         this.setData({
-          goodsDetail: goodsDetail
+          goodsSpu: goodsSpu
         })
       })
   },
@@ -314,7 +314,7 @@ Page({
         }
         this.setData({
           goodsSpecData: goodsSpecData,
-          skuData: shoppingCartSelect.goodsSku ? shoppingCartSelect.goodsSku : []
+          goodsSku: shoppingCartSelect.goodsSku ? shoppingCartSelect.goodsSku : []
         })
       })
   },

@@ -43,7 +43,13 @@ export const tableOption = {
       width: 250,
       dataType: 'array',
       slot: true,
-      formslot: true
+      formslot: true,
+      rules: [{
+        type: 'array',
+        required: true,
+        message: '图片不能为空',
+        trigger: 'change'
+      }]
     },
 	  {
       label: '排序',

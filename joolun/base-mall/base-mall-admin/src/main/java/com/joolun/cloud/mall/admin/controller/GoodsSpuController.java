@@ -48,35 +48,22 @@ public class GoodsSpuController {
     @GetMapping("/page")
     @PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
     public R getGoodsSpuPage(Page page, GoodsSpu goodsSpu) {
-		String name = goodsSpu.getName();
-		goodsSpu.setName(null);
-		return R.ok(goodsSpuService.page(page, Wrappers.query(goodsSpu).lambda()
-						.select(GoodsSpu::getId,
-								GoodsSpu::getName,
-								GoodsSpu::getTenantId,
-								GoodsSpu::getSpuCode,
-								GoodsSpu::getSellPoint,
-								GoodsSpu::getCategoryFirst,
-								GoodsSpu::getCategorySecond,
-								GoodsSpu::getPicUrls,
-								GoodsSpu::getShelf,
-								GoodsSpu::getSort,
-								GoodsSpu::getPriceDown,
-								GoodsSpu::getPriceUp,
-								GoodsSpu::getSaleNum,
-								GoodsSpu::getCreateTime,
-								GoodsSpu::getUpdateTime,
-								GoodsSpu::getSpecType,
-								GoodsSpu::getPointsGiveSwitch,
-								GoodsSpu::getPointsGiveNum,
-								GoodsSpu::getPointsDeductSwitch,
-								GoodsSpu::getPointsDeductScale,
-								GoodsSpu::getPointsDeductAmount,
-								GoodsSpu::getFreightTemplatId)
-						.like(GoodsSpu::getName, StrUtil.isNotBlank(name) ? name : "")
-				)
-		);
+		return R.ok(goodsSpuService.page1(page, goodsSpu));
     }
+
+	/**
+	 * list查询
+	 * @param goodsSpu
+	 * @return
+	 */
+	@GetMapping("/list")
+	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+	public List<GoodsSpu> getList(GoodsSpu goodsSpu) {
+		return goodsSpuService.list(Wrappers.query(goodsSpu).lambda()
+						.select(GoodsSpu::getId,
+								GoodsSpu::getName)
+				);
+	}
 
     /**
     * 通过id查询spu商品

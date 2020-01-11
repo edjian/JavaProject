@@ -32,7 +32,7 @@
   <view class="cu-card article mar-top-30">
     <view class="cu-item">
       <view class="cu-list menu">
-        <view class="cu-item list-item" wx:for="{{ orderConfirmData }}" wx:key>
+        <view class="cu-item list-item" wx:for="{{ orderConfirmData }}" wx:key="index">
           <view class="flex align-center">
             <view class="content response">
               <image src="{{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
@@ -150,7 +150,7 @@
     <view class="padding-tb-xl">
       <view class="text-lg text-center">优惠券</view>
       <radio-group class="cu-list text-left response" bindchange="couponUserChange">
-        <view class="cu-item padding flex flex-wrap" wx:for="{{couponUserList}}" wx:key>
+        <view class="cu-item padding flex flex-wrap" wx:for="{{couponUserList}}" wx:key="index">
           <coupon-user-info
             class="basis-xl"
             couponUserInfo="{{item}}"

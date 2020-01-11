@@ -7,7 +7,7 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <view style="margin-bottom: 100rpx;"> 
-  <view class="cu-list menu-avatar" wx:for="{{orderInfo.listOrderItem}}" wx:key>
+  <view class="cu-list menu-avatar" wx:for="{{orderInfo.listOrderItem}}" wx:key="index">
     <view class="cu-item">
       <view class="cu-avatar lg" style="background-image:url({{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}});"></view>
       <view class="content">

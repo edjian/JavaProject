@@ -7,7 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 /**
- * <version>2.5.0</version>
+ * <version>2.6.0</version>
  */
 import __config from './config/env'
 import api from './utils/api'
@@ -20,6 +20,14 @@ App({
   onLaunch: function () {
     //检测新版本
     this.updateManager()
+    wx.getSystemInfo({
+      success: e => {
+        this.globalData.StatusBar = e.statusBarHeight;
+        let custom = wx.getMenuButtonBoundingClientRect();
+        this.globalData.Custom = custom;
+        this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+      }
+    })
   },
   updateManager(){
     const updateManager = wx.getUpdateManager()

@@ -9,7 +9,6 @@
 package com.joolun.cloud.mall.admin.api.ma;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
@@ -17,6 +16,7 @@ import com.joolun.cloud.mall.admin.mapper.UserCollectMapper;
 import com.joolun.cloud.mall.admin.service.CouponInfoService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
+import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
@@ -81,6 +81,9 @@ public class GoodsSpuApi {
 			return checkThirdSession;
 		}
 		GoodsSpu goodsSpu = goodsSpuService.getById2(id);
+		if(goodsSpu == null){
+			return R.failed(MyReturnCode.ERR_80004.getCode(), MyReturnCode.ERR_80004.getMsg());
+		}
 		//查询用户是否收藏
 		userCollect.setType(MallConstants.COLLECT_TYPE_1);
 		userCollect.setRelationId(id);

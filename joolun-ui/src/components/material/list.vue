@@ -137,9 +137,11 @@
               </el-row>
               <el-pagination
                 @size-change="sizeChange"
+                @current-change="currentChange"
                 :current-page.sync="page.currentPage"
                 :page-sizes="[12, 24]"
                 :page-size="page.pageSize"
+
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="page.total"
                 class="pagination">
@@ -224,6 +226,10 @@
       }
     },
     methods:{
+      currentChange(currentPage){
+        this.page.currentPage = currentPage
+        this.getPage(this.page)
+      },
       moveMaterial(index,type){
         if(type == 'up'){
           let tempOption = this.value[index - 1]

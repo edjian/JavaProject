@@ -15,7 +15,7 @@
   </view>
 </view>
 <view class="cu-list menu">
-  <view class="cu-item" wx:for="{{pointsRecord}}" wx:key>
+  <view class="cu-item" wx:for="{{pointsRecord}}" wx:key="index">
     <view class="content padding-tb-sm">
       <view>
         {{item.description}}

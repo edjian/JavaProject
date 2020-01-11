@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "砍价详情",
+  "usingComponents": {
+    "user-auth": "/components/user-auth/index",
+    "poster": "/components/wxa-plugin-canvas/poster/index"
+  }
+}

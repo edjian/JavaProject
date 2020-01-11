@@ -40,7 +40,7 @@
                        @row-update="handleItemUpdate"
                        @row-save="handleItemSave"
                        @row-del="rowItemDel"
-                       :before-open="handleBeforeOpen"
+                       :before-open="beforeOpen"
                        :option="tableDictItemOption"
                        :table-loading="tableLoading2">
             </avue-crud>
@@ -137,12 +137,12 @@
           this.tableLoading2 = false
         })
       },
-      handleBeforeOpen(done) {
+      beforeOpen(done) {
         this.$set(this.form,"type",this.dictType)
         this.$set(this.form,"dictId",this.dictId)
         done()
       },
-      handleDel: function (row) {
+      handleDel: function (row, index) {
         var _this = this
         this.$confirm('是否确认删除?', '警告', {
           confirmButtonText: '确定',
@@ -168,9 +168,8 @@
        * @param done 为表单关闭函数
        *
        **/
-      handleUpdate: function (row, index, done) {
+      handleUpdate: function (row, index, done, loading) {
         putObj(this.filterForm(row)).then(() => {
-          this.tableData.splice(index, 1, Object.assign({}, row))
           this.$message({
             showClose: true,
             message: '修改成功',
@@ -179,7 +178,7 @@
           this.getPage(this.page)
           done()
         }).catch(() => {
-          done()
+          loading()
         })
       },
       /**
@@ -188,9 +187,8 @@
        * @param done 为表单关闭函数
        *
        **/
-      handleSave: function (row, done) {
+      handleSave: function (row, done, loading) {
         addObj(this.filterForm(row)).then(() => {
-          this.tableData.push(Object.assign({}, row))
           this.$message({
             showClose: true,
             message: '添加成功',
@@ -199,7 +197,7 @@
           this.getPage(this.page)
           done()
         }).catch(() => {
-          done()
+          loading()
         })
       },
       handleItemSave: function (row, done) {
@@ -214,9 +212,8 @@
           done()
         })
       },
-      handleItemUpdate: function (row, index, done) {
+      handleItemUpdate: function (row, index, done, loading) {
         putItemObj(row).then(() => {
-          this.tableData.splice(index, 1, Object.assign({}, row))
           this.$message({
             showClose: true,
             message: '修改成功',
@@ -224,6 +221,8 @@
           })
           this.getDictItemList(row.dictId, row.type)
           done()
+        }).catch(() => {
+          loading()
         })
       },
       searchChange(form,done) {

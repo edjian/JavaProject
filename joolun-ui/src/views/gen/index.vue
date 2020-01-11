@@ -155,7 +155,6 @@
         }).then(function () {
           return delObj(row.id)
         }).then(() => {
-          this.tableData.splice(index, 1)
           this.$message.success('删除成功')
           this.getDsList(this.page)
         }).catch(function () {
@@ -165,24 +164,22 @@
         this.dsForm.password = undefined
         show()
       },
-      handleUpdate: function (row, index, done) {
+      handleUpdate: function (row, index, done, loading) {
         putObj(row).then(() => {
-          this.tableData.splice(index, 1, Object.assign({}, row))
           this.$message.success('修改成功')
           done()
           this.getDsList(this.page)
         }).catch(() => {
-          done()
+          loading()
         })
       },
-      handleSave: function (row, done) {
+      handleSave: function (row, done, loading) {
         addObj(row).then(() => {
-          this.tableData.push(Object.assign({}, row))
           this.$message.success('添加成功')
           done()
           this.getDsList(this.page)
         }).catch(() => {
-          done()
+          loading()
         })
       },
       getDsList(page, params) {

@@ -9,15 +9,16 @@
 <view class="flex bg-white radius text-white main" wx:if="{{couponUserInfo.type == '1'}}">
   <view class="flex-twice padding-sm radius t1-r">
     <view class="flex">
-      <view class="flex-sub text-xxl text-bold text-price overflow_1">{{couponUserInfo.reduceAmount}}</view>
+      <view class="flex-sub text-xxl text-bold text-price overflow-1">{{couponUserInfo.reduceAmount}}</view>
       <view class="flex-twice">
-        <view class="text-sm overflow_1">订单满{{couponUserInfo.premiseAmount}}元可使用</view>
-        <view class="text-sm">
+        <view class="text-sm overflow-1">{{couponUserInfo.name}}</view>
+        <view class="text-xs overflow-1">订单满{{couponUserInfo.premiseAmount}}元可使用</view>
+        <view class="text-xs">
           {{couponUserInfo.suitType == '1' ? '全部商品可用' : couponUserInfo.suitType == '2' ? '指定商品可用' : couponUserInfo.suitType == '3' ? '指定商品不可用' : ''}}
         </view>
       </view>
     </view>
-    <view class="text-xs">{{couponUserInfo.validBeginTime}}至{{couponUserInfo.validEndTime}}</view>
+    <view class="text-xs">有效期至{{couponUserInfo.validEndTime}}</view>
   </view>
   <view class="flex-sub padding-sm radius text-center t1-l">
     <view class="padding-sm">代金券</view>
@@ -29,15 +30,16 @@
 <view class="flex bg-white radius text-white main" wx:if="{{couponUserInfo.type == '2'}}">
   <view class="flex-twice padding-sm radius t2-r">
     <view class="flex">
-      <view class="flex-sub text-xxl text-bold overflow_1">{{couponUserInfo.discount}}<text class="text-sm">折</text></view>
+      <view class="flex-sub text-xxl text-bold overflow-1">{{couponUserInfo.discount}}<text class="text-sm">折</text></view>
       <view class="flex-twice">
-        <view class="text-sm overflow_1">订单满{{couponUserInfo.premiseAmount}}元可使用</view>
-        <view class="text-sm">
+        <view class="text-sm overflow-1">{{couponUserInfo.name}}</view>
+        <view class="text-xs overflow-1">订单满{{couponUserInfo.premiseAmount}}元可使用</view>
+        <view class="text-xs">
           {{couponUserInfo.suitType == '1' ? '全部商品可用' : couponUserInfo.suitType == '2' ? '指定商品可用' : couponUserInfo.suitType == '3' ? '指定商品不可用' : ''}}
         </view>
       </view>
     </view>
-    <view class="text-xs">{{couponUserInfo.validBeginTime}}至{{couponUserInfo.validEndTime}}</view>
+    <view class="text-xs">有效期至{{couponUserInfo.validEndTime}}</view>
   </view>
   <view class="flex-sub padding-sm radius text-center t2-l">
     <view class="padding-sm">折扣券</view>

@@ -1,28 +1,28 @@
-ALTER TABLE `base_mall`.`order_item` ADD COLUMN `is_refund` CHAR(2) NULL COMMENT 'ÊÇ·ñÍË¿î0:·ñ 1£ºÊÇ' AFTER `remark`, ADD COLUMN `status` CHAR(2) NULL COMMENT '×´Ì¬1£ºÍË¿îÖĞ£»2¡¢¾Ü¾øÍË¿î£»3¡¢Í¬ÒâÍË¿î' AFTER `is_refund`; 
+ALTER TABLE `base_mall`.`order_item` ADD COLUMN `is_refund` CHAR(2) NULL COMMENT 'æ˜¯å¦é€€æ¬¾0:å¦ 1ï¼šæ˜¯' AFTER `remark`, ADD COLUMN `status` CHAR(2) NULL COMMENT 'çŠ¶æ€1ï¼šé€€æ¬¾ä¸­ï¼›2ã€æ‹’ç»é€€æ¬¾ï¼›3ã€åŒæ„é€€æ¬¾' AFTER `is_refund`;
 
 
-ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '×´Ì¬1£ºÍË¿îÉêÇëÖĞ£»2£ºÍË»õÖĞ£»3¡¢¾Ü¾øÍË¿î£»4¡¢Í¬ÒâÍË¿î'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'çŠ¶æ€1ï¼šé€€æ¬¾ç”³è¯·ä¸­ï¼›2ï¼šé€€è´§ä¸­ï¼›3ã€æ‹’ç»é€€æ¬¾ï¼›4ã€åŒæ„é€€æ¬¾';
 
 
-ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÍË¿î×´Ì¬1£ºÍË¿îÉêÇëÖĞ£»2£ºÍË»õÖĞ£»3¡¢¾Ü¾øÍË¿î£»4¡¢Í¬ÒâÍË¿î'; 
+ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'é€€æ¬¾çŠ¶æ€1ï¼šé€€æ¬¾ç”³è¯·ä¸­ï¼›2ï¼šé€€è´§ä¸­ï¼›3ã€æ‹’ç»é€€æ¬¾ï¼›4ã€åŒæ„é€€æ¬¾';
 
 
-ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT '×´Ì¬0£ºÕı³££»1£ºÍË¿îÖĞ£»2£ºÍË»õÍË¿îÖĞ'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT 'çŠ¶æ€0ï¼šæ­£å¸¸ï¼›1ï¼šé€€æ¬¾ä¸­ï¼›2ï¼šé€€è´§é€€æ¬¾ä¸­';
 
-ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÍË¿î×´Ì¬0£º³·ÏúÍË»»ÉêÇë£»11£ºÍË¿îÉêÇëÖĞ£»111¡¢Í¬ÒâÍË¿î£»112¡¢¾Ü¾øÍË¿î£»12£ºÍË»õÍË¿îÉêÇëÖĞ£»121£ºÍ¬ÒâÍË»õÍË¿î/ÍË»õÖĞ£»122£º¾Ü¾øÍË»õÍË¿î£»1211£ºÊÕµ½ÍË»õÍ¬ÒâÍË¿î£»1211£ºÊÕµ½ÍË»õ¾Ü¾øÍË¿î'; 
+ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'é€€æ¬¾çŠ¶æ€0ï¼šæ’¤é”€é€€æ¢ç”³è¯·ï¼›11ï¼šé€€æ¬¾ç”³è¯·ä¸­ï¼›111ã€åŒæ„é€€æ¬¾ï¼›112ã€æ‹’ç»é€€æ¬¾ï¼›12ï¼šé€€è´§é€€æ¬¾ç”³è¯·ä¸­ï¼›121ï¼šåŒæ„é€€è´§é€€æ¬¾/é€€è´§ä¸­ï¼›122ï¼šæ‹’ç»é€€è´§é€€æ¬¾ï¼›1211ï¼šæ”¶åˆ°é€€è´§åŒæ„é€€æ¬¾ï¼›1211ï¼šæ”¶åˆ°é€€è´§æ‹’ç»é€€æ¬¾';
 
 
-ALTER TABLE `base_mall`.`order_item` CHANGE `is_refund` `is_refund` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT 'ÊÇ·ñÍË¿î0:·ñ 1£ºÊÇ'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `is_refund` `is_refund` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT 'æ˜¯å¦é€€æ¬¾0:å¦ 1ï¼šæ˜¯';
 
 UPDATE `base_mall`.`order_item` SET `status` = '0' WHERE `status` IS NULL;
 UPDATE `base_mall`.`order_item` SET `is_refund` = '0' WHERE `is_refund` IS NULL;
 
 
-ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÍË¿î×´Ì¬0£º³·ÏúÍË»»ÉêÇë£»1£ºÍË¿îÉêÇëÖĞ£»11¡¢Í¬ÒâÍË¿î£»12¡¢¾Ü¾øÍË¿î£»2£ºÍË»õÍË¿îÉêÇëÖĞ£»21£ºÍ¬ÒâÍË»õÍË¿î/ÍË»õÖĞ£»22£º¾Ü¾øÍË»õÍË¿î£»211£ºÊÕµ½ÍË»õÍ¬ÒâÍË¿î£»212£ºÊÕµ½ÍË»õ¾Ü¾øÍË¿î'; 
+ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'é€€æ¬¾çŠ¶æ€0ï¼šæ’¤é”€é€€æ¢ç”³è¯·ï¼›1ï¼šé€€æ¬¾ç”³è¯·ä¸­ï¼›11ã€åŒæ„é€€æ¬¾ï¼›12ã€æ‹’ç»é€€æ¬¾ï¼›2ï¼šé€€è´§é€€æ¬¾ç”³è¯·ä¸­ï¼›21ï¼šåŒæ„é€€è´§é€€æ¬¾/é€€è´§ä¸­ï¼›22ï¼šæ‹’ç»é€€è´§é€€æ¬¾ï¼›211ï¼šæ”¶åˆ°é€€è´§åŒæ„é€€æ¬¾ï¼›212ï¼šæ”¶åˆ°é€€è´§æ‹’ç»é€€æ¬¾';
 
-ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT '×´Ì¬0£ºÕı³££»1£ºÍË¿îÖĞ£»2£ºÍË»õÍË¿îÖĞ£»3£ºÍê³ÉÍË¿î£»4£ºÍê³ÉÍË»õÍË¿î'; 
+ALTER TABLE `base_mall`.`order_item` CHANGE `status` `status` CHAR(2) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0' NULL COMMENT 'çŠ¶æ€0ï¼šæ­£å¸¸ï¼›1ï¼šé€€æ¬¾ä¸­ï¼›2ï¼šé€€è´§é€€æ¬¾ä¸­ï¼›3ï¼šå®Œæˆé€€æ¬¾ï¼›4ï¼šå®Œæˆé€€è´§é€€æ¬¾';
 
-ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(6) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'ÍË¿î×´Ì¬0£º³·ÏúÍË»»ÉêÇë£»1£ºÍË¿îÉêÇëÖĞ£»11¡¢Í¬ÒâÍË¿î£»12¡¢¾Ü¾øÍË¿î£»2£ºÍË»õÍË¿îÉêÇëÖĞ£»21£ºÍ¬ÒâÍË»õÍË¿î/ÍË»õÖĞ£»22£º¾Ü¾øÍË»õÍË¿î£»211£ºÊÕµ½ÍË»õÍ¬ÒâÍË¿î£»212£ºÊÕµ½ÍË»õ¾Ü¾øÍË¿î'; 
+ALTER TABLE `base_mall`.`order_refunds` CHANGE `status` `status` CHAR(6) CHARSET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'é€€æ¬¾çŠ¶æ€0ï¼šæ’¤é”€é€€æ¢ç”³è¯·ï¼›1ï¼šé€€æ¬¾ç”³è¯·ä¸­ï¼›11ã€åŒæ„é€€æ¬¾ï¼›12ã€æ‹’ç»é€€æ¬¾ï¼›2ï¼šé€€è´§é€€æ¬¾ç”³è¯·ä¸­ï¼›21ï¼šåŒæ„é€€è´§é€€æ¬¾/é€€è´§ä¸­ï¼›22ï¼šæ‹’ç»é€€è´§é€€æ¬¾ï¼›211ï¼šæ”¶åˆ°é€€è´§åŒæ„é€€æ¬¾ï¼›212ï¼šæ”¶åˆ°é€€è´§æ‹’ç»é€€æ¬¾';
 
 
 

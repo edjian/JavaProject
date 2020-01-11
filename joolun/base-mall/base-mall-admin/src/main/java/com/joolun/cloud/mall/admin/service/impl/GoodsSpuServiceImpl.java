@@ -12,13 +12,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
-import com.joolun.cloud.mall.admin.service.GoodsSkuService;
-import com.joolun.cloud.mall.admin.service.GoodsSkuSpecValueService;
-import com.joolun.cloud.mall.admin.service.GoodsSpuService;
-import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,19 +39,28 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	private final GoodsSkuService goodsSkuService;
 	private final GoodsSpuSpecService goodsSpuSpecService;
 	private final GoodsSkuSpecValueService goodsSkuSpecValueService;
+	private final UserCollectService userCollectService;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public boolean removeById(Serializable id) {
 		super.removeById(id);
-		//删除SpuSpec、SkuSpecValue、Sku
+		//删除SpuSpec、SkuSpecValue、Sku、用户收藏
 		goodsSpuSpecService.remove(Wrappers.<GoodsSpuSpec>update().lambda()
 				.eq(GoodsSpuSpec::getSpuId, id));
 		goodsSkuSpecValueService.remove(Wrappers.<GoodsSkuSpecValue>update().lambda()
 				.eq(GoodsSkuSpecValue::getSpuId, id));
 		goodsSkuService.remove(Wrappers.<GoodsSku>update().lambda()
 				.eq(GoodsSku::getSpuId, id));
+		userCollectService.remove(Wrappers.<UserCollect>update().lambda()
+				.eq(UserCollect::getType, MallConstants.COLLECT_TYPE_1)
+				.eq(UserCollect::getRelationId, id));
 		return true;
+	}
+
+	@Override
+	public IPage<GoodsSpu> page1(IPage<GoodsSpu> page, GoodsSpu goodsSpu) {
+		return baseMapper.selectPage1(page, goodsSpu);
 	}
 
 	@Override

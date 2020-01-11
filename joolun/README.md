@@ -1,3 +1,7 @@
+# **[阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)**
+
+### 代码请拉master分支，其他分支不要管
+
 **问题和bug，请在git.joolun.com提交 【工单管理】。如问题解决请自行关闭工单，问题请带截图和操作步骤，问题没描述清楚的不处理**
 
 **版本升级时要重新导入新的脚本，并清理redis缓存**

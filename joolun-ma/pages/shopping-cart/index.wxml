@@ -25,7 +25,7 @@
 <view style="margin-top:160rpx;margin-bottom:100rpx">
   <checkbox-group bindchange="checkboxChange">
     <view class="cu-card article no-card">
-      <view class="cu-item padding-top-xs" wx:for="{{ shoppingCartData }}" wx:key>
+      <view class="cu-item padding-top-xs" wx:for="{{ shoppingCartData }}" wx:key="index">
         <view class="flex align-center">
           <checkbox class="red round margin-left" value="{{item.id}}" disabled="{{(item.quantity > item.goodsSku.stock || !item.goodsSku) && operation}}" checked="{{item.checked}}"></checkbox>
           <navigator hover-class='none' style="width:100%" url='/pages/goods/goods-detail/index?id={{item.spuId}}'>
@@ -35,7 +35,7 @@
                 <view class="text-black margin-top-sm overflow-2">{{item.goodsSpu.name}}</view>
                 <view class="text-gray text-sm margin-top-xs cu-tag round" catchtap bindtap="changeSpecs" data-spuid="{{item.goodsSpu.id}}" data-index="{{index}}" wx:if="{{item.goodsSpu.specType == '1'}}">
                   <view wx:if="{{item.goodsSku}}" wx:for="{{item.specs}}" wx:for-item="item2" 
-                    wx:for-index="index2" wx:key>{{item2.specValueName}}<view class="display-ib" wx:if="{{item.specs.length != (index2+1)}}">;</view>
+                    wx:for-index="index2" wx:key="index">{{item2.specValueName}}<view class="display-ib" wx:if="{{item.specs.length != (index2+1)}}">;</view>
                   </view>
                   <view wx:if="{{!item.goodsSku}}">
                     {{item.specInfo}}
@@ -83,7 +83,7 @@
     </view>
   </view>
   <view class="cu-card article no-card">
-      <view class="cu-item" wx:for="{{ shoppingCartDataInvalid }}" wx:key>
+      <view class="cu-item" wx:for="{{ shoppingCartDataInvalid }}" wx:key="index">
         <view class="flex align-center">
           <navigator hover-class='none' style="width:100%" url='/pages/goods/goods-detail/index?id={{item.spuId}}'>
             <view class="content">
@@ -137,9 +137,9 @@
   </view>
 </view>
 <goods-sku
-  goodsDetail="{{goodsDetail}}"
+  goodsSpu="{{goodsSpu}}"
+  goodsSku="{{goodsSku}}"
   goodsSpecData="{{goodsSpecData}}"
-  skuData="{{skuData}}"
   cartNum="{{shoppingCartSelect.quantity}}"
   shoppingCartId="{{shoppingCartSelect.id}}"
   modalSku="{{modalSku}}"

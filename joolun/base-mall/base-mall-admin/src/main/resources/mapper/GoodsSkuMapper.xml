@@ -54,6 +54,14 @@
 		sku.`enable`
 	</sql>
 
+	<select id="getGoodsSkuById" resultMap="goodsSkuMap2">
+		SELECT
+		<include refid="goodsSkuSql"/>
+		FROM
+		goods_sku sku
+		WHERE sku.`id` = #{id}
+	</select>
+
 	<select id="listGoodsSkuBySpuId" resultMap="goodsSkuMap2">
 		SELECT
 		<include refid="goodsSkuSql"/>

@@ -20,7 +20,7 @@
     </view>
   </view>
   <view class="padding-sm flex flex-wrap bg-white">
-    <view class="padding-xs" wx:for="{{searchHistory}}" wx:key>
+    <view class="padding-xs" wx:for="{{searchHistory}}" wx:key="index">
       <view class="cu-tag round" bindtap="searchHandle" data-name="{{item.name}}">{{item.name}}</view>
     </view>
   </view>
@@ -30,7 +30,7 @@
     <view class="action"><text class="cuIcon-hot text-orange"></text>热门搜索</view>
   </view>
   <view class="padding-sm flex flex-wrap bg-white">
-    <view class="padding-xs" wx:for="{{hotHistory}}" wx:key>
+    <view class="padding-xs" wx:for="{{hotHistory}}" wx:key="index">
       <view class="cu-tag round" bindtap="searchHandle" data-name="{{item.name}}">{{item.name}}</view>
     </view>
   </view>

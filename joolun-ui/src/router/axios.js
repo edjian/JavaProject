@@ -32,7 +32,7 @@ axios.interceptors.request.use(config => {
   if(switchDemon){
     if(config.url && config.url.indexOf("/auth/") == -1 &&
       config.url.indexOf("/register") == -1 &&
-      store.getters.userInfo.id == '5' &&
+        (store.getters.userInfo.id == '5' || store.getters.userInfo.id == '6') &&
       config.method !== 'get'){
       MessageBox.confirm('演示账号，不能操作。<a href="http://www.joolun.com" target="_blank" style="color: red">前去官网获取源码</a><br>客服QQ（1023530620）', '提示',{
         confirmButtonText: '确定',

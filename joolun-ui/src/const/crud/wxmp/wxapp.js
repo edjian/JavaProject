@@ -21,6 +21,7 @@ export const tableOption = {
   viewBtn: true,
   expand: true,
   defaultExpandAll: true,
+  labelWidth: 120,
   column: [
     {
       label: 'logo',

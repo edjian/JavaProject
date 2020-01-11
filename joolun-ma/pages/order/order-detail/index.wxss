@@ -13,9 +13,6 @@
 .loc-info{
   line-height: 1.4em
 }
-.mar-top-30{
-  margin-top: -30rpx!important
-}
 .cu-list.menu>.cu-item:after {
   border-bottom: unset !important;
 }

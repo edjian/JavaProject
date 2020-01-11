@@ -11,6 +11,8 @@ package com.joolun.cloud.mall.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
 
+import java.util.List;
+
 /**
  * 商品sku
  *
@@ -19,4 +21,5 @@ import com.joolun.cloud.mall.common.entity.GoodsSku;
  */
 public interface GoodsSkuService extends IService<GoodsSku> {
 
+	List<GoodsSku> listGoodsSkuBySpuId(String spuId);
 }

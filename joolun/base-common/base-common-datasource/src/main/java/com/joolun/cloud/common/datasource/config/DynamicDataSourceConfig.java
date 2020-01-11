@@ -63,9 +63,9 @@ public class DynamicDataSourceConfig implements TransactionManagementConfigurer 
 			DruidDataSource ds = new DruidDataSource();
 			ds.setUrl(String.valueOf(db.get(DataSourceConstants.DS_JDBC_URL)));
 			ds.setDriverClassName(Driver.class.getName());
-			ds.setUsername((String) db.get(DataSourceConstants.DS_USER_NAME));
+			ds.setUsername(String.valueOf(db.get(DataSourceConstants.DS_USER_NAME)));
 
-			String decPwd = stringEncryptor.decrypt((String) db.get(DataSourceConstants.DS_USER_PWD));
+			String decPwd = stringEncryptor.decrypt(String.valueOf(db.get(DataSourceConstants.DS_USER_PWD)));
 			ds.setPassword(decPwd);
 			dataSourceMap.put(db.get(DataSourceConstants.DS_ROUTE_KEY), ds);
 		}));

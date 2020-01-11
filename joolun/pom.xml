@@ -5,7 +5,7 @@
 
 	<groupId>com.joolun</groupId>
 	<artifactId>joolun</artifactId>
-	<version>2.5.0</version>
+	<version>2.6.0</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -20,7 +20,7 @@
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
 		<mybatis-plus.version>3.3.0</mybatis-plus.version>
 		<druid.version>1.1.21</druid.version>
-		<hutool.version>5.0.7</hutool.version>
+		<hutool.version>5.1.0</hutool.version>
 		<weixin-java.version>3.6.0</weixin-java.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +31,6 @@
 		<swagger-bootstrap-ui.version>1.9.4</swagger-bootstrap-ui.version>
 		<curator.version>2.10.0</curator.version>
 		<velocity.version>1.7</velocity.version>
-		<lcn.version>4.1.0</lcn.version>
 		<jasypt.version>2.1.1</jasypt.version>
 		<ttl.version>2.10.2</ttl.version>
 		<elastic-job-lite.version>2.1.5</elastic-job-lite.version>

@@ -152,6 +152,14 @@ public class OrderInfo extends Model<OrderInfo> {
 	 */
 	private String transactionId;
 	/**
+	 * 订单类型（0、普通订单；1、砍价订单；2、拼团订单；3、秒杀订单）
+	 */
+	private String orderType;
+	/**
+	 * 关联ID（砍价记录ID，拼团记录ID，秒杀记录ID）
+	 */
+	private String relationId;
+	/**
 	 * 订单详情
 	 */
 	@TableField(exist = false)

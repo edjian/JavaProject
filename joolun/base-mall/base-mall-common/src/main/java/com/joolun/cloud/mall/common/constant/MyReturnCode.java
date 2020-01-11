@@ -17,6 +17,8 @@ public enum MyReturnCode {
 	ERR_80001(80001, "你已领取过该电子券"){},
 	ERR_80002(80002, "无此电子券"){},
 	ERR_80003(80003, "电子券库存不足"){},
+	ERR_80004(80004, "该商品已删除"){},
+	ERR_80005(80005, "砍价ID不能为空"){},
 	;
 
 	MyReturnCode(int code, String msg) {

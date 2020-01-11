@@ -37,7 +37,7 @@
   <navigator class="flex flex-sub flex-direction solid-right" url="/pages/coupon/coupon-user-list/index" hover-class="none">
     <view class="text-xxl text-white">{{userInfo.couponNum}}</view>
     <view class="margin-top-sm text-white">
-      <text class="cuIcon-cardboard"></text> 优惠券</view>
+      <text class="cuIcon-ticket"></text> 优惠券</view>
   </navigator>
 </view>
 
@@ -78,6 +78,12 @@
   </view>
 </view>
 <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+  <navigator class="cu-item arrow" url="/pages/bargain/bargain-user-list/index" hover-class="none">
+    <view class="content">
+      <text class="cuIcon-cardboardforbid text-orange"></text>
+      <text class="text-grey">我的砍价</text>
+    </view>
+  </navigator>
   <navigator class="cu-item arrow" url="/pages/user/user-collect/index" hover-class="none">
     <view class="content">
       <text class="cuIcon-like text-orange"></text>

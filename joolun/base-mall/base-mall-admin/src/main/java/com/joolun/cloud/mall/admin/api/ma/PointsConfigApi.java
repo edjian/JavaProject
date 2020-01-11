@@ -16,6 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 积分设置
  *
@@ -36,7 +38,11 @@ public class PointsConfigApi {
 	 * @return R
 	 */
 	@GetMapping()
-	public R get() {
+	public R get(HttpServletRequest request) {
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
 		return R.ok(pointsConfigService.getOne(Wrappers.emptyWrapper()));
 	}
 }

@@ -24,7 +24,7 @@
                        @sort-change="sortChange"
                        @search-change="searchChange">
                 <template slot-scope="scope" slot="userId">
-                    <el-row>
+                    <el-row v-if="scope.row.userInfo">
                         <el-col :span="8" style="text-align: right">
                             <el-image :src="scope.row.userInfo.headimgUrl" style="width: 50px">
                                 <div slot="error" class="image-slot">
@@ -148,7 +148,6 @@
                 }).then(function () {
                     return delObj(row.id)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
                         message: '删除成功',
@@ -165,9 +164,8 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
+            handleUpdate: function (row, index, done, loading) {
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -176,7 +174,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**
@@ -185,9 +183,8 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
+            handleSave: function (row, done, loading) {
                 addObj(row).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -196,7 +193,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**

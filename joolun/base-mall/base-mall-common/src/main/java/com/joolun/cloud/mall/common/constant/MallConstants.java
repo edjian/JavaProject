@@ -93,4 +93,24 @@ public interface MallConstants {
 	String COUPON_USER_STATUS_0 = "0";
 	String COUPON_USER_STATUS_1 = "1";
 	String COUPON_USER_STATUS_2 = "2";
+
+	/**
+	 * 砍价状态（0：未开始；1：活动中；2：已过期）
+	 */
+	String BARGAIN_INFO_STATUS_0 = "0";
+	String BARGAIN_INFO_STATUS_1 = "1";
+	String BARGAIN_INFO_STATUS_2 = "2";
+
+	/**
+	 * 砍价记录状态（0：砍价中；1：完成砍价；2：已过期）
+	 */
+	String BARGAIN_USER_STATUS_0 = "0";
+	String BARGAIN_USER_STATUS_1 = "1";
+	String BARGAIN_USER_STATUS_2 = "2";
+
+	/**
+	 * 订单类型（0、普通订单；1、砍价订单）
+	 */
+	String ORDER_TYPE_0 = "0";
+	String ORDER_TYPE_1 = "1";
 }

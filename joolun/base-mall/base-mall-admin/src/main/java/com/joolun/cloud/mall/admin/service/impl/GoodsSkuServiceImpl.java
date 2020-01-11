@@ -8,11 +8,14 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
 import com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper;
 import com.joolun.cloud.mall.admin.service.GoodsSkuService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 商品sku
@@ -23,4 +26,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> implements GoodsSkuService {
 
+	@Override
+	public List<GoodsSku> listGoodsSkuBySpuId(String spuId) {
+		return baseMapper.listGoodsSkuBySpuId(spuId);
+	}
 }

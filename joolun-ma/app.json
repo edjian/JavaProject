@@ -20,7 +20,11 @@
     "pages/order/order-refunds/submit/index",
     "pages/user/user-points-record/index",
     "pages/coupon/coupon-user-list/index",
-    "pages/coupon/coupon-list/index"
+    "pages/coupon/coupon-list/index",
+    "pages/bargain/bargain-list/index",
+    "pages/bargain/bargain-detail/index",
+    "pages/bargain/bargain-user-list/index",
+    "pages/bargain/bargain-order-confirm/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",

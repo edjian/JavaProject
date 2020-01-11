@@ -1,6 +1,6 @@
 export default {
   title: 'JooLun',
-  logo: 'JooLun',
+  logo: 'JL',
   key: 'JooLun',   //配置主键,目前用于存储
   indexTitle: 'JooLun微信快速开发框架',
   whiteList: ['/login', '/404', '/401', '/lock'], // 配置无权限可以访问的页面

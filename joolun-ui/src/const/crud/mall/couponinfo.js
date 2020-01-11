@@ -9,7 +9,6 @@
 export const tableOption = {
     dialogType: 'drawer',
     border: true,
-    index: true,
     indexLabel: '序号',
     stripe: true,
     menuAlign: 'center',
@@ -165,9 +164,10 @@ export const tableOption = {
             hide: true,
             valueFormat: 'yyyy-MM-dd HH:mm:ss',
             rules: [{
+                type: 'array',
                 required: true,
                 message: '请选择时间范围',
-                trigger: 'blur'
+                trigger: 'change'
             }],
         },
         {
@@ -177,17 +177,18 @@ export const tableOption = {
             search: true,
             sortable: true,
             span: 24,
+            slot: true,
             rules: [{
                 required: true,
                 message: '请选择启用状态',
                 trigger: 'blur'
             }],
             dicData: [{
-                label: '启用',
-                value: '1'
-            },{
                 label: '关闭',
                 value: '0'
+            },{
+                label: '启用',
+                value: '1'
             }]
         },
         {

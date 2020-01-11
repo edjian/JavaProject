@@ -6,14 +6,14 @@
  * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
-const WxParse = require('../../../public/wxParse/wxParse.js');
-import Poster from '../../../components/wxa-plugin-canvas/poster/poster';
+const WxParse = require('../../../public/wxParse/wxParse.js')
+import Poster from '../../../components/wxa-plugin-canvas/poster/poster'
 const { base64src } = require('../../../utils/base64src.js')
 const app = getApp()
 
 Page({
   data: {
-    goodsDetail: {},
+    goodsSpu: null,
     goodsSpecData: [],
     goodsAppraises: [],
     currents: 1,
@@ -40,7 +40,7 @@ Page({
   },
   onLoad(options) {
     let id
-    if (options.scene){
+    if (options.scene){//接受二维码中参数
       id = decodeURIComponent(options.scene)
     }else{
       id = options.id
@@ -58,10 +58,10 @@ Page({
       })
   },
   onShareAppMessage: function () {
-    let goodsDetail = this.data.goodsDetail
-    let title = goodsDetail.name
-    let imageUrl = goodsDetail.picUrls[0]
-    let path = 'pages/goods/goods-detail/index?id=' + goodsDetail.id
+    let goodsSpu = this.data.goodsSpu
+    let title = goodsSpu.name
+    let imageUrl = goodsSpu.picUrls[0]
+    let path = 'pages/goods/goods-detail/index?id=' + goodsSpu.id
     return {
       title: title,
       path: path,
@@ -79,12 +79,12 @@ Page({
   goodsGet(id) {
     app.api.goodsGet(id)
       .then(res => {
-        let goodsDetail = res.data
+        let goodsSpu = res.data
         this.setData({
-          goodsDetail: goodsDetail
+          goodsSpu: goodsSpu
         })
         //html转wxml
-        WxParse.wxParse('description', 'html', goodsDetail.description, this, 0)
+        WxParse.wxParse('description', 'html', goodsSpu.description, this, 0)
       })
   },
   goodsSpecGet(spuId){
@@ -177,8 +177,8 @@ Page({
   },
   //收藏
   userCollect(){
-    let goodsDetail = this.data.goodsDetail
-    let collectId = goodsDetail.collectId
+    let goodsSpu = this.data.goodsSpu
+    let collectId = goodsSpu.collectId
     if (collectId){
       app.api.userCollectDel(collectId)
         .then(res => {
@@ -187,15 +187,15 @@ Page({
             icon: 'success',
             duration: 2000
           })
-          goodsDetail.collectId = null
+          goodsSpu.collectId = null
           this.setData({
-            goodsDetail: goodsDetail
+            goodsSpu: goodsSpu
           })
         })
     }else{
       app.api.userCollectAdd({
         type: '1',
-        relationIds: [goodsDetail.id]
+        relationIds: [goodsSpu.id]
       })
         .then(res => {
           wx.showToast({
@@ -203,9 +203,9 @@ Page({
             icon: 'success',
             duration: 2000
           })
-          goodsDetail.collectId = res.data[0].id
+          goodsSpu.collectId = res.data[0].id
           this.setData({
-            goodsDetail: goodsDetail
+            goodsSpu: goodsSpu
           })
         })
     }
@@ -242,7 +242,7 @@ Page({
   onCreatePoster() {
     app.api.qrCodeUnlimited({
       page: 'pages/goods/goods-detail/index',
-      scene: this.data.goodsDetail.id
+      scene: this.data.goodsSpu.id
     })
       .then(res => {
         let base64 = res.data
@@ -288,7 +288,7 @@ Page({
                 y: 810,
                 fontSize: 38,
                 baseLine: 'middle',
-                text: this.data.goodsDetail.name,
+                text: this.data.goodsSpu.name,
                 width: 570,
                 lineNum: 1,
                 color: '#080808',
@@ -305,7 +305,7 @@ Page({
                     color: '#ec1731',
                   },
                   {
-                    text: '¥' + this.data.goodsDetail.priceDown,
+                    text: '¥' + this.data.goodsSpu.priceDown,
                     fontSize: 36,
                     color: '#ec1731',
                     marginLeft: 30,
@@ -316,7 +316,7 @@ Page({
                 x: 522,
                 y: 895,
                 baseLine: 'middle',
-                text: '已售' + this.data.goodsDetail.saleNum,
+                text: '已售' + this.data.goodsSpu.saleNum,
                 fontSize: 28,
                 color: '#929292',
               },
@@ -367,7 +367,7 @@ Page({
                 height: 634,
                 x: 59,
                 y: 210,
-                url: this.data.goodsDetail.picUrls[0],
+                url: this.data.goodsSpu.picUrls[0],
               },
               {
                 width: 220,

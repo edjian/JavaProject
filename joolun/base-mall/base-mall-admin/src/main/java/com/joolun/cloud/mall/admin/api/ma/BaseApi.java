@@ -72,6 +72,10 @@ public class BaseApi {
 				((UserInfo) baseEntity).setId(mallUserId_session);
 			}else if (baseEntity instanceof CouponUser){
 				((CouponUser) baseEntity).setUserId(mallUserId_session);
+			}else if (baseEntity instanceof BargainUser){
+				((BargainUser) baseEntity).setUserId(mallUserId_session);
+			}else if (baseEntity instanceof BargainCut){
+				((BargainCut) baseEntity).setUserId(mallUserId_session);
 			}
 			return R.ok(baseEntity);
 		}

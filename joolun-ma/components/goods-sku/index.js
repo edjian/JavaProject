@@ -10,7 +10,7 @@ const app = getApp()
 
 Component({
   properties: {
-    goodsDetail: {
+    goodsSpu: {
       type: Object,
       value: []
     },
@@ -18,7 +18,7 @@ Component({
       type: Object,
       value: []
     },
-    skuData: {
+    goodsSku: {
       type: Object,
       value: []
     },
@@ -67,7 +67,7 @@ Component({
         goodsSpecData: goodsSpecData
       })
       let that = this
-      let skus = this.data.goodsDetail.skus
+      let skus = this.data.goodsSpu.skus
       skus.forEach(function (sku) {
         let i = 0
         sku.specs.forEach(function (spec2) {
@@ -79,7 +79,7 @@ Component({
         })
         if (i == goodsSpecData.length){
           that.setData({
-            skuData: sku
+            goodsSku: sku
           })
           let detail = {
             goodsSpecData: goodsSpecData
@@ -105,8 +105,8 @@ Component({
         })
       } catch (e) {}
       if (canDo){
-        let skuData = this.data.skuData
-        let goodsDetail = this.data.goodsDetail
+        let goodsSku = this.data.goodsSku
+        let goodsSpu = this.data.goodsSpu
         let specInfo = ''
         let goodsSpecData = this.data.goodsSpecData
         goodsSpecData.forEach(function (spec, index) {
@@ -123,13 +123,13 @@ Component({
           if (this.data.shoppingCartId){
             app.api.shoppingCartEdit({
               id: this.data.shoppingCartId,
-              spuId: goodsDetail.id,
-              skuId: skuData.id,
+              spuId: goodsSpu.id,
+              skuId: goodsSku.id,
               quantity: this.data.cartNum,
-              addPrice: skuData.salesPrice,
-              spuName: goodsDetail.name,
+              addPrice: goodsSku.salesPrice,
+              spuName: goodsSpu.name,
               specInfo: specInfo,
-              picUrl: skuData.picUrl ? skuData.picUrl : goodsDetail.picUrls[0]
+              picUrl: goodsSku.picUrl ? goodsSku.picUrl : goodsSpu.picUrls[0]
             })
               .then(res => {
                 wx.showToast({
@@ -143,13 +143,13 @@ Component({
               })
           }else{
             app.api.shoppingCartAdd({
-              spuId: goodsDetail.id,
-              skuId: skuData.id,
+              spuId: goodsSpu.id,
+              skuId: goodsSku.id,
               quantity: this.data.cartNum,
-              addPrice: skuData.salesPrice,
-              spuName: goodsDetail.name,
+              addPrice: goodsSku.salesPrice,
+              spuName: goodsSpu.name,
               specInfo: specInfo,
-              picUrl: skuData.picUrl ? skuData.picUrl : goodsDetail.picUrls[0]
+              picUrl: goodsSku.picUrl ? goodsSku.picUrl : goodsSpu.picUrls[0]
             })
               .then(res => {
                 wx.showToast({
@@ -167,21 +167,21 @@ Component({
           wx.setStorage({
             key: 'param-orderConfirm',
             data: [{
-              spuId: goodsDetail.id,
-              skuId: skuData.id,
+              spuId: goodsSpu.id,
+              skuId: goodsSku.id,
               quantity: this.data.cartNum,
-              salesPrice: skuData.salesPrice,
-              spuName: goodsDetail.name,
+              salesPrice: goodsSku.salesPrice,
+              spuName: goodsSpu.name,
               specInfo: specInfo,
-              picUrl: skuData.picUrl ? skuData.picUrl : goodsDetail.picUrls[0],
-              pointsDeductSwitch: goodsDetail.pointsDeductSwitch,
-              pointsDeductScale: goodsDetail.pointsDeductScale,
-              pointsDeductAmount: goodsDetail.pointsDeductAmount,
-              pointsGiveSwitch: goodsDetail.pointsGiveSwitch,
-              pointsGiveNum: goodsDetail.pointsGiveNum,
-              freightTemplat: goodsDetail.freightTemplat,
-              weight: skuData.weight,
-              volume: skuData.volume
+              picUrl: goodsSku.picUrl ? goodsSku.picUrl : goodsSpu.picUrls[0],
+              pointsDeductSwitch: goodsSpu.pointsDeductSwitch,
+              pointsDeductScale: goodsSpu.pointsDeductScale,
+              pointsDeductAmount: goodsSpu.pointsDeductAmount,
+              pointsGiveSwitch: goodsSpu.pointsGiveSwitch,
+              pointsGiveNum: goodsSpu.pointsGiveNum,
+              freightTemplat: goodsSpu.freightTemplat,
+              weight: goodsSku.weight,
+              volume: goodsSku.volume
             }]
           })
           wx.navigateTo({

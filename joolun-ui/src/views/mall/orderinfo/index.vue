@@ -93,6 +93,15 @@
                                 label="订单单号">
                         </el-table-column>
                         <el-table-column
+                                align="center"
+                                prop="salesPrice"
+                                label="订单类型"
+                                width="200">
+                            <template slot-scope="scope">
+                                <el-tag>{{scope.row.orderType == '0' ? '普通订单' : scope.row.orderType == '1' ? '砍价订单' : ''}}</el-tag>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
                                 align="left"
                                 prop="salesPrice"
                                 label="订单金额"
@@ -358,7 +367,7 @@
                             <img :src="item.picUrl" width="100%"/>
                         </el-col>
                         <el-col :span="13" style="text-align: left">
-                            <div class="spu-name">{{item.spuName}}</div>
+                            <div class="spu-name"><el-tag type="danger" v-if="scope.row.orderType != '0'">{{scope.row.orderType == '1' ? '砍价' : ''}}</el-tag> {{item.spuName}}</div>
                             <div class="spec-info">{{item.specInfo}}</div>
                         </el-col>
                         <el-col :span="8">
@@ -761,7 +770,6 @@
                 }).then(function () {
                     return delObj(row.id)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
                         message: '删除成功',
@@ -778,9 +786,8 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
+            handleUpdate: function (row, index, done, loading) {
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -789,7 +796,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**
@@ -798,9 +805,8 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
+            handleSave: function (row, done, loading) {
                 addObj(row).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -809,7 +815,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**

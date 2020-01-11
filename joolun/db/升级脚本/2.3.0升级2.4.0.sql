@@ -24,7 +24,7 @@ CREATE TABLE `base_mall`.`points_record` (
 ALTER TABLE `base_mall`.`order_info` ADD COLUMN `payment_points` INT NULL COMMENT '支付积分' AFTER `payment_price`; 
 ALTER TABLE `base_mall`.`order_item` ADD COLUMN `payment_points` INT NULL COMMENT '支付积分' AFTER `sales_price`; 
 
-CREATE TABLE `points_config` (
+CREATE TABLE `base_mall`.`points_config` (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'PK',
   `tenant_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属租户',
   `del_flag` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
@@ -238,5 +238,4 @@ CREATE TABLE `base_mall`.`freight_templat` (
   PRIMARY KEY (`id`),
   KEY `ids_tenant_id` (`tenant_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='运费模板';
-
 UPDATE `base_upms`.`sys_menu` SET `permission` = 'sys_tenant_index' WHERE `id` = '2304aae6101ef1b56160e5cfe63b997a';

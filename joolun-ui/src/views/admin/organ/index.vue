@@ -10,7 +10,7 @@
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
-        @row-del="rowDel">
+        @row-del="handleDel">
       </avue-crud>
     </basic-container>
   </div>
@@ -49,7 +49,7 @@
           this.tableData = response.data.data
         })
       },
-      rowDel: function(row, index) {
+      handleDel: function(row, index) {
         var _this = this
         this.$confirm('是否确认删除此数据', '提示', {
           confirmButtonText: '确定',
@@ -58,7 +58,6 @@
         }).then(function() {
           return delObj(row.id)
         }).then(data => {
-          _this.tableData.splice(index, 1)
           _this.$message({
             showClose: true,
             message: '删除成功',
@@ -74,9 +73,8 @@
        * @param done 为表单关闭函数
        *
        **/
-      handleUpdate: function(row, index, done) {
+      handleUpdate: function(row, index, done, loading) {
         putObj(row).then(data => {
-          this.tableData.splice(index, 1, Object.assign({}, row))
           this.$message({
             showClose: true,
             message: '修改成功',
@@ -85,7 +83,7 @@
           done()
           this.getPage()
         }).catch(() => {
-          done()
+          loading()
         })
       },
       /**
@@ -94,9 +92,8 @@
        * @param done 为表单关闭函数
        *
        **/
-      handleSave: function(row, done) {
+      handleSave: function(row, done, loading) {
         addObj(row).then(data => {
-          this.tableData.push(Object.assign({}, row))
           this.$message({
             showClose: true,
             message: '添加成功',
@@ -105,7 +102,7 @@
           done()
           this.getPage()
         }).catch(() => {
-          done()
+          loading()
         })
       },
       /**

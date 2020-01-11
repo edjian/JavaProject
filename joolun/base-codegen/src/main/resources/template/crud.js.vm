@@ -9,7 +9,6 @@
 export const tableOption = {
     dialogDrag: true,
     border: true,
-    index: true,
     indexLabel: '序号',
     stripe: true,
     menuAlign: 'center',

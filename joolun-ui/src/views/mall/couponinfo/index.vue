@@ -24,6 +24,16 @@
                        @row-del="handleDel"
                        @sort-change="sortChange"
                        @search-change="searchChange">
+                <template slot="enable" slot-scope="scope">
+                    <el-switch
+                            active-value="1"
+                            inactive-value="0"
+                            v-model="scope.row.enable"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                            @change="changeEnable(scope.row)">
+                    </el-switch>
+                </template>
                 <template slot="listGoodsSpuForm" slot-scope="scope">
                     <div>
                         <el-button size="mini" icon="el-icon-plus" type="primary" @click="showGoodsList">选择商品</el-button>
@@ -182,6 +192,14 @@
             }
         },
         methods: {
+            changeEnable(row){
+                putObj({
+                    id: row.id,
+                    enable: row.enable
+                }).then(data => {
+
+                })
+            },
             removeGoods(index){
                 this.form.listGoodsSpu.splice(index, 1)
             },
@@ -254,6 +272,18 @@
                 this.getPage(this.page)
             },
             beforeOpen(done,type){
+                if(type == 'add'){
+                    this.form.validTime = []
+                }else{
+                    if(this.form.expireType == '2'){
+                        let validTime = []
+                        validTime.push(this.form.validBeginTime)
+                        validTime.push(this.form.validEndTime)
+                        this.form.validTime = validTime
+                    }else{
+                        this.form.validTime = []
+                    }
+                }
                 if(type == 'edit'){//如果是修改操作，加载电子券的关联商品
                     if(this.form.suitType == '2' || this.form.suitType == '3'){
                         getObj(this.form.id).then(response => {
@@ -319,7 +349,6 @@
                 }).then(function () {
                     return delObj(row.id)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
                         message: '删除成功',
@@ -336,9 +365,10 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
-                if(!row.validTime){
-                    row.validTime = []
+            handleUpdate: function (row, index, done, loading) {
+                if(row.expireType == '2'){
+                    row.validBeginTime = row.validTime[0]
+                    row.validEndTime = row.validTime[1]
                 }
                 let selectionGoodsSpu = row.listGoodsSpu
                 if(selectionGoodsSpu){
@@ -351,7 +381,6 @@
                     row.listGoodsSpu = listGoodsSpu
                 }
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -360,7 +389,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**
@@ -369,9 +398,10 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
-                if(!row.validTime){
-                    row.validTime = []
+            handleSave: function (row, done, loading) {
+                if(row.expireType == '2'){
+                    row.validBeginTime = row.validTime[0]
+                    row.validEndTime = row.validTime[1]
                 }
                 row.listGoodsSpu = []
                 let selectionGoodsSpu = row.listGoodsSpu
@@ -385,7 +415,6 @@
                     row.listGoodsSpu = listGoodsSpu
                 }
                 addObj(row).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -394,7 +423,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                    done()
+                    loading()
                 })
             },
             /**

@@ -16,7 +16,7 @@
         <template slot="title">
           <i :class="item[iconKey]"></i>
           <span slot="title"
-                :class="{'el-menu--display':collapse && first}">{{item[labelKey]}}</span>
+                v-if="!collapse">{{item[labelKey]}}</span>
         </template>
         <template v-for="(child,cindex) in item[childrenKey]">
           <el-menu-item :index="child[pathKey],cindex"

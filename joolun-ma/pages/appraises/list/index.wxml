@@ -8,7 +8,7 @@
 -->
 <view>
   <view class="cu-list menu-avatar comment">
-    <view class="cu-item" wx:for="{{goodsAppraises}}" wx:key>
+    <view class="cu-item" wx:for="{{goodsAppraises}}" wx:key="index">
       <view class="cu-avatar round" style="background-image:url({{item.headimgUrl}})">{{!item.headimgUrl ? '头' : ''}}</view>
       <view class="content">
         <view class="text-black flex">

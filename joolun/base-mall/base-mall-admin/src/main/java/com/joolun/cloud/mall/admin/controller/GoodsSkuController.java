@@ -12,13 +12,20 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
 import com.joolun.cloud.mall.admin.service.GoodsSkuService;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * 商品sku
@@ -34,6 +41,7 @@ import io.swagger.annotations.Api;
 public class GoodsSkuController {
 
     private final GoodsSkuService goodsSkuService;
+	private final GoodsSpuService goodsSpuService;
 
     /**
     * 分页查询
@@ -47,6 +55,32 @@ public class GoodsSkuController {
         return R.ok(goodsSkuService.page(page,Wrappers.query(goodsSku)));
     }
 
+	/**
+	 * list查询
+	 * @param spuId
+	 * @return
+	 */
+	@GetMapping("/list/{spuId}")
+	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+	public List<GoodsSku> getList(@PathVariable("spuId") String spuId) {
+		GoodsSpu goodsSpu = goodsSpuService.getById(spuId);
+		List<GoodsSku> listRs = goodsSkuService.listGoodsSkuBySpuId(spuId).stream()
+				.map(goodsSku -> {
+					if(MallConstants.SPU_SPEC_TYPE_0.equals(goodsSpu.getSpecType())){
+						goodsSku.setName("统一规格");
+					}else{
+						AtomicReference<String> name = new AtomicReference<>("");
+						goodsSku.getSpecs().forEach(goodsSkuSpecValue -> {
+							name.set(name +goodsSkuSpecValue.getSpecValueName() + "|");
+						});
+						String nameStr = name.get();
+						goodsSku.setName(nameStr.substring(0,nameStr.length()-1));
+					}
+					goodsSku.setName(goodsSku.getName() + "  销售价：¥" + goodsSku.getSalesPrice());
+					return goodsSku;
+				}).collect(Collectors.toList());
+		return listRs;
+	}
 
     /**
     * 通过id查询商品sku

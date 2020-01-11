@@ -20,7 +20,7 @@
         <view class="content">暂无物流信息</view>
       </view>
     </view>
-    <view class="cu-timeline" wx:for="{{orderLogistics.listOrderLogisticsDetail}}" wx:key>
+    <view class="cu-timeline" wx:for="{{orderLogistics.listOrderLogisticsDetail}}" wx:key="index">
       <view class="cu-item {{index == 0 ? 'text-red cuIcon-location' : ''}}">
         <view class="content {{index == 0 ? 'bg-red' : ''}}">
           <view class="text-gray">

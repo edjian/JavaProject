@@ -25,7 +25,11 @@ import java.util.List;
  */
 public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
+	IPage<GoodsSpu> selectPage1(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu);
+
 	GoodsSpu selectById2(String id);
+
+	GoodsSpu selectById4(String id);
 
 	GoodsSpu selectOneByShoppingCart(String id);
 

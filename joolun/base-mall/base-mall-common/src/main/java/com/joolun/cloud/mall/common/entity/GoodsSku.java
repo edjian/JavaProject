@@ -98,4 +98,7 @@ private static final long serialVersionUID = 1L;
 
 	@TableField(exist = false)
 	private List<GoodsSkuSpecValue> specs;
+
+	@TableField(exist = false)
+	private String name;
 }

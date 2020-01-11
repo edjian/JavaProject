@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 商城订单详情
  *
@@ -39,7 +41,11 @@ public class OrderItemApi {
     * @return R
     */
     @GetMapping("/{id}")
-    public R getById(@PathVariable("id") String id){
+    public R getById(HttpServletRequest request, @PathVariable("id") String id){
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
         return R.ok(orderItemService.getById2(id));
     }
 

@@ -80,7 +80,12 @@
 	<select id="selectPage2" resultMap="couponInfoMap3">
 		SELECT
 			<include refid="couponInfoSql"/>
-			,coupon_user.`id` coupon_user_id
+			<if test="query3.userId != null">
+				,coupon_user.`id` coupon_user_id
+			</if>
+			<if test="query3.userId == null">
+				,null coupon_user_id
+			</if>
 		FROM coupon_info coupon_info
 		<if test="query2.spuId != null">
 			LEFT JOIN coupon_goods coupon_goods
@@ -94,6 +99,7 @@
 			AND coupon_user.`valid_end_time` > now()
 		</if>
 		<where>
+			AND coupon_info.`enable` = '1'
 			AND (
 				coupon_info.`expire_type` = '1'
 				OR

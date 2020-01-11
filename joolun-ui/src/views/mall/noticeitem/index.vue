@@ -180,7 +180,6 @@
                 }).then(function () {
                     return delObj(row.id)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
                         message: '删除成功',
@@ -197,10 +196,9 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
+            handleUpdate: function (row, index, done, loading) {
                 row.url = row.url[0]
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -209,7 +207,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                  done()
+                    loading()
                 })
             },
             /**
@@ -218,14 +216,13 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
+            handleSave: function (row, done, loading) {
                 row.url = row.url[0]
                 addObj(Object.assign({
                     appId: this.appId,
                     noticeType: this.noticeType,
                     type: '1'
                 }, row)).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -234,7 +231,7 @@
                     done()
                     this.getPage(this.page)
                 }).catch(() => {
-                  done()
+                    loading()
                 })
             },
             /**

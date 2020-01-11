@@ -299,7 +299,11 @@ public class OrderInfoApi {
 	 * @return R
 	 */
 	@GetMapping("/orderlogistics/{logisticsId}")
-	public R getOrderLogistics(@PathVariable("logisticsId") String logisticsId){
+	public R getOrderLogistics(HttpServletRequest request, @PathVariable("logisticsId") String logisticsId){
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
 		return R.ok(orderLogisticsService.getById(logisticsId));
 	}
 }

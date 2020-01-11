@@ -1,6 +1,6 @@
 {
   "name": "joolun-ui",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "element-ui": "^2.13.0",
-    "@smallwei/avue": "^2.3.3",
+    "@smallwei/avue": "^2.3.5",
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "babel-polyfill": "^6.26.0",

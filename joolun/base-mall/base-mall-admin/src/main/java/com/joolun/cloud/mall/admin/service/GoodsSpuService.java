@@ -22,6 +22,8 @@ import com.joolun.cloud.mall.common.entity.GoodsSpu;
  */
 public interface GoodsSpuService extends IService<GoodsSpu> {
 
+	IPage<GoodsSpu> page1(IPage<GoodsSpu> page, GoodsSpu goodsSpu);
+
 	boolean save1(GoodsSpu goodsSpu);
 
 	boolean updateById1(GoodsSpu goodsSpu);

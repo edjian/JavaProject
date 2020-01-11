@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -61,7 +62,11 @@ public class OrderRefundsApi {
      * @return
      */
     @GetMapping("/page")
-    public R getOrderRefundsPage(Page page, OrderRefunds orderRefunds) {
+    public R getOrderRefundsPage(HttpServletRequest request, Page page, OrderRefunds orderRefunds) {
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
         return R.ok(orderRefundsService.page(page, Wrappers.query(orderRefunds)));
     }
 
@@ -71,7 +76,11 @@ public class OrderRefundsApi {
      * @return R
      */
     @GetMapping("/{id}")
-    public R getById(@PathVariable("id") String id) {
+    public R getById(HttpServletRequest request, @PathVariable("id") String id) {
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
         return R.ok(orderRefundsService.getById(id));
     }
 
@@ -81,7 +90,11 @@ public class OrderRefundsApi {
      * @return R
      */
     @PostMapping
-    public R save(@RequestBody OrderRefunds orderRefunds) {
+    public R save(HttpServletRequest request, @RequestBody OrderRefunds orderRefunds) {
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
         return R.ok(orderRefundsService.saveRefunds(orderRefunds));
     }
 
@@ -91,18 +104,12 @@ public class OrderRefundsApi {
      * @return R
      */
     @PutMapping
-    public R updateById(@RequestBody OrderRefunds orderRefunds) {
+    public R updateById(HttpServletRequest request, @RequestBody OrderRefunds orderRefunds) {
+		R checkThirdSession = BaseApi.checkThirdSession(null, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
         return R.ok(orderRefundsService.updateById(orderRefunds));
-    }
-
-    /**
-     * 通过id删除退款详情
-     * @param id
-     * @return R
-     */
-    @DeleteMapping("/{id}")
-    public R removeById(@PathVariable String id) {
-        return R.ok(orderRefundsService.removeById(id));
     }
 
 	/**

@@ -8,19 +8,19 @@
 -->
 <view class='product-bg'>
   <swiper class="screen-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="change">
-    <swiper-item wx:for="{{goodsDetail.picUrls}}" wx:key>
+    <swiper-item wx:for="{{goodsSpu.picUrls}}" wx:key="index">
       <image src="{{item}}" mode="aspectFill"></image>
     </swiper-item>
   </swiper>
-  <view class='page-index cu-tag round'>{{currents}}/{{goodsDetail.picUrls.length || 1}}</view>
+  <view class='page-index cu-tag round'>{{currents}}/{{goodsSpu.picUrls.length || 1}}</view>
 </view>
 <view class="cu-bar bg-white">
   <view class="text-xxl padding-tb-xs padding-lr-sm">
-    <text class="text-price text-red text-bold">{{goodsDetail.priceDown}}</text>
-    <text wx:if="{{goodsDetail.priceDown != goodsDetail.priceUp}}"
+    <text class="text-price text-red text-bold">{{goodsSpu.priceDown}}</text>
+    <text wx:if="{{goodsSpu.priceDown != goodsSpu.priceUp}}"
       class="text-red margin-lr-xs">-</text>
-    <text wx:if="{{goodsDetail.priceDown != goodsDetail.priceUp}}"
-     class="text-red text-bold">{{goodsDetail.priceUp}}</text>
+    <text wx:if="{{goodsSpu.priceDown != goodsSpu.priceUp}}"
+     class="text-red text-bold">{{goodsSpu.priceUp}}</text>
   </view>
   <button class="cu-btn icon margin-right" bindtap="shareShow">
     <text class="cuIcon-share text-red"></text>
@@ -42,12 +42,12 @@
 
 <view class="cu-bar bg-white">
   <view class="text-lg text-bold padding-tb-xs padding-lr-sm">
-    <text class="text-black">{{goodsDetail.name}}</text>
+    <text class="text-black">{{goodsSpu.name}}</text>
   </view>
 </view>
 <view class="cu-bar bg-white">
   <view class="text-sm padding-tb-xs padding-lr-sm">
-    <text class="text-gray">{{goodsDetail.sellPoint}}</text>
+    <text class="text-gray">{{goodsSpu.sellPoint}}</text>
   </view>
 </view>
 
@@ -58,25 +58,25 @@
     </view>
     <view class="flex-treble text-df">
       <text class="cuIcon-location text-black">江苏南京</text>
-      <text class="text-black" wx:if="{{goodsDetail.freightTemplat}}"> | 运费：{{goodsDetail.freightTemplat.type == '2' ? '全国包邮' : '￥'+goodsDetail.freightTemplat.firstFreight}}</text>
+      <text class="text-black" wx:if="{{goodsSpu.freightTemplat}}"> | 运费：{{goodsSpu.freightTemplat.type == '2' ? '全国包邮' : '￥'+goodsSpu.freightTemplat.firstFreight}}</text>
     </view>
-    <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsDetail.saleNum}}</view>
+    <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsSpu.saleNum}}</view>
   </view>
 </view>
 
-<view class="cu-bar bg-white margin-top-sm" wx:if="{{goodsDetail.pointsGiveSwitch == '1' || goodsDetail.pointsDeductSwitch == '1'}}">
+<view class="cu-bar bg-white margin-top-sm" wx:if="{{goodsSpu.pointsGiveSwitch == '1' || goodsSpu.pointsDeductSwitch == '1'}}">
   <view class="flex response">
     <view class="flex-sub text-df">
       <view class="text-gray margin-left-sm">优惠</view>
     </view>
     <view class="flex-treble text-sm">
-      <view wx:if="{{goodsDetail.pointsGiveSwitch == '1'}}">
+      <view wx:if="{{goodsSpu.pointsGiveSwitch == '1'}}">
         <text class="cu-tag bg-red light sm radius">积分赠送</text>
-        <text class="text-black margin-left-xs">购买可获得{{goodsDetail.pointsGiveNum}}积分</text>
+        <text class="text-black margin-left-xs">购买可获得{{goodsSpu.pointsGiveNum}}积分</text>
       </view>
-      <view class="margin-top-xs" wx:if="{{goodsDetail.pointsDeductSwitch == '1'}}">
+      <view class="margin-top-xs" wx:if="{{goodsSpu.pointsDeductSwitch == '1'}}">
         <text class="cu-tag bg-red light sm radius">积分抵扣</text>
-        <text class="text-black margin-left-xs">1积分可抵{{goodsDetail.pointsDeductAmount}}元，最多可抵{{goodsDetail.pointsDeductScale}}%</text>
+        <text class="text-black margin-left-xs">1积分可抵{{goodsSpu.pointsDeductAmount}}元，最多可抵{{goodsSpu.pointsDeductScale}}%</text>
       </view>
     </view>
     <view class="flex-sub text-df text-gray text-right"></view>
@@ -101,7 +101,7 @@
     <view class="padding-xl">
       <view class="text-lg text-center">基础服务</view>
       <view class="cu-list text-left solid-bottom">
-        <view class="cu-item" wx:for="{{serviceList}}" wx:key>
+        <view class="cu-item" wx:for="{{serviceList}}" wx:key="index">
           <view class="content padding-tb-sm">
             <view><text class="cuIcon-roundcheckfill text-orange"></text> {{item.name}}</view>
             <view class="text-gray text-sm" wx:if="{{item.desc}}">{{item.desc}}</view>
@@ -118,7 +118,7 @@
     <view class="padding-xl">
       <view class="text-lg text-center">优惠券</view>
       <view class="cu-list text-left">
-        <view class="cu-item padding-xs" wx:for="{{couponInfoList}}" wx:key>
+        <view class="cu-item padding-xs" wx:for="{{couponInfoList}}" wx:key="index">
           <coupon-info
             couponInfo="{{item}}"
             toUse="{{false}}"
@@ -130,15 +130,15 @@
   </view>
 </view>
 
-<view class="cu-bar bg-white" wx:if="{{goodsDetail.specType == '1'}}">
+<view class="cu-bar bg-white" wx:if="{{goodsSpu.specType == '1'}}">
   <view class="flex response" bindtap="showModalSku">
     <view class="flex-sub text-df">
       <view class="text-gray margin-left-sm">选择</view>
     </view>
     <view class="flex-treble text-df text-black">
-      <view class="display-ib" wx:for="{{goodsSpecData}}" wx:key>
+      <view class="display-ib" wx:for="{{goodsSpecData}}" wx:key="index">
         <view class="display-ib" wx:if="{{!item.checked}}">{{item.value}}</view>
-        <view class="display-ib" wx:if="{{item.checked}}" wx:for="{{item.leaf}}" wx:for-item="item2" wx:key>
+        <view class="display-ib" wx:if="{{item.checked}}" wx:for="{{item.leaf}}" wx:for-item="item2" wx:key="index">
           <view class="display-ib" wx:if="{{item.checked == item2.id}}">{{item2.value}}</view>
         </view>
         <view class="display-ib" wx:if="{{goodsSpecData.length != (index+1)}}">,</view>
@@ -155,14 +155,14 @@
       <view class="flex-sub text-df">
         <view class="text-black margin-left-sm">宝贝评价（{{goodsAppraises.total}}）</view>
       </view>
-      <navigator url='/pages/appraises/list/index?spuId={{goodsDetail.id}}' hover-class='none'
+      <navigator url='/pages/appraises/list/index?spuId={{goodsSpu.id}}' hover-class='none'
        class="flex-sub text-df text-orange text-right margin-right-sm" wx:if="{{goodsAppraises.total > 0}}">
         查看全部<text class="cuIcon-right"></text>
       </navigator>
     </view>
 </view>
 <view class="cu-list menu-avatar comment">
-  <navigator url='/pages/appraises/list/index?spuId={{goodsDetail.id}}' hover-class='none' class="cu-item" wx:for="{{goodsAppraises.records}}" wx:key>
+  <navigator url='/pages/appraises/list/index?spuId={{goodsSpu.id}}' hover-class='none' class="cu-item" wx:for="{{goodsAppraises.records}}" wx:key="index">
     <view class="cu-avatar round" style="background-image:url({{item.headimgUrl}})">{{!item.headimgUrl ? '头' : ''}}</view>
     <view class="content">
       <view class="text-black">
@@ -193,8 +193,8 @@
     客服
   </button>
   <view class="action" bindtap="userCollect">
-    <view class="cuIcon-{{goodsDetail.collectId ? 'likefill text-red' : 'like'}}"></view>
-    {{goodsDetail.collectId ? '已收藏' : '收藏'}}
+    <view class="cuIcon-{{goodsSpu.collectId ? 'likefill text-red' : 'like'}}"></view>
+    {{goodsSpu.collectId ? '已收藏' : '收藏'}}
   </view>
   <navigator class="action" open-type='switchTab' url='/pages/shopping-cart/index'>
     <view class="cuIcon-cart">
@@ -210,15 +210,15 @@
 <!-- html转wxml -->
 <import src="/public/wxParse/wxParse.wxml"/>
 <goods-sku
-  goodsDetail="{{goodsDetail}}"
+  goodsSpu="{{goodsSpu}}"
   goodsSpecData="{{goodsSpecData}}"
-  skuData="{{goodsDetail.specType == '0' ? goodsDetail.skus[0] : []}}"
+  goodsSku="{{goodsSpu.specType == '0' ? goodsSpu.skus[0] : []}}"
   modalSku="{{modalSku}}"
   modalSkuType="{{modalSkuType}}"
   bind:changeSpec="changeSpec"
   bind:operateCartEvent="operateCartEvent"
 />
-<view class="cu-modal {{goodsDetail.shelf=='0'?'show':''}}">
+<view class="cu-modal {{goodsSpu.shelf=='0'?'show':''}}">
   <view class="cu-dialog">
     <view class="cu-bar bg-white justify-end">
       <view class="content">提示</view>

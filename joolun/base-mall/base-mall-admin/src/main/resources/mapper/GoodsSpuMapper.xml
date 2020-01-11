@@ -55,6 +55,13 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="goodsSpuMap4" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
+		<collection property="freightTemplat" ofType="com.joolun.cloud.mall.common.entity.FreightTemplat"
+					select="com.joolun.cloud.mall.admin.mapper.FreightTemplatMapper.selectById"
+					column="{id=freight_templat_id}">
+		</collection>
+	</resultMap>
+
 	<sql id="goodsSpuSql">
 		goods_spu.`id`,
 		goods_spu.`tenant_id`,
@@ -109,6 +116,35 @@
 		goods_spu.`freight_templat_id`
 	</sql>
 
+	<select id="selectPage1" resultMap="goodsSpuMap">
+		SELECT
+		<include refid="goodsSpuSql2"/>
+		FROM goods_spu goods_spu
+		<where>
+			<if test="query.shelf != null">
+				AND goods_spu.`shelf` = #{query.shelf}
+			</if>
+			<if test="query.categorySecond != null">
+				AND goods_spu.`category_second` = #{query.categorySecond}
+			</if>
+			<if test="query.name != null">
+				AND goods_spu.`name` LIKE CONCAT('%',#{query.name},'%')
+			</if>
+			<if test="query.spuCode != null">
+				AND goods_spu.`spu_code` = #{query.spuCode}
+			</if>
+			<if test="query.specType != null">
+				AND goods_spu.`spec_type` = #{query.specType}
+			</if>
+			<if test="query.pointsGiveSwitch != null">
+				AND goods_spu.`points_give_switch` = #{query.pointsGiveSwitch}
+			</if>
+			<if test="query.pointsDeductSwitch != null">
+				AND goods_spu.`points_deduct_switch` = #{query.pointsDeductSwitch}
+			</if>
+		</where>
+	</select>
+
 	<select id="selectById2" resultMap="goodsSpuMap2">
 		SELECT
 			<include refid="goodsSpuSql"/>
@@ -132,7 +168,7 @@
 		WHERE coupon_goods.`coupon_id` = #{couponId}
 	</select>
 
-	<select id="selectPage2" resultMap="goodsSpuMap">
+	<select id="selectPage2" resultMap="goodsSpuMap3">
 		SELECT
 		<include refid="goodsSpuSql2"/>
 		FROM goods_spu goods_spu
@@ -154,5 +190,12 @@
 				AND coupon_goods.`coupon_id` = #{query2.couponId}
 			</if>
 		</where>
+	</select>
+
+	<select id="selectById4" resultMap="goodsSpuMap4">
+		SELECT
+		<include refid="goodsSpuSql"/>
+		FROM goods_spu goods_spu
+		WHERE goods_spu.`id` = #{id}
 	</select>
 </mapper>

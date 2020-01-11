@@ -16,7 +16,7 @@
 </view>
 <view class="margin-top-bar">
   <swiper class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-    <swiper-item wx:for="{{swiperData}}" wx:key bindtap="jumpPage" data-page="{{item.page}}">
+    <swiper-item wx:for="{{swiperData}}" wx:key="index" bindtap="jumpPage" data-page="{{item.page}}">
       <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='1'}}"></image>
       <video src="{{item.url}}" wx:if="{{item.type=='1'}}" controls></video>
     </swiper-item>
@@ -25,7 +25,7 @@
   <view class='adsec bg-yellow light solid-bottom' wx-if="{{noticeData.length > 0}}">
     <view class='adsec-icon text-xl margin-right-xs margin-left-xs'><text class="cuIcon-notification text-red"></text></view>
     <swiper class="swiper_container" autoplay="true" circular="true" interval="6000">
-      <swiper-item wx:for="{{noticeData}}" wx:key bindtap="jumpPage" data-page="{{item.page}}">
+      <swiper-item wx:for="{{noticeData}}" wx:key="index" bindtap="jumpPage" data-page="{{item.page}}">
         <view class="text-orange text-sm">
           <text class="cu-tag round sm bg-red" style="margin-bottom:8rpx">{{item.tag}}</text>
           {{item.content}}<text wx:if="{{item.page}}" class='cuIcon-right'></text>
@@ -42,27 +42,27 @@
       </navigator>
     </view>
     <view class="cu-item">
+      <navigator url="/pages/bargain/bargain-list/index" hover-class="none">
+        <view class="lg text-orange cuIcon-cardboardforbid"></view>
+        <text class="text-black">砍价活动</text>
+      </navigator>
+    </view>
+    <view class="cu-item">
       <navigator url="/pages/coupon/coupon-list/index" hover-class="none">
-        <view class="lg text-orange cuIcon-cardboard"></view>
+        <view class="lg text-orange cuIcon-ticket"></view>
         <text class="text-black">领优惠券</text>
-      </navigator>
-    </view>
-    <view class="cu-item">
-      <navigator url="/pages/user/user-collect/index" hover-class="none">
-        <view class="lg text-red cuIcon-like"></view>
-        <text class="text-black">我的收藏</text>
-      </navigator>
-    </view>
-    <view class="cu-item">
-      <navigator url="/pages/order/order-list/index" hover-class="none">
-        <view class="lg text-green cuIcon-form"></view>
-        <text class="text-black">我的订单</text>
       </navigator>
     </view>
     <view class="cu-item">
       <navigator url="/pages/user/user-points-record/index" hover-class="none">
         <view class="lg text-pink cuIcon-medal"></view>
         <text class="text-black">我的积分</text>
+      </navigator>
+    </view>
+    <view class="cu-item">
+      <navigator url="/pages/user/user-collect/index" hover-class="none">
+        <view class="lg text-red cuIcon-like"></view>
+        <text class="text-black">我的收藏</text>
       </navigator>
     </view>
   </view>
@@ -78,7 +78,7 @@
     </view>
     <view class='wrapper-list bg-white radius'>
       <scroll-view class="scroll-view_x" scroll-x style="width:auto;overflow:hidden;">
-        <block wx:for="{{goodsListHot}}" wx:key>
+        <block wx:for="{{goodsListHot}}" wx:key="index">
           <navigator hover-class="none" url='/pages/goods/goods-detail/index?id={{item.id}}' class='item'>
             <view class='img-box'>
               <image src="{{item.picUrls[0] ? item.picUrls[0] : '/public/img/no_pic.png'}}"></image>
@@ -102,7 +102,7 @@
     </view>
     <view class='wrapper-list'>
       <scroll-view class="scroll-view_x" scroll-x style="width:auto;overflow:hidden;">
-        <block wx:for="{{goodsListNew}}" wx:key>
+        <block wx:for="{{goodsListNew}}" wx:key="index">
           <navigator hover-class="none" url='/pages/goods/goods-detail/index?id={{item.id}}' class='item'>
             <view class='img-box'>
               <image src="{{item.picUrls[0] ? item.picUrls[0] : '/public/img/no_pic.png'}}"></image>

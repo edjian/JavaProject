@@ -105,8 +105,8 @@ public class CouponUserApi {
 			couponUser.setValidEndTime(LocalDateTime.now().plusDays(cuponInfo.getValidDays()));
 		}
 		if(MallConstants.COUPON_EXPIRE_TYPE_2.equals(cuponInfo.getExpireType())){
-			couponUser.setValidBeginTime(cuponInfo.getValidTime().get(0));
-			couponUser.setValidEndTime(cuponInfo.getValidTime().get(1));
+			couponUser.setValidBeginTime(cuponInfo.getValidBeginTime());
+			couponUser.setValidEndTime(cuponInfo.getValidEndTime());
 		}
 		couponUserService.receiveCoupon(couponUser, cuponInfo);
         return R.ok(couponUser);

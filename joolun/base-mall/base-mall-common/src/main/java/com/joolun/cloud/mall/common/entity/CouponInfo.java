@@ -15,7 +15,6 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -124,31 +123,6 @@ public class CouponInfo extends Model<CouponInfo> {
 	private CouponUser couponUser;
 
 	@TableField(exist = false)
-	private List<LocalDateTime> validTime;
-
-	@TableField(exist = false)
 	private List<GoodsSpu> listGoodsSpu;
 
-	public List<LocalDateTime> getValidTime(){
-		List<LocalDateTime> rs = new ArrayList<>();
-		if(this.validBeginTime != null && this.validEndTime != null){
-			rs.add(this.validBeginTime);
-			rs.add(this.validEndTime);
-		}
-		return rs;
-	}
-
-	public LocalDateTime getValidBeginTime(){
-		if(this.validTime != null && this.validTime.size() == 2){
-			return this.validTime.get(0);
-		}
-		return null;
-	}
-
-	public LocalDateTime getValidEndTime(){
-		if(this.validTime != null && this.validTime.size() == 2){
-			return this.validTime.get(1);
-		}
-		return null;
-	}
 }

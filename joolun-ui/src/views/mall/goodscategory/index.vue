@@ -14,6 +14,8 @@
                  :permission="permissionList"
                  :table-loading="tableLoading"
                  :option="tableOption"
+                 :before-open="beforeOpen"
+                 v-model="form"
                  @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
@@ -46,6 +48,7 @@
         name: 'goodscategory',
         data() {
             return {
+                form: {},
                 tableData: [],
                 tableLoading: false,
                 tableOption: tableOption,
@@ -68,18 +71,19 @@
             }
         },
         methods: {
+            beforeOpen(done,type){
+                if(type == 'add'){
+                  this.form.picUrl = []
+                }
+                if(type == 'edit'){
+                  this.form.picUrl = [this.form.picUrl]
+                }
+                done()
+            },
             getPage() {
                 this.tableLoading = true
                 fetchTree().then(response => {
                     let tableData = response.data.data
-                    tableData.forEach(item => {
-                        item.picUrl = item.picUrl ? [item.picUrl] : []
-                        if(item.children){
-                            item.children.forEach(item2 => {
-                                item2.picUrl = item2.picUrl ? [item2.picUrl] : []
-                            })
-                        }
-                    })
                     this.tableData = tableData
                     this.tableLoading = false
                 }).catch(() => {
@@ -101,7 +105,6 @@
                 }).then(function () {
                     return delObj(row.id)
                 }).then(data => {
-                    _this.tableData.splice(index, 1)
                     _this.$message({
                         showClose: true,
                         message: '删除成功',
@@ -118,10 +121,9 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate: function (row, index, done) {
+            handleUpdate: function (row, index, done, loading) {
                 row.picUrl = row.picUrl.length > 0 ? row.picUrl[0] : ''
                 putObj(row).then(data => {
-                    this.tableData.splice(index, 1, Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -130,7 +132,7 @@
                     done()
                     this.getPage()
                 }).catch(() => {
-                  done()
+                    loading()
                 })
             },
             /**
@@ -139,10 +141,9 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleSave: function (row, done) {
-                row.picUrl = row.picUrl[0]
+            handleSave: function (row, done, loading) {
+                row.picUrl = row.picUrl.length > 0 ? row.picUrl[0] : ''
                 addObj(row).then(data => {
-                    this.tableData.push(Object.assign({}, row))
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -151,7 +152,7 @@
                     done()
                     this.getPage()
                 }).catch(() => {
-                  done()
+                    loading()
                 })
             },
             /**

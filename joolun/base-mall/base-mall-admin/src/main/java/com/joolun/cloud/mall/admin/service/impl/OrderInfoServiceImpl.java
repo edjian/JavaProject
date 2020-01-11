@@ -27,6 +27,7 @@ import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
+import com.joolun.cloud.mall.admin.mapper.BargainUserMapper;
 import com.joolun.cloud.mall.admin.mapper.GoodsSkuSpecValueMapper;
 import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
@@ -77,6 +78,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	private final UserInfoService userInfoService;
 	private final FeignWxPayService feignWxPayService;
 	private final CouponUserService couponUserService;
+	private final BargainUserMapper bargainUserMapper;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -415,6 +417,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 		UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
 		userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsGiveAmount.get());
 		userInfoService.updateById(userInfo);
+		//更新砍价记录
+		if(MallConstants.ORDER_TYPE_1.equals(orderInfo.getOrderType())){
+			BargainUser bargainUser = bargainUserMapper.selectById(orderInfo.getRelationId());
+			bargainUser.setIsBuy(CommonConstants.YES);
+			bargainUser.setOrderId(orderInfo.getId());
+			bargainUserMapper.updateById(bargainUser);
+		}
 	}
 
 	@Override

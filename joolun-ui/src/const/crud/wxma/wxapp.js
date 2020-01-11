@@ -21,6 +21,7 @@ export const tableOption = {
   viewBtn: true,
   expand: true,
   defaultExpandAll: true,
+  labelWidth: 120,
   column: [
     {
       label: '小程序名称',
@@ -28,6 +29,7 @@ export const tableOption = {
       align:'left',
       search:true,
       slot:true,
+      display: false,
       rules: [{
         required: true,
         message: "请输入小程序名称",
@@ -38,13 +40,15 @@ export const tableOption = {
       label: '微信原始标识',
       prop: 'weixinSign',
       search:true,
-      hide:true
+      hide:true,
+      display: false
     },
     {
       label: 'AppID',
       prop: 'id',
       search:true,
-      hide:true
+      hide:true,
+      display: false
     }
   ],
   group:[
@@ -136,17 +140,20 @@ export const tableOption = {
       column: [
         {
           label: '商户号',
-          prop: 'mchId'
+          prop: 'mchId',
+          tip: '如果不配商城将无法下单'
         },
         {
           label: '商户密钥',
           type:'password',
-          prop: 'mchKey'
+          prop: 'mchKey',
+          tip: '如果不配商城将无法下单'
         },
         {
           label: 'p12证书',
           prop: 'keyPath',
-          formslot: true
+          formslot: true,
+          tip: '如果不配商城退款功能将无法使用'
         }
       ]
     }]

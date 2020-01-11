@@ -11,19 +11,19 @@
 
 <mapper namespace="com.joolun.cloud.mall.admin.mapper.FreightTemplatMapper">
 
-  <resultMap id="freightTemplatMap" type="com.joolun.cloud.mall.common.entity.FreightTemplat">
-                              <id property="id" column="id"/>
-                                        <result property="tenantId" column="tenant_id"/>
-                                        <result property="delFlag" column="del_flag"/>
-                                        <result property="createTime" column="create_time"/>
-                                        <result property="updateTime" column="update_time"/>
-                                        <result property="sort" column="sort"/>
-                                        <result property="name" column="name"/>
-                                        <result property="type" column="type"/>
-                                        <result property="chargeType" column="charge_type"/>
-                                        <result property="firstNum" column="first_num"/>
-                                        <result property="firstFreight" column="first_freight"/>
-                                        <result property="continueNum" column="continue_num"/>
-                                        <result property="continueFreight" column="continue_freight"/>
-                  </resultMap>
+	<resultMap id="freightTemplatMap" type="com.joolun.cloud.mall.common.entity.FreightTemplat">
+		<id property="id" column="id"/>
+		<result property="tenantId" column="tenant_id"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="sort" column="sort"/>
+		<result property="name" column="name"/>
+		<result property="type" column="type"/>
+		<result property="chargeType" column="charge_type"/>
+		<result property="firstNum" column="first_num"/>
+		<result property="firstFreight" column="first_freight"/>
+		<result property="continueNum" column="continue_num"/>
+		<result property="continueFreight" column="continue_freight"/>
+	</resultMap>
 </mapper>

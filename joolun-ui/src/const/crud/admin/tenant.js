@@ -3,11 +3,17 @@ export const tableOption = {
   headerAlign: 'center',
   align: 'center',
   border: true,
-  index: true,
   viewBtn: true,
   delBtn: false,
   defaultExpandAll:true,
+  labelWidth: 100,
   column: [
+    {
+      label: '租户ID',
+      prop: 'id',
+      editDisplay: false,
+      addDisplay: false,
+    },
     {
       label: '租户名称',
       prop: 'name',
@@ -84,16 +90,17 @@ export const tableOption = {
       addDisplay:false
     },
     {
-      label: '管理员用户名',
+      label: '管理员账号',
       prop: 'username',
       hide:true,
       viewDisplay: false,
       editDisplay:false,
       rules: [{
         required: true,
-        message: '管理员用户名',
+        message: '管理员账号',
         trigger: 'blur'
-      }]
+      }],
+      tip: '新租户管理员的登录账号'
     },
     {
       label: '管理员密码',
@@ -105,7 +112,8 @@ export const tableOption = {
         required: true,
         message: '管理员密码',
         trigger: 'blur'
-      }]
+      }],
+      tip: '新租户管理员的登录密码'
     }
   ]
 }

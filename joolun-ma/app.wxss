@@ -6,7 +6,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.overflow_1 {
+.overflow-1 {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -34,4 +34,10 @@
 }
 .vertical-center{
   margin: auto 0rpx
+}
+.text-decorat{
+  text-decoration:line-through;
+}
+.mar-top-30{
+  margin-top: -30rpx!important
 }

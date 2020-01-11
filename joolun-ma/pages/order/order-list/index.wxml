@@ -8,7 +8,7 @@
 -->
 <scroll-view scroll-x class="bg-white nav fixed">
   <view class="flex text-center">
-    <view class="cu-item flex-sub {{index==tabCur?'text-red cur':''}}" wx:for="{{orderStatus}}" wx:key 
+    <view class="cu-item flex-sub {{index==tabCur?'text-red cur':''}}" wx:for="{{orderStatus}}" wx:key="index" 
     bindtap="tabSelect" data-index="{{index}}" data-key="{{item.key}}">
       {{item.value}}
     </view>
@@ -16,7 +16,7 @@
 </scroll-view>
 <view class="margin-top-bar">
   <view class="cu-card article">
-    <view class="cu-item" wx:for="{{ orderList }}" wx:key wx:for-index="index">
+    <view class="cu-item" wx:for="{{ orderList }}" wx:key="index" wx:for-index="index">
       <navigator hover-class='none' url='/pages/order/order-detail/index?id={{item.id}}'>
         <view class="cu-bar bg-white">
           <view class="action">
@@ -26,11 +26,11 @@
             {{item.statusDesc}}
           </view>
         </view>
-        <view class="cu-item" wx:for="{{ item.listOrderItem }}" wx:for-item="item2" wx:key wx:for-index="index2">
+        <view class="cu-item" wx:for="{{ item.listOrderItem }}" wx:for-item="item2" wx:key="index" wx:for-index="index2">
           <view class="content">
             <image src="{{item2.picUrl ? item2.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
             <view class="desc row-info">
-              <view class="text-black margin-top-sm overflow-2">{{item2.spuName}}</view>
+              <view class="text-black margin-top-sm overflow-2"><text class="cu-tag bg-red sm" wx:if="{{item.orderType != '0'}}">{{item.orderType == '1' ? '砍价' : ''}}</text> {{item2.spuName}}</view>
               <view class="text-gray text-sm margin-top-sm overflow-2" wx:if="{{item2.specInfo}}">{{item2.specInfo}}</view>
               <view class="flex justify-between">
                 <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item2.paymentPrice}}</view>

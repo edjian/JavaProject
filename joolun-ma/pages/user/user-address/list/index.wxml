@@ -11,7 +11,7 @@
     <text class="cuIcon-add"></text>添加新地址
   </button>
   <view class="cu-list menu-avatar">
-    <view class="cu-item" wx:for="{{ userAddress }}" wx:key>
+    <view class="cu-item" wx:for="{{ userAddress }}" wx:key="index">
       <view class="cu-avatar round bg-red">
         <text class="avatar-text">{{item.userName}}</text>
       </view>

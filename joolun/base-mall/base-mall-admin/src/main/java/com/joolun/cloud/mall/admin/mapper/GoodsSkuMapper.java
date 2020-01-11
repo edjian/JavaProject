@@ -24,4 +24,6 @@ public interface GoodsSkuMapper extends BaseMapper<GoodsSku> {
 	List<GoodsSku> listGoodsSkuBySpuId(String spuId);
 
 	GoodsSku selectOneByShoppingCart(String id);
+
+	GoodsSku getGoodsSkuById(String id);
 }

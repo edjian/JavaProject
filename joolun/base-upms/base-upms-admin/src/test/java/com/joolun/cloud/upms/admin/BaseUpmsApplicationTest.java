@@ -19,13 +19,13 @@ public class BaseUpmsApplicationTest {
 	@Test
 	public void testJasypt() {
 		// 对应application-dev.yml 中配置的根密码
-		System.setProperty("jasypt.encryptor.password", "joolun");
-		StringEncryptor stringEncryptor = new DefaultLazyEncryptor(new StandardEnvironment());
-
-		//加密方法
-		System.out.println(stringEncryptor.encrypt("test"));
-
-		//解密方法
-		System.out.println(stringEncryptor.decrypt("OBjpUV3zuZHIUzeGbpxLRw=="));
+//		System.setProperty("jasypt.encryptor.password", "joolun");
+//		StringEncryptor stringEncryptor = new DefaultLazyEncryptor(new StandardEnvironment());
+//
+//		//加密方法
+//		System.out.println(stringEncryptor.encrypt("test"));
+//
+//		//解密方法
+//		System.out.println(stringEncryptor.decrypt("OBjpUV3zuZHIUzeGbpxLRw=="));
 	}
 }
