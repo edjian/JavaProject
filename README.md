@@ -16,6 +16,6 @@
 ### 使用案例
 * 欢迎已经使用的同学[在此登记](http://git.joolun.com/joolun-mp-ma/mp-ma/issues/48)
 
-### 软著
+### 软著（受法律保护）
 * ![](https://joolun-blog.oss-cn-zhangjiakou.aliyuncs.com/%E8%BD%AF%E8%91%97.jpg)
 ### [阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)
