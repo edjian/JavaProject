@@ -11,6 +11,6 @@
 3. 🔊请按照自己业务需求进行测试后再使用，因框架问题造成的任何损失JooLun概不负责
 
 ### 使用案例
-  欢迎已经上线的同学在此登记
+* 欢迎已经上线的同学在此登记
 
 ### [阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)
