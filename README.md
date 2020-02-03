@@ -10,6 +10,8 @@
 3. 代码请拉master分支，其他分支不要管
 3. 🔊请按照自己业务需求进行测试后再使用，因框架问题造成的任何损失JooLun概不负责
 
+### 文档教程
+* [查看文档](http://git.joolun.com/joolun-mp-ma/mp-ma/wiki/_pages)
 ### 使用案例
 * 欢迎已经使用的同学[在此登记](http://git.joolun.com/joolun-mp-ma/mp-ma/issues/48)
 
