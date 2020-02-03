@@ -12,6 +12,7 @@
 
 ### 文档教程
 * [查看文档](http://git.joolun.com/joolun-mp-ma/mp-ma/wiki/_pages)
+
 ### 使用案例
 * 欢迎已经使用的同学[在此登记](http://git.joolun.com/joolun-mp-ma/mp-ma/issues/48)
 
