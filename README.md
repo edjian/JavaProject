@@ -12,7 +12,9 @@
 3. 🔊请按照自己业务需求进行测试后再使用，因框架问题造成的任何损失JooLun概不负责
 
 ### 文档教程
-* [查看文档](http://git.joolun.com/joolun-mp-ma/mp-ma/wiki/_pages)
+* [开发环境部署教程](https://git.joolun.com/joolun-mp-ma/mp-ma/wiki/%E4%B8%80-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B)
+* [生产环境部署教程（centos7）](https://git.joolun.com/joolun-mp-ma/mp-ma/wiki/%E4%B8%80-%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%EF%BC%88centos7%EF%BC%89)
+* [所有教程文档](http://git.joolun.com/joolun-mp-ma/mp-ma/wiki/_pages)
 
 ### 使用案例
 * 欢迎已经使用的同学[在此登记](http://git.joolun.com/joolun-mp-ma/mp-ma/issues/48)
