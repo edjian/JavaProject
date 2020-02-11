@@ -23,7 +23,7 @@ public class SysUser extends Model<SysUser> {
 	/**
 	 * 主键ID
 	 */
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 	/**
 	 * 用户名

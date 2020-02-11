@@ -3,6 +3,7 @@ package com.joolun.cloud.mall.admin.api.ma;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.weixin.common.constant.MyReturnCode;
@@ -28,7 +29,7 @@ public class BaseApi {
 	}
 
 	/**
-	 * 校验ThirdSession
+	 * 校验ThirdSession，并获取当前用户的信息
 	 * @param baseEntity
 	 * @param request
 	 * @return
@@ -44,6 +45,7 @@ public class BaseApi {
 		}else {
 			String thirdSessionStr = String.valueOf(thirdSessionObj);
 			ThirdSession thirdSessionData = JSONUtil.toBean(thirdSessionStr, ThirdSession.class);
+			TenantContextHolder.setTenantId(thirdSessionData.getTenantId());//指定租户ID
 			String appId_session = thirdSessionData.getAppId();
 			String userId_session = thirdSessionData.getWxUserId();
 			String sessionKey_session = thirdSessionData.getSessionKey();

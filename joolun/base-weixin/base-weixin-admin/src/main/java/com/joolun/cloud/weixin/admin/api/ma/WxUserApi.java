@@ -39,8 +39,7 @@ public class WxUserApi {
 	 * @return
 	 */
 	@PostMapping("/login")
-	public R login(HttpServletRequest request,
-				   @RequestBody LoginMaDTO loginMaDTO){
+	public R login(HttpServletRequest request, @RequestBody LoginMaDTO loginMaDTO){
 		try {
 			WxApp wxApp = WxMaConfiguration.getApp(request);
 			WxUser wxUser = wxUserService.loginMa(wxApp,loginMaDTO.getJsCode());

@@ -12,4 +12,4 @@ EXPOSE 9999
 
 ADD ./base-gateway/target/base-gateway.jar ./
 
-CMD sleep 150;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-gateway.jar
+CMD sleep 30;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-gateway.jar

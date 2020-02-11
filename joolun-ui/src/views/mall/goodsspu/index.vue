@@ -231,6 +231,7 @@
                     this.goodsSpuSpec = null
                     getObj(this.form.id).then(response => {
                       this.$set(this.form,'description', response.data.data.description)
+                      this.$set(this.form,'ensureIds', response.data.data.ensureIds)
                       this.fetchTree({
                         spuId: this.form.id
                       })
@@ -244,7 +245,6 @@
                       done()
                     })
                 }
-
             },
             fetchTree(params) {
                 fetchTree(params).then(data => {
@@ -408,8 +408,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-              this.getPage(val.page)
+            refreshChange(page) {
+              this.getPage(page)
             }
         }
     }

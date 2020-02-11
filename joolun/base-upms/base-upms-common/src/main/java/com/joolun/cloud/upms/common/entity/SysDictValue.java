@@ -21,7 +21,7 @@ public class SysDictValue extends Model<SysDictValue> {
 	/**
 	 * 编号
 	 */
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 	/**
 	 *

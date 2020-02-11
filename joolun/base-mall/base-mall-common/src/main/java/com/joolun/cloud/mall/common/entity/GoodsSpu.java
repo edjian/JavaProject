@@ -41,7 +41,7 @@ private static final long serialVersionUID = 1L;
     /**
    * PK
    */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
    * 所属租户
@@ -136,6 +136,16 @@ private static final long serialVersionUID = 1L;
 	 * 运费模板ID
 	 */
 	private String freightTemplatId;
+	/**
+	 * 发货地ID
+	 */
+	private String deliveryPlaceId;
+
+	/**
+	 * 保障服务
+	 */
+	@TableField(exist = false)
+	private List<String> ensureIds;
 
 	@TableField(exist = false)
 	private List<GoodsSku> skus;
@@ -153,4 +163,7 @@ private static final long serialVersionUID = 1L;
 
 	@TableField(exist = false)
 	private FreightTemplat freightTemplat;
+
+	@TableField(exist = false)
+	private DeliveryPlace deliveryPlace;
 }

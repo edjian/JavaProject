@@ -195,8 +195,8 @@
         this.formData.tableName = row.tableName
         this.box = true
       },
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       },
       refreshDsChange() {
         this.getDsList(this.page)

@@ -20,7 +20,6 @@ export const tableOption = {
       prop: 'parentId',
       type: 'tree',
       hide: true,
-      sortable: true,
       dicUrl: '/mall/goodscategory/parentTree',
       props: {
         label: 'name',

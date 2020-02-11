@@ -97,8 +97,8 @@
 </template>
 
 <script>
-  import {randomLenNum} from "@/util/util";
-  import {mapGetters} from "vuex";
+  import {randomLenNum} from "@/util/util"
+  import {mapGetters} from "vuex"
 
     export default {
         name: "userlogin",

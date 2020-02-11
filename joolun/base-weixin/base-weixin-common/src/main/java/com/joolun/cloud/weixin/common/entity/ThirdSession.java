@@ -7,6 +7,10 @@ import java.io.Serializable;
 @Data
 public class ThirdSession implements Serializable {
 	/**
+	 * 所属租户
+	 */
+	private String tenantId;
+	/**
 	 * 微信用户ID
 	 */
 	private String wxUserId;

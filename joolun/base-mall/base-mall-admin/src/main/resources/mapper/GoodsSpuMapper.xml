@@ -35,6 +35,25 @@
 		<result property="pointsDeductScale" column="points_deduct_scale"/>
 		<result property="pointsDeductAmount" column="points_deduct_amount"/>
 		<result property="freightTemplatId" column="freight_templat_id"/>
+		<result property="deliveryPlaceId" column="delivery_place_id"/>
+	</resultMap>
+
+	<resultMap id="goodsSpuMap1" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
+		<collection property="skus" ofType="com.joolun.cloud.mall.common.entity.GoodsSku"
+					select="com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper.listGoodsSkuBySpuId"
+					column="{spuId=id}">
+		</collection>
+		<collection property="freightTemplat" ofType="com.joolun.cloud.mall.common.entity.FreightTemplat"
+					select="com.joolun.cloud.mall.admin.mapper.FreightTemplatMapper.selectById"
+					column="{id=freight_templat_id}">
+		</collection>
+		<collection property="deliveryPlace" ofType="com.joolun.cloud.mall.common.entity.DeliveryPlace"
+					select="com.joolun.cloud.mall.admin.mapper.DeliveryPlaceMapper.selectById"
+					column="{id=delivery_place_id}">
+		</collection>
+		<collection property="ensureIds" ofType="java.lang.String"
+					select="com.joolun.cloud.mall.admin.mapper.EnsureGoodsMapper.listEnsureIdsBySpuId" column="id">
+		</collection>
 	</resultMap>
 
 	<resultMap id="goodsSpuMap2" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
@@ -45,6 +64,10 @@
 		<collection property="freightTemplat" ofType="com.joolun.cloud.mall.common.entity.FreightTemplat"
 					select="com.joolun.cloud.mall.admin.mapper.FreightTemplatMapper.selectById"
 					column="{id=freight_templat_id}">
+		</collection>
+		<collection property="deliveryPlace" ofType="com.joolun.cloud.mall.common.entity.DeliveryPlace"
+					select="com.joolun.cloud.mall.admin.mapper.DeliveryPlaceMapper.selectById"
+					column="{id=delivery_place_id}">
 		</collection>
 	</resultMap>
 
@@ -86,7 +109,8 @@
 		goods_spu.`points_deduct_switch`,
 		goods_spu.`points_deduct_scale`,
 		goods_spu.`points_deduct_amount`,
-		goods_spu.`freight_templat_id`
+		goods_spu.`freight_templat_id`,
+		goods_spu.`delivery_place_id`
 	</sql>
 
 	<sql id="goodsSpuSql2">
@@ -113,7 +137,8 @@
 		goods_spu.`points_deduct_switch`,
 		goods_spu.`points_deduct_scale`,
 		goods_spu.`points_deduct_amount`,
-		goods_spu.`freight_templat_id`
+		goods_spu.`freight_templat_id`,
+		goods_spu.`delivery_place_id`
 	</sql>
 
 	<select id="selectPage1" resultMap="goodsSpuMap">
@@ -145,6 +170,13 @@
 		</where>
 	</select>
 
+	<select id="selectById1" resultMap="goodsSpuMap1">
+		SELECT
+		<include refid="goodsSpuSql"/>
+		FROM goods_spu goods_spu
+		WHERE goods_spu.`id` = #{id}
+	</select>
+
 	<select id="selectById2" resultMap="goodsSpuMap2">
 		SELECT
 			<include refid="goodsSpuSql"/>
@@ -172,7 +204,7 @@
 		SELECT
 		<include refid="goodsSpuSql2"/>
 		FROM goods_spu goods_spu
-		<if test='query2.couponId != null and query3.suitType == "2"'>
+		<if test='query2 != null and query2.couponId != null and query2.suitType == "2"'>
 			LEFT JOIN coupon_goods coupon_goods
 			ON goods_spu.`id` = coupon_goods.`spu_id`
 		</if>
@@ -186,7 +218,7 @@
 			<if test="query.name != null">
 				AND goods_spu.`name` LIKE CONCAT('%',#{query.name},'%')
 			</if>
-			<if test='query2.couponId != null and query3.suitType == "2"'>
+			<if test='query2 != null and query2.couponId != null and query2.suitType == "2"'>
 				AND coupon_goods.`coupon_id` = #{query2.couponId}
 			</if>
 		</where>

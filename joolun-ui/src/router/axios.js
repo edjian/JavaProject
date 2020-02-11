@@ -55,11 +55,6 @@ axios.interceptors.request.use(config => {
   if (token && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + token// token
   }
-  // headers中配置serialize为true开启序列化
-  if (config.method === 'post' && config.headers.serialize) {
-    config.data = serialize(config.data)
-    delete config.data.serialize
-  }
   return config
 }, error => {
   return Promise.reject(error)

@@ -151,6 +151,7 @@
       <textarea readonly value="{{orderInfo.userMessage}}"></textarea>
     </view>
 	</view>
+  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
 </view>
 <view class="cu-bar bg-white border foot">
   <order-operate

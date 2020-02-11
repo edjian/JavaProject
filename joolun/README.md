@@ -10,4 +10,7 @@
 3. 代码请拉master分支，其他分支不要管
 3. 🔊请按照自己业务需求进行测试后再使用，因框架问题造成的任何损失JooLun概不负责
 
+### 软著（受法律保护）
+* ![](https://joolun-blog.oss-cn-zhangjiakou.aliyuncs.com/%E8%BD%AF%E8%91%97.jpg)
+
 ### [阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)

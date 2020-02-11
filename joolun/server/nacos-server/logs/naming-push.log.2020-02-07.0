@@ -1,0 +1,12 @@
+2020-02-07 12:40:25,366 INFO DEFAULT_GROUP@@base-gateway is changed, add it to push queue.
+
+2020-02-07 12:40:35,592 INFO DEFAULT_GROUP@@base-auth is changed, add it to push queue.
+
+2020-02-07 12:40:53,512 INFO DEFAULT_GROUP@@base-codegen is changed, add it to push queue.
+
+2020-02-07 12:41:21,251 INFO DEFAULT_GROUP@@base-mall-admin is changed, add it to push queue.
+
+2020-02-07 12:41:34,526 INFO DEFAULT_GROUP@@base-upms-admin is changed, add it to push queue.
+
+2020-02-07 12:41:39,717 INFO DEFAULT_GROUP@@base-weixin-admin is changed, add it to push queue.
+

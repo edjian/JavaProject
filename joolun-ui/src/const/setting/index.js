@@ -1,9 +1,9 @@
 const dicData = [{
-  label: '开启',
-  value: 'true'
-}, {
   label: '关闭',
   value: 'false'
+},{
+  label: '开启',
+  value: 'true'
 }]
 export const list = [{
   key: 'showTag',

@@ -21,15 +21,14 @@ const request = (url, method, data, showLoading) => {
       method: method,
       data: data,
       header: {
-        'tenant-id' : __config.tenantId,
-        'app-id': __config.appId,
+        'app-id': wx.getAccountInfoSync().miniProgram.appId,
         'thirdSession': getApp().globalData.thirdSession
       },
       success(res) {
         if (res.statusCode == 200) {
           if (res.data.code != 0) {
             wx.showToast({
-              title: res.data.msg,
+              title: res.data.msg+'',
               icon: 'none',
               duration: 5000
             })
@@ -45,7 +44,7 @@ const request = (url, method, data, showLoading) => {
           reject()
         } else {
           wx.showToast({
-            title: res.data.msg,
+            title: res.data.msg + '',
             icon: 'none',
             duration: 5000
           })
@@ -183,7 +182,7 @@ module.exports = {
     return request('/weixin/api/ma/wxqrcode/unlimited', 'post', data, true)
   },
   noticeGet: (data) => {//查询商城通知
-    return request('/mall/api/ma/notice', 'get', data, false)
+    return request('/mall/api/ma/notice', 'get', data, true)
   },
   orderItemGet: (id) => {//查询订单详情
     return request('/mall/api/ma/orderitem/' + id, 'get', null, false)
@@ -229,5 +228,8 @@ module.exports = {
   },
   bargainCutSave: (data) => {//砍一刀
     return request('/mall/api/ma/bargaincut', 'post', data, true)
+  },
+  listEnsureBySpuId: (data) => {//通过spuID，查询商品保障
+    return request('/mall/api/ma/ensuregoods/listEnsureBySpuId', 'get', data, true)
   },
 }

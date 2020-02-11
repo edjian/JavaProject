@@ -76,12 +76,13 @@
                 </el-col>
                 <el-col :span="12" style="text-align: right;">
                   <el-upload
-                    action="/admin/file/upload?dir=material/"
+                    action="/admin/file/upload?fileType=image&dir=material/"
                     :headers="headers"
                     :file-list="[]"
                     :on-progress="handleProgress"
                     :before-upload="beforeUpload"
-                    :on-success="handleSuccess">
+                    :on-success="handleSuccess"
+                    :on-error="handleError">
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
                 </el-col>
@@ -438,6 +439,9 @@
         }).then(function() {
           that.getPage(that.page)
         })
+      },
+      handleError(err, file, fileList){
+        this.$message.error(err+'')
       },
       beforeUpload(file){
         const isPic =

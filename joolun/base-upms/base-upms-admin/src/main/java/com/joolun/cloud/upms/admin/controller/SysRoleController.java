@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author
@@ -93,8 +94,8 @@ public class SysRoleController {
 	 */
 	@GetMapping("/list")
 	@PreAuthorize("@ato.hasAuthority('sys_role_index')")
-	public R listRoles() {
-		return R.ok(sysRoleService.list(Wrappers.emptyWrapper()));
+	public List<SysRole> listRoles() {
+		return sysRoleService.list(Wrappers.emptyWrapper());
 	}
 
 	/**

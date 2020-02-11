@@ -22,7 +22,7 @@ public class SysRole extends Model<SysRole> {
 
 	private static final long serialVersionUID = 1L;
 
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 
 	/**

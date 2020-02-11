@@ -6,6 +6,7 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
+<ad unit-id="adunit-80d788ab8518b5b3"></ad>
 <view class="bg-gradual-red text-center padding">
   <view class="text-xl">
     <text class="cuIcon-medalfill">当前{{userInfo.pointsCurrent}}个积分</text>

@@ -67,6 +67,7 @@ export const tableOption = {
             label: 'name',
             value: 'id'
         },
+        defaultExpandAll: true,
         dicUrl: '/admin/organ/tree'
     }, {
         label: '角色',

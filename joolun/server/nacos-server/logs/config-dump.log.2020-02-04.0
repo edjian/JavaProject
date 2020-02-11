@@ -1,0 +1,446 @@
+2020-02-04 11:02:43,274 INFO [dump-all-ok] dynamic_routes+DEFAULT_GROUP, 1574954144000, length=1246, md5=329faf07128e6e0a984d5ce275ebfe39
+
+2020-02-04 11:02:43,284 INFO [dump-all-ok] application-dev.yml+DEFAULT_GROUP, 1579262690000, length=2427, md5=36b42e3d3de5b6d0178eaebc3f182047
+
+2020-02-04 11:02:43,289 INFO [dump-all-ok] base-gateway-dev.yml+DEFAULT_GROUP, 1564468164000, length=161, md5=951580823377e19ddbae79a4276ff678
+
+2020-02-04 11:02:43,294 INFO [dump-all-ok] base-auth-dev.yml+DEFAULT_GROUP, 1574319263000, length=915, md5=3476b23886681325f3b3ca7ac6a800fc
+
+2020-02-04 11:02:43,300 INFO [dump-all-ok] base-upms-admin-dev.yml+DEFAULT_GROUP, 1580731985000, length=1255, md5=2a51f93daa73fa3734803d9266ca161f
+
+2020-02-04 11:02:43,306 INFO [dump-all-ok] base-codegen-dev.yml+DEFAULT_GROUP, 1574319285000, length=774, md5=a16d6b5a6f63d37b5febaedc525156a8
+
+2020-02-04 11:02:43,312 INFO [dump-all-ok] base-weixin-admin-dev.yml+DEFAULT_GROUP, 1577528019000, length=1474, md5=cb9c67db33d49046fc18db74e2e238cd
+
+2020-02-04 11:02:43,318 INFO [dump-all-ok] base-mall-admin-dev.yml+DEFAULT_GROUP, 1577368542000, length=1815, md5=08f5fee57190b3ea9d546bedccfc24ca
+
+2020-02-04 11:02:43,319 INFO [dump-all-ok] transport.type+SEATA_GROUP, 1577893148000, length=3, md5=b136ef5f6a01d816991fe3cf7a6ac763
+
+2020-02-04 11:02:43,320 INFO [dump-all-ok] transport.server+SEATA_GROUP, 1577893624000, length=3, md5=b6d9dfc0fb54277321cebc0fff55df2f
+
+2020-02-04 11:02:43,320 INFO [dump-all-ok] transport.heartbeat+SEATA_GROUP, 1577893652000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 11:02:43,325 INFO [dump-all-ok] transport.enable-client-batch-send-request+SEATA_GROUP, 1577893678000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,329 INFO [dump-all-ok] transport.thread-factory.boss-thread-prefix+SEATA_GROUP, 1577893691000, length=9, md5=0f8db59a3b7f2823f38a70c308361836
+
+2020-02-04 11:02:43,335 INFO [dump-all-ok] transport.thread-factory.worker-thread-prefix+SEATA_GROUP, 1577893704000, length=20, md5=a78ec7ef5d1631754c4e72ae8a3e9205
+
+2020-02-04 11:02:43,340 INFO [dump-all-ok] transport.thread-factory.server-executor-thread-prefix+SEATA_GROUP, 1577893763000, length=21, md5=11a36309f3d9df84fa8b59cf071fa2da
+
+2020-02-04 11:02:43,341 INFO [dump-all-ok] transport.thread-factory.share-boss-worker+SEATA_GROUP, 1577893775000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,347 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-prefix+SEATA_GROUP, 1577893792000, length=19, md5=cd7ec5a06541e75f5a7913752322c3af
+
+2020-02-04 11:02:43,348 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-size+SEATA_GROUP, 1577893806000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 11:02:43,353 INFO [dump-all-ok] transport.thread-factory.client-worker-thread-prefix+SEATA_GROUP, 1577893822000, length=23, md5=61cf4e69a56354cf72f46dc86414a57e
+
+2020-02-04 11:02:43,354 INFO [dump-all-ok] transport.thread-factory.boss-thread-size+SEATA_GROUP, 1577893835000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 11:02:43,354 INFO [dump-all-ok] transport.thread-factory.worker-thread-size+SEATA_GROUP, 1577893852000, length=1, md5=c9f0f895fb98ab9159f51fd0297e236d
+
+2020-02-04 11:02:43,355 INFO [dump-all-ok] transport.shutdown.wait+SEATA_GROUP, 1577893865000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 11:02:43,360 INFO [dump-all-ok] service.default.grouplist+SEATA_GROUP, 1577893908000, length=14, md5=c32ce0d3e264525dcdada751f98143a3
+
+2020-02-04 11:02:43,361 INFO [dump-all-ok] service.enableDegrade+SEATA_GROUP, 1577893921000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,362 INFO [dump-all-ok] service.disableGlobalTransaction+SEATA_GROUP, 1577893932000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,367 INFO [dump-all-ok] client.rm.async.commit.buffer.limit+SEATA_GROUP, 1577893946000, length=5, md5=b7a782741f667201b54880c925faec4b
+
+2020-02-04 11:02:43,368 INFO [dump-all-ok] client.rm.lock.retry.internal+SEATA_GROUP, 1577893960000, length=2, md5=d3d9446802a44259755d38e6d163e820
+
+2020-02-04 11:02:43,368 INFO [dump-all-ok] client.rm.lock.retry.times+SEATA_GROUP, 1577893973000, length=2, md5=34173cb38f07f89ddbebc2ac9128303f
+
+2020-02-04 11:02:43,369 INFO [dump-all-ok] client.rm.report.retry.count+SEATA_GROUP, 1577893986000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 11:02:43,369 INFO [dump-all-ok] client.rm.lock.retry.policy.branch-rollback-on-conflict+SEATA_GROUP, 1577894001000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 11:02:43,371 INFO [dump-all-ok] client.rm.table.meta.check.enable+SEATA_GROUP, 1577894017000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,372 INFO [dump-all-ok] client.rm.report.success.enable+SEATA_GROUP, 1577894030000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 11:02:43,372 INFO [dump-all-ok] client.tm.commit.retry.count+SEATA_GROUP, 1577894043000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 11:02:43,373 INFO [dump-all-ok] client.tm.rollback.retry.count+SEATA_GROUP, 1577894057000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 11:02:43,374 INFO [dump-all-ok] store.mode+SEATA_GROUP, 1577894072000, length=4, md5=8c7dd922ad47494fc02c388e12c00eac
+
+2020-02-04 11:02:43,379 INFO [dump-all-ok] store.file.dir+SEATA_GROUP, 1577894085000, length=15, md5=6a8dec07c44c33a8a9247cba5710bbb2
+
+2020-02-04 11:02:43,383 INFO [dump-all-ok] store.file.max-branch-session-size+SEATA_GROUP, 1577894098000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 11:02:43,384 INFO [dump-all-ok] store.file.max-global-session-size+SEATA_GROUP, 1577894109000, length=3, md5=10a7cdd970fe135cf4f7bb55c0e3b59f
+
+2020-02-04 11:02:43,384 INFO [dump-all-ok] store.file.file-write-buffer-cache-size+SEATA_GROUP, 1577894123000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 11:02:43,389 INFO [dump-all-ok] store.file.flush-disk-mode+SEATA_GROUP, 1577894136000, length=5, md5=0df93e34273b367bb63bad28c94c78d5
+
+2020-02-04 11:02:43,390 INFO [dump-all-ok] store.file.session.reload.read_size+SEATA_GROUP, 1577894149000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 11:02:43,390 INFO [dump-all-ok] store.db.datasource+SEATA_GROUP, 1577894161000, length=4, md5=3a9f384fb40c59fbdc67024ee97d94b1
+
+2020-02-04 11:02:43,394 INFO [dump-all-ok] store.db.db-type+SEATA_GROUP, 1577894176000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 11:02:43,400 INFO [dump-all-ok] store.db.driver-class-name+SEATA_GROUP, 1577894192000, length=21, md5=683cf0c3a5a56cec94dfac94ca16d760
+
+2020-02-04 11:02:43,406 INFO [dump-all-ok] store.db.url+SEATA_GROUP, 1577894226000, length=49, md5=cbb3bd573704f125fb4f2489208abaec
+
+2020-02-04 11:02:43,407 INFO [dump-all-ok] store.db.user+SEATA_GROUP, 1577894241000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 11:02:43,409 INFO [dump-all-ok] store.db.password+SEATA_GROUP, 1577894254000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 11:02:43,409 INFO [dump-all-ok] store.db.min-conn+SEATA_GROUP, 1577894268000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 11:02:43,410 INFO [dump-all-ok] store.db.max-conn+SEATA_GROUP, 1577894281000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 11:02:43,416 INFO [dump-all-ok] store.db.global.table+SEATA_GROUP, 1577894294000, length=12, md5=8b28fb6bb4c4f984df2709381f8eba2b
+
+2020-02-04 11:02:43,421 INFO [dump-all-ok] store.db.branch.table+SEATA_GROUP, 1577894311000, length=12, md5=54bcdac38cf62e103fe115bcf46a660c
+
+2020-02-04 11:02:43,422 INFO [dump-all-ok] store.db.query-limit+SEATA_GROUP, 1577894327000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 11:02:43,427 INFO [dump-all-ok] store.db.lock-table+SEATA_GROUP, 1577894345000, length=10, md5=55e0cae3b6dc6696b768db90098b8f2f
+
+2020-02-04 11:02:43,427 INFO [dump-all-ok] server.recovery.committing-retry-period+SEATA_GROUP, 1577894374000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 11:02:43,428 INFO [dump-all-ok] server.recovery.asyn-committing-retry-period+SEATA_GROUP, 1577894401000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 11:02:43,429 INFO [dump-all-ok] server.recovery.rollbacking-retry-period+SEATA_GROUP, 1577894416000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 11:02:43,430 INFO [dump-all-ok] server.recovery.timeout-retry-period+SEATA_GROUP, 1577894432000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 11:02:43,430 INFO [dump-all-ok] server.max.commit.retry.timeout+SEATA_GROUP, 1577894486000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 11:02:43,431 INFO [dump-all-ok] server.max.rollback.retry.timeout+SEATA_GROUP, 1577894501000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 11:02:43,432 INFO [dump-all-ok] client.undo.data.validation+SEATA_GROUP, 1577894516000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 11:02:43,436 INFO [dump-all-ok] client.undo.log.serialization+SEATA_GROUP, 1577894530000, length=7, md5=b41779690b83f182acc67d6388c7bac9
+
+2020-02-04 11:02:43,437 INFO [dump-all-ok] server.undo.log.save.days+SEATA_GROUP, 1577894548000, length=1, md5=8f14e45fceea167a5a36dedd4bea2543
+
+2020-02-04 11:02:43,442 INFO [dump-all-ok] server.undo.log.delete.period+SEATA_GROUP, 1577894565000, length=8, md5=f4c122804fe9076cb2710f55c3c6e346
+
+2020-02-04 11:02:43,447 INFO [dump-all-ok] client.undo.log.table+SEATA_GROUP, 1577894579000, length=8, md5=2842d229c24afe9e61437135e8306614
+
+2020-02-04 11:02:43,448 INFO [dump-all-ok] client.log.exceptionRate+SEATA_GROUP, 1577894593000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 11:02:43,453 INFO [dump-all-ok] transport.serialization+SEATA_GROUP, 1577894606000, length=5, md5=b943081c423b9a5416a706524ee05d40
+
+2020-02-04 11:02:43,453 INFO [dump-all-ok] transport.compressor+SEATA_GROUP, 1577894621000, length=4, md5=334c4a4c42fdb79d7ebc3e73b517e6f8
+
+2020-02-04 11:02:43,455 INFO [dump-all-ok] metrics.enabled+SEATA_GROUP, 1577894642000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,459 INFO [dump-all-ok] metrics.registry-type+SEATA_GROUP, 1577894656000, length=7, md5=7cf74ca49c304df8150205fc915cd465
+
+2020-02-04 11:02:43,463 INFO [dump-all-ok] metrics.exporter-list+SEATA_GROUP, 1577894668000, length=10, md5=e4f00638b8a10e6994e67af2f832d51c
+
+2020-02-04 11:02:43,464 INFO [dump-all-ok] metrics.exporter-prometheus-port+SEATA_GROUP, 1577894687000, length=4, md5=7b9dc501afe4ee11c56a4831e20cee71
+
+2020-02-04 11:02:43,465 INFO [dump-all-ok] client.support.spring.datasource.autoproxy+SEATA_GROUP, 1577894703000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 11:02:43,471 INFO [dump-all-ok] service.vgroup_mapping.base-mall-admin-fescar-service-group+SEATA_GROUP, 1577893877000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 11:02:43,472 INFO [dump-all-ok] service.vgroup_mapping.base-weixin-admin-fescar-service-group+SEATA_GROUP, 1577893892000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 18:33:27,225 INFO [dump-all-ok] dynamic_routes+DEFAULT_GROUP, 1574954144000, length=1246, md5=329faf07128e6e0a984d5ce275ebfe39
+
+2020-02-04 18:33:27,232 INFO [dump-all-ok] application-dev.yml+DEFAULT_GROUP, 1579262690000, length=2427, md5=36b42e3d3de5b6d0178eaebc3f182047
+
+2020-02-04 18:33:27,236 INFO [dump-all-ok] base-gateway-dev.yml+DEFAULT_GROUP, 1564468164000, length=161, md5=951580823377e19ddbae79a4276ff678
+
+2020-02-04 18:33:27,241 INFO [dump-all-ok] base-auth-dev.yml+DEFAULT_GROUP, 1574319263000, length=915, md5=3476b23886681325f3b3ca7ac6a800fc
+
+2020-02-04 18:33:27,246 INFO [dump-all-ok] base-upms-admin-dev.yml+DEFAULT_GROUP, 1580731985000, length=1255, md5=2a51f93daa73fa3734803d9266ca161f
+
+2020-02-04 18:33:27,251 INFO [dump-all-ok] base-codegen-dev.yml+DEFAULT_GROUP, 1574319285000, length=774, md5=a16d6b5a6f63d37b5febaedc525156a8
+
+2020-02-04 18:33:27,258 INFO [dump-all-ok] base-weixin-admin-dev.yml+DEFAULT_GROUP, 1577528019000, length=1474, md5=cb9c67db33d49046fc18db74e2e238cd
+
+2020-02-04 18:33:27,263 INFO [dump-all-ok] base-mall-admin-dev.yml+DEFAULT_GROUP, 1577368542000, length=1815, md5=08f5fee57190b3ea9d546bedccfc24ca
+
+2020-02-04 18:33:27,264 INFO [dump-all-ok] transport.type+SEATA_GROUP, 1577893148000, length=3, md5=b136ef5f6a01d816991fe3cf7a6ac763
+
+2020-02-04 18:33:27,265 INFO [dump-all-ok] transport.server+SEATA_GROUP, 1577893624000, length=3, md5=b6d9dfc0fb54277321cebc0fff55df2f
+
+2020-02-04 18:33:27,266 INFO [dump-all-ok] transport.heartbeat+SEATA_GROUP, 1577893652000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 18:33:27,270 INFO [dump-all-ok] transport.enable-client-batch-send-request+SEATA_GROUP, 1577893678000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,275 INFO [dump-all-ok] transport.thread-factory.boss-thread-prefix+SEATA_GROUP, 1577893691000, length=9, md5=0f8db59a3b7f2823f38a70c308361836
+
+2020-02-04 18:33:27,279 INFO [dump-all-ok] transport.thread-factory.worker-thread-prefix+SEATA_GROUP, 1577893704000, length=20, md5=a78ec7ef5d1631754c4e72ae8a3e9205
+
+2020-02-04 18:33:27,284 INFO [dump-all-ok] transport.thread-factory.server-executor-thread-prefix+SEATA_GROUP, 1577893763000, length=21, md5=11a36309f3d9df84fa8b59cf071fa2da
+
+2020-02-04 18:33:27,285 INFO [dump-all-ok] transport.thread-factory.share-boss-worker+SEATA_GROUP, 1577893775000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,289 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-prefix+SEATA_GROUP, 1577893792000, length=19, md5=cd7ec5a06541e75f5a7913752322c3af
+
+2020-02-04 18:33:27,290 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-size+SEATA_GROUP, 1577893806000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 18:33:27,295 INFO [dump-all-ok] transport.thread-factory.client-worker-thread-prefix+SEATA_GROUP, 1577893822000, length=23, md5=61cf4e69a56354cf72f46dc86414a57e
+
+2020-02-04 18:33:27,295 INFO [dump-all-ok] transport.thread-factory.boss-thread-size+SEATA_GROUP, 1577893835000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 18:33:27,296 INFO [dump-all-ok] transport.thread-factory.worker-thread-size+SEATA_GROUP, 1577893852000, length=1, md5=c9f0f895fb98ab9159f51fd0297e236d
+
+2020-02-04 18:33:27,297 INFO [dump-all-ok] transport.shutdown.wait+SEATA_GROUP, 1577893865000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 18:33:27,303 INFO [dump-all-ok] service.default.grouplist+SEATA_GROUP, 1577893908000, length=14, md5=c32ce0d3e264525dcdada751f98143a3
+
+2020-02-04 18:33:27,304 INFO [dump-all-ok] service.enableDegrade+SEATA_GROUP, 1577893921000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,306 INFO [dump-all-ok] service.disableGlobalTransaction+SEATA_GROUP, 1577893932000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,311 INFO [dump-all-ok] client.rm.async.commit.buffer.limit+SEATA_GROUP, 1577893946000, length=5, md5=b7a782741f667201b54880c925faec4b
+
+2020-02-04 18:33:27,311 INFO [dump-all-ok] client.rm.lock.retry.internal+SEATA_GROUP, 1577893960000, length=2, md5=d3d9446802a44259755d38e6d163e820
+
+2020-02-04 18:33:27,312 INFO [dump-all-ok] client.rm.lock.retry.times+SEATA_GROUP, 1577893973000, length=2, md5=34173cb38f07f89ddbebc2ac9128303f
+
+2020-02-04 18:33:27,312 INFO [dump-all-ok] client.rm.report.retry.count+SEATA_GROUP, 1577893986000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 18:33:27,313 INFO [dump-all-ok] client.rm.lock.retry.policy.branch-rollback-on-conflict+SEATA_GROUP, 1577894001000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 18:33:27,314 INFO [dump-all-ok] client.rm.table.meta.check.enable+SEATA_GROUP, 1577894017000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,315 INFO [dump-all-ok] client.rm.report.success.enable+SEATA_GROUP, 1577894030000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 18:33:27,315 INFO [dump-all-ok] client.tm.commit.retry.count+SEATA_GROUP, 1577894043000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 18:33:27,316 INFO [dump-all-ok] client.tm.rollback.retry.count+SEATA_GROUP, 1577894057000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 18:33:27,317 INFO [dump-all-ok] store.mode+SEATA_GROUP, 1577894072000, length=4, md5=8c7dd922ad47494fc02c388e12c00eac
+
+2020-02-04 18:33:27,321 INFO [dump-all-ok] store.file.dir+SEATA_GROUP, 1577894085000, length=15, md5=6a8dec07c44c33a8a9247cba5710bbb2
+
+2020-02-04 18:33:27,328 INFO [dump-all-ok] store.file.max-branch-session-size+SEATA_GROUP, 1577894098000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 18:33:27,328 INFO [dump-all-ok] store.file.max-global-session-size+SEATA_GROUP, 1577894109000, length=3, md5=10a7cdd970fe135cf4f7bb55c0e3b59f
+
+2020-02-04 18:33:27,329 INFO [dump-all-ok] store.file.file-write-buffer-cache-size+SEATA_GROUP, 1577894123000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 18:33:27,335 INFO [dump-all-ok] store.file.flush-disk-mode+SEATA_GROUP, 1577894136000, length=5, md5=0df93e34273b367bb63bad28c94c78d5
+
+2020-02-04 18:33:27,336 INFO [dump-all-ok] store.file.session.reload.read_size+SEATA_GROUP, 1577894149000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 18:33:27,337 INFO [dump-all-ok] store.db.datasource+SEATA_GROUP, 1577894161000, length=4, md5=3a9f384fb40c59fbdc67024ee97d94b1
+
+2020-02-04 18:33:27,341 INFO [dump-all-ok] store.db.db-type+SEATA_GROUP, 1577894176000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 18:33:27,346 INFO [dump-all-ok] store.db.driver-class-name+SEATA_GROUP, 1577894192000, length=21, md5=683cf0c3a5a56cec94dfac94ca16d760
+
+2020-02-04 18:33:27,350 INFO [dump-all-ok] store.db.url+SEATA_GROUP, 1577894226000, length=49, md5=cbb3bd573704f125fb4f2489208abaec
+
+2020-02-04 18:33:27,351 INFO [dump-all-ok] store.db.user+SEATA_GROUP, 1577894241000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 18:33:27,352 INFO [dump-all-ok] store.db.password+SEATA_GROUP, 1577894254000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 18:33:27,353 INFO [dump-all-ok] store.db.min-conn+SEATA_GROUP, 1577894268000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 18:33:27,353 INFO [dump-all-ok] store.db.max-conn+SEATA_GROUP, 1577894281000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 18:33:27,358 INFO [dump-all-ok] store.db.global.table+SEATA_GROUP, 1577894294000, length=12, md5=8b28fb6bb4c4f984df2709381f8eba2b
+
+2020-02-04 18:33:27,362 INFO [dump-all-ok] store.db.branch.table+SEATA_GROUP, 1577894311000, length=12, md5=54bcdac38cf62e103fe115bcf46a660c
+
+2020-02-04 18:33:27,363 INFO [dump-all-ok] store.db.query-limit+SEATA_GROUP, 1577894327000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 18:33:27,367 INFO [dump-all-ok] store.db.lock-table+SEATA_GROUP, 1577894345000, length=10, md5=55e0cae3b6dc6696b768db90098b8f2f
+
+2020-02-04 18:33:27,368 INFO [dump-all-ok] server.recovery.committing-retry-period+SEATA_GROUP, 1577894374000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 18:33:27,368 INFO [dump-all-ok] server.recovery.asyn-committing-retry-period+SEATA_GROUP, 1577894401000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 18:33:27,369 INFO [dump-all-ok] server.recovery.rollbacking-retry-period+SEATA_GROUP, 1577894416000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 18:33:27,369 INFO [dump-all-ok] server.recovery.timeout-retry-period+SEATA_GROUP, 1577894432000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 18:33:27,370 INFO [dump-all-ok] server.max.commit.retry.timeout+SEATA_GROUP, 1577894486000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 18:33:27,371 INFO [dump-all-ok] server.max.rollback.retry.timeout+SEATA_GROUP, 1577894501000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 18:33:27,371 INFO [dump-all-ok] client.undo.data.validation+SEATA_GROUP, 1577894516000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 18:33:27,376 INFO [dump-all-ok] client.undo.log.serialization+SEATA_GROUP, 1577894530000, length=7, md5=b41779690b83f182acc67d6388c7bac9
+
+2020-02-04 18:33:27,376 INFO [dump-all-ok] server.undo.log.save.days+SEATA_GROUP, 1577894548000, length=1, md5=8f14e45fceea167a5a36dedd4bea2543
+
+2020-02-04 18:33:27,380 INFO [dump-all-ok] server.undo.log.delete.period+SEATA_GROUP, 1577894565000, length=8, md5=f4c122804fe9076cb2710f55c3c6e346
+
+2020-02-04 18:33:27,385 INFO [dump-all-ok] client.undo.log.table+SEATA_GROUP, 1577894579000, length=8, md5=2842d229c24afe9e61437135e8306614
+
+2020-02-04 18:33:27,385 INFO [dump-all-ok] client.log.exceptionRate+SEATA_GROUP, 1577894593000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 18:33:27,386 INFO [dump-all-ok] transport.serialization+SEATA_GROUP, 1577894606000, length=5, md5=b943081c423b9a5416a706524ee05d40
+
+2020-02-04 18:33:27,387 INFO [dump-all-ok] transport.compressor+SEATA_GROUP, 1577894621000, length=4, md5=334c4a4c42fdb79d7ebc3e73b517e6f8
+
+2020-02-04 18:33:27,387 INFO [dump-all-ok] metrics.enabled+SEATA_GROUP, 1577894642000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,391 INFO [dump-all-ok] metrics.registry-type+SEATA_GROUP, 1577894656000, length=7, md5=7cf74ca49c304df8150205fc915cd465
+
+2020-02-04 18:33:27,395 INFO [dump-all-ok] metrics.exporter-list+SEATA_GROUP, 1577894668000, length=10, md5=e4f00638b8a10e6994e67af2f832d51c
+
+2020-02-04 18:33:27,396 INFO [dump-all-ok] metrics.exporter-prometheus-port+SEATA_GROUP, 1577894687000, length=4, md5=7b9dc501afe4ee11c56a4831e20cee71
+
+2020-02-04 18:33:27,398 INFO [dump-all-ok] client.support.spring.datasource.autoproxy+SEATA_GROUP, 1577894703000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 18:33:27,402 INFO [dump-all-ok] service.vgroup_mapping.base-mall-admin-fescar-service-group+SEATA_GROUP, 1577893877000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 18:33:27,403 INFO [dump-all-ok] service.vgroup_mapping.base-weixin-admin-fescar-service-group+SEATA_GROUP, 1577893892000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 20:02:01,735 INFO [dump-all-ok] dynamic_routes+DEFAULT_GROUP, 1574954144000, length=1246, md5=329faf07128e6e0a984d5ce275ebfe39
+
+2020-02-04 20:02:01,742 INFO [dump-all-ok] application-dev.yml+DEFAULT_GROUP, 1579262690000, length=2427, md5=36b42e3d3de5b6d0178eaebc3f182047
+
+2020-02-04 20:02:01,746 INFO [dump-all-ok] base-gateway-dev.yml+DEFAULT_GROUP, 1564468164000, length=161, md5=951580823377e19ddbae79a4276ff678
+
+2020-02-04 20:02:01,752 INFO [dump-all-ok] base-auth-dev.yml+DEFAULT_GROUP, 1574319263000, length=915, md5=3476b23886681325f3b3ca7ac6a800fc
+
+2020-02-04 20:02:01,757 INFO [dump-all-ok] base-upms-admin-dev.yml+DEFAULT_GROUP, 1580731985000, length=1255, md5=2a51f93daa73fa3734803d9266ca161f
+
+2020-02-04 20:02:01,762 INFO [dump-all-ok] base-codegen-dev.yml+DEFAULT_GROUP, 1574319285000, length=774, md5=a16d6b5a6f63d37b5febaedc525156a8
+
+2020-02-04 20:02:01,769 INFO [dump-all-ok] base-weixin-admin-dev.yml+DEFAULT_GROUP, 1577528019000, length=1474, md5=cb9c67db33d49046fc18db74e2e238cd
+
+2020-02-04 20:02:01,774 INFO [dump-all-ok] base-mall-admin-dev.yml+DEFAULT_GROUP, 1577368542000, length=1815, md5=08f5fee57190b3ea9d546bedccfc24ca
+
+2020-02-04 20:02:01,775 INFO [dump-all-ok] transport.type+SEATA_GROUP, 1577893148000, length=3, md5=b136ef5f6a01d816991fe3cf7a6ac763
+
+2020-02-04 20:02:01,776 INFO [dump-all-ok] transport.server+SEATA_GROUP, 1577893624000, length=3, md5=b6d9dfc0fb54277321cebc0fff55df2f
+
+2020-02-04 20:02:01,777 INFO [dump-all-ok] transport.heartbeat+SEATA_GROUP, 1577893652000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 20:02:01,781 INFO [dump-all-ok] transport.enable-client-batch-send-request+SEATA_GROUP, 1577893678000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,786 INFO [dump-all-ok] transport.thread-factory.boss-thread-prefix+SEATA_GROUP, 1577893691000, length=9, md5=0f8db59a3b7f2823f38a70c308361836
+
+2020-02-04 20:02:01,790 INFO [dump-all-ok] transport.thread-factory.worker-thread-prefix+SEATA_GROUP, 1577893704000, length=20, md5=a78ec7ef5d1631754c4e72ae8a3e9205
+
+2020-02-04 20:02:01,797 INFO [dump-all-ok] transport.thread-factory.server-executor-thread-prefix+SEATA_GROUP, 1577893763000, length=21, md5=11a36309f3d9df84fa8b59cf071fa2da
+
+2020-02-04 20:02:01,798 INFO [dump-all-ok] transport.thread-factory.share-boss-worker+SEATA_GROUP, 1577893775000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,804 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-prefix+SEATA_GROUP, 1577893792000, length=19, md5=cd7ec5a06541e75f5a7913752322c3af
+
+2020-02-04 20:02:01,805 INFO [dump-all-ok] transport.thread-factory.client-selector-thread-size+SEATA_GROUP, 1577893806000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 20:02:01,812 INFO [dump-all-ok] transport.thread-factory.client-worker-thread-prefix+SEATA_GROUP, 1577893822000, length=23, md5=61cf4e69a56354cf72f46dc86414a57e
+
+2020-02-04 20:02:01,813 INFO [dump-all-ok] transport.thread-factory.boss-thread-size+SEATA_GROUP, 1577893835000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 20:02:01,813 INFO [dump-all-ok] transport.thread-factory.worker-thread-size+SEATA_GROUP, 1577893852000, length=1, md5=c9f0f895fb98ab9159f51fd0297e236d
+
+2020-02-04 20:02:01,814 INFO [dump-all-ok] transport.shutdown.wait+SEATA_GROUP, 1577893865000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 20:02:01,821 INFO [dump-all-ok] service.default.grouplist+SEATA_GROUP, 1577893908000, length=14, md5=c32ce0d3e264525dcdada751f98143a3
+
+2020-02-04 20:02:01,822 INFO [dump-all-ok] service.enableDegrade+SEATA_GROUP, 1577893921000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,824 INFO [dump-all-ok] service.disableGlobalTransaction+SEATA_GROUP, 1577893932000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,830 INFO [dump-all-ok] client.rm.async.commit.buffer.limit+SEATA_GROUP, 1577893946000, length=5, md5=b7a782741f667201b54880c925faec4b
+
+2020-02-04 20:02:01,830 INFO [dump-all-ok] client.rm.lock.retry.internal+SEATA_GROUP, 1577893960000, length=2, md5=d3d9446802a44259755d38e6d163e820
+
+2020-02-04 20:02:01,831 INFO [dump-all-ok] client.rm.lock.retry.times+SEATA_GROUP, 1577893973000, length=2, md5=34173cb38f07f89ddbebc2ac9128303f
+
+2020-02-04 20:02:01,832 INFO [dump-all-ok] client.rm.report.retry.count+SEATA_GROUP, 1577893986000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 20:02:01,832 INFO [dump-all-ok] client.rm.lock.retry.policy.branch-rollback-on-conflict+SEATA_GROUP, 1577894001000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 20:02:01,834 INFO [dump-all-ok] client.rm.table.meta.check.enable+SEATA_GROUP, 1577894017000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,834 INFO [dump-all-ok] client.rm.report.success.enable+SEATA_GROUP, 1577894030000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 20:02:01,835 INFO [dump-all-ok] client.tm.commit.retry.count+SEATA_GROUP, 1577894043000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 20:02:01,835 INFO [dump-all-ok] client.tm.rollback.retry.count+SEATA_GROUP, 1577894057000, length=1, md5=e4da3b7fbbce2345d7772b0674a318d5
+
+2020-02-04 20:02:01,836 INFO [dump-all-ok] store.mode+SEATA_GROUP, 1577894072000, length=4, md5=8c7dd922ad47494fc02c388e12c00eac
+
+2020-02-04 20:02:01,840 INFO [dump-all-ok] store.file.dir+SEATA_GROUP, 1577894085000, length=15, md5=6a8dec07c44c33a8a9247cba5710bbb2
+
+2020-02-04 20:02:01,846 INFO [dump-all-ok] store.file.max-branch-session-size+SEATA_GROUP, 1577894098000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 20:02:01,847 INFO [dump-all-ok] store.file.max-global-session-size+SEATA_GROUP, 1577894109000, length=3, md5=10a7cdd970fe135cf4f7bb55c0e3b59f
+
+2020-02-04 20:02:01,848 INFO [dump-all-ok] store.file.file-write-buffer-cache-size+SEATA_GROUP, 1577894123000, length=5, md5=c76fe1d8e08462434d800487585be217
+
+2020-02-04 20:02:01,852 INFO [dump-all-ok] store.file.flush-disk-mode+SEATA_GROUP, 1577894136000, length=5, md5=0df93e34273b367bb63bad28c94c78d5
+
+2020-02-04 20:02:01,853 INFO [dump-all-ok] store.file.session.reload.read_size+SEATA_GROUP, 1577894149000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 20:02:01,854 INFO [dump-all-ok] store.db.datasource+SEATA_GROUP, 1577894161000, length=4, md5=3a9f384fb40c59fbdc67024ee97d94b1
+
+2020-02-04 20:02:01,859 INFO [dump-all-ok] store.db.db-type+SEATA_GROUP, 1577894176000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 20:02:01,865 INFO [dump-all-ok] store.db.driver-class-name+SEATA_GROUP, 1577894192000, length=21, md5=683cf0c3a5a56cec94dfac94ca16d760
+
+2020-02-04 20:02:01,870 INFO [dump-all-ok] store.db.url+SEATA_GROUP, 1577894226000, length=49, md5=cbb3bd573704f125fb4f2489208abaec
+
+2020-02-04 20:02:01,872 INFO [dump-all-ok] store.db.user+SEATA_GROUP, 1577894241000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 20:02:01,873 INFO [dump-all-ok] store.db.password+SEATA_GROUP, 1577894254000, length=5, md5=81c3b080dad537de7e10e0987a4bf52e
+
+2020-02-04 20:02:01,874 INFO [dump-all-ok] store.db.min-conn+SEATA_GROUP, 1577894268000, length=1, md5=c4ca4238a0b923820dcc509a6f75849b
+
+2020-02-04 20:02:01,875 INFO [dump-all-ok] store.db.max-conn+SEATA_GROUP, 1577894281000, length=1, md5=eccbc87e4b5ce2fe28308fd9f2a7baf3
+
+2020-02-04 20:02:01,879 INFO [dump-all-ok] store.db.global.table+SEATA_GROUP, 1577894294000, length=12, md5=8b28fb6bb4c4f984df2709381f8eba2b
+
+2020-02-04 20:02:01,884 INFO [dump-all-ok] store.db.branch.table+SEATA_GROUP, 1577894311000, length=12, md5=54bcdac38cf62e103fe115bcf46a660c
+
+2020-02-04 20:02:01,884 INFO [dump-all-ok] store.db.query-limit+SEATA_GROUP, 1577894327000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 20:02:01,889 INFO [dump-all-ok] store.db.lock-table+SEATA_GROUP, 1577894345000, length=10, md5=55e0cae3b6dc6696b768db90098b8f2f
+
+2020-02-04 20:02:01,890 INFO [dump-all-ok] server.recovery.committing-retry-period+SEATA_GROUP, 1577894374000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 20:02:01,890 INFO [dump-all-ok] server.recovery.asyn-committing-retry-period+SEATA_GROUP, 1577894401000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 20:02:01,891 INFO [dump-all-ok] server.recovery.rollbacking-retry-period+SEATA_GROUP, 1577894416000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 20:02:01,892 INFO [dump-all-ok] server.recovery.timeout-retry-period+SEATA_GROUP, 1577894432000, length=4, md5=a9b7ba70783b617e9998dc4dd82eb3c5
+
+2020-02-04 20:02:01,892 INFO [dump-all-ok] server.max.commit.retry.timeout+SEATA_GROUP, 1577894486000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 20:02:01,893 INFO [dump-all-ok] server.max.rollback.retry.timeout+SEATA_GROUP, 1577894501000, length=2, md5=6bb61e3b7bce0931da574d19d1d82c88
+
+2020-02-04 20:02:01,893 INFO [dump-all-ok] client.undo.data.validation+SEATA_GROUP, 1577894516000, length=4, md5=b326b5062b2f0e69046810717534cb09
+
+2020-02-04 20:02:01,899 INFO [dump-all-ok] client.undo.log.serialization+SEATA_GROUP, 1577894530000, length=7, md5=b41779690b83f182acc67d6388c7bac9
+
+2020-02-04 20:02:01,900 INFO [dump-all-ok] server.undo.log.save.days+SEATA_GROUP, 1577894548000, length=1, md5=8f14e45fceea167a5a36dedd4bea2543
+
+2020-02-04 20:02:01,904 INFO [dump-all-ok] server.undo.log.delete.period+SEATA_GROUP, 1577894565000, length=8, md5=f4c122804fe9076cb2710f55c3c6e346
+
+2020-02-04 20:02:01,910 INFO [dump-all-ok] client.undo.log.table+SEATA_GROUP, 1577894579000, length=8, md5=2842d229c24afe9e61437135e8306614
+
+2020-02-04 20:02:01,911 INFO [dump-all-ok] client.log.exceptionRate+SEATA_GROUP, 1577894593000, length=3, md5=f899139df5e1059396431415e770c6dd
+
+2020-02-04 20:02:01,918 INFO [dump-all-ok] transport.serialization+SEATA_GROUP, 1577894606000, length=5, md5=b943081c423b9a5416a706524ee05d40
+
+2020-02-04 20:02:01,918 INFO [dump-all-ok] transport.compressor+SEATA_GROUP, 1577894621000, length=4, md5=334c4a4c42fdb79d7ebc3e73b517e6f8
+
+2020-02-04 20:02:01,919 INFO [dump-all-ok] metrics.enabled+SEATA_GROUP, 1577894642000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,924 INFO [dump-all-ok] metrics.registry-type+SEATA_GROUP, 1577894656000, length=7, md5=7cf74ca49c304df8150205fc915cd465
+
+2020-02-04 20:02:01,928 INFO [dump-all-ok] metrics.exporter-list+SEATA_GROUP, 1577894668000, length=10, md5=e4f00638b8a10e6994e67af2f832d51c
+
+2020-02-04 20:02:01,928 INFO [dump-all-ok] metrics.exporter-prometheus-port+SEATA_GROUP, 1577894687000, length=4, md5=7b9dc501afe4ee11c56a4831e20cee71
+
+2020-02-04 20:02:01,930 INFO [dump-all-ok] client.support.spring.datasource.autoproxy+SEATA_GROUP, 1577894703000, length=5, md5=68934a3e9455fa72420237eb05902327
+
+2020-02-04 20:02:01,934 INFO [dump-all-ok] service.vgroup_mapping.base-mall-admin-fescar-service-group+SEATA_GROUP, 1577893877000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 20:02:01,935 INFO [dump-all-ok] service.vgroup_mapping.base-weixin-admin-fescar-service-group+SEATA_GROUP, 1577893892000, length=7, md5=c21f969b5f03d33d43e04f8f136e7682
+
+2020-02-04 21:35:16,726 WARN [dump-ignore] ignore to save cache file. groupKey=application-dev.yml+DEFAULT_GROUP, md5=808fce241d2286ecebd5d7987db43f58, lastModifiedOld=1580823311404, lastModifiedNew=1580823316665
+

@@ -20,12 +20,12 @@
 </template>
 
 <script>
-  import {addObj, delObj, getPage, getObj, putObj} from '@/api/admin/sys-third-party'
-  import {tableOption} from '@/const/crud/admin/sys-third-party'
+  import {addObj, delObj, getPage, getObj, putObj} from '@/api/admin/thirdparty'
+  import {tableOption} from '@/const/crud/admin/thirdparty'
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'sys-third-party',
+    name: 'thirdparty',
     data() {
       return {
         tableData: [],
@@ -143,8 +143,8 @@
       /**
        * 刷新回调
        */
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       },
       /**
        * 搜索回调

@@ -433,11 +433,11 @@
       /**
        * 刷新回调
        */
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       },
-      refreshChange2(val) {
-        this.getPage2(val.page)
+      refreshChange2(page) {
+        this.getPage2(page)
       }
     }
   }

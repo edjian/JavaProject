@@ -1,6 +1,5 @@
 <template>
-  <div class="login-container pull-height"
-       @keyup.enter.native="handleLogin">
+  <div class="login-container pull-height">
     <div class="login-logo animated fadeIn" onclick="window.open('http://www.joolun.com','_self')">
       <img src="/svg/logo.svg"
            alt="">
@@ -20,7 +19,7 @@
               前端封装微信专用vue组件，开发中实现灵活调用，杜绝重复造轮子，让前端开发更容易
             </li>
             <li class="login-info-item">
-              支持多公众号多账号管理，redis全局缓存access_token
+              支持多商户多公众号多小程序多账号管理，redis全局缓存access_token
             </li>
             <li class="login-info-item">
               支持第三方平台全网发布
@@ -81,7 +80,6 @@
     data() {
       return {
         time: "",
-        active: "",
         activeName: this.$route.meta.activeName,
         thirdPartyForm: {}
       };
@@ -94,25 +92,18 @@
 
           this.thirdPartyForm.state = params.state
           this.thirdPartyForm.code = params.code
-          const loading = this.$loading({
-            lock: true,
-            text: `登录中,请稍后。。。`,
-            spinner: 'el-icon-loading'
-          })
           this.$store.dispatch('LoginByThirdParty', this.thirdPartyForm).then(
             () => {
-              loading.close()
               this.$store.commit("SET_TOP_MENU_INDEX", 0)
-              this.$router.push({path: this.tagWel.value});
+              this.$router.push({path: this.tagWel.value})
             }).catch(() => {
-            loading.close()
+
           })
         },
         immediate: true
       }
     },
     created() {
-      this.active = getStore({name: "tenantId"});
       this.getTime();
       setInterval(() => {
         this.getTime();

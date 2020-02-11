@@ -87,4 +87,12 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
 	public IPage<CouponInfo> page2(IPage<CouponInfo> page, CouponInfo couponInfo, CouponGoods cuponGoods, CouponUser couponUser) {
 		return baseMapper.selectPage2(page, couponInfo, cuponGoods, couponUser);
 	}
+
+	@Override
+	public boolean removeById(Serializable id) {
+		//先删除关联商品
+		couponGoodsService.remove(Wrappers.<CouponGoods>lambdaQuery()
+				.eq(CouponGoods::getCouponId,id));
+		return super.removeById(id);
+	}
 }

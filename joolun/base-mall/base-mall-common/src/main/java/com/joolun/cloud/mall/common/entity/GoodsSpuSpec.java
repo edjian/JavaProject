@@ -33,7 +33,7 @@ private static final long serialVersionUID = 1L;
     /**
    * PK
    */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
     /**

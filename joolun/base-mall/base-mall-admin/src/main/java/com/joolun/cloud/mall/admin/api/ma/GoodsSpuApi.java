@@ -13,14 +13,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.mapper.UserCollectMapper;
-import com.joolun.cloud.mall.admin.service.CouponInfoService;
+import com.joolun.cloud.mall.admin.service.CouponUserService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
-import com.joolun.cloud.mall.common.entity.CouponGoods;
-import com.joolun.cloud.mall.common.entity.CouponInfo;
-import com.joolun.cloud.mall.common.entity.GoodsSpu;
-import com.joolun.cloud.mall.common.entity.UserCollect;
+import com.joolun.cloud.mall.common.entity.*;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +43,7 @@ public class GoodsSpuApi {
 
     private final GoodsSpuService goodsSpuService;
 	private final UserCollectMapper userCollectMapper;
-	private final CouponInfoService couponInfoService;
+	private final CouponUserService couponUserService;
 
 	/**
 	* 分页查询
@@ -55,17 +52,17 @@ public class GoodsSpuApi {
 	* @return
 	*/
     @GetMapping("/page")
-    public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu, CouponGoods couponGoods) {
+    public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu, String couponUserId) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
 		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
 			return checkThirdSession;
 		}
 		goodsSpu.setShelf(CommonConstants.YES);
-		CouponInfo couponInfo = null;
-		if(StrUtil.isNotBlank(couponGoods.getCouponId())){
-			couponInfo = couponInfoService.getById(couponGoods.getCouponId());
+		CouponUser couponUser = null;
+		if(StrUtil.isNotBlank(couponUserId)){
+			couponUser = couponUserService.getById(couponUserId);
 		}
-        return R.ok(goodsSpuService.page2(page, goodsSpu, couponGoods, couponInfo));
+        return R.ok(goodsSpuService.page2(page, goodsSpu, couponUser));
     }
 
     /**

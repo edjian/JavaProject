@@ -1,0 +1,6 @@
+2020-02-07 12:39:47,520 WARN [master-db] jdbc:mysql://base-mysql:3306/base_config?serverTimezone=GMT%2B8&characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+
+2020-02-07 12:39:47,726 WARN isQuickStart:false
+
+2020-02-07 12:39:48,478 WARN useAddressServer:true
+

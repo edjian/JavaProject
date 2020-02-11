@@ -4,6 +4,8 @@ import com.joolun.cloud.upms.common.vo.MenuVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
  * @author
  */
@@ -22,6 +24,9 @@ public class MenuTree extends TreeNode {
 	private String type;
 	private String label;
 	private Integer sort;
+	private String permission;
+	private LocalDateTime createTime;
+	private LocalDateTime updateTime;
 
 	public MenuTree() {
 	}
@@ -51,5 +56,8 @@ public class MenuTree extends TreeNode {
 		this.label = menuVo.getName();
 		this.sort = menuVo.getSort();
 		this.keepAlive = menuVo.getKeepAlive();
+		this.permission = menuVo.getPermission();
+		this.createTime = menuVo.getCreateTime();
+		this.updateTime = menuVo.getUpdateTime();
 	}
 }

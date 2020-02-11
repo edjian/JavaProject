@@ -37,7 +37,7 @@ private static final long serialVersionUID = 1L;
     /**
    * 菜单ID（click、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album、pic_weixin、location_select：保存key）
    */
-    @TableId(type = IdType.ASSIGN_UUID)
+    @TableId(type = IdType.ASSIGN_ID)
     private String id;
 	/**
 	 * 所属租户

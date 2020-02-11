@@ -151,7 +151,7 @@
                 text: 'www.joolun.com',
                 ratio: 0.1
               },
-              action: '/admin/file/upload?dir=user/',
+              action: '/admin/file/upload?fileType=image&dir=user/',
               propsHttp: {
                 url: 'link'
               },
@@ -324,8 +324,8 @@
       /**
        * 刷新回调
        */
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       }
     }
   }

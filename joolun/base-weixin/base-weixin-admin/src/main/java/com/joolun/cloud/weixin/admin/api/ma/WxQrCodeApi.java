@@ -45,8 +45,7 @@ public class WxQrCodeApi {
 	 * @return
 	 */
 	@PostMapping("/unlimited")
-	public R getUnlimited(HttpServletRequest request,
-				   @RequestBody MaQrCodeDTO maQrCodeDTO){
+	public R getUnlimited(HttpServletRequest request, @RequestBody MaQrCodeDTO maQrCodeDTO){
 		try {
 			String wxAppId = WxMaConfiguration.getAppId(request);
 			File fileImg = WxMaConfiguration.getMaService(wxAppId).getQrcodeService()

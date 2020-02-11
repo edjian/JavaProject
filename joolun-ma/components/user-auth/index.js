@@ -17,10 +17,13 @@ Component({
   data: {
     wxUser: null
   },
-  attached() {
-    this.setData({
-      wxUser: app.globalData.wxUser
-    })
+  lifetimes: {
+    // 组件所在页面的生命周期函数
+    ready: function () {
+      this.setData({
+        wxUser: app.globalData.wxUser
+      })
+    }
   },
   methods: {
     agreeGetUser(e) {

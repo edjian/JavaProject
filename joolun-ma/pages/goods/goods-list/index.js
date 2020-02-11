@@ -56,9 +56,9 @@ Page({
         })
       }
     }
-    if (options.couponId) {
+    if (options.couponUserId) {
       this.setData({
-        ['parameter.couponId']: options.couponId
+        ['parameter.couponUserId']: options.couponUserId
       })
     }
     app.initPage()

@@ -84,6 +84,7 @@
           nodeKey: 'id',
           addBtn: false,
           menu: false,
+          defaultExpandAll: true,
           props: {
             label: 'name',
             value: 'id'
@@ -187,10 +188,10 @@
         this.getPage(this.page, params)
         done()
       },
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       },
-      handleSave(row, done) {
+      handleSave(row, done, loading) {
         addObj(this.form).then(() => {
           this.getPage(this.page)
           this.$notify({
@@ -201,10 +202,10 @@
           })
           done()
         }).catch(() => {
-
+          loading()
         })
       },
-      handleUpdate(row, index, done) {
+      handleUpdate(row, index, done, loading) {
         putObj(this.form).then(() => {
           this.getPage(this.page)
           done()
@@ -215,7 +216,7 @@
             duration: 2000
           });
         }).catch(() => {
-
+          loading()
         })
       },
       handleDel(row, index) {

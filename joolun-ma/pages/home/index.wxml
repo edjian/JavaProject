@@ -15,7 +15,7 @@
   </view>
 </view>
 <view class="margin-top-bar">
-  <swiper class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+  <swiper wx:if="{{swiperData.length > 0}}" class="screen-swiper round-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
     <swiper-item wx:for="{{swiperData}}" wx:key="index" bindtap="jumpPage" data-page="{{item.page}}">
       <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='1'}}"></image>
       <video src="{{item.url}}" wx:if="{{item.type=='1'}}" controls></video>
@@ -114,6 +114,8 @@
       </scroll-view>
     </view>
   </view>
+
+  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
 
   <view class="cu-bar justify-center bg-white margin-top-sm">
     <view class='action border-title'>

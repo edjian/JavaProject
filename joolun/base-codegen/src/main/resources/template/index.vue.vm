@@ -137,7 +137,7 @@
              *
              **/
             handleUpdate: function (row, index, done, loading) {
-                putObj(row).then(data => {
+                putObj(row).then(response => {
                     this.$message({
                         showClose: true,
                         message: '修改成功',
@@ -156,7 +156,7 @@
              *
              **/
             handleSave: function (row, done, loading) {
-                addObj(row).then(data => {
+                addObj(row).then(response => {
                     this.$message({
                         showClose: true,
                         message: '添加成功',
@@ -171,8 +171,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-                this.getPage(val.page)
+            refreshChange(page) {
+                this.getPage(page)
             }
         }
     }

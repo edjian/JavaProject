@@ -118,7 +118,8 @@ Page({
             ['parameter.bargainUserId']: bargainInfo.bargainUser.id,
             cutPercent: cutPercent,
             canCutPrice: canCutPrice,
-            havCutPrice: havCutPrice
+            havCutPrice: havCutPrice,
+            bargainCutList: []
           })
           this.bargainCutPage()
         }
@@ -388,8 +389,7 @@ Page({
   //砍一刀
   bargainCutSave(){
     this.setData({
-      disabled: true,
-      bargainCutList: []
+      disabled: true
     })
     let bargainUserId = this.data.bargainInfo.bargainUser.id
     app.api.bargainCutSave({

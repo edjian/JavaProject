@@ -25,7 +25,7 @@ public class SysMenu extends Model<SysMenu> {
 	/**
 	 * 菜单ID
 	 */
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 	/**
 	 * 菜单名称

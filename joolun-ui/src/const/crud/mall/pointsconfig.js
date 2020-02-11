@@ -18,6 +18,7 @@ export const tableOption = {
     searchShow: false,
     excelBtn: true,
     printBtn: true,
+    labelWidth: 120,
     column: [
         {
             label: '用户初始积分',

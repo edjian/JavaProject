@@ -21,7 +21,6 @@ Page({
     this.userInfoGet()
   },
   onLoad(){
-    
   },
   /**
    * 小程序设置

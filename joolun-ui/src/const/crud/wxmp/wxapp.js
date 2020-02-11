@@ -49,6 +49,7 @@ export const tableOption = {
         label: 'name',
         value: 'id'
       },
+      defaultExpandAll: true,
       dicUrl: '/admin/organ/tree'
     },
     {
@@ -96,13 +97,13 @@ export const tableOption = {
       }]
     },
     {
-      label: '微信原始标识',
+      label: '微信原始ID',
       prop: 'weixinSign',
       search:true,
       hide:true,
       rules: [{
         required: true,
-        message: "请输入微信原始标识",
+        message: "请输入微信原始ID",
         trigger: "blur"
       }]
     },

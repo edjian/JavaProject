@@ -57,8 +57,8 @@
       <view class="text-gray margin-left-sm">发货</view>
     </view>
     <view class="flex-treble text-df">
-      <text class="cuIcon-location text-black">江苏南京</text>
-      <text class="text-black" wx:if="{{goodsSpu.freightTemplat}}"> | 运费：{{goodsSpu.freightTemplat.type == '2' ? '全国包邮' : '￥'+goodsSpu.freightTemplat.firstFreight}}</text>
+      <text class="cuIcon-location text-black" wx:if="{{goodsSpu.deliveryPlace}}">{{goodsSpu.deliveryPlace.place}} | </text>
+      <text class="text-black" wx:if="{{goodsSpu.freightTemplat}}">运费：{{goodsSpu.freightTemplat.type == '2' ? '全国包邮' : '￥'+goodsSpu.freightTemplat.firstFreight}}</text>
     </view>
     <view class="flex-sub text-df text-gray text-right margin-right-sm">销量{{goodsSpu.saleNum}}</view>
   </view>
@@ -83,13 +83,13 @@
   </view>
 </view>
 
-<view class="cu-bar bg-white margin-top-sm">
+<view class="cu-bar bg-white margin-top-sm" wx:if="{{ensureList.length > 0}}">
   <view class="flex response" bindtap="showModalService">
       <view class="flex-sub text-df">
         <view class="text-gray margin-left-sm">服务</view>
       </view>
       <view class="flex-treble text-df">
-        <text class="text-black">{{serviceList[0].name}} | {{serviceList[1].name}}</text>
+        <text class="text-black">{{ensureList[0].name}} {{ensureList[1] ? '| '+ensureList[1].name : ''}}</text>
       </view>
       <view class="flex-sub text-df text-gray text-right">
         <text class="cuIcon-right margin-right-sm"></text>
@@ -101,10 +101,10 @@
     <view class="padding-xl">
       <view class="text-lg text-center">基础服务</view>
       <view class="cu-list text-left solid-bottom">
-        <view class="cu-item" wx:for="{{serviceList}}" wx:key="index">
+        <view class="cu-item" wx:for="{{ensureList}}" wx:key="index">
           <view class="content padding-tb-sm">
             <view><text class="cuIcon-roundcheckfill text-orange"></text> {{item.name}}</view>
-            <view class="text-gray text-sm" wx:if="{{item.desc}}">{{item.desc}}</view>
+            <view class="text-gray text-sm" wx:if="{{item.detail}}">{{item.detail}}</view>
           </view>
         </view>
       </view>
@@ -181,6 +181,7 @@
 <view class="cu-bar bg-white margin-top-sm">
   <view class="content">商品信息</view>
 </view>
+<ad unit-id="adunit-80d788ab8518b5b3"></ad>
 <view class="bg-white">
   <template is="wxParse" data="{{wxParseData:description.nodes}}"/>
 </view>

@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.common.constant.MyReturnCode;
@@ -115,10 +116,11 @@ public class WxMaConfiguration {
 	 */
 	public static WxApp getApp(HttpServletRequest request) throws Exception {
 		String appId = getAppId(request);
-		WxApp wxApp = wxAppService.getById(appId);
+		WxApp wxApp = wxAppService.findByAppId(appId);
 		if(wxApp==null) {
 			throw new Exception("系统内无此小程序：" + appId);
 		}
+		TenantContextHolder.setTenantId(wxApp.getTenantId());//指定租户ID
 		return wxApp;
 	}
 

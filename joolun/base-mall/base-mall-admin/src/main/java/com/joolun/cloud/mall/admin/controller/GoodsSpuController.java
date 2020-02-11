@@ -73,7 +73,7 @@ public class GoodsSpuController {
     @GetMapping("/{id}")
     @PreAuthorize("@ato.hasAuthority('mall_goodsspu_get')")
     public R getById(@PathVariable("id") String id){
-        return R.ok(goodsSpuService.getById2(id));
+        return R.ok(goodsSpuService.getById1(id));
     }
 
     /**

@@ -148,8 +148,8 @@
           this.listLoading=false
         })
       },
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       },
       searchChange(param,done) {
         this.page.currentPage = 1
@@ -229,7 +229,7 @@
         }).catch(function () {
         })
       },
-      handleSave(row, done) {
+      handleSave(row, done, loading) {
         if (this.form.dsType === 1){
           this.form.dsScope = this.$refs.scopeTree.getCheckedKeys().join(',')
         }
@@ -243,10 +243,10 @@
             duration: 2000
           })
         }).catch(() => {
-          done()
+          loading()
         })
       },
-      handleUpdate(row, index, done) {
+      handleUpdate(row, index, done, loading) {
         if (this.form.dsType === 1){
           this.form.dsScope = this.$refs.scopeTree.getCheckedKeys().join(',')
         }
@@ -260,7 +260,7 @@
             duration: 2000
           })
         }).catch(() => {
-          done()
+          loading()
         })
       },
       updatePermession(id, roleCode) {

@@ -70,7 +70,7 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 			//新增退款记录
 			entity.setOrderId(orderItem.getOrderId());
 			entity.setOrderItemId(orderItem.getId());
-			entity.setRefundAmount(orderItem.getSalesPrice());
+			entity.setRefundAmount(orderItem.getPaymentPrice());
 			baseMapper.insert(entity);
 		}
 		return Boolean.TRUE;
@@ -99,13 +99,15 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 				OrderItem orderItem = orderItemService.getById2(orderRefunds.getOrderItemId());
 				OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
 				//校验数据，只有已支付的订单、未退款的订单详情才能退款
-				if(CommonConstants.YES.equals(orderInfo.getIsPay()) && CommonConstants.NO.equals(orderItem.getIsRefund())){
+				if(CommonConstants.YES.equals(orderInfo.getIsPay())
+						&& CommonConstants.NO.equals(orderItem.getIsRefund())
+						&& orderRefunds.getRefundAmount().compareTo(BigDecimal.ZERO) == 1){
 					WxPayRefundRequest request = new WxPayRefundRequest();
 					request.setAppid(orderInfo.getAppId());
 					request.setTransactionId(orderInfo.getTransactionId());
 					request.setOutRefundNo(orderRefunds.getId());
 					request.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
-					request.setRefundFee(orderItem.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
+					request.setRefundFee(orderRefunds.getRefundAmount().multiply(new BigDecimal(100)).intValue());
 					request.setNotifyUrl(mallConfigProperties.getNotifyHost()+"/mall/api/ma/orderrefunds/notify-refunds");
 					R r = feignWxPayService.refundOrder(request, SecurityConstants.FROM_IN);
 					if(r.isOk()){

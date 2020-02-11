@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.upms.admin.service.SysMenuService;
 import com.joolun.cloud.upms.admin.service.SysRoleService;
-import com.joolun.cloud.upms.admin.service.SysTenantService;
 import com.joolun.cloud.upms.common.dto.MenuTree;
 import com.joolun.cloud.upms.common.entity.SysMenu;
 import com.joolun.cloud.upms.common.entity.SysRole;
@@ -34,7 +33,6 @@ import java.util.stream.Collectors;
 public class SysMenuController {
 	private final SysMenuService sysMenuService;
 	private final SysRoleService sysRoleService;
-	private final SysTenantService sysTenantService;
 
 	/**
 	 * 返回当前用户的树形菜单集合
@@ -64,8 +62,7 @@ public class SysMenuController {
 	@PreAuthorize("@ato.hasAuthority('sys_menu_index')")
 	public R getTree() {
 		Set<MenuVO> all = new HashSet<>();
-		SecurityUtils.getRoles()
-				.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
+		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
 		List<MenuTree> menuTreeList = all.stream()
 				.map(MenuTree::new)
 				.collect(Collectors.toList());
@@ -93,6 +90,7 @@ public class SysMenuController {
 	 * @return 菜单详细信息
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("@ato.hasAuthority('sys_menu_get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysMenuService.getById(id));
 	}
@@ -135,6 +133,27 @@ public class SysMenuController {
 	@PreAuthorize("@ato.hasAuthority('sys_menu_edit')")
 	public R update(@Valid @RequestBody SysMenu sysMenu) {
 		return R.ok(sysMenuService.updateMenuById(sysMenu));
+	}
+
+	/**
+	 *  返回树形父类集合
+	 * @return
+	 */
+	@GetMapping("/parentTree")
+	@PreAuthorize("@ato.hasAuthority('sys_menu_index')")
+	public List<MenuTree> getParentTree() {
+		Set<MenuVO> all = new HashSet<>();
+		MenuVO p = new MenuVO();
+		p.setId("-1");
+		p.setName("顶级");
+		p.setParentId("0");
+		all.add(p);
+		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
+		List<MenuTree> menuTreeList = all.stream()
+				.map(MenuTree::new)
+				.collect(Collectors.toList());
+		List<MenuTree> listMenuTree = TreeUtil.build(menuTreeList, "0");
+		return listMenuTree;
 	}
 
 	/**

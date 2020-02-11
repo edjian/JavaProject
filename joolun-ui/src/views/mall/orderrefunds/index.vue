@@ -97,8 +97,8 @@
                     <div style="margin-top: 20px">
                         运费金额：￥{{orderItemObj.freightPrice}}
                     </div>
-                    <div style="margin-top: 20px; color: red">
-                        退款金额：￥{{orderItemObj.paymentPrice}}
+                    <div style="margin-top: 20px; color: red" v-if="orderItemObj.listOrderRefunds">
+                        退款金额：￥{{orderItemObj.listOrderRefunds[0].refundAmount}}
                     </div>
                     <div style="margin-top: 20px; color: red">
                         退款积分：{{orderItemObj.paymentPoints}}
@@ -353,8 +353,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-                this.getPage(val.page)
+            refreshChange(page) {
+                this.getPage(page)
             }
         }
     }

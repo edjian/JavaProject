@@ -1,8 +1,8 @@
 <template>
   <div class="execution">
     <basic-container>
-      <el-row>
-        <el-col :span="this.clickDictType != null ? 12 : 24">
+      <el-row :gutter="10">
+        <el-col :span="this.clickObj ? 12 : 24">
           <el-card class="box-card">
             <avue-crud ref="crud"
                        :page="page"
@@ -10,6 +10,7 @@
                        :permission="permissionList"
                        :table-loading="tableLoading"
                        :option="tableOption"
+                       v-model="form"
                        @on-load="getPage"
                        @row-update="handleUpdate"
                        @row-save="handleSave"
@@ -28,21 +29,26 @@
             </avue-crud>
           </el-card>
         </el-col>
-        <el-col :span="12" v-if="this.clickDictType != null">
+        <el-col :span="12" v-if="this.clickObj">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <h3><i class="el-icon-document-copy"></i> 键值列表，所属类型：{{this.clickDictType}}</h3>
+              <h3><i class="el-icon-document-copy"></i> 键值列表，所属类型：{{this.clickObj.type}}</h3>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="handleItem()">关闭</el-button>
             </div>
-            <avue-crud ref="crudItem"
-                       :data="tableDictItemData"
+            <avue-crud ref="crud2"
+                       v-model="form2"
+                       :page="page2"
+                       :data="tableData2"
                        :permission="permissionList"
-                       v-model="form"
-                       @row-update="handleItemUpdate"
-                       @row-save="handleItemSave"
-                       @row-del="rowItemDel"
-                       :before-open="beforeOpen"
-                       :option="tableDictItemOption"
-                       :table-loading="tableLoading2">
+                       :before-open="beforeOpen2"
+                       :option="tableOption2"
+                       :table-loading="tableLoading2"
+                       @on-load="getPage2"
+                       @row-update="handleUpdate2"
+                       @row-save="handleSave2"
+                       @row-del="handleDel2"
+                       @refresh-change="refreshChange2"
+                       @sort-change="sortChange2">
             </avue-crud>
           </el-card>
         </el-col>
@@ -53,30 +59,34 @@
 </template>
 
 <script>
-  import {addItemObj, addObj, delItemObj, delObj, fetchItemList, getPage, putItemObj, putObj} from '@/api/admin/dict'
-  import {tableDictItemOption, tableOption} from '@/const/crud/admin/dict'
+  import {getPage, addObj, putObj, delObj, getPage2, addObj2, putObj2, delObj2} from '@/api/admin/dict'
+  import {tableOption2, tableOption} from '@/const/crud/admin/dict'
   import {mapGetters} from 'vuex'
 
   export default {
     name: 'dict',
     data() {
       return {
-        clickDictType: null,
+        clickObj: null,
         form: {},
-        dictType: undefined,
-        dictId: undefined,
         dialogFormVisible: false,
         tableData: [],
-        tableDictItemData: [],
+        tableOption: tableOption,
         page: {
           total: 0, // 总页数
           currentPage: 1, // 当前页数
           pageSize: 10 // 每页显示多少条
         },
         tableLoading: false,
+        form2: {},
+        tableData2: [],
+        page2: {
+          total: 0, // 总页数
+          currentPage: 1, // 当前页数
+          pageSize: 10 // 每页显示多少条
+        },
         tableLoading2: false,
-        tableOption: tableOption,
-        tableDictItemOption: tableDictItemOption
+        tableOption2: tableOption2
       }
     },
     created() {
@@ -123,25 +133,6 @@
           this.tableLoading = false
         })
       },
-
-      getDictItemList(dictId, type) {
-        this.dictType = type
-        this.dictId = dictId
-        this.dialogFormVisible = true
-        this.tableLoading2 = true
-        fetchItemList(Object.assign({
-          current: this.page.currentPage,
-          size: this.page.pageSize
-        }, {dictId: dictId})).then(response => {
-          this.tableDictItemData = response.data.data.records
-          this.tableLoading2 = false
-        })
-      },
-      beforeOpen(done) {
-        this.$set(this.form,"type",this.dictType)
-        this.$set(this.form,"dictId",this.dictId)
-        done()
-      },
       handleDel: function (row, index) {
         var _this = this
         this.$confirm('是否确认删除?', '警告', {
@@ -151,7 +142,7 @@
         }).then(function () {
           return delObj(row)
         }).then(() => {
-          this.tableDictItemData = []
+          this.tableData = []
           this.getPage(this.page)
           _this.$message({
             showClose: true,
@@ -200,61 +191,126 @@
           loading()
         })
       },
-      handleItemSave: function (row, done) {
-        addItemObj(row).then(() => {
-          this.tableDictItemData.push(Object.assign({}, row))
-          this.$message({
-            showClose: true,
-            message: '添加成功',
-            type: 'success'
-          })
-          this.getDictItemList(row.dictId, row.type)
-          done()
-        })
-      },
-      handleItemUpdate: function (row, index, done, loading) {
-        putItemObj(row).then(() => {
-          this.$message({
-            showClose: true,
-            message: '修改成功',
-            type: 'success'
-          })
-          this.getDictItemList(row.dictId, row.type)
-          done()
-        }).catch(() => {
-          loading()
-        })
-      },
       searchChange(form,done) {
         this.getPage(this.page, this.filterForm(form))
         done()
       },
-      /**
-       * 加载键值列表
-       * @param row
-       */
+
       handleItem: function (row) {
-        this.clickDictType = row.type
-        this.getDictItemList(row.id, row.type)
+        if(row){
+          this.clickObj = row
+          this.page2.currentPage = 1
+          this.getPage2(this.page2)
+        }else{
+          this.clickObj = null
+        }
       },
-      rowItemDel: function (row) {
+      beforeOpen2(done) {
+        this.$set(this.form2,"dictId",this.clickObj.id)
+        this.$set(this.form2,"type",this.clickObj.type)
+        done()
+      },
+      sortChange2(val){
+        let prop = val.prop ? val.prop.replace(/([A-Z])/g,"_$1").toLowerCase() : ''
+        if(val.order=='ascending'){
+          this.page2.descs = []
+          this.page2.ascs = prop
+        }else if(val.order=='descending'){
+          this.page2.ascs = []
+          this.page2.descs = prop
+        }else{
+          this.page2.ascs = []
+          this.page2.descs = []
+        }
+        this.getPage2(this.page2)
+      },
+      getPage2(page, params) {
+        this.tableLoading2 = true
+        getPage2(Object.assign({
+          current: page.currentPage,
+          size: page.pageSize,
+          descs: this.page2.descs,
+          ascs: this.page2.ascs,
+        }, params, this.paramsSearch2,{
+          dictId: this.clickObj.id
+        })).then(response => {
+          this.tableData2 = response.data.data.records
+          this.page2.total = response.data.data.total
+          this.page2.currentPage = page.currentPage
+          this.page2.pageSize = page.pageSize
+          this.tableLoading2 = false
+        }).catch(() => {
+          this.tableLoading2=false
+        })
+      },
+      /**
+       * @title 数据删除
+       * @param row 为当前的数据
+       * @param index 为当前删除数据的行数
+       *
+       **/
+      handleDel2: function(row, index) {
         var _this = this
-        this.$confirm('是否确认删除数据为"' + row.label + '"的数据项?', '警告', {
+        this.$confirm('是否确认删除此数据', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(function () {
-          return delItemObj(row.id)
-        }).then(() => {
-          this.getDictItemList(row.dictId, row.type)
+        }).then(function() {
+          return delObj2(row.id)
+        }).then(data => {
           _this.$message({
             showClose: true,
             message: '删除成功',
             type: 'success'
           })
-        }).catch(function () {
+          this.getPage2(this.page2)
+        }).catch(function(err) { })
+      },
+      /**
+       * @title 数据更新
+       * @param row 为当前的数据
+       * @param index 为当前更新数据的行数
+       * @param done 为表单关闭函数
+       *
+       **/
+      handleUpdate2: function(row, index, done, loading) {
+        putObj2(row).then(data => {
+          this.$message({
+            showClose: true,
+            message: '修改成功',
+            type: 'success'
+          })
+          done()
+          this.getPage2(this.page2)
+        }).catch(() => {
+          loading()
         })
       },
+      /**
+       * @title 数据添加
+       * @param row 为当前的数据
+       * @param done 为表单关闭函数
+       *
+       **/
+      handleSave2: function(row, done, loading) {
+        addObj2(row).then(data => {
+          this.$message({
+            showClose: true,
+            message: '添加成功',
+            type: 'success'
+          })
+          done()
+          this.getPage2(this.page2)
+        }).catch(() => {
+          loading()
+        })
+      },
+      /**
+       * 刷新回调
+       */
+      refreshChange2(val) {
+        this.getPage2(val.page)
+      }
     }
   }
 </script>

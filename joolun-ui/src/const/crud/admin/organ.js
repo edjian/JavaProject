@@ -1,19 +1,18 @@
 export const tableOption = {
-  dialogDrag:true,
+  dialogDrag: true,
   headerAlign: 'center',
   align: 'center',
   border: true,
-  index: true,
   viewBtn: true,
-  defaultExpandAll:true,
+  defaultExpandAll: true,
   column: [
     {
       label: '父类机构',
       prop: 'parentId',
       type: 'tree',
       hide: true,
-      sortable:true,
       dicUrl: '/admin/organ/parentTree',
+      defaultExpandAll: true,
       props: {
         label: 'name',
         value: 'id'
@@ -68,27 +67,27 @@ export const tableOption = {
     },
     {
       label: '电话',
-      hide:true,
+      hide: true,
       prop: 'phone'
     },
     {
       label: '传真',
-      hide:true,
+      hide: true,
       prop: 'fax'
     },
     {
       label: '邮箱',
-      hide:true,
+      hide: true,
       prop: 'email'
     },
     {
       label: '地址',
-      hide:true,
+      hide: true,
       prop: 'address'
     },
     {
       label: '备注',
-      hide:true,
+      hide: true,
       prop: 'comment'
     },
     {
@@ -100,7 +99,7 @@ export const tableOption = {
     {
       label: '修改时间',
       prop: 'updateTime',
-      hide:true,
+      hide: true,
       editDisplay:false,
       addDisplay:false
     }

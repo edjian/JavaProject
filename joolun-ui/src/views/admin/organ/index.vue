@@ -2,11 +2,13 @@
   <div class="app-container calendar-list-container">
     <basic-container>
       <avue-crud
+        ref="crud"
         @on-load="getPage"
         :option="tableOption"
         :data="tableData"
         :permission="permissionList"
         :table-loading="tableLoading"
+        v-model="form"
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
@@ -25,6 +27,7 @@
     name: 'organ',
     data() {
       return {
+        form: {},
         tableOption: tableOption,
         tableData: [],
         tableLoading: false
@@ -45,8 +48,12 @@
     },
     methods: {
       getPage() {
+        this.tableLoading = true
         fetchTree().then(response => {
           this.tableData = response.data.data
+          this.tableLoading = false
+        }).catch(() => {
+          this.tableLoading = false
         })
       },
       handleDel: function(row, index) {
@@ -63,7 +70,9 @@
             message: '删除成功',
             type: 'success'
           })
-          this.getPage()
+          this.getPage(this.page)
+          // this.$refs.crud.updateDic('parentId')
+          this.$router.go(0)
         }).catch(function(err) { })
       },
       /**
@@ -81,7 +90,9 @@
             type: 'success'
           })
           done()
-          this.getPage()
+          this.getPage(this.page)
+          // this.$refs.crud.updateDic('parentId')
+          this.$router.go(0)
         }).catch(() => {
           loading()
         })
@@ -100,7 +111,9 @@
             type: 'success'
           })
           done()
-          this.getPage()
+          this.getPage(this.page)
+          // this.$refs.crud.updateDic('parentId')
+          this.$router.go(0)
         }).catch(() => {
           loading()
         })
@@ -108,8 +121,8 @@
       /**
        * 刷新回调
        */
-      refreshChange(val) {
-        this.getPage(val.page)
+      refreshChange(page) {
+        this.getPage(page)
       }
     }
   }

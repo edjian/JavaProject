@@ -237,8 +237,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-              this.getPage(val.page)
+            refreshChange(page) {
+              this.getPage(page)
             }
         }
     }

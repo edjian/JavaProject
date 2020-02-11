@@ -24,7 +24,7 @@ public class SysDatasource extends Model<SysDatasource> {
 	/**
 	 * 主键
 	 */
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 	/**
 	 * 名称

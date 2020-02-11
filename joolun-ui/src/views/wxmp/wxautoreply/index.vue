@@ -378,11 +378,11 @@
       /**
        * 刷新回调
        */
-      refreshChange(val) {
+      refreshChange(page) {
         this.objData={
             repType : 'text'
         }
-        this.getPage(val.page)
+        this.getPage(page)
       }
     }
   }

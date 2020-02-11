@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
+import com.joolun.cloud.mall.common.entity.CouponUser;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,6 +28,8 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
 	IPage<GoodsSpu> selectPage1(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu);
 
+	GoodsSpu selectById1(String id);
+
 	GoodsSpu selectById2(String id);
 
 	GoodsSpu selectById4(String id);
@@ -40,5 +43,5 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 	 */
 	List<GoodsSpu> selectListByCouponId(String couponId);
 
-	IPage<GoodsSpu> selectPage2(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu, @Param("query2") CouponGoods couponGoods, @Param("query3") CouponInfo couponInfo);
+	IPage<GoodsSpu> selectPage2(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu, @Param("query2") CouponUser couponUser);
 }

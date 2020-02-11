@@ -6,30 +6,29 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<view>
-  <button class="cu-btn block bg-red margin-sm" wx:if="{{userAddress.length < 10}}" bindtap="toAdd">
-    <text class="cuIcon-add"></text>添加新地址
-  </button>
-  <view class="cu-list menu-avatar">
-    <view class="cu-item" wx:for="{{ userAddress }}" wx:key="index">
-      <view class="cu-avatar round bg-red">
-        <text class="avatar-text">{{item.userName}}</text>
+<button class="cu-btn block bg-red margin-sm" wx:if="{{userAddress.length < 10}}" bindtap="toAdd">
+  <text class="cuIcon-add"></text>添加新地址
+</button>
+<view class="cu-list menu-avatar">
+  <view class="cu-item" wx:for="{{ userAddress }}" wx:key="index">
+    <view class="cu-avatar round bg-red">
+      <text class="avatar-text">{{item.userName}}</text>
+    </view>
+    <view class="content loc-content" bindtap="selectUserAddress" data-index="{{index}}">
+      <view class="flex">
+        <view class="text-black">{{item.userName}}</view>
+        <view class="text-gray text-sm margin-left-sm">{{item.telNum}}</view>
       </view>
-      <view class="content loc-content" bindtap="selectUserAddress" data-index="{{index}}">
-        <view class="flex">
-          <view class="text-black">{{item.userName}}</view>
-          <view class="text-gray text-sm margin-left-sm">{{item.telNum}}</view>
-        </view>
-        <view class="text-black text-sm overflow-2 loc-info">
-						<view class="cu-tag bg-orange sm margin-left-sm" wx:if="{{item.isDefault == '1'}}">默认</view>
-            {{item.provinceName}}{{item.cityName}}{{item.countyName}}{{item.detailInfo}}
-        </view>
-      </view>
-      <view class="action" bindtap="toEdit" data-index="{{index}}">
-        <text class="cuIcon-edit"></text>
+      <view class="text-black text-sm overflow-2 loc-info">
+          <view class="cu-tag bg-orange sm margin-left-sm" wx:if="{{item.isDefault == '1'}}">默认</view>
+          {{item.provinceName}}{{item.cityName}}{{item.countyName}}{{item.detailInfo}}
       </view>
     </view>
+    <view class="action" bindtap="toEdit" data-index="{{index}}">
+      <text class="cuIcon-edit"></text>
+    </view>
   </view>
-  <view class="cu-load bg-gray {{loadmore?'loading':''}}"></view>
-  <view class="cu-load bg-gray" wx:if="{{ userAddress.length <= 0 && !loadmore}}">无收货地址，请添加</view>
 </view>
+<view class="cu-load bg-gray {{loadmore?'loading':''}}"></view>
+<view class="cu-load bg-gray" wx:if="{{ userAddress.length <= 0 && !loadmore}}">无收货地址，请添加</view>
+<ad unit-id="adunit-80d788ab8518b5b3"></ad>

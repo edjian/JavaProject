@@ -37,7 +37,7 @@ export const tableOption = {
       }]
     },
     {
-      label: '微信原始标识',
+      label: '微信原始ID',
       prop: 'weixinSign',
       search:true,
       hide:true,
@@ -63,7 +63,7 @@ export const tableOption = {
           type:'upload',
           span: 24,
           listType: 'picture-img',
-          action: '/admin/file/upload?dir=wx/',
+          action: '/admin/file/upload?fileType=image&dir=wx/',
           propsHttp: {
             url: 'link'
           },
@@ -84,6 +84,7 @@ export const tableOption = {
             label: 'name',
             value: 'id'
           },
+          defaultExpandAll: true,
           dicUrl: '/admin/organ/tree'
         },
         {
@@ -97,11 +98,11 @@ export const tableOption = {
           }]
         },
         {
-          label: '微信原始标识',
+          label: '微信原始ID',
           prop: 'weixinSign',
           rules: [{
             required: true,
-            message: "请输入微信原始标识",
+            message: "请输入微信原始ID",
             trigger: "blur"
           }]
         },
@@ -141,19 +142,19 @@ export const tableOption = {
         {
           label: '商户号',
           prop: 'mchId',
-          tip: '如果不配商城将无法下单'
+          tip: '微信支付平台申请，不要乱填，否则商城将无法下单'
         },
         {
-          label: '商户密钥',
+          label: 'API密钥',
           type:'password',
           prop: 'mchKey',
-          tip: '如果不配商城将无法下单'
+          tip: '微信支付平台申请，不要乱填，否则商城将无法下单'
         },
         {
           label: 'p12证书',
           prop: 'keyPath',
           formslot: true,
-          tip: '如果不配商城退款功能将无法使用'
+          tip: '微信支付平台申请，不要乱填，否则商城退款功能将无法使用'
         }
       ]
     }]

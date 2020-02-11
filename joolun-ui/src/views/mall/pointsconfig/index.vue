@@ -100,11 +100,9 @@
                     this.page.pageSize = page.pageSize
                     this.tableLoading = false
                 }
-            ).
-                catch(() => {
+            ).catch(() => {
                     this.tableLoading = false
-                }
-            )
+                })
             },
             /**
              * @title 数据删除
@@ -128,8 +126,7 @@
                     })
                     this.getPage(this.page)
                 }
-            ).
-                catch(function (err) {
+            ).catch(function (err) {
                 })
             },
             /**
@@ -174,8 +171,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-                this.getPage(val.page)
+            refreshChange(page) {
+                this.getPage(page)
             }
         }
     }

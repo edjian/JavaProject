@@ -27,15 +27,39 @@ services:
     ports:
       - 6379:6379
 
+  # 参考https://nacos.io/zh-cn/docs/quick-start-docker.html
   base-nacos:
-    build:
-      context: ./
-      dockerfile: ./base-nacos/Dockerfile
+    image: nacos/nacos-server:1.1.4
     restart: always
     container_name: base-nacos
-    image: base-nacos
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_MASTER_SERVICE_HOST=base-mysql
+      - MYSQL_MASTER_SERVICE_PORT=3306
+      - MYSQL_MASTER_SERVICE_DB_NAME=base_config
+      - MYSQL_MASTER_SERVICE_USER=root
+      - MYSQL_MASTER_SERVICE_PASSWORD=root
+      - MYSQL_SLAVE_SERVICE_HOST=base-mysql
+      - MYSQL_SLAVE_SERVICE_PORT=3306
     ports:
       - 8848:8848
+    depends_on:
+      - base-mysql
+
+  # 参考https://seata.io/zh-cn/docs/ops/deploy-by-docker.html
+  base-seata:
+    image: seataio/seata-server
+    restart: always
+    hostname: base-seata
+    environment:
+      - SEATA_CONFIG_NAME=file:/root/seata-config/registry
+    volumes:
+      - /mnt/install/joolun/server/seata-server/conf:/root/seata-config
+    ports:
+        - 8091:8091
+    depends_on:
+      - base-nacos
 
   base-gateway:
     build:

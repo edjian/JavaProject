@@ -13,7 +13,7 @@
                 <div slot="header" class="clearfix">
                     <span>积分设置</span>
                 </div>
-                <avue-form ref="form" v-model="obj" :option="tableOption" @submit="handleUpdate">
+                <avue-form ref="form" v-model="form" :option="tableOption" @submit="handleUpdate">
                 </avue-form>
             </el-card>
         </basic-container>
@@ -29,7 +29,7 @@
         name: 'pointsconfigform',
         data() {
             return {
-                obj:{},
+                form:{},
                 tableOption: tableOption
             }
         },
@@ -52,7 +52,7 @@
         methods: {
             handleGet: function () {
                 getObj2().then(response => {
-                    this.obj = response.data.data ? response.data.data : {}
+                    this.form = response.data.data ? response.data.data : {}
                 })
             },
             /**
@@ -62,14 +62,17 @@
              * @param done 为表单关闭函数
              *
              **/
-            handleUpdate(form,done) {
-                putObj(this.obj).then(data => {
+            handleUpdate(form, done) {
+                putObj(this.form).then(response => {
                     done()
+                    this.form = response.data.data
                     this.$message({
                         showClose: true,
                         message: '修改成功',
                         type: 'success'
                     })
+                }).catch(() => {
+                    done()
                 })
             },
         }

@@ -41,7 +41,7 @@ public class OrderInfo extends Model<OrderInfo> {
 	/**
 	 * PK
 	 */
-	@TableId(type = IdType.ASSIGN_UUID)
+	@TableId(type = IdType.ASSIGN_ID)
 	private String id;
 	/**
 	 * 所属租户

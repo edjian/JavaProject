@@ -6,6 +6,7 @@ import com.joolun.cloud.upms.common.entity.SysMenu;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,10 +25,12 @@ public class TreeUtil {
 		for (T treeNode : treeNodes) {
 			if (root.equals(treeNode.getParentId())) {
 				trees.add(treeNode);
+				trees.sort(Comparator.comparing(TreeNode::getSort));
 			}
 			for (T it : treeNodes) {
 				if (it.getParentId().equals(treeNode.getId())) {
 					treeNode.addChildren(it);
+					treeNode.getChildren().sort(Comparator.comparing(TreeNode::getSort));
 				}
 			}
 		}

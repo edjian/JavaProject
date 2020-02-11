@@ -12,4 +12,4 @@ EXPOSE 6002
 
 ADD ./base-weixin/base-weixin-admin/target/base-weixin-admin.jar ./
 
-CMD sleep 150;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-weixin-admin.jar
+CMD sleep 60;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-weixin-admin.jar

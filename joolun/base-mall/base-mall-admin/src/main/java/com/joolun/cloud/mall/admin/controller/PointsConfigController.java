@@ -81,9 +81,11 @@ public class PointsConfigController {
     @PreAuthorize("@ato.hasAuthority('mall_pointsconfig_edit')")
     public R updateById(@RequestBody PointsConfig pointsConfig) {
     	if(StrUtil.isNotBlank(pointsConfig.getId())){
-			return R.ok(pointsConfigService.updateById(pointsConfig));
+			pointsConfigService.updateById(pointsConfig);
+			return R.ok(pointsConfig);
 		}else{
-			return R.ok(pointsConfigService.save(pointsConfig));
+			pointsConfigService.save(pointsConfig);
+			return R.ok(pointsConfig);
 		}
     }
 

@@ -12,7 +12,6 @@ import cn.binarywang.wx.miniapp.api.WxMaUserService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,7 +42,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -220,6 +218,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 * @throws WxErrorException
 	 */
 	@Override
+//	@GlobalTransactional
 	@Transactional(rollbackFor = Exception.class)
 	public WxUser loginMa(WxApp wxApp, String jsCode) throws WxErrorException {
 		WxMaJscode2SessionResult jscode2session = WxMaConfiguration.getMaService(wxApp.getId()).jsCode2SessionInfo(jsCode);
@@ -256,6 +255,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 
 		String thirdSessionKey = UUID.randomUUID().toString();
 		ThirdSession thirdSession = new ThirdSession();
+		thirdSession.setTenantId(wxApp.getTenantId());
 		thirdSession.setAppId(wxApp.getId());
 		thirdSession.setSessionKey(wxUser.getSessionKey());
 		thirdSession.setWxUserId(wxUser.getId());

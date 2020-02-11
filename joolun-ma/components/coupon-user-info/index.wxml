@@ -22,7 +22,7 @@
   </view>
   <view class="flex-sub padding-sm radius text-center t1-l">
     <view class="padding-sm">代金券</view>
-    <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponUserInfo.couponId}}' class="cu-btn bg-white sm" wx:if="{{toUse && couponUserInfo.status == '0'}}">前去使用</navigator>
+    <navigator hover-class='none' url='/pages/goods/goods-list/index?couponUserId={{couponUserInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse && couponUserInfo.status == '0'}}">前去使用</navigator>
     <view class="padding-xs" wx:if="{{couponUserInfo.status == '1'}}">已使用</view>
     <view class="padding-xs" wx:if="{{couponUserInfo.status == '2'}}">已过期</view>
   </view>
@@ -43,7 +43,7 @@
   </view>
   <view class="flex-sub padding-sm radius text-center t2-l">
     <view class="padding-sm">折扣券</view>
-    <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponUserInfo.couponId}}' class="cu-btn bg-white sm" wx:if="{{toUse && couponUserInfo.status == '0'}}">前去使用</navigator>
+    <navigator hover-class='none' url='/pages/goods/goods-list/index?couponUserId={{couponUserInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse && couponUserInfo.status == '0'}}">前去使用</navigator>
     <view class="padding-xs" wx:if="{{couponUserInfo.status == '1'}}">已使用</view>
     <view class="padding-xs" wx:if="{{couponUserInfo.status == '2'}}">已过期</view>
   </view>

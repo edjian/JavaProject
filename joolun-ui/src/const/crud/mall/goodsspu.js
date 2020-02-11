@@ -231,7 +231,30 @@ export const tableOption = {
                         value: 'id'
                     },
                     dicUrl: '/mall/freighttemplat/list'
-                },]
+                },{
+                    label: '发货地',
+                    prop: 'deliveryPlaceId',
+                    type: 'select',
+                    rules: [{
+                        required: true,
+                        message: '请选择发货地',
+                        trigger: 'blur'
+                    }],
+                    props: {
+                        label: 'place',
+                        value: 'id'
+                    },
+                    dicUrl: '/mall/deliveryplace/list'
+                },{
+                    label: '保障服务',
+                    prop: 'ensureIds',
+                    type: 'checkbox',
+                    props: {
+                        label: 'name',
+                        value: 'id'
+                    },
+                    dicUrl: '/mall/ensure/list'
+                }]
         },
         {
             icon: 'el-icon-s-order',

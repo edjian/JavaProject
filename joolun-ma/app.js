@@ -15,7 +15,8 @@ import api from './utils/api'
 App({
   api: api,
   globalData: {
-    thirdSession: null
+    thirdSession: null,
+    wxUser: null
   },
   onLaunch: function () {
     //检测新版本
@@ -47,7 +48,7 @@ App({
   initPage: function () {
     let that = this
     return new Promise((resolve, reject) => {
-      if (that.globalData.thirdSession == null) {//无thirdSession，进行登录
+      if (!that.globalData.thirdSession) {//无thirdSession，进行登录
         that.doLogin()
           .then(res => {
             resolve("success")
@@ -58,6 +59,9 @@ App({
     })
   },
   doLogin(){
+    wx.showLoading({
+      title: '登录中',
+    })
     let that = this
     return new Promise((resolve, reject) => {
       wx.login({
@@ -67,6 +71,7 @@ App({
               jsCode: res.code
             })
               .then(res => {
+                wx.hideLoading()
                 let wxUser = res.data
                 that.globalData.thirdSession = wxUser.sessionKey
                 that.globalData.wxUser = wxUser

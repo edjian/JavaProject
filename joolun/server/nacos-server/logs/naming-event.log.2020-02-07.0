@@ -1,0 +1,26 @@
+2020-02-07 12:40:24,359 INFO DEFAULT_GROUP@@base-gateway {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:9999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:40:24,364 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-gateway, ips: 192.168.31.203:9999_true,
+
+2020-02-07 12:40:24,367 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-gateway, ips: 192.168.31.203:9999_true,
+
+2020-02-07 12:40:34,590 INFO DEFAULT_GROUP@@base-auth {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5000:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:40:34,590 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-auth, ips: 192.168.31.203:5000_true,
+
+2020-02-07 12:40:52,511 INFO DEFAULT_GROUP@@base-codegen {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:7001:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:40:52,511 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-codegen, ips: 192.168.31.203:7001_true,
+
+2020-02-07 12:41:20,247 INFO DEFAULT_GROUP@@base-mall-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:6003:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:41:20,247 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-mall-admin, ips: 192.168.31.203:6003_true,
+
+2020-02-07 12:41:33,524 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:41:33,525 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-07 12:41:38,716 INFO DEFAULT_GROUP@@base-weixin-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:6002:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-07 12:41:38,716 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-weixin-admin, ips: 192.168.31.203:6002_true,
+

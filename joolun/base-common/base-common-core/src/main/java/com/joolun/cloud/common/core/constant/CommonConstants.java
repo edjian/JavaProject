@@ -131,4 +131,9 @@ public interface CommonConstants {
 	String ORGAN_TYPE_2 = "2";
 	String ORGAN_TYPE_3 = "3";
 	String ORGAN_TYPE_4 = "4";
+
+	/**
+	 * 文件类型：image：图片
+	 */
+	String FILE_TYPE_IMG = "image";
 }

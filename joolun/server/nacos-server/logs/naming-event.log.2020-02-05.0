@@ -1,0 +1,174 @@
+2020-02-05 12:06:05,927 INFO DEFAULT_GROUP@@base-gateway {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:9999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:05,930 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-gateway, ips: 192.168.31.203:9999_true,
+
+2020-02-05 12:06:05,935 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-gateway, ips: 192.168.31.203:9999_true,
+
+2020-02-05 12:06:25,362 INFO DEFAULT_GROUP@@base-auth {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5000:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:25,362 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-auth, ips: 192.168.31.203:5000_true,
+
+2020-02-05 12:06:39,690 INFO DEFAULT_GROUP@@base-codegen {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:7001:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:39,690 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-codegen, ips: 192.168.31.203:7001_true,
+
+2020-02-05 12:06:52,070 INFO DEFAULT_GROUP@@base-mall-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:6003:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:52,070 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-mall-admin, ips: 192.168.31.203:6003_true,
+
+2020-02-05 12:06:53,727 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:53,727 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 12:06:56,171 INFO DEFAULT_GROUP@@base-weixin-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:6002:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 12:06:56,171 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-weixin-admin, ips: 192.168.31.203:6002_true,
+
+2020-02-05 18:13:27,419 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580897591485
+
+2020-02-05 18:13:42,356 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:13:42,375 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:19:22,485 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580897942675
+
+2020-02-05 18:19:26,239 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:19:26,258 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:20:27,495 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580898011313
+
+2020-02-05 18:20:34,010 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:20:34,030 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:21:57,505 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580898099087
+
+2020-02-05 18:22:01,628 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:22:01,648 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:23:32,520 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580898196704
+
+2020-02-05 18:23:36,341 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:23:36,361 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:48:27,776 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580899692527
+
+2020-02-05 18:48:33,803 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:48:33,825 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:50:47,801 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580899828947
+
+2020-02-05 18:50:50,496 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 18:50:50,520 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 18:51:57,811 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580899902297
+
+2020-02-05 18:52:12,997 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-02-05 18:52:12,997 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 18:54:58,942 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 18:54:58,942 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:02:28,773 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:02:28,773 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:02:50,350 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:02:50,350 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:03:33,112 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580900595368
+
+2020-02-05 19:03:48,125 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-02-05 19:03:48,125 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:04:06,988 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:04:06,988 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:04:23,122 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580900646988
+
+2020-02-05 19:04:28,258 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 19:04:48,130 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580900668258
+
+2020-02-05 19:04:51,503 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 19:05:56,823 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:05:56,823 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:06:18,190 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:06:18,190 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:07:01,079 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:07:01,079 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:07:22,297 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:07:22,297 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:19:16,421 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:19:16,421 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:19:35,521 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:19:35,521 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:21:23,343 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580901665641
+
+2020-02-05 19:21:27,955 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 19:21:27,981 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 19:22:13,354 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580901715371
+
+2020-02-05 19:22:15,509 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 19:22:33,357 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580901735509
+
+2020-02-05 19:22:40,818 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+
+2020-02-05 19:22:58,360 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580901760818
+
+2020-02-05 19:23:13,367 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_false_false_DEFAULT]
+
+2020-02-05 19:23:13,367 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:23:36,889 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:23:36,889 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 19:24:08,808 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:24:08,808 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 19:24:30,038 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 19:24:30,038 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 20:09:45,891 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-DEAD} cluster: DEFAULT, dead ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 20:09:45,891 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 
+
+2020-02-05 20:10:06,142 INFO DEFAULT_GROUP@@base-upms-admin {SYNC} {IP-NEW} cluster: DEFAULT, new ips size: 1, content: [192.168.31.203:5999:unknown:DEFAULT_1.0_true_false_DEFAULT]
+
+2020-02-05 20:10:06,142 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_true,
+
+2020-02-05 22:10:50,131 INFO {POS} {IP-DISABLED} valid: 192.168.31.203:5999@DEFAULT@DEFAULT_GROUP@@base-upms-admin, region: unknown, msg: client timeout after 15000, last beat: 1580911831999
+
+2020-02-05 22:10:59,018 INFO [IP-UPDATED] namespace: public, service: DEFAULT_GROUP@@base-upms-admin, ips: 192.168.31.203:5999_false,
+
+2020-02-05 22:10:59,040 INFO service: DEFAULT_GROUP@@base-upms-admin {POS} {IP-ENABLED} valid: 192.168.31.203:5999@DEFAULT, region: unknown, msg: client beat ok
+

@@ -21,19 +21,7 @@ Page({
     modalSkuType: '',
     shoppingCartCount: 0,
     shareShow: '',
-    serviceList: [
-      {
-        name: '24小时内发货',
-        desc: ''
-      }, {
-        name: '7天无理由退款',
-        desc: '满足7天无理由退换货申请的前提下，包邮商品需要买家承担退货邮费，非包邮商品需要买家承担发货和退货邮费。'
-      },
-      {
-        name: '5年质量保证',
-        desc: ''
-      }
-    ],
+    ensureList:[],
     modalService: '',
     modalCoupon: '',
     couponInfoList: []
@@ -55,6 +43,7 @@ Page({
         this.couponInfoPage(id)
         this.shoppingCartCount()
         this.goodsAppraisesPage()
+        this.listEnsureBySpuId(id)
       })
   },
   onShareAppMessage: function () {
@@ -124,6 +113,18 @@ Page({
         let couponInfoList = res.data.records
         this.setData({
           couponInfoList: couponInfoList
+        })
+      })
+  },
+  //获取商品保障
+  listEnsureBySpuId(spuId){
+    app.api.listEnsureBySpuId({
+      spuId: spuId
+    })
+      .then(res => {
+        let ensureList = res.data
+        this.setData({
+          ensureList: ensureList
         })
       })
   },

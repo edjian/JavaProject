@@ -2,19 +2,22 @@ package com.joolun.cloud.upms.admin.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.joolun.cloud.common.alioss.service.AliOssTemplate;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.FileUtils;
-import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.core.util.WaterMarkUtils;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
+import com.joolun.cloud.common.storage.util.UploadFileUtil;
+import com.joolun.cloud.upms.admin.service.SysConfigStorageService;
+import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,37 +32,33 @@ import java.util.Map;
 @RequestMapping("/file")
 @Api(value = "file", tags = "文件上传")
 public class UploadFileController {
-	private final AliOssTemplate aliOssTemplate;
 
-	/**
-	 * 获取上传凭证（服务端签名后直传）
-	 * @param dir
-	 * @return
-	 */
-	@GetMapping("/signature")
-	public R getSignature(String dir) {
-		try {
-			dir = StrUtil.format("{}/{}",TenantContextHolder.getTenantId(),  dir);
-			return R.ok(aliOssTemplate.getSignature(dir));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return R.failed(e.getMessage());
-		}
-	}
+	private final SysConfigStorageService sysConfigStorageService;
 
 	/**
 	 * 上传文件
 	 * @param mulFile
-	 * @param dir
+	 * @param dir 文件存放目录
+	 * @param fileType 文件类型 image:图片
 	 * @return
 	 */
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile mulFile,
-						@RequestParam("dir") String dir) throws IOException {
-			File file = FileUtils.multipartFileToFile(mulFile);
-			Map<Object, Object> responseData = new HashMap<>();
-			dir = StrUtil.format("{}/{}",TenantContextHolder.getTenantId(),  dir);
-			responseData.put("link", aliOssTemplate.uploadFile(file,dir));
-			return JSONUtil.toJsonStr(responseData);
+							 @RequestParam("dir") String dir,
+							 @RequestParam("fileType") String fileType) throws Exception {
+		File file = FileUtils.multipartFileToFile(mulFile);
+		Map<Object, Object> responseData = new HashMap<>();
+		dir = StrUtil.format("{}/{}",TenantContextHolder.getTenantId(),  dir);
+		SysConfigStorage sysConfigStorage = sysConfigStorageService.getOne(Wrappers.emptyWrapper());
+		if(sysConfigStorage == null){
+			throw new RuntimeException("请先配置文件存储信息");
+		}
+		if(CommonConstants.FILE_TYPE_IMG.equals(fileType) &&
+				StrUtil.isNotBlank(sysConfigStorage.getWaterMarkContent())){//图片添加水印
+			//添加水印
+			file = WaterMarkUtils.markStr(file, Color.GRAY, sysConfigStorage.getWaterMarkContent());
+		}
+		responseData.put("link", UploadFileUtil.uploadFile(file,dir,sysConfigStorage));
+		return JSONUtil.toJsonStr(responseData);
 	}
 }

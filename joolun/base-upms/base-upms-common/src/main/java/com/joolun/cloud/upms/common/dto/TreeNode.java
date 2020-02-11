@@ -12,6 +12,7 @@ import java.util.List;
 public class TreeNode {
 	protected String id;
 	protected String parentId;
+	private Integer sort;
 	protected List<TreeNode> children = new ArrayList<>();
 
 	public void addChildren(TreeNode treeNode) {

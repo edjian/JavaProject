@@ -130,6 +130,7 @@
       <input bindinput="userMessageInput" placeholder="给卖家留言"></input>
     </view>
 	</view>
+  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
 </view>
 <view class="cu-bar bg-white border foot">
   <view class="flex response">

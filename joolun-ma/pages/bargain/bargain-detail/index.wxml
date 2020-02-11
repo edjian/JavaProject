@@ -143,4 +143,4 @@
   </view>
 </view>
 
-<user-auth/>
+<user-auth wx:if="{{wxUser}}"/>

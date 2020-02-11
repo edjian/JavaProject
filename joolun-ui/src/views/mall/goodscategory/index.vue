@@ -110,7 +110,9 @@
                         message: '删除成功',
                         type: 'success'
                     })
-                    this.getPage()
+                    this.getPage(this.page)
+                    // this.$refs.crud.updateDic('parentId')
+                    this.$router.go(0)
                 }).catch(function (err) {
                 })
             },
@@ -130,7 +132,9 @@
                         type: 'success'
                     })
                     done()
-                    this.getPage()
+                    this.getPage(this.page)
+                    // this.$refs.crud.updateDic('parentId')
+                    this.$router.go(0)
                 }).catch(() => {
                     loading()
                 })
@@ -150,7 +154,9 @@
                         type: 'success'
                     })
                     done()
-                    this.getPage()
+                    this.getPage(this.page)
+                    // this.$refs.crud.updateDic('parentId')
+                    this.$router.go(0)
                 }).catch(() => {
                     loading()
                 })
@@ -158,8 +164,8 @@
             /**
              * 刷新回调
              */
-            refreshChange(val) {
-              this.getPage(val.page)
+            refreshChange(page) {
+              this.getPage(page)
             }
         }
     }

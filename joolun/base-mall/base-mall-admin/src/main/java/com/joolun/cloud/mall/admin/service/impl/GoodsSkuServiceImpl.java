@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
 import com.joolun.cloud.mall.admin.mapper.GoodsSkuMapper;

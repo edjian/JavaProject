@@ -16,6 +16,7 @@ import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
+import com.joolun.cloud.upms.common.entity.SysUserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	private final GoodsSpuSpecService goodsSpuSpecService;
 	private final GoodsSkuSpecValueService goodsSkuSpecValueService;
 	private final UserCollectService userCollectService;
+	private final EnsureGoodsService ensureGoodsService;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -84,6 +86,16 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 				addSpec(goodsSpu);
 			}
 		}
+		if(goodsSpu.getEnsureIds() != null && goodsSpu.getEnsureIds().size() > 0){//新增保障服务
+			List<EnsureGoods> listEnsureGoods = goodsSpu.getEnsureIds()
+					.stream().map(ensureId -> {
+						EnsureGoods ensureGoods = new EnsureGoods();
+						ensureGoods.setEnsureId(ensureId);
+						ensureGoods.setSpuId(goodsSpu.getId());
+						return ensureGoods;
+					}).collect(Collectors.toList());
+			ensureGoodsService.saveBatch(listEnsureGoods);
+		}
 		return true;
 	}
 
@@ -114,8 +126,26 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 			if(MallConstants.SPU_SPEC_TYPE_1.equals(goodsSpu.getSpecType())) {//多规格处理
 				addSpec(goodsSpu);
 			}
+			//修改保障服务
+			ensureGoodsService.remove(Wrappers.<EnsureGoods>update().lambda()
+					.eq(EnsureGoods::getSpuId, goodsSpu.getId()));
+			if(goodsSpu.getEnsureIds() != null && goodsSpu.getEnsureIds().size() > 0){
+				List<EnsureGoods> listEnsureGoods = new ArrayList<>();
+				goodsSpu.getEnsureIds().forEach(ensureId -> {
+					EnsureGoods ensureGoods = new EnsureGoods();
+					ensureGoods.setEnsureId(ensureId);
+					ensureGoods.setSpuId(goodsSpu.getId());
+					listEnsureGoods.add(ensureGoods);
+				});
+				ensureGoodsService.saveBatch(listEnsureGoods);
+			}
 		}
 		return true;
+	}
+
+	@Override
+	public GoodsSpu getById1(String id) {
+		return baseMapper.selectById1(id);
 	}
 
 	@Override
@@ -124,8 +154,8 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 	}
 
 	@Override
-	public IPage<GoodsSpu> page2(IPage<GoodsSpu> page, GoodsSpu goodsSpu, CouponGoods couponGoods, CouponInfo couponInfo) {
-		return baseMapper.selectPage2(page, goodsSpu, couponGoods, couponInfo);
+	public IPage<GoodsSpu> page2(IPage<GoodsSpu> page, GoodsSpu goodsSpu, CouponUser couponUser) {
+		return baseMapper.selectPage2(page, goodsSpu, couponUser);
 	}
 
 	/**

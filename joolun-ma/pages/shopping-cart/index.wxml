@@ -110,6 +110,8 @@
     </navigator>
   </view>
 
+  <ad unit-id="adunit-80d788ab8518b5b3" class="margin-top-sm"></ad>
+
   <view class="cu-bar justify-center bg-gray margin-top-sm">
     <view class='action text-orange text-bold'>
       <text class='cuIcon-move'></text> <text class='cuIcon-appreciate'></text>为您推荐 <text class='cuIcon-move'></text>
