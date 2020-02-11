@@ -1,6 +1,0 @@
-2020-02-08 12:39:17,039|192.168.31.203|application-dev.yml|DEFAULT_GROUP|null|unknown|1580823317000|pull|ok|313440039|127.0.0.1
-2020-02-08 12:39:17,070|192.168.31.203|base-upms-admin.yml|DEFAULT_GROUP|null|unknown|-1|pull|not-found|-1|127.0.0.1
-2020-02-08 12:39:17,080|192.168.31.203|base-upms-admin-dev.yml|DEFAULT_GROUP|null|unknown|1580731985000|pull|ok|404772080|127.0.0.1
-2020-02-08 12:39:30,136|192.168.31.203|base-upms-admin-dev.yml|DEFAULT_GROUP|null|unknown|1580731985000|pull|ok|404785136|127.0.0.1
-2020-02-08 12:39:30,140|192.168.31.203|application-dev.yml|DEFAULT_GROUP|null|unknown|1580823317000|pull|ok|313453140|127.0.0.1
-2020-02-08 12:39:30,148|192.168.31.203|base-upms-admin.yml|DEFAULT_GROUP|null|unknown|-1|pull|not-found|-1|127.0.0.1
