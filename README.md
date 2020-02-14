@@ -20,7 +20,7 @@
 * JooLun在每次上新版本的时候都会提供sql升级脚本（db/升级脚本/xxx升级xxx.sql）
 * 必须对应自己当前的版本号执行
 * 升级脚本不包含base-nacos库的表，base-nacos表的脚本请自行全量执行
-* 升级完要清redis再重启服务
+* 升级完要清redis缓存再重启服务
 
 ### 使用案例，登记返现10块💰
 * [在此登记](http://git.joolun.com/joolun-mp-ma/mp-ma/issues/48)，只要你的小程序在JooLun的基础上开发并且已经发布，都可以在此登记；截图联系客服QQ1023530620即可返现10块
