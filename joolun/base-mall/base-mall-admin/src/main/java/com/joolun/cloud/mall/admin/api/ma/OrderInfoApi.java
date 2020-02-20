@@ -19,7 +19,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
-import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
+import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
@@ -240,7 +240,7 @@ public class OrderInfoApi {
 			if(orderInfo != null){
 				if(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()){
 					String timeEnd = notifyResult.getTimeEnd();
-					LocalDateTime paymentTime = LocalDateTimeUtil.parse(timeEnd);
+					LocalDateTime paymentTime = LocalDateTimeUtils.parse(timeEnd);
 					orderInfo.setPaymentTime(paymentTime);
 					orderInfo.setTransactionId(notifyResult.getTransactionId());
 					orderInfoService.notifyOrder(orderInfo);

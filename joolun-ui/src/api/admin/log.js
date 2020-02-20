@@ -1,6 +1,6 @@
 import request from '@/router/axios'
 
-export function getPage (query) {
+export function getPage(query) {
   return request({
     url: '/admin/log/page',
     method: 'get',
@@ -8,14 +8,14 @@ export function getPage (query) {
   })
 }
 
-export function delObj (id) {
+export function delObj(id) {
   return request({
     url: '/admin/log/' + id,
     method: 'delete'
   })
 }
 
-export function addObj (obj) {
+export function addObj(obj) {
   return request({
     url: '/admin/log/',
     method: 'post',
@@ -23,14 +23,14 @@ export function addObj (obj) {
   })
 }
 
-export function getObj (id) {
+export function getObj(id) {
   return request({
     url: '/admin/log/' + id,
     method: 'get'
   })
 }
 
-export function putObj (obj) {
+export function putObj(obj) {
   return request({
     url: '/admin/log/',
     method: 'put',
@@ -38,7 +38,7 @@ export function putObj (obj) {
   })
 }
 
-export function sendLogs (logsList) {
+export function sendLogs(logsList) {
   return request({
     url: '/admin/log/logs',
     method: 'post',

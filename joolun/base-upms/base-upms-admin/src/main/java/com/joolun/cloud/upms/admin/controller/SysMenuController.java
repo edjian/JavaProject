@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class SysMenuController {
 				.map(MenuTree::new)
 				.sorted(Comparator.comparingInt(MenuTree::getSort))
 				.collect(Collectors.toList());
-		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.MENU_TREE_ROOT_ID));
+		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.PARENT_ID));
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class SysMenuController {
 		List<MenuTree> menuTreeList = all.stream()
 				.map(MenuTree::new)
 				.collect(Collectors.toList());
-		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.MENU_TREE_ROOT_ID));
+		return R.ok(TreeUtil.build(menuTreeList, CommonConstants.PARENT_ID));
 	}
 
 	/**
@@ -132,28 +133,8 @@ public class SysMenuController {
 	@PutMapping
 	@PreAuthorize("@ato.hasAuthority('sys_menu_edit')")
 	public R update(@Valid @RequestBody SysMenu sysMenu) {
+		sysMenu.setUpdateTime(LocalDateTime.now());
 		return R.ok(sysMenuService.updateMenuById(sysMenu));
-	}
-
-	/**
-	 *  返回树形父类集合
-	 * @return
-	 */
-	@GetMapping("/parentTree")
-	@PreAuthorize("@ato.hasAuthority('sys_menu_index')")
-	public List<MenuTree> getParentTree() {
-		Set<MenuVO> all = new HashSet<>();
-		MenuVO p = new MenuVO();
-		p.setId("-1");
-		p.setName("顶级");
-		p.setParentId("0");
-		all.add(p);
-		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
-		List<MenuTree> menuTreeList = all.stream()
-				.map(MenuTree::new)
-				.collect(Collectors.toList());
-		List<MenuTree> listMenuTree = TreeUtil.build(menuTreeList, "0");
-		return listMenuTree;
 	}
 
 	/**

@@ -21,6 +21,6 @@ public interface SysTenantMapper extends BaseMapper<SysTenant> {
 
 	@SqlParser(filter=true)
 	@Select("select * from sys_organ ${ew.customSqlSegment}")
-	IPage<SysTenant> selectPage2(IPage<SysTenant> page, @Param(Constants.WRAPPER) Wrapper<SysTenant> queryWrapper);
+	IPage<SysTenant> selectPage1(IPage<SysTenant> page, @Param(Constants.WRAPPER) Wrapper<SysTenant> queryWrapper);
 
 }

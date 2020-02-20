@@ -20,6 +20,7 @@ export const tableOption = {
   addBtn: false,
   editBtn: false,
   delBtn: false,
+  viewBtn: true,
   menu: false,
   column: [
     {

@@ -4,13 +4,12 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.upms.admin.mapper.SysUserMapper;
-import com.joolun.cloud.upms.admin.service.SysRoleService;
-import com.joolun.cloud.upms.admin.service.SysUserRoleService;
-import com.joolun.cloud.upms.admin.service.SysUserService;
+import com.joolun.cloud.upms.admin.service.*;
 import com.joolun.cloud.upms.common.dto.UserDTO;
 import com.joolun.cloud.upms.common.dto.UserInfo;
 import com.joolun.cloud.upms.common.dto.UserRegister;
 import com.joolun.cloud.upms.common.entity.SysRole;
+import com.joolun.cloud.upms.common.entity.SysTenant;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import com.joolun.cloud.common.core.constant.CacheConstants;
 import com.joolun.cloud.common.core.constant.CommonConstants;
@@ -47,6 +46,7 @@ public class SysUserController {
 	private final SysUserRoleService sysUserRoleService;
 	private final RedisTemplate redisTemplate;
 	private final SysUserMapper sysUserMapper;
+	private final SysTenantService sysTenantService;
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
 	/**
@@ -80,6 +80,13 @@ public class SysUserController {
 			return R.failed(null, String.format("用户信息为空 %s", username));
 		}
 		TenantContextHolder.setTenantId(sysUser.getTenantId());
+		if(CommonConstants.STATUS_NORMAL.equals(sysUser.getLockFlag())){
+			//查询所属租户状态是否正常，否则禁止登录
+			SysTenant sysTenant = sysTenantService.getById(sysUser.getTenantId());
+			if(CommonConstants.STATUS_LOCK.equals(sysTenant.getStatus())){
+				sysUser.setLockFlag(CommonConstants.STATUS_LOCK);
+			}
+		}
 		UserInfo userInfo = sysUserService.findUserInfo(sysUser);
 		return R.ok(userInfo);
 	}
@@ -102,11 +109,11 @@ public class SysUserController {
 	 * @param username 用户名
 	 * @return
 	 */
-	@GetMapping("/details/{username}")
+	@GetMapping("/detail/{username}")
 	public R userByUsername(@PathVariable String username) {
-		SysUser condition = new SysUser();
-		condition.setUsername(username);
-		return R.ok(sysUserService.getOne(Wrappers.lambdaQuery(condition)));
+		SysUser sysUser = new SysUser();
+		sysUser.setUsername(username);
+		return R.ok(sysUserService.getByNoTenant(sysUser));
 	}
 
 	/**

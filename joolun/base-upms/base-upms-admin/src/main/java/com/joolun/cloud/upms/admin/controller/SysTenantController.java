@@ -75,7 +75,7 @@ public class SysTenantController {
 	@PostMapping
 	@PreAuthorize("@ato.hasAuthority('sys_tenant_add')")
 	public R save(@Valid @RequestBody SysTenant sysTenant) {
-		String id = IdUtil.simpleUUID();
+		String id = String.valueOf(IdUtil.getSnowflake(1,2).nextId());
 		TenantContextHolder.setTenantId(id);
 		sysTenant.setId(id);
 		sysTenant.setParentId(CommonConstants.PARENT_ID);

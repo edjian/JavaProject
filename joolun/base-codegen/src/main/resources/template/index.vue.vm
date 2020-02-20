@@ -112,7 +112,7 @@
              *
              **/
             handleDel: function (row, index) {
-                var _this = this
+                let _this = this
                 this.$confirm('是否确认删除此数据', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

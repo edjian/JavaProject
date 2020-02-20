@@ -9,17 +9,30 @@
 <template>
   <div class="execution">
     <basic-container>
-      <el-row :span="24">
+      <el-row :span="24" :gutter="10">
         <el-col :xs="24"
                 :sm="24"
                 :md="3">
-          <avue-tree :option="treeOption"
-                     :data="treeData"
-                     v-model="treeForm"
-                     @update="updateTree"
-                     @save="saveTree"
-                     @del="delTree"
-                     @node-click="nodeClick"></avue-tree>
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
+            </div>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
+          </el-card>
         </el-col>
         <el-col :xs="24"
                 :sm="24"
@@ -92,8 +105,15 @@
                          plain
                          @click="wxMsgDo(scope.row,scope.index)">消息</el-button>
             </template>
-            <template slot="tagidList" slot-scope="scope">
-              <span v-html="scope.label"></span>
+            <template slot="tagidListSearch" slot-scope="scope">
+              <el-select v-model="scope.row.tagidList" placeholder="请选择">
+                <el-option
+                        v-for="item in userTagsData"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                </el-option>
+              </el-select>
             </template>
           </avue-crud>
         </el-col>
@@ -106,7 +126,9 @@
 </template>
 
 <script>
-  import { getPage, getObj, addObj, putObj, delObj,synchroWxUser, listUserTags, addTags, putTags, delTags, updateRemark, tagging } from '@/api/wxmp/wxuser'
+  import { getPage, getObj, addObj, putObj, delObj,synchroWxUser, updateRemark, tagging } from '@/api/wxmp/wxuser'
+  import { getList as listUserTags } from '@/api/wxmp/wxusertags'
+  import { getList as getWxAppList } from '@/api/wxmp/wxapp'
   import { tableOption } from '@/const/crud/wxmp/wxuser'
   import { mapGetters } from 'vuex'
   import WxMsg from '@/components/wx-msg/main.vue'
@@ -117,17 +139,13 @@
     },
     data() {
       return {
-        dialogMsgVisible:false,
-        wxUserId:'',
-        treeForm:{},
-        treeOption: {
-          nodeKey: 'id',
-          props: {
-            label: 'name',
-            value: 'id'
-          }
+        filterText: '',
+        treeWxAppProps: {
+          label: 'name',
+          value: 'id'
         },
-        treeData: [],
+        treeWxAppData: [],
+        appId: null,
         tableData: [],
         page: {
           total: 0, // 总页数
@@ -138,20 +156,23 @@
         },
         paramsSearch:{},
         tableLoading: false,
-        appId: this.$route.query.id,
         tableOption: tableOption,
         selectionData: [],
         dialogTagging: false,
         checkedTags: [],
         userTagsData: [],
         taggingType: '',
-        tagId: ''
+        dialogMsgVisible:false,
+        wxUserId:'',
+      }
+    },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val)
       }
     },
     created() {
-      let column =this.tableOption.column[10]
-      column.dicUrl = '/weixin/wxusertags/dict?appId='+this.$route.query.id
-      this.listUserTags()
+      this.getWxAppList()
     },
     mounted: function() { },
     computed: {
@@ -166,6 +187,60 @@
       }
     },
     methods: {
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      //加载公众号列表
+      getWxAppList(){
+        getWxAppList({
+          appType: '2'
+        }).then(response => {
+          let data = response.data
+          this.treeWxAppData = data
+          if(data && data.length > 0){
+            //默认加载第一个公众号的素材
+            this.nodeClick({
+              id: data[0].id
+            })
+          }
+        }).catch(() => {
+
+        })
+      },
+      nodeClick(data) {
+        if(this.appId != data.id){
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(data.id)
+          })
+          this.page.currentPage = 1
+          this.appId = data.id
+          this.paramsSearch = {}
+          this.$refs.crud.searchReset()
+          this.$refs.crud.DIC.tagidList = []
+          this.userTagsData = []
+          this.listUserTags()
+        }
+      },
+      listUserTags() {
+        this.tableLoading = true
+        listUserTags({
+          appId: this.appId
+        }).then(response => {
+          if(response.data.code == '0'){
+            let userTagsData = response.data.data
+            this.userTagsData = userTagsData
+            this.$refs.crud.DIC.tagidList = userTagsData
+          }else{
+            this.$message.error('获取用户标签出错：' + response.data.msg)
+          }
+          this.tableLoading = false
+          this.getPage(this.page)
+        }).catch(() => {
+          this.tableLoading = false
+          this.getPage(this.page)
+        })
+      },
       wxMsgDo(row){
         this.wxUserId = row.id
         this.dialogMsgVisible = true
@@ -204,77 +279,6 @@
       },
       selectionChange(list){
         this.selectionData = list
-      },
-      updateTree(data, node, done){
-        if(this.treeForm.id!=-1){
-          putTags({
-            appId:this.appId,
-            id:this.treeForm.id,
-            name:this.treeForm.name
-          }).then(response => {
-            if(response.data.code == '0'){
-              done()
-              this.listUserTags()
-            }else{
-              this.$message.error('修改用户标签出错：' + response.data.msg)
-            }
-          })
-        }
-      },
-      saveTree(data, node, done){
-        addTags({
-          appId:this.appId,
-          name:this.treeForm.name
-        }).then(response => {
-          if(response.data.code == '0'){
-            done()
-            this.listUserTags()
-          }else{
-            this.$message.error('新增用户标签出错：' + response.data.msg)
-          }
-        })
-      },
-      delTree(data, node, done){
-        if(data.id!=-1){
-          delTags({
-            appId:this.appId,
-            id:data.id
-          }).then(response => {
-            if(response.data.code == '0'){
-              done()
-              this.listUserTags()
-            }else{
-              this.$message.error('删除用户标签出错：' + response.data.msg)
-            }
-          })
-        }
-      },
-      listUserTags() {
-        listUserTags({
-          appId:this.appId
-        }).then(response => {
-          if(response.data.code == '0'){
-            let userTagsData = response.data.data
-            this.userTagsData = userTagsData
-            this.treeData = [{
-              id:'-1',
-              name:'全部标签',
-              children:userTagsData
-            }]
-          }else{
-            this.$message.error('获取用户标签出错：' + response.data.msg)
-          }
-        })
-      },
-      nodeClick(val){
-        let params = []
-        if(val.id != -1){
-          this.tagId = val.id
-        }else{
-          this.tagId = ''
-        }
-        this.page.currentPage = 1
-        this.getPage(this.page, params)
       },
       searchChange(params,done){
         params = this.filterForm(params)
@@ -328,23 +332,25 @@
         this.getPage(this.page)
       },
       getPage(page, params) {
-        this.tableLoading = true
-        getPage(Object.assign({
-          current: page.currentPage,
-          size: page.pageSize,
-          descs: this.page.descs,
-          ascs: this.page.ascs,
-          appId:this.appId,
-          tagId: this.tagId
-        }, params, this.paramsSearch)).then(response => {
-          this.tableData = response.data.data.records
-          this.page.total = response.data.data.total
-          this.page.currentPage = page.currentPage
-          this.page.pageSize = page.pageSize
-          this.tableLoading = false
-        }).catch(() => {
-          this.tableLoading = false
-        })
+        if(this.appId){
+          this.tableLoading = true
+          getPage(Object.assign({
+            current: page.currentPage,
+            size: page.pageSize,
+            descs: this.page.descs,
+            ascs: this.page.ascs,
+            appType: '2',
+            appId: this.appId
+          }, params, this.paramsSearch)).then(response => {
+            this.tableData = response.data.data.records
+            this.page.total = response.data.data.total
+            this.page.currentPage = page.currentPage
+            this.page.pageSize = page.pageSize
+            this.tableLoading = false
+          }).catch(() => {
+            this.tableLoading = false
+          })
+        }
       },
       updateRemark(row, index){
         this.$prompt('请输入备注', '提示', {

@@ -12,6 +12,6 @@ import lombok.Data;
 
 @Data
 public class WxUserTagsDict {
-	private String label;
+	private String name;
 	private Long value;
 }

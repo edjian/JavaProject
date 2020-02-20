@@ -86,6 +86,14 @@
         this.tableLoading = true
         fetchMenuTree().then(response => {
           this.tableData = response.data.data
+          let children = this.tableData
+          let parentIdDIC = [{
+            id: "0",
+            name: "顶级",
+            parentId: "0",
+            children: children
+          }]
+          this.$refs.crud.DIC.parentId = parentIdDIC
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading = false
@@ -106,8 +114,6 @@
             type: 'success'
           })
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(function(err) { })
       },
       /**
@@ -126,8 +132,6 @@
           })
           done()
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(() => {
           loading()
         })
@@ -147,8 +151,6 @@
           })
           done()
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(() => {
           loading()
         })

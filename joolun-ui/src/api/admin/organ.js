@@ -1,6 +1,6 @@
 import request from '@/router/axios'
 
-export function fetchTree (query) {
+export function fetchTree(query) {
   return request({
     url: '/admin/organ/tree',
     method: 'get',
@@ -8,7 +8,7 @@ export function fetchTree (query) {
   })
 }
 
-export function addObj (obj) {
+export function addObj(obj) {
   return request({
     url: '/admin/organ/',
     method: 'post',
@@ -16,24 +16,31 @@ export function addObj (obj) {
   })
 }
 
-export function getObj (id) {
+export function getObj(id) {
   return request({
     url: '/admin/organ/' + id,
     method: 'get'
   })
 }
 
-export function delObj (id) {
+export function delObj(id) {
   return request({
     url: '/admin/organ/' + id,
     method: 'delete'
   })
 }
 
-export function putObj (obj) {
+export function putObj(obj) {
   return request({
     url: '/admin/organ/',
     method: 'put',
     data: obj
+  })
+}
+
+export function getByCode(code) {
+  return request({
+    url: '/admin/organ/detail/' + code,
+    method: 'get'
   })
 }

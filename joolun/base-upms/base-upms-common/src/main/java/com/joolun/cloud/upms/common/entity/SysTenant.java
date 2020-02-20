@@ -79,6 +79,11 @@ public class SysTenant extends Model<SysTenant> {
 	private String parentId;
 
 	/**
+	 * 状态 0:正常，9:冻结
+	 */
+	private String status;
+
+	/**
 	 * 是否删除  -1：已删除  0：正常
 	 */
 //	@TableLogic

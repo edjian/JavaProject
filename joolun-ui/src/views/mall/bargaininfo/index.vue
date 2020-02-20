@@ -110,8 +110,7 @@
                 }
                 if(type == 'add'){
                     this.form.picUrl = []
-                }
-                if(type == 'edit'){
+                }else{
                     this.form.picUrl = [this.form.picUrl]
                 }
                 done()

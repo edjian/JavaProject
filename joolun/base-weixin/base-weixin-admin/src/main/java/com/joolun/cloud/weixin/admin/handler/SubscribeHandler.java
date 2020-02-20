@@ -22,7 +22,7 @@ import com.joolun.cloud.weixin.admin.service.WxMsgService;
 import com.joolun.cloud.weixin.common.entity.WxAutoReply;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
-import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
+import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -92,7 +92,7 @@ public class SubscribeHandler extends AbstractHandler {
 		wxUser.setAppId(wxApp.getId());
 		wxUser.setSubscribe(ConfigConstant.SUBSCRIBE_TYPE_YES);
 		wxUser.setSubscribeScene(userWxInfo.getSubscribeScene());
-		wxUser.setSubscribeTime(LocalDateTimeUtil.timestamToDatetime(userWxInfo.getSubscribeTime()*1000));
+		wxUser.setSubscribeTime(LocalDateTimeUtils.timestamToDatetime(userWxInfo.getSubscribeTime()*1000));
 		wxUser.setOpenId(userWxInfo.getOpenId());
 		wxUser.setNickName(userWxInfo.getNickname());
 		wxUser.setSex(String.valueOf(userWxInfo.getSex()));

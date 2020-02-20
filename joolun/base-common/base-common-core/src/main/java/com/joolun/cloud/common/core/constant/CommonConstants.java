@@ -52,11 +52,6 @@ public interface CommonConstants {
 	String BUTT = "1";
 
 	/**
-	 * 菜单根节点
-	 */
-	String MENU_TREE_ROOT_ID = "-1";
-
-	/**
 	 * 编码
 	 */
 	String UTF8 = "UTF-8";

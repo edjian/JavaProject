@@ -14,13 +14,13 @@ export const tableOption = {
   align: 'center',
   menuType: 'text',
   searchShow: false,
+  viewBtn: true,
   column: [
 	  {
       label: '父分类',
       prop: 'parentId',
       type: 'tree',
       hide: true,
-      dicUrl: '/mall/goodscategory/parentTree',
       props: {
         label: 'name',
         value: 'id'

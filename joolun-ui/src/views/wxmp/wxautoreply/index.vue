@@ -9,110 +9,140 @@
 <template>
   <div class="execution">
     <basic-container>
-      <el-tabs v-model="type" @tab-click="handleClick">
-        <el-tab-pane name="1">
-          <span slot="label"><i class="el-icon-star-off"></i> 关注时回复</span>
-          <avue-crud ref="crud"
-                     :page="page"
-                     :data="tableData"
-                     :permission="permissionList"
-                     :table-loading="tableLoading"
-                     :option="tableOption1"
-                     @refresh-change="refreshChange">
-            <template slot-scope="scope" slot="menuLeft">
-              <div class="add_but" v-if="tableData.length<=0">
-                <el-button type="primary"
-                           @click="handleAdd"
-                           size="mini"
-                           v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
-              </div>
-            </template>
-            <template slot-scope="scope" slot="menu">
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_edit"
-                         icon="el-icon-edit"
-                         size="small"
-                         plain
-                         @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_del"
-                         icon="el-icon-delete"
-                         size="small"
-                         plain
-                         @click="handleDel(scope.row)">删除</el-button>
-            </template>
-          </avue-crud>
-        </el-tab-pane>
-        <el-tab-pane name="2">
-          <span slot="label"><i class="el-icon-chat-line-round"></i> 消息回复</span>
-          <avue-crud ref="crud"
-                     :page="page"
-                     :data="tableData"
-                     :permission="permissionList"
-                     :table-loading="tableLoading"
-                     :option="tableOption2"
-                     @refresh-change="refreshChange"
-                     @sort-change="sortChange">
-            <template slot-scope="scope" slot="menuLeft">
-              <div class="add_but">
-                <el-button type="primary"
-                           @click="handleAdd"
-                           size="mini"
-                           v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
-              </div>
-            </template>
-            <template slot-scope="scope" slot="menu">
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_edit"
-                         icon="el-icon-edit"
-                         size="small"
-                         plain
-                         @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_del"
-                         icon="el-icon-delete"
-                         size="small"
-                         plain
-                         @click="handleDel(scope.row)">删除</el-button>
-            </template>
-          </avue-crud>
-        </el-tab-pane>
-        <el-tab-pane name="3">
-          <span slot="label"><i class="el-icon-news"></i> 关键词回复</span>
-          <avue-crud ref="crud"
-                     :page="page"
-                     :data="tableData"
-                     :permission="permissionList"
-                     :table-loading="tableLoading"
-                     :option="tableOption3"
-                     @refresh-change="refreshChange"
-                     @sort-change="sortChange"
-                     @search-change="searchChange">
-            <template slot-scope="scope" slot="menuLeft">
-              <div class="add_but">
-                <el-button type="primary"
-                           @click="handleAdd"
-                           size="mini"
-                           v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
-              </div>
-            </template>
-            <template slot-scope="scope" slot="menu">
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_edit"
-                         icon="el-icon-edit"
-                         size="small"
-                         plain
-                         @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button type="text"
-                         v-if="permissions.wxmp_wxautoreply_del"
-                         icon="el-icon-delete"
-                         size="small"
-                         plain
-                         @click="handleDel(scope.row)">删除</el-button>
-            </template>
-          </avue-crud>
-        </el-tab-pane>
-      </el-tabs>
+      <el-row :span="24" :gutter="10">
+        <el-col :xs="24"
+                :sm="24"
+                :md="3">
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
+            </div>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
+          </el-card>
+        </el-col>
+        <el-col :xs="24"
+                :sm="24"
+                :md="21">
+          <el-tabs v-model="type" @tab-click="handleClick">
+            <el-tab-pane name="1">
+              <span slot="label"><i class="el-icon-star-off"></i> 关注时回复</span>
+              <avue-crud ref="crud"
+                         :page="page"
+                         :data="tableData"
+                         :permission="permissionList"
+                         :table-loading="tableLoading"
+                         :option="tableOption1"
+                         @refresh-change="refreshChange">
+                <template slot-scope="scope" slot="menuLeft">
+                  <div class="add_but" v-if="tableData.length<=0">
+                    <el-button type="primary"
+                               @click="handleAdd"
+                               size="mini"
+                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                  </div>
+                </template>
+                <template slot-scope="scope" slot="menu">
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_edit"
+                             icon="el-icon-edit"
+                             size="small"
+                             plain
+                             @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_del"
+                             icon="el-icon-delete"
+                             size="small"
+                             plain
+                             @click="handleDel(scope.row)">删除</el-button>
+                </template>
+              </avue-crud>
+            </el-tab-pane>
+            <el-tab-pane name="2">
+              <span slot="label"><i class="el-icon-chat-line-round"></i> 消息回复</span>
+              <avue-crud ref="crud"
+                         :page="page"
+                         :data="tableData"
+                         :permission="permissionList"
+                         :table-loading="tableLoading"
+                         :option="tableOption2"
+                         @refresh-change="refreshChange"
+                         @sort-change="sortChange">
+                <template slot-scope="scope" slot="menuLeft">
+                  <div class="add_but">
+                    <el-button type="primary"
+                               @click="handleAdd"
+                               size="mini"
+                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                  </div>
+                </template>
+                <template slot-scope="scope" slot="menu">
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_edit"
+                             icon="el-icon-edit"
+                             size="small"
+                             plain
+                             @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_del"
+                             icon="el-icon-delete"
+                             size="small"
+                             plain
+                             @click="handleDel(scope.row)">删除</el-button>
+                </template>
+              </avue-crud>
+            </el-tab-pane>
+            <el-tab-pane name="3">
+              <span slot="label"><i class="el-icon-news"></i> 关键词回复</span>
+              <avue-crud ref="crud"
+                         :page="page"
+                         :data="tableData"
+                         :permission="permissionList"
+                         :table-loading="tableLoading"
+                         :option="tableOption3"
+                         @refresh-change="refreshChange"
+                         @sort-change="sortChange"
+                         @search-change="searchChange">
+                <template slot-scope="scope" slot="menuLeft">
+                  <div class="add_but">
+                    <el-button type="primary"
+                               @click="handleAdd"
+                               size="mini"
+                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                  </div>
+                </template>
+                <template slot-scope="scope" slot="menu">
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_edit"
+                             icon="el-icon-edit"
+                             size="small"
+                             plain
+                             @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button type="text"
+                             v-if="permissions.wxmp_wxautoreply_del"
+                             icon="el-icon-delete"
+                             size="small"
+                             plain
+                             @click="handleDel(scope.row)">删除</el-button>
+                </template>
+              </avue-crud>
+            </el-tab-pane>
+          </el-tabs>
+        </el-col>
+      </el-row>
       <el-dialog :title="handleType == 'add' ? '新增回复消息' : '修改回复消息'" :visible.sync="dialog1Visible" width="50%">
         <el-form label-width="100px">
           <el-form-item label="请求消息类型" v-if="type == '2'">
@@ -155,6 +185,7 @@
 
 <script>
   import { getPage, getObj, addObj, putObj, delObj } from '@/api/wxmp/wxautoreply'
+  import { getList as getWxAppList } from '@/api/wxmp/wxapp'
   import { remote } from '@/api/admin/dict.js'
   import { tableOption1, tableOption2, tableOption3 } from '@/const/crud/wxmp/wxautoreply'
   import { mapGetters } from 'vuex'
@@ -167,6 +198,13 @@
     },
     data() {
       return {
+        filterText: '',
+        treeWxAppProps: {
+          label: 'name',
+          value: 'id'
+        },
+        treeWxAppData: [],
+        appId: null,
         tableData: [],
         page: {
           total: 0, // 总页数
@@ -180,7 +218,6 @@
         tableOption1:tableOption1,
         tableOption2:tableOption2,
         tableOption3: tableOption3,
-        appId:this.$route.query.id,
         dialog1Visible:false,
         type:'1',//类型（1、关注时回复；2、消息回复；3、关键词回复）
         objData:{
@@ -191,10 +228,15 @@
         hackResetWxReplySelect:false
       }
     },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val)
+      }
+    },
     created() {
       this.remoteDict('wx_req_type')
       this.remoteDict('wx_rep_mate')
-      this.getPage(this.page)
+      this.getWxAppList()
     },
     mounted: function() { },
     computed: {
@@ -209,6 +251,39 @@
       }
     },
     methods: {
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      //加载公众号列表
+      getWxAppList(){
+        getWxAppList({
+          appType: '2'
+        }).then(response => {
+          let data = response.data
+          this.treeWxAppData = data
+          if(data && data.length > 0){
+            //默认加载第一个公众号的素材
+            this.nodeClick({
+              id: data[0].id
+            })
+          }
+        }).catch(() => {
+
+        })
+      },
+      nodeClick(data) {
+        if(this.appId != data.id){
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(data.id)
+          })
+          this.page.currentPage = 1
+          this.appId = data.id
+          this.paramsSearch = {}
+          this.$refs.crud.searchReset()
+          this.getPage(this.page)
+        }
+      },
       remoteDict(type){
         remote(type).then(response => {
           this.dictData.set(type,response.data.data)
@@ -262,34 +337,36 @@
         this.getPage(this.page)
       },
       getPage(page, params) {
-        this.tableLoading = true
-        getPage(Object.assign({
-          current: page.currentPage,
-          size: page.pageSize,
-          descs: this.page.descs,
-          ascs: this.page.ascs,
-          appId:this.appId,
-          type:this.type
-        }, params, this.paramsSearch)).then(response => {
-          this.tableData = response.data.data.records
-          this.page.total = response.data.data.total
-          this.page.currentPage = page.currentPage
-          this.page.pageSize = page.pageSize
-          this.tableLoading = false
-          if(this.type == '2'){
-            let wxReqType = this.dictData.get('wx_req_type')
-            for (let i=0;i<wxReqType.length;i++) {
-              wxReqType[i].disabled = false
-              for(let j=0;j<this.tableData.length;j++){
-                if(wxReqType[i].value == this.tableData[j].reqType){
-                  wxReqType[i].disabled = true
+        if(this.appId){
+          this.tableLoading = true
+          getPage(Object.assign({
+            current: page.currentPage,
+            size: page.pageSize,
+            descs: this.page.descs,
+            ascs: this.page.ascs,
+            appId: this.appId,
+            type: this.type
+          }, params, this.paramsSearch)).then(response => {
+            this.tableData = response.data.data.records
+            this.page.total = response.data.data.total
+            this.page.currentPage = page.currentPage
+            this.page.pageSize = page.pageSize
+            this.tableLoading = false
+            if(this.type == '2'){
+              let wxReqType = this.dictData.get('wx_req_type')
+              for (let i=0;i<wxReqType.length;i++) {
+                wxReqType[i].disabled = false
+                for(let j=0;j<this.tableData.length;j++){
+                  if(wxReqType[i].value == this.tableData[j].reqType){
+                    wxReqType[i].disabled = true
+                  }
                 }
               }
             }
-          }
-        }).catch(() => {
-          this.tableLoading = false
-        })
+          }).catch(() => {
+            this.tableLoading = false
+          })
+        }
       },
       handleDel: function(row, index) {
         var _this = this

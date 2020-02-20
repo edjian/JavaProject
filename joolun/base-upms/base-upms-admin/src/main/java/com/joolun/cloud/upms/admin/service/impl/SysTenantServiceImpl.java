@@ -39,7 +39,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
 	@Override
 	public IPage<SysTenant> page1(IPage<SysTenant> page, Wrapper<SysTenant> queryWrapper) {
-		return baseMapper.selectPage2(page, queryWrapper);
+		return baseMapper.selectPage1(page, queryWrapper);
 	}
 
 	@Override

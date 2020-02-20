@@ -1,3 +1,19 @@
+import {getByCode} from '@/api/admin/organ'
+
+const validateCode = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getByCode(value).then(response => {
+      let data = response.data.data
+      if (data !== null) {
+        callback(new Error('机构编码已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
 export const tableOption = {
   dialogDrag: true,
   headerAlign: 'center',
@@ -11,7 +27,6 @@ export const tableOption = {
       prop: 'parentId',
       type: 'tree',
       hide: true,
-      dicUrl: '/admin/organ/parentTree',
       defaultExpandAll: true,
       props: {
         label: 'name',
@@ -49,9 +64,13 @@ export const tableOption = {
       label: '机构编码',
       hide:true,
       prop: 'code',
+      editDisabled: true,
       rules: [{
         required: true,
         message: '机构编码不能为空',
+        trigger: 'blur'
+      },{
+        validator: validateCode,
         trigger: 'blur'
       }]
     },

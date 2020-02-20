@@ -106,7 +106,6 @@ public class SysConfigEditorController {
 	 * @return R
 	 */
 	@GetMapping()
-	@PreAuthorize("@ato.hasAuthority('sys_configeditor_get')")
 	public R get() {
 		return R.ok(sysConfigEditorService.getOne(Wrappers.emptyWrapper()));
 	}

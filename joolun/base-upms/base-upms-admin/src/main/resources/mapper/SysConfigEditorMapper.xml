@@ -20,6 +20,4 @@
         <result property="editorType" column="editor_type"/>
     </resultMap>
 
-    <sql id="sysConfigEditorSql">
-        sys_config_editor.`id`,        sys_config_editor.`tenant_id`,        sys_config_editor.`del_flag`,        sys_config_editor.`create_time`,        sys_config_editor.`update_time`,        sys_config_editor.`editor_type`    </sql>
 </mapper>

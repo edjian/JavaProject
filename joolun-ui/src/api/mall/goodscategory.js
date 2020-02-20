@@ -24,14 +24,6 @@ export function fetchTree(query) {
   })
 }
 
-export function fetchParentTree(query) {
-  return request({
-    url: '/mall/goodscategory/parentTree',
-    method: 'get',
-    params: query
-  })
-}
-
 export function addObj(obj) {
   return request({
     url: '/mall/goodscategory',

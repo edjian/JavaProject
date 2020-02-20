@@ -14,6 +14,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.config.HomeDirConfigProperties;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
@@ -25,6 +26,7 @@ import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
+import com.joolun.cloud.weixin.common.dto.WxAppTree;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +42,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,6 +75,15 @@ public class WxAppController {
 		return R.ok(wxAppService.page(page, Wrappers.query(wxApp)));
 	}
 
+	/**
+	 * list查询
+	 * @param wxApp
+	 * @return
+	 */
+	@GetMapping("/list")
+	public List<WxApp> list(WxApp wxApp) {
+		return wxAppService.list(Wrappers.query(wxApp).lambda().orderByDesc(WxApp::getCreateTime));
+	}
 
 	/**
 	 * 通过id查询微信账号配置
@@ -203,84 +216,6 @@ public class WxAppController {
 			e.printStackTrace();
 			log.error("获取access-token失败appID:" + wxApp.getId() + ":" + e.getMessage());
 			return WxReturnCode.wxErrorExceptionHandler(e);
-		}
-	}
-
-	/**
-	 * 获取用户增减数据
-	 * @param appId
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	@GetMapping("/usersummary")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
-	public R getUsersummary(String appId, String startDate, String endDate) {
-		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
-			WxMpDataCubeService wxMpDataCubeService = wxMpService.getDataCubeService();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			return R.ok(wxMpDataCubeService.getUserSummary(sdf.parse(startDate), sdf.parse(endDate)));
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("获取用户增减数据失败",e);
-			return WxReturnCode.wxErrorExceptionHandler(e);
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("获取用户增减数据失败",e);
-			return R.failed("获取用户增减数据失败");
-		}
-	}
-
-	/**
-	 * 获取累计用户数据
-	 * @param appId
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	@GetMapping("/usercumulate")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
-	public R getUserCumulate(String appId, String startDate, String endDate){
-		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
-			WxMpDataCubeService wxMpDataCubeService = wxMpService.getDataCubeService();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			return R.ok(wxMpDataCubeService.getUserCumulate(sdf.parse(startDate), sdf.parse(endDate)));
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("获取累计用户数据失败",e);
-			return WxReturnCode.wxErrorExceptionHandler(e);
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("获取用户增减数据失败",e);
-			return R.failed("获取用户增减数据失败");
-		}
-	}
-
-	/**
-	 * 获取接口分析数据
-	 * @param appId
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	@GetMapping("/interfacesummary")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
-	public R getInterfaceSummary(String appId, String startDate, String endDate){
-		try {
-			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
-			WxMpDataCubeService wxMpDataCubeService = wxMpService.getDataCubeService();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			return R.ok(wxMpDataCubeService.getInterfaceSummary(sdf.parse(startDate), sdf.parse(endDate)));
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("获取接口分析数据失败",e);
-			return WxReturnCode.wxErrorExceptionHandler(e);
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("获取接口分析数据失败",e);
-			return R.failed("获取接口分析数据失败");
 		}
 	}
 

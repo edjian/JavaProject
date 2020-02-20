@@ -74,7 +74,7 @@ public class WxUserTagsController {
 			WxUserTagsDict wxUserTagsDict;
 			for(WxUserTag wxUserTag : listWxUserTag){
 				wxUserTagsDict = new WxUserTagsDict();
-				wxUserTagsDict.setLabel(wxUserTag.getName());
+				wxUserTagsDict.setName(wxUserTag.getName());
 				wxUserTagsDict.setValue(wxUserTag.getId());
 				listWxUserTagsDict.add(wxUserTagsDict);
 			}

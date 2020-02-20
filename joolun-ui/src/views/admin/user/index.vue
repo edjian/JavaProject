@@ -19,6 +19,7 @@
                      :page="page"
                      :permission="permissionList"
                      :table-loading="listLoading"
+                     :before-open="beforeOpen"
                      @on-load="getPage"
                      @sort-change="sortChange"
                      @search-change="searchChange"
@@ -248,7 +249,11 @@
               })
             })
         })
-      }
+      },
+      beforeOpen(done,type){
+        window.openType = type
+        done()
+      },
     }
   };
 </script>

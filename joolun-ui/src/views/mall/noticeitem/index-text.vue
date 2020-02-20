@@ -9,28 +9,34 @@
 <template>
   <div class="execution">
     <basic-container>
-      <el-row :span="24" :gutter="20">
+      <el-row :span="24" :gutter="10">
         <el-col :xs="24"
                 :sm="24"
-                :md="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>手机预览</span>
-              <span style="margin-left: 10px;font-size: 12px;color: #72767b">效果仅供参考，以实际手机效果为准</span>
+                :md="3">
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
             </div>
-            <el-carousel height="35px" indicator-position="outside">
-              <div style="background-color: #E6A23C;height: 100%;line-height: 35px;">
-                <i class="el-icon-bell" style="margin-left: 5px"></i>
-                <el-carousel-item v-for="(item,index) in tableData" :key="index" v-if="item.enable == '1'" style="padding-left: 30px;width: 85%">
-                  <div style="font-size: 14px"><el-tag size="mini" type="danger">{{item.tag}}</el-tag> {{item.content}}</div>
-                </el-carousel-item>
-              </div>
-            </el-carousel>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
           </el-card>
         </el-col>
         <el-col :xs="24"
                 :sm="24"
-                :md="18">
+                :md="21">
           <avue-crud ref="crud"
                      :page="page"
                      :data="tableData"
@@ -50,20 +56,34 @@
             </template>
             <template slot="url" slot-scope="scope">
               <img
-                style="height: 100px"
-                :src="scope.row.url">
+                      style="height: 100px"
+                      :src="scope.row.url">
             </template>
             <template slot="enable" slot-scope="scope">
               <el-switch
-                active-value="1"
-                inactive-value="0"
-                v-model="scope.row.enable"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="changeEnable(scope.row)">
+                      active-value="1"
+                      inactive-value="0"
+                      v-model="scope.row.enable"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      @change="changeEnable(scope.row)">
               </el-switch>
             </template>
           </avue-crud>
+          <el-card class="box-card" style="width: 350px; margin: auto">
+            <div slot="header" class="clearfix">
+              <span>手机预览</span>
+              <span style="margin-left: 10px;font-size: 12px;color: #72767b">效果仅供参考，以实际手机效果为准</span>
+            </div>
+            <el-carousel height="35px" indicator-position="outside">
+              <div style="background-color: #E6A23C;height: 100%;line-height: 35px;">
+                <i class="el-icon-bell" style="margin-left: 5px"></i>
+                <el-carousel-item v-for="(item,index) in tableData" :key="index" v-if="item.enable == '1'" style="padding-left: 30px;width: 85%">
+                  <div style="font-size: 14px"><el-tag size="mini" type="danger">{{item.tag}}</el-tag> {{item.content}}</div>
+                </el-carousel-item>
+              </div>
+            </el-carousel>
+          </el-card>
         </el-col>
       </el-row>
     </basic-container>
@@ -72,6 +92,7 @@
 
 <script>
     import {getPage, getObj, addObj, putObj, delObj} from '@/api/mall/noticeitem'
+    import { getList as getWxAppList } from '@/api/wxmp/wxapp'
     import {tableOption2} from '@/const/crud/mall/noticeitem'
     import {mapGetters} from 'vuex'
     import MaterialList from '@/components/material/list.vue'
@@ -83,6 +104,13 @@
         name: 'noticeitem',
         data() {
             return {
+              filterText: '',
+              treeWxAppProps: {
+                label: 'name',
+                value: 'id'
+              },
+              treeWxAppData: [],
+              appId: null,
                 tableData: [],
                 page: {
                     total: 0, // 总页数
@@ -94,11 +122,16 @@
                 paramsSearch: {},
                 tableLoading: false,
                 tableOption: tableOption2,
-                appId: this.$route.query.id,
-                noticeType: this.$route.query.noticeType
+                noticeType: '2'
             }
         },
+        watch: {
+          filterText(val) {
+            this.$refs.tree.filter(val)
+          }
+        },
         created() {
+          this.getWxAppList()
         },
         mounted: function () {
         },
@@ -114,6 +147,38 @@
             }
         },
         methods: {
+            filterNode(value, data) {
+              if (!value) return true
+              return data.name.indexOf(value) !== -1
+            },
+            //加载小程序列表
+            getWxAppList(){
+              getWxAppList({
+                appType: '1'
+              }).then(response => {
+                let data = response.data
+                this.treeWxAppData = data
+                if(data && data.length > 0){
+                  //默认加载第一个小程序的数据
+                  this.nodeClick({
+                    id: data[0].id
+                  })
+                }
+              }).catch(() => {
+
+              })
+            },
+            nodeClick(data) {
+              if(this.appId != data.id){
+                this.$nextTick(() => {
+                  this.$refs.tree.setCurrentKey(data.id)
+                })
+                this.page.currentPage = 1
+                this.appId = data.id
+                this.paramsSearch = {}
+                this.getPage(this.page)
+              }
+            },
             changeEnable(row){
               putObj({
                 id: row.id,

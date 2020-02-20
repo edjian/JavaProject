@@ -20,6 +20,7 @@ export const tableOption = {
   excelBtn: true,
   editBtn: false,
   delBtn: false,
+  viewBtn: true,
   printBtn: true,
   defaultSort:{
     prop:'createTime',
@@ -113,6 +114,7 @@ export const tableOption = {
 	  {
       label: '消息发送状态',
       prop: 'msgStatus',
+      type: 'select',
       dicUrl: '/admin/dict/type/wx_mass_msg_status',
       search:true,
       sortable:true

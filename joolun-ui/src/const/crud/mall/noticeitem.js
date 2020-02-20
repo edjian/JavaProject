@@ -16,6 +16,7 @@ export const tableOption = {
     align: 'center',
     menuType: 'text',
     searchShow: false,
+    viewBtn: true,
     column: [
         {
             label: '图片',

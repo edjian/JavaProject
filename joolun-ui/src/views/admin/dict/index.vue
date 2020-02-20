@@ -16,6 +16,7 @@
                        @row-save="handleSave"
                        @search-change="searchChange"
                        @sort-change="sortChange"
+                       @refresh-change="refreshChange"
                        @row-del="handleDel">
               <template slot-scope="scope"
                         slot="menu">
@@ -195,6 +196,12 @@
         this.getPage(this.page, this.filterForm(form))
         done()
       },
+      /**
+       * 刷新回调
+       */
+      refreshChange(val) {
+        this.getPage(val)
+      },
 
       handleItem: function (row) {
         if(row){
@@ -309,7 +316,7 @@
        * 刷新回调
        */
       refreshChange2(val) {
-        this.getPage2(val.page)
+        this.getPage2(val)
       }
     }
   }

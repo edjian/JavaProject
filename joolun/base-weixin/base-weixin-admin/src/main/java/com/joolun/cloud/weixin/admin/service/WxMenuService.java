@@ -28,6 +28,12 @@ public interface WxMenuService extends IService<WxMenu> {
 	String getWxMenuButton(String appId);
 
 	/**
+	 * 保存菜单
+	 * @param
+	 */
+	void save(String appId , String strWxMenu);
+
+	/**
 	 * 保存并发布菜单
 	 * @param
 	 */

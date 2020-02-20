@@ -8,6 +8,7 @@
         :data="tableData"
         :permission="permissionList"
         :table-loading="tableLoading"
+        :before-open="beforeOpen"
         v-model="form"
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
@@ -51,6 +52,7 @@
         this.tableLoading = true
         fetchTree().then(response => {
           this.tableData = response.data.data
+          this.$refs.crud.DIC.parentId = this.tableData
           this.tableLoading = false
         }).catch(() => {
           this.tableLoading = false
@@ -71,8 +73,6 @@
             type: 'success'
           })
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(function(err) { })
       },
       /**
@@ -91,8 +91,6 @@
           })
           done()
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(() => {
           loading()
         })
@@ -112,8 +110,6 @@
           })
           done()
           this.getPage(this.page)
-          // this.$refs.crud.updateDic('parentId')
-          this.$router.go(0)
         }).catch(() => {
           loading()
         })
@@ -123,7 +119,11 @@
        */
       refreshChange(page) {
         this.getPage(page)
-      }
+      },
+      beforeOpen(done,type){
+        window.openType = type
+        done()
+      },
     }
   }
 </script>

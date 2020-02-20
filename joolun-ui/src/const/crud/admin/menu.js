@@ -12,7 +12,6 @@ export const tableOption = {
       prop: 'parentId',
       type: 'tree',
       hide: true,
-      dicUrl: '/admin/menu/parentTree',
       props: {
         label: 'name',
         value: 'id'

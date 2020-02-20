@@ -54,38 +54,6 @@ export function synchroWxUser(obj) {
   })
 }
 
-export function listUserTags(query) {
-  return request({
-    url: '/weixin/wxusertags/list',
-    method: 'get',
-    params: query
-  })
-}
-
-export function addTags(obj) {
-  return request({
-    url: '/weixin/wxusertags',
-    method: 'post',
-    data: obj
-  })
-}
-
-export function putTags(obj) {
-  return request({
-    url: '/weixin/wxusertags',
-    method: 'put',
-    data: obj
-  })
-}
-
-export function delTags(query) {
-  return request({
-    url: '/weixin/wxusertags',
-    method: 'delete',
-    params: query
-  })
-}
-
 export function updateRemark(obj) {
   return request({
     url: '/weixin/wxuser/remark',

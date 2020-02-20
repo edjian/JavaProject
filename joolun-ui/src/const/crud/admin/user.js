@@ -1,3 +1,21 @@
+import {getByUserName} from '@/api/admin/user'
+
+
+const validateUserName = (rule, value, callback) => {
+    if (window.openType === 'edit'){
+        callback()
+    }else{
+        getByUserName(value).then(response => {
+            let data = response.data.data
+            if (data !== null) {
+                callback(new Error('账号已经存在'))
+            } else {
+                callback()
+            }
+        })
+    }
+}
+
 export const tableOption = {
     dialogDrag: true,
     border: true,
@@ -19,22 +37,24 @@ export const tableOption = {
         addDisplay: false
     }, {
         fixed: true,
-        label: '用户名',
+        label: '账号',
         prop: 'username',
         editDisabled: true,
         search: true,
         span: 24,
         rules: [{
             required: true,
-            message: '请输入用户名'
+            message: '请输入账号'
         },
         {
             min: 3,
             max: 20,
             message: '长度在 3 到 20 个字符',
             trigger: 'blur'
-        }
-        ]
+        },{
+                validator: validateUserName,
+                trigger: 'blur'
+        }]
     }, {
         label: '密码',
         prop: 'password',

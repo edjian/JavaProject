@@ -18,6 +18,7 @@ export const tableOption = {
   searchShow: false,
   excelBtn: true,
   printBtn: true,
+  viewBtn: true,
   column: [
 	  {
       label: 'PK',

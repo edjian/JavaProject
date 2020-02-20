@@ -8,9 +8,17 @@
  */
 import request from '@/router/axios'
 
-export function saveAndRelease(obj) {
+export function save(obj) {
   return request({
     url: '/weixin/wxmenu',
+    method: 'post',
+    data: obj
+  })
+}
+
+export function saveAndRelease(obj) {
+  return request({
+    url: '/weixin/wxmenu/release',
     method: 'post',
     data: obj
   })

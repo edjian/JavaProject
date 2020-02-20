@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.joolun.cloud.common.sms.config.SmsConfigProperties,\
+  com.joolun.cloud.common.sms.util.SmsUtils

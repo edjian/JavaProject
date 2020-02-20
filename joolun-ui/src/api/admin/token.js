@@ -1,6 +1,6 @@
 import request from '@/router/axios'
 
-export function getPage (query) {
+export function getPage(query) {
   return request({
     url: '/admin/token/page',
     method: 'get',
@@ -8,7 +8,7 @@ export function getPage (query) {
   })
 }
 
-export function delObj (token) {
+export function delObj(token) {
   return request({
     url: '/admin/token/' + token,
     method: 'delete'

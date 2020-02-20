@@ -18,6 +18,7 @@ export const tableOption = {
     excelBtn: true,
     printBtn: true,
     menu: false,
+    viewBtn: true,
     column: [
         {
             label: '创建时间',

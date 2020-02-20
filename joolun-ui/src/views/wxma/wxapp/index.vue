@@ -9,13 +9,18 @@
 <template>
   <div class="execution">
     <basic-container>
-      <el-row :span="24">
+      <el-row :span="24" :gutter="10">
         <el-col :xs="24"
                 :sm="24"
-                :md="4">
-          <avue-tree :option="treeOption"
-                     :data="treeOrganData"
-                     @node-click="nodeClick"></avue-tree>
+                :md="3">
+          <el-card class="box-card" shadow="never">
+            <div slot="header" class="clearfix">
+              <span>机构名称</span>
+            </div>
+            <avue-tree :option="treeOption"
+                       :data="treeOrganData"
+                       @node-click="nodeClick"></avue-tree>
+          </el-card>
         </el-col>
         <el-col :xs="24"
                 :sm="24"
@@ -63,76 +68,53 @@
               </div>
             </template>
             <template slot-scope="props" slot="expand">
-              <el-card class="box-card">
-                <el-row>
-                  <el-col :span="4" style="text-align: center" v-if="props.row.isComponent == '0'">
-                    <el-image
-                      style="width: 160px; height: 160px"
-                      :src="props.row.qrCode"></el-image><p/>
-                  </el-col>
-                  <el-col :span="6" style="text-align: center" v-if="props.row.isComponent == '1'">
-                    <el-image
-                      style="width: 160px; height: 160px"
-                      :src="props.row.qrCode"></el-image><p/>
-                    <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions.wxmp_wxapp_add" @click="toAuth">
-                      重新授权
-                    </el-button>
-                    <el-button type="success" size="small" icon="el-icon-connection" @click="getAuthorizerInfo(props.row.id)">
-                      授权信息
-                    </el-button>
-                  </el-col>
-                  <el-col :span="18">
-                    <div class="expand-left">
-                      <div>
-                        <el-form ref="form" :model="props.row" label-width="80px" size="mini" label-position="left">
-                          <el-form-item label="AppID">
-                            ：{{props.row.id}}
-                            <el-button type="warning"
-                                       icon="el-icon-key"
-                                       size="small"
-                                       plain
-                                       class="mag_left"
-                                       @click="getAccessToken(props.row.id)">查看access-token</el-button>
-                            <el-button type="warning"
-                                       icon="el-icon-refresh"
-                                       size="small"
-                                       plain
-                                       class="mag_left"
-                                       @click="clearQuota(props.row.id)">api次数清零</el-button>
-                          </el-form-item>
-                          <el-form-item label="主体名称">
-                            ：{{props.row.principalName}}
-                          </el-form-item>
-                          <el-form-item label="创建时间">
-                            ：{{props.row.createTime}}
-                          </el-form-item>
-                        </el-form>
-                      </div>
-                      <el-divider></el-divider>
-                      <div>
-                        <router-link class="mag_left" v-if="permissions.wxmp_wxuser_index" :to="{path:'/views/wxma/wxuser/index',query:{id:props.row.id , name : '['+props.row.name+']用户管理' }}">
-                          <el-button type="primary"
-                                     icon="el-icon-user"
+              <el-row>
+                <el-col :span="4" style="text-align: center" v-if="props.row.isComponent == '0'">
+                  <el-image
+                    style="width: 160px; height: 160px"
+                    :src="props.row.qrCode"></el-image><p/>
+                </el-col>
+                <el-col :span="6" style="text-align: center" v-if="props.row.isComponent == '1'">
+                  <el-image
+                    style="width: 160px; height: 160px"
+                    :src="props.row.qrCode"></el-image><p/>
+                  <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions.wxmp_wxapp_add" @click="toAuth">
+                    重新授权
+                  </el-button>
+                  <el-button type="success" size="small" icon="el-icon-connection" @click="getAuthorizerInfo(props.row.id)">
+                    授权信息
+                  </el-button>
+                </el-col>
+                <el-col :span="18">
+                  <div class="expand-left">
+                    <div>
+                      <el-form ref="form" :model="props.row" label-width="80px" size="mini" label-position="left">
+                        <el-form-item label="AppID">
+                          ：{{props.row.id}}
+                          <el-button type="warning"
+                                     icon="el-icon-key"
                                      size="small"
-                                     plain>用户管理</el-button>
-                        </router-link>
-                        <router-link class="mag_left" v-if="permissions.mall_noticeitem_index" :to="{path:'/views/mall/noticeitem/index',query:{id:props.row.id ,noticeType:'1' , name : '['+props.row.name+']首页轮播图' }}">
-                          <el-button type="primary"
-                                     icon="el-icon-picture-outline"
+                                     plain
+                                     class="mag_left"
+                                     @click="getAccessToken(props.row.id)">查看access-token</el-button>
+                          <el-button type="warning"
+                                     icon="el-icon-refresh"
                                      size="small"
-                                     plain>首页轮播图</el-button>
-                        </router-link>
-                        <router-link class="mag_left" v-if="permissions.mall_noticeitem_index" :to="{path:'/views/mall/noticeitem/index-text',query:{id:props.row.id ,noticeType:'2' , name : '['+props.row.name+']首页公告' }}">
-                          <el-button type="primary"
-                                     icon="el-icon-chat-line-round"
-                                     size="small"
-                                     plain>首页公告</el-button>
-                        </router-link>
-                      </div>
+                                     plain
+                                     class="mag_left"
+                                     @click="clearQuota(props.row.id)">api次数清零</el-button>
+                        </el-form-item>
+                        <el-form-item label="主体名称">
+                          ：{{props.row.principalName}}
+                        </el-form-item>
+                        <el-form-item label="创建时间">
+                          ：{{props.row.createTime}}
+                        </el-form-item>
+                      </el-form>
                     </div>
-                  </el-col>
-                </el-row>
-              </el-card>
+                  </div>
+                </el-col>
+              </el-row>
             </template>
           </avue-crud>
         </el-col>
@@ -244,8 +226,8 @@
         this.form.keyPath = response.link
       },
       nodeClick(data) {
-        this.page.page = 1;
-        this.getPage(this.page, {organId: data.id});
+        this.page.currentPage = 1
+        this.getPage(this.page, {organId: data.id})
       },
       handleOrgan() {
         fetchTree().then(response => {

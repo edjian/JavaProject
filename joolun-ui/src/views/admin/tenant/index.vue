@@ -7,6 +7,7 @@
         :data="tableData"
         :permission="permissionList"
         :table-loading="tableLoading"
+        :before-open="beforeOpen"
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
@@ -17,8 +18,12 @@
                      type="text"
                      icon="el-icon-plus"
                      v-if="permissions.sys_role_perm"
-                     @click="handlePermission(scope.row,scope.index)">权限
+                     @click="handlePermission(scope.row,scope.index)">管理员角色权限
           </el-button>
+        </template>
+        <template slot="status"
+                  slot-scope="scope">
+          <el-tag size="mini" effect="light" :type="scope.row.status == '0' ? 'success' :  'danger'">{{scope.label}}</el-tag>
         </template>
       </avue-crud>
       <el-dialog title="分配权限"
@@ -242,7 +247,11 @@
                 }).catch(() => {
                   this.dialogLoading = false
                 })
-            }
+            },
+            beforeOpen(done,type){
+              window.openType = type
+              done()
+            },
         }
     }
 </script>

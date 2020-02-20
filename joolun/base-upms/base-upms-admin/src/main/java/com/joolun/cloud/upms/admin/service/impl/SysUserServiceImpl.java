@@ -275,4 +275,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		return R.ok();
 	}
 
+	@Override
+	public SysUser getByNoTenant(SysUser sysUser) {
+		return baseMapper.getByNoTenant(sysUser);
+	}
+
 }

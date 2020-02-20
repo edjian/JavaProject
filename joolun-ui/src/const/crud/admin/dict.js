@@ -6,8 +6,8 @@ export const tableOption = {
     stripe: true,
     menuAlign: 'center',
     align: 'center',
-    refreshBtn: false,
     showColumnBtn: false,
+    viewBtn: true,
     searchSize: 'mini',
     menuType: 'text',
     column: [{

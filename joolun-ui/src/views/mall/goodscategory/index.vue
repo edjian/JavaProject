@@ -51,8 +51,7 @@
                 form: {},
                 tableData: [],
                 tableLoading: false,
-                tableOption: tableOption,
-                parentTreeData: []
+                tableOption: tableOption
             }
         },
         created() {
@@ -74,8 +73,7 @@
             beforeOpen(done,type){
                 if(type == 'add'){
                   this.form.picUrl = []
-                }
-                if(type == 'edit'){
+                }else{
                   this.form.picUrl = [this.form.picUrl]
                 }
                 done()
@@ -85,6 +83,19 @@
                 fetchTree().then(response => {
                     let tableData = response.data.data
                     this.tableData = tableData
+                    let parentIdDIC = [{
+                      id: "0",
+                      name: "顶级分类",
+                      parentId: "0"
+                    }]
+                    tableData.forEach(item => {
+                      parentIdDIC.push({
+                        id: item.id,
+                        name: item.name,
+                        parentId: item.parentId
+                      })
+                    })
+                    this.$refs.crud.DIC.parentId = parentIdDIC
                     this.tableLoading = false
                 }).catch(() => {
                     this.tableLoading = false
@@ -111,8 +122,6 @@
                         type: 'success'
                     })
                     this.getPage(this.page)
-                    // this.$refs.crud.updateDic('parentId')
-                    this.$router.go(0)
                 }).catch(function (err) {
                 })
             },
@@ -133,8 +142,6 @@
                     })
                     done()
                     this.getPage(this.page)
-                    // this.$refs.crud.updateDic('parentId')
-                    this.$router.go(0)
                 }).catch(() => {
                     loading()
                 })
@@ -155,8 +162,6 @@
                     })
                     done()
                     this.getPage(this.page)
-                    // this.$refs.crud.updateDic('parentId')
-                    this.$router.go(0)
                 }).catch(() => {
                     loading()
                 })

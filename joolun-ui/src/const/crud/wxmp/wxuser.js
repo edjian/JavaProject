@@ -100,9 +100,9 @@ export const tableOption = {
     {
       label: '所在城市',
       prop: 'city',
-      sortable:true,
-      search:true,
-      editDisplay:false
+      sortable: true,
+      search: true,
+      editDisplay: false
     },
     {
       label: '用户语言',
@@ -114,10 +114,13 @@ export const tableOption = {
       label: '标签列表',
       prop: 'tagidList',
       type: 'select',
-      multiple: true,
-      slot: true,
-      // dicUrl: '/weixin/wxusertags/dict?appId='+this.$route.query.id,
-      editDisplay: false
+      editDisplay: false,
+      searchslot:true,
+      search:true,
+      props: {
+        label: 'name',
+        value: 'id'
+      }
     },
     {
       label: '用户备注',
@@ -128,9 +131,9 @@ export const tableOption = {
       prop: 'qrSceneStr',
       type: 'select',
       dicUrl: '/admin/dict/type/wx_qr_scene_str',
-      sortable:true,
-      search:true,
-      editDisplay:false
+      sortable: true,
+      search: true,
+      editDisplay: false
     },
     {
       label: '用户标识',

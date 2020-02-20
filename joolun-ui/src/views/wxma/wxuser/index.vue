@@ -9,35 +9,73 @@
 <template>
   <div class="execution">
     <basic-container>
-      <avue-crud ref="crud"
-                 :page="page"
-                 :data="tableData"
-                 :table-loading="tableLoading"
-                 :option="tableOption"
-                 :permission="permissionList"
-                 @on-load="getPage"
-                 @refresh-change="refreshChange"
-                 @row-update="handleUpdate"
-                 @row-save="handleSave"
-                 @row-del="handleDel"
-                 @sort-change="sortChange"
-                 @search-change="searchChange">
-        <template slot="sex" slot-scope="scope" >
-          <el-tag v-if="scope.row.sex" size="mini" effect="light" :type="scope.row.sex == '1' ? '' : scope.row.sex == '2' ? 'danger' : 'warning'">{{scope.row.$sex}}</el-tag>
-        </template>
-      </avue-crud>
+      <el-row :span="24" :gutter="10">
+        <el-col :xs="24"
+                :sm="24"
+                :md="3">
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
+            </div>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
+          </el-card>
+        </el-col>
+        <el-col :xs="24"
+                :sm="24"
+                :md="21">
+          <avue-crud ref="crud"
+                     :page="page"
+                     :data="tableData"
+                     :table-loading="tableLoading"
+                     :option="tableOption"
+                     :permission="permissionList"
+                     @on-load="getPage"
+                     @refresh-change="refreshChange"
+                     @row-update="handleUpdate"
+                     @row-save="handleSave"
+                     @row-del="handleDel"
+                     @sort-change="sortChange"
+                     @search-change="searchChange">
+            <template slot="sex" slot-scope="scope" >
+              <el-tag v-if="scope.row.sex" size="mini" effect="light" :type="scope.row.sex == '1' ? '' : scope.row.sex == '2' ? 'danger' : 'warning'">{{scope.row.$sex}}</el-tag>
+            </template>
+          </avue-crud>
+        </el-col>
+      </el-row>
     </basic-container>
   </div>
 </template>
 
 <script>
   import { getPage, getObj, addObj, putObj, delObj} from '@/api/wxma/wxuser'
+  import { getList as getWxAppList } from '@/api/wxmp/wxapp'
   import { tableOption } from '@/const/crud/wxma/wxuser'
   import { mapGetters } from 'vuex'
   export default {
     name: 'wxuser',
     data() {
       return {
+        filterText: '',
+        treeWxAppProps: {
+          label: 'name',
+          value: 'id'
+        },
+        treeWxAppData: [],
+        appId: null,
         wxUserId:'',
         tableData: [],
         page: {
@@ -50,7 +88,6 @@
         paramsSearch:{},
         tableLoading: false,
         tableOption: tableOption,
-        appId:this.$route.query.id,
         selectionData:[],
         dialogTagging:false,
         checkedTags:[],
@@ -59,8 +96,13 @@
         tagId: ''
       }
     },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val)
+      }
+    },
     created() {
-
+      this.getWxAppList()
     },
     mounted: function() { },
     computed: {
@@ -75,6 +117,39 @@
       }
     },
     methods: {
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      //加载小程序列表
+      getWxAppList(){
+        getWxAppList({
+          appType: '1'
+        }).then(response => {
+          let data = response.data
+          this.treeWxAppData = data
+          if(data && data.length > 0){
+            //默认加载第一个小程序的数据
+            this.nodeClick({
+              id: data[0].id
+            })
+          }
+        }).catch(() => {
+
+        })
+      },
+      nodeClick(data) {
+        if(this.appId != data.id){
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(data.id)
+          })
+          this.page.currentPage = 1
+          this.appId = data.id
+          this.paramsSearch = {}
+          this.$refs.crud.searchReset()
+          this.getPage(this.page)
+        }
+      },
       searchChange(params,done){
         params = this.filterForm(params)
         this.paramsSearch = params
@@ -97,23 +172,26 @@
         this.getPage(this.page)
       },
       getPage(page, params) {
-        this.tableLoading = true
-        getPage(Object.assign({
-          current: page.currentPage,
-          size: page.pageSize,
-          descs: this.page.descs,
-          ascs: this.page.ascs,
-          appId:this.appId,
-          tagId: this.tagId
-        }, params, this.paramsSearch)).then(response => {
-          this.tableData = response.data.data.records
-          this.page.total = response.data.data.total
-          this.page.currentPage = page.currentPage
-          this.page.pageSize = page.pageSize
-          this.tableLoading = false
-        }).catch(() => {
-          this.tableLoading = false
-        })
+        if(this.appId){
+          this.tableLoading = true
+          getPage(Object.assign({
+            current: page.currentPage,
+            size: page.pageSize,
+            descs: this.page.descs,
+            ascs: this.page.ascs,
+            appType: '1',
+            appId: this.appId,
+            tagId: this.tagId
+          }, params, this.paramsSearch)).then(response => {
+            this.tableData = response.data.data.records
+            this.page.total = response.data.data.total
+            this.page.currentPage = page.currentPage
+            this.page.pageSize = page.pageSize
+            this.tableLoading = false
+          }).catch(() => {
+            this.tableLoading = false
+          })
+        }
       },
       handleDel: function(row, index) {
         var _this = this

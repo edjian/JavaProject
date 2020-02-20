@@ -18,6 +18,7 @@ export const tableOption1 = {
   addBtn:false,
   delBtn:false,
   editBtn:false,
+  viewBtn: true,
   searchShow:false,
   // defaultSort:{
   //    prop: 'id',

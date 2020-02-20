@@ -17,6 +17,7 @@ export const tableOption = {
     searchShow: false,
     excelBtn: true,
     printBtn: true,
+    viewBtn: true,
     labelWidth: 120,
     column: [
         {

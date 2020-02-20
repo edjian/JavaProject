@@ -1,12 +1,3 @@
-const DIC = {
-  vaild: [{
-    label: '否',
-    value: 'false'
-  }, {
-    label: '是',
-    value: 'true'
-  }]
-}
 export const tableOption = {
   dialogDrag:true,
   border: true,

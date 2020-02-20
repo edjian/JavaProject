@@ -44,13 +44,30 @@ public class WxMenuController {
   public R getWxMenuButton(String appId){
     return R.ok(wxMenuService.getWxMenuButton(appId));
   }
+
+	/**
+	 * 保存菜单
+	 * @param
+	 * @return R
+	 */
+	@SysLog("保存菜单")
+	@PostMapping
+	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
+	public R save(@RequestBody String data){
+		JSONObject jSONObject = JSONUtil.parseObj(data);
+		String strWxMenu = jSONObject.getStr("strWxMenu");
+		String appId = jSONObject.getStr("appId");
+		wxMenuService.save(appId,strWxMenu);
+		return R.ok(Boolean.TRUE);
+	}
+
   /**
    * 保存并发布菜单
    * @param
    * @return R
    */
   @SysLog("保存并发布菜单")
-  @PostMapping
+  @PostMapping("/release")
   @PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
   public R saveAndRelease(@RequestBody String data){
 	  JSONObject jSONObject = JSONUtil.parseObj(data);

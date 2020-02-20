@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.joolun.cloud.common.email.config.EmailConfiguration,\
+  com.joolun.cloud.common.email.config.EmailConfigProperties,\
+  com.joolun.cloud.common.email.util.EmailUtils

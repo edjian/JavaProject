@@ -82,4 +82,11 @@ public interface SysUserService extends IService<SysUser> {
 	Boolean saveUser(UserDTO userDto);
 
 	R register(UserRegister userRegister);
+	/**
+	 * 无租户查询
+	 *
+	 * @param sysUser
+	 * @return SysUser
+	 */
+	SysUser getByNoTenant(SysUser sysUser);
 }

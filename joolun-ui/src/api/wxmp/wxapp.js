@@ -46,6 +46,14 @@ export function putObj(obj) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/weixin/wxapp/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function createQrCode(obj) {
   return request({
     url: '/weixin/wxapp/qrCode',
@@ -65,30 +73,6 @@ export function clearQuota(obj) {
 export function getAccessToken(query) {
   return request({
     url: '/weixin/wxapp/access-token',
-    method: 'get',
-    params: query
-  })
-}
-
-export function getUserSummary(query) {
-  return request({
-    url: '/weixin/wxapp/usersummary',
-    method: 'get',
-    params: query
-  })
-}
-
-export function getUserCumulate(query) {
-  return request({
-    url: '/weixin/wxapp/usercumulate',
-    method: 'get',
-    params: query
-  })
-}
-
-export function getInterfaceSummary(query) {
-  return request({
-    url: '/weixin/wxapp/interfacesummary',
     method: 'get',
     params: query
   })

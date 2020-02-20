@@ -228,7 +228,7 @@
 <style>
   .editor {
     line-height: normal !important;
-    height: 500px;
+    height: 400px;
   }
   .ql-snow .ql-tooltip[data-mode=link]::before {
     content: "请输入链接地址:";

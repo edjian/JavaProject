@@ -7,103 +7,142 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <template>
-  <div class="public-account-management clearfix" v-loading="saveLoading">
-    <!--左边配置菜单-->
-    <div class="left">
-      <div class="weixin-hd">
-        <div class="weixin-title">
-          {{menuName}}
-        </div>
-      </div>
-      <div class="weixin-menu menu clearfix">
-        <div class="menu_bottom" v-for="(item, i) of menu.button" :key="i" >
-          <!-- 一级菜单 -->
-          <div @click="menuFun(i,item)" class="menu_item" :class="{'active': isActive == i}">{{item.name}}</div>
-          <!--以下为二级菜单-->
-          <div class="submenu" v-if="isSubMenuFlag == i">
-            <div class="subtitle" v-if="item.sub_button" v-for="(subItem, k) in item.sub_button" :key="k">
-              <div class="menu_subItem" :class="{'active': isSubMenuActive == i + '' +k}" @click="subMenuFun(subItem, i, k)">{{subItem.name}}</div>
+  <div class="execution">
+    <basic-container>
+      <el-row :span="24" :gutter="10">
+        <el-col :xs="24"
+                :sm="24"
+                :md="3">
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
             </div>
-            <!--  二级菜单加号， 当长度 小于  5 才显示二级菜单的加号  -->
-            <div class="menu_bottom menu_addicon" v-if="!item.sub_button || item.sub_button.length < 5" @click="addSubMenu(i,item)"><i class="el-icon-plus"></i></div>
-          </div>
-        </div>
-        <!-- 一级菜单加号 -->
-        <div class="menu_bottom menu_addicon" v-if="menuKeyLength < 3" @click="addMenu"><i class="el-icon-plus"></i></div>
-      </div>
-      <el-button class="save_btn" type="success" @click="saveFun">保存并发布至菜单</el-button>
-    </div>
-    <!--右边配置-->
-    <div v-if="showRightFlag" class="right">
-      <div class="configure_page">
-        <div class="delete_btn">
-          <el-button size="mini"  type="danger" icon="el-icon-delete" @click="deleteMenu(tempObj)">删除当前菜单</el-button>
-        </div>
-        <div>
-          <span>菜单名称：</span>
-          <el-input class="input_width" v-model="tempObj.name" placeholder="请输入菜单名称" :maxlength=nameMaxlength clearable></el-input>
-        </div>
-        <div v-if="showConfigurContent">
-          <div class="menu_content">
-            <span>菜单内容：</span>
-            <el-select v-model="tempObj.type" clearable placeholder="请选择" class="menu_option">
-              <el-option v-for="item in menuOptions" :label="item.label" :value="item.value" :key="item.value"></el-option>
-            </el-select>
-          </div>
-          <div class="configur_content" v-if="tempObj.type == 'view'">
-            <span>跳转链接：</span>
-            <el-input class="input_width"  v-model="tempObj.url" placeholder="请输入链接" clearable></el-input>
-          </div>
-          <div class="configur_content" v-if="tempObj.type == 'miniprogram'">
-            <div class="applet">
-              <span>小程序的appid：</span>
-              <el-input class="input_width" v-model="tempObj.appid" placeholder="请输入小程序的appid" clearable></el-input>
-            </div>
-            <div class="applet">
-              <span>小程序的页面路径：</span>
-              <el-input class="input_width" v-model="tempObj.pagepath" placeholder="请输入小程序的页面路径，如：pages/index" clearable></el-input>
-            </div>
-            <div class="applet">
-              <span>备用网页：</span>
-              <el-input class="input_width" v-model="tempObj.url" placeholder="不支持小程序的老版本客户端将打开本网页" clearable></el-input>
-            </div>
-            <p class="blue">tips:需要和公众号进行关联才可以把小程序绑定带微信菜单上哟！</p>
-          </div>
-          <div class="configur_content" v-if="tempObj.type == 'view_limited'">
-            <el-row>
-              <div class="select-item" v-if="tempObj && tempObj.content && tempObj.content.articles">
-                <WxNews :objData="tempObj.content.articles"></WxNews>
-                <el-row class="ope-row">
-                  <el-button type="danger" icon="el-icon-delete" circle @click="deleteTempObj"></el-button>
-                </el-row>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
+          </el-card>
+        </el-col>
+        <el-col :xs="24"
+                :sm="24"
+                :md="21"
+                style="background-color: #F7F7F7">
+          <div class="public-account-management clearfix" v-loading="saveLoading">
+            <!--左边配置菜单-->
+            <div class="left">
+              <div class="weixin-hd">
+                <div class="weixin-title">
+                  {{menuName}}
+                </div>
               </div>
-              <div v-if="!tempObj.content || !tempObj.content.articles">
-                <el-row>
-                  <el-col :span="24" style="text-align: center">
-                    <el-button type="success" @click="openMaterial">素材库选择<i class="el-icon-circle-check el-icon--right"></i></el-button>
-                  </el-col>
-                </el-row>
+              <div class="weixin-menu menu_main clearfix">
+                <div class="menu_bottom" v-for="(item, i) of menu.button" :key="i" >
+                  <!-- 一级菜单 -->
+                  <div @click="menuFun(i,item)" class="menu_item el-icon-s-fold" :class="{'active': isActive == i}">{{item.name}}</div>
+                  <!--以下为二级菜单-->
+                  <div class="submenu" v-if="isSubMenuFlag == i">
+                    <div class="subtitle menu_bottom" v-if="item.sub_button" v-for="(subItem, k) in item.sub_button" :key="k">
+                      <div class="menu_subItem" :class="{'active': isSubMenuActive == i + '' +k}" @click="subMenuFun(subItem, i, k)">{{subItem.name}}</div>
+                    </div>
+                    <!--  二级菜单加号， 当长度 小于  5 才显示二级菜单的加号  -->
+                    <div class="menu_bottom menu_addicon" v-if="!item.sub_button || item.sub_button.length < 5" @click="addSubMenu(i,item)"><i class="el-icon-plus"></i></div>
+                  </div>
+                </div>
+                <!-- 一级菜单加号 -->
+                <div class="menu_bottom menu_addicon" v-if="menuKeyLength < 3" @click="addMenu"><i class="el-icon-plus"></i></div>
               </div>
-              <el-dialog title="选择图文" :visible.sync="dialogNewsVisible" width="90%">
-                <WxMaterialSelect :appId="appId" :objData="{repType:'news'}" @selectMaterial="selectMaterial"></WxMaterialSelect>
-              </el-dialog>
-            </el-row>
+              <div class="save_div">
+                <!--<el-button class="save_btn" type="warning" size="small" @click="saveFun">保存菜单</el-button>-->
+                <el-button class="save_btn" type="success" size="small" @click="saveAndReleaseFun">保存并发布菜单</el-button>
+              </div>
+            </div>
+            <!--右边配置-->
+            <div v-if="showRightFlag" class="right">
+              <div class="configure_page">
+                <div class="delete_btn">
+                  <el-button size="mini"  type="danger" icon="el-icon-delete" @click="deleteMenu(tempObj)">删除当前菜单</el-button>
+                </div>
+                <div>
+                  <span>菜单名称：</span>
+                  <el-input class="input_width" v-model="tempObj.name" placeholder="请输入菜单名称" :maxlength=nameMaxlength clearable></el-input>
+                </div>
+                <div v-if="showConfigurContent">
+                  <div class="menu_content">
+                    <span>菜单内容：</span>
+                    <el-select v-model="tempObj.type" clearable placeholder="请选择" class="menu_option">
+                      <el-option v-for="item in menuOptions" :label="item.label" :value="item.value" :key="item.value"></el-option>
+                    </el-select>
+                  </div>
+                  <div class="configur_content" v-if="tempObj.type == 'view'">
+                    <span>跳转链接：</span>
+                    <el-input class="input_width"  v-model="tempObj.url" placeholder="请输入链接" clearable></el-input>
+                  </div>
+                  <div class="configur_content" v-if="tempObj.type == 'miniprogram'">
+                    <div class="applet">
+                      <span>小程序的appid：</span>
+                      <el-input class="input_width" v-model="tempObj.appid" placeholder="请输入小程序的appid" clearable></el-input>
+                    </div>
+                    <div class="applet">
+                      <span>小程序的页面路径：</span>
+                      <el-input class="input_width" v-model="tempObj.pagepath" placeholder="请输入小程序的页面路径，如：pages/index" clearable></el-input>
+                    </div>
+                    <div class="applet">
+                      <span>备用网页：</span>
+                      <el-input class="input_width" v-model="tempObj.url" placeholder="不支持小程序的老版本客户端将打开本网页" clearable></el-input>
+                    </div>
+                    <p class="blue">tips:需要和公众号进行关联才可以把小程序绑定带微信菜单上哟！</p>
+                  </div>
+                  <div class="configur_content" v-if="tempObj.type == 'view_limited'">
+                    <el-row>
+                      <div class="select-item" v-if="tempObj && tempObj.content && tempObj.content.articles">
+                        <WxNews :objData="tempObj.content.articles"></WxNews>
+                        <el-row class="ope-row">
+                          <el-button type="danger" icon="el-icon-delete" circle @click="deleteTempObj"></el-button>
+                        </el-row>
+                      </div>
+                      <div v-if="!tempObj.content || !tempObj.content.articles">
+                        <el-row>
+                          <el-col :span="24" style="text-align: center">
+                            <el-button type="success" @click="openMaterial">素材库选择<i class="el-icon-circle-check el-icon--right"></i></el-button>
+                          </el-col>
+                        </el-row>
+                      </div>
+                      <el-dialog title="选择图文" :visible.sync="dialogNewsVisible" width="90%">
+                        <WxMaterialSelect :appId="appId" :objData="{repType:'news'}" @selectMaterial="selectMaterial"></WxMaterialSelect>
+                      </el-dialog>
+                    </el-row>
+                  </div>
+                  <div class="configur_content" v-if="tempObj.type == 'click' || tempObj.type == 'scancode_waitmsg'">
+                    <WxReplySelect :appId="appId" :objData="tempObj" v-if="hackResetWxReplySelect"></WxReplySelect>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--一进页面就显示的默认页面，当点击左边按钮的时候，就不显示了-->
+            <div v-if="!showRightFlag" class="right">
+              <p>请选择菜单配置</p>
+            </div>
           </div>
-          <div class="configur_content" v-if="tempObj.type == 'click' || tempObj.type == 'scancode_waitmsg'">
-            <WxReplySelect :appId="appId" :objData="tempObj" v-if="hackResetWxReplySelect"></WxReplySelect>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--一进页面就显示的默认页面，当点击左边按钮的时候，就不显示了-->
-    <div v-if="!showRightFlag" class="right">
-      <p>请选择菜单配置</p>
-    </div>
+        </el-col>
+      </el-row>
+    </basic-container>
   </div>
 </template>
 
 <script>
-  import { saveAndRelease ,getList} from '@/api/wxmp/wxmenu'
+  import { save, saveAndRelease ,getList} from '@/api/wxmp/wxmenu'
+  import { getList as getWxAppList } from '@/api/wxmp/wxapp'
   import WxReplySelect from '@/components/wx-reply/main.vue'
   import WxNews from '@/components/wx-news/main.vue'
   import WxMaterialSelect from '@/components/wx-material-select/main.vue'
@@ -117,7 +156,13 @@
     },
     data(){
       return{
-        appId:this.$route.query.id,
+        filterText: '',
+        treeWxAppProps: {
+          label: 'name',
+          value: 'id'
+        },
+        treeWxAppData: [],
+        appId: null,
         showRightFlag:false,//右边配置显示默认详情还是配置详情
         menu:{
           button:[
@@ -171,17 +216,59 @@
         hackResetWxReplySelect:false
       }
     },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val)
+      }
+    },
     created() {
     },
     mounted() {
-      this.menuName = this.$route.query.appName;
-      this.getMenuFun();//调取菜单数据
+      this.getWxAppList()
     },
     filters:{
     },
     computed: {
     },
     methods:{
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      //加载公众号列表
+      getWxAppList(){
+        getWxAppList({
+          appType: '2'
+        }).then(response => {
+          let data = response.data
+          this.treeWxAppData = data
+          if(data && data.length > 0){
+            //默认加载第一个公众号的素材
+            this.nodeClick({
+              id: data[0].id,
+              name: data[0].name
+            })
+          }
+        }).catch(() => {
+
+        })
+      },
+      nodeClick(data) {
+        if(this.appId != data.id){
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(data.id)
+          })
+          this.showRightFlag = false
+          this.tempObj = {}
+          this.tempSelfObj = {}
+          this.isActive = -1
+          this.isSubMenuActive = -1
+          this.isSubMenuFlag = -1
+          this.appId = data.id
+          this.menuName = data.name
+          this.getMenuFun()//调取菜单数据
+        }
+      },
       deleteTempObj(){
         this.$delete(this.tempObj,'repName')
         this.$delete(this.tempObj,'repUrl')
@@ -204,13 +291,9 @@
         item.content.articles = item.content.articles.slice(0,1)
         this.tempObj.content = item.content
       },
-      breaks () {
-        this.$router.$avueRouter.closeTag();
-        this.$router.go(-1);
-      },
       getMenuFun(){
         getList({
-          appId : this.$route.query.id
+          appId : this.appId
         }).then((res)=>{
           this.menu.button = JSON.parse(res.data.data).button;
         });
@@ -220,7 +303,7 @@
       },
       saveFun(){
         this.saveLoading = true
-        saveAndRelease({
+        save({
           strWxMenu:this.menu,
           appId:this.appId
         }).then(response => {
@@ -228,15 +311,41 @@
           if(response.data.code == 0){
             this.$message({
               showClose: true,
-              message: '发布成功',
+              message: '保存成功',
               type: 'success'
             })
-            this.breaks()
           }else{
             this.$message.error(response.data.msg)
           }
         }).catch(() => {
           this.saveLoading = false
+        })
+      },
+      saveAndReleaseFun(){
+        this.$confirm('确定要保证并发布该菜单吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.saveLoading = true
+          saveAndRelease({
+            strWxMenu:this.menu,
+            appId:this.appId
+          }).then(response => {
+            this.saveLoading = false
+            if(response.data.code == 0){
+              this.$message({
+                showClose: true,
+                message: '发布成功',
+                type: 'success'
+              })
+            }else{
+              this.$message.error(response.data.msg)
+            }
+          }).catch(() => {
+            this.saveLoading = false
+          })
+        }).catch(() => {
         })
       },
       // 一级菜单点击事件
@@ -397,7 +506,7 @@
       position: relative;
       box-sizing: border-box;
       /*第一级菜单*/
-      .menu{
+      .menu_main{
         .menu_bottom{
           position: relative;
           float: left;
@@ -417,6 +526,7 @@
             line-height: 44px;
             text-align: center;
             box-sizing: border-box;
+            width: 100%;
             &.active{
               border: 1px solid #2bb673;
             }
@@ -442,14 +552,16 @@
           .subtitle{
             background-color: #fff;
             box-sizing: border-box;
-            margin-bottom: 2px;
           }
         }
       }
-      .save_btn{
-        position: absolute;
-        bottom: 20px;
-        left: 100px;
+      .save_div{
+        margin-top: 15px;
+        text-align: center;
+        .save_btn{
+          bottom: 20px;
+          left: 100px;
+        }
       }
     }
     /*右边菜单内容*/
@@ -498,7 +610,7 @@
   }
 </style>
 <!--修改UI框架样式-->
-<style lang="less">
+<style lang="less" scoped>
   .public-account-management{
     .el-input{
       width: 70%;

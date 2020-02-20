@@ -10,6 +10,7 @@ package com.joolun.cloud.weixin.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.weixin.common.entity.Menu;
 import com.joolun.cloud.weixin.common.entity.MenuButton;
 import com.joolun.cloud.weixin.common.entity.WxMenu;
@@ -46,7 +47,7 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMenu> impleme
 		//查出一级菜单
 		List<WxMenu> listWxMenu = baseMapper.selectList(Wrappers
 				.<WxMenu>query().lambda()
-				.eq(WxMenu::getAppId, appId).eq(WxMenu::getParentId,"-1").orderByAsc(WxMenu::getSort));
+				.eq(WxMenu::getAppId, appId).eq(WxMenu::getParentId,CommonConstants.PARENT_ID).orderByAsc(WxMenu::getSort));
 		Menu menu = new Menu();
 		List<MenuButton> listMenuButton = new ArrayList<>();
 		MenuButton menuButton;
@@ -100,6 +101,46 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMenu> impleme
 		menuButton.setRepThumbMediaId(wxMenu.getRepThumbMediaId());
 		menuButton.setRepThumbUrl(wxMenu.getRepThumbUrl());
 	}
+
+	/**
+	 * 保存菜单
+	 * @param
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void save(String appId , String strWxMenu){
+		Menu menu = Menu.fromJson(strWxMenu);
+		List<MenuButton> buttons = menu.getButton();
+		//先删除
+		baseMapper.delete(Wrappers
+				.<WxMenu>query().lambda()
+				.eq(WxMenu::getAppId, appId));
+		WxApp wxApp = wxAppMapper.selectById(appId);
+		WxMenu wxMenu = null;
+		WxMenu wxMenu1 = null;
+		int sort1 = 1;
+		int sort2 = 1;
+		//入库
+		for(MenuButton menuButton : buttons){
+			wxMenu = new WxMenu();
+			setWxMenuValue(wxMenu,menuButton,wxApp);
+			wxMenu.setSort(sort1);
+			wxMenu.setParentId(CommonConstants.PARENT_ID);
+			baseMapper.insert(wxMenu);
+			menuButton.setKey(wxMenu.getId());
+			sort1++;
+			for(MenuButton menuButton1 : menuButton.getSub_button()){
+				wxMenu1 = new WxMenu();
+				setWxMenuValue(wxMenu1,menuButton1,wxApp);
+				wxMenu1.setSort(sort2);
+				wxMenu1.setParentId(wxMenu.getId());
+				baseMapper.insert(wxMenu1);
+				menuButton1.setKey(wxMenu1.getId());
+				sort2++;
+			}
+		}
+	}
+
 	/**
 	 * 保存并发布菜单
 	 * @param
@@ -123,7 +164,7 @@ public class WxMenuServiceImpl extends ServiceImpl<WxMenuMapper, WxMenu> impleme
 			wxMenu = new WxMenu();
 			setWxMenuValue(wxMenu,menuButton,wxApp);
 			wxMenu.setSort(sort1);
-			wxMenu.setParentId("-1");
+			wxMenu.setParentId(CommonConstants.PARENT_ID);
 			baseMapper.insert(wxMenu);
 			menuButton.setKey(wxMenu.getId());
 			sort1++;

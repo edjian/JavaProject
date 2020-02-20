@@ -221,7 +221,7 @@
         tempObj: new Map().set(this.objData.repType,Object.assign({},this.objData)),
         fileList:[],
         uploadData:{
-          "appId":this.$route.query.id,
+          "appId": this.appId,
           "mediaType":this.objData.repType,
           "title":'',
           "introduction":''

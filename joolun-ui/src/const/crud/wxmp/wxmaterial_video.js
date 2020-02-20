@@ -19,6 +19,7 @@ export const tableOptionVideo = {
   addBtn: false,
   excelBtn: true,
   printBtn: true,
+  viewBtn: true,
   column: [
 	  {
       label: 'media_id',

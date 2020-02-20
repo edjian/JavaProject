@@ -20,6 +20,7 @@ export const tableOption = {
   printBtn: true,
   addBtn: false,
   delBtn: false,
+  viewBtn: true,
   column: [
     {
       label: '用户编码',

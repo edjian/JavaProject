@@ -9,59 +9,89 @@
 <template>
   <div class="execution">
     <basic-container>
-      <avue-crud ref="crud"
-                 :page="page"
-                 :data="tableData"
-                 :permission="permissionList"
-                 :table-loading="tableLoading"
-                 :option="tableOption"
-                 @on-load="getPage"
-                 @refresh-change="refreshChange"
-                 @row-update="handleUpdate"
-                 @row-save="handleSave"
-                 @row-del="handleDel"
-                 @sort-change="sortChange"
-                 @search-change="searchChange">
-        <template slot-scope="scope" slot="menuLeft">
-          <el-button type="primary"
-                     @click="handleAdd"
-                     size="small"
-                     icon="el-icon-s-promotion"
-                     v-if="permissions.wxmp_wxmassmsg_add">新增群发</el-button>
-        </template>
-        <template slot-scope="scope" slot="menu">
-          <el-button type="text"
-                     v-if="permissions.wxmp_wxmassmsg_del && scope.row.msgStatus=='SEND_SUCCESS' && (scope.row.repType == 'news' || scope.row.repType == 'video')"
-                     icon="el-icon-delete"
-                     size="small"
-                     plain
-                     @click="handleDel(scope.row)">删除</el-button>
-        </template>
-        <template slot="repContent" slot-scope="scope" >
-          <div class="nick-name">{{scope.row.nickName}}</div>
-          <div v-if="scope.row.repType == 'text'">{{scope.row.repContent}}</div>
-          <div v-if="scope.row.repType == 'news'">
-            <WxNews :objData="scope.row.content.articles"></WxNews>
-          </div>
-          <div v-if="scope.row.repType == 'image'">
-            <a target="_blank" :href="scope.row.repUrl"><img :src="scope.row.repUrl" style="width: 100px"></a>
-          </div>
-          <div v-if="scope.row.repType == 'voice'">
-            <WxVoicePlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)"></WxVoicePlayer>
-          </div>
-          <div v-if="scope.row.repType == 'video'">
-            <WxVideoPlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)" style="margin-top: 40px"></WxVideoPlayer>
-          </div>
-          <div v-if="scope.row.repType == 'shortvideo'">
-            <WxVideoPlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)" style="margin-top: 40px"></WxVideoPlayer>
-          </div>
-          <el-link type="primary" v-if="scope.row.repType == 'location'" target="_blank" :href="'https://map.qq.com/?type=marker&isopeninfowin=1&markertype=1&pointx='+scope.row.repLocationY+'&pointy='+scope.row.repLocationX+'&name='+scope.row.repContent+'&ref=joolun'">
-            <img :src="'https://apis.map.qq.com/ws/staticmap/v2/?zoom=10&markers=color:blue|label:A|'+scope.row.repLocationX+','+scope.row.repLocationY+'&key='+ qqMapKey +'&size=200*150'">
-            <p/><i class="el-icon-map-location"></i>{{scope.row.repContent}}
-          </el-link>
-          <div v-if="scope.row.repType == 'link'"><el-tag size="mini">链接</el-tag>：<a :href="scope.row.repUrl" target="_blank">{{scope.row.repName}}</a></div>
-        </template>
-      </avue-crud>
+      <el-row :span="24" :gutter="10">
+        <el-col :xs="24"
+                :sm="24"
+                :md="3">
+          <el-card shadow="never">
+            <div slot="header">
+              <span>公众号名称</span>
+            </div>
+            <el-input
+                    placeholder="输入关键字进行过滤"
+                    size="mini"
+                    v-model="filterText">
+            </el-input>
+            <el-tree
+                    style="margin-top: 5px"
+                    :data="treeWxAppData"
+                    :props="treeWxAppProps"
+                    :filter-node-method="filterNode"
+                    node-key="id"
+                    default-expand-all
+                    ref="tree"
+                    @node-click="nodeClick">
+            </el-tree>
+          </el-card>
+        </el-col>
+        <el-col :xs="24"
+                :sm="24"
+                :md="21">
+          <avue-crud ref="crud"
+                     :page="page"
+                     :data="tableData"
+                     :permission="permissionList"
+                     :table-loading="tableLoading"
+                     :option="tableOption"
+                     @on-load="getPage"
+                     @refresh-change="refreshChange"
+                     @row-update="handleUpdate"
+                     @row-save="handleSave"
+                     @row-del="handleDel"
+                     @sort-change="sortChange"
+                     @search-change="searchChange">
+            <template slot-scope="scope" slot="menuLeft">
+              <el-button type="primary"
+                         @click="handleAdd"
+                         size="small"
+                         icon="el-icon-s-promotion"
+                         v-if="permissions.wxmp_wxmassmsg_add">新增群发</el-button>
+            </template>
+            <template slot-scope="scope" slot="menu">
+              <el-button type="text"
+                         v-if="permissions.wxmp_wxmassmsg_del && scope.row.msgStatus=='SEND_SUCCESS' && (scope.row.repType == 'news' || scope.row.repType == 'video')"
+                         icon="el-icon-delete"
+                         size="small"
+                         plain
+                         @click="handleDel(scope.row)">删除</el-button>
+            </template>
+            <template slot="repContent" slot-scope="scope" >
+              <div class="nick-name">{{scope.row.nickName}}</div>
+              <div v-if="scope.row.repType == 'text'">{{scope.row.repContent}}</div>
+              <div v-if="scope.row.repType == 'news'">
+                <WxNews :objData="scope.row.content.articles"></WxNews>
+              </div>
+              <div v-if="scope.row.repType == 'image'">
+                <a target="_blank" :href="scope.row.repUrl"><img :src="scope.row.repUrl" style="width: 100px"></a>
+              </div>
+              <div v-if="scope.row.repType == 'voice'">
+                <WxVoicePlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)"></WxVoicePlayer>
+              </div>
+              <div v-if="scope.row.repType == 'video'">
+                <WxVideoPlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)" style="margin-top: 40px"></WxVideoPlayer>
+              </div>
+              <div v-if="scope.row.repType == 'shortvideo'">
+                <WxVideoPlayer :appId="appId" :objData="Object.assign({type: '2'},scope.row)" style="margin-top: 40px"></WxVideoPlayer>
+              </div>
+              <el-link type="primary" v-if="scope.row.repType == 'location'" target="_blank" :href="'https://map.qq.com/?type=marker&isopeninfowin=1&markertype=1&pointx='+scope.row.repLocationY+'&pointy='+scope.row.repLocationX+'&name='+scope.row.repContent+'&ref=joolun'">
+                <img :src="'https://apis.map.qq.com/ws/staticmap/v2/?zoom=10&markers=color:blue|label:A|'+scope.row.repLocationX+','+scope.row.repLocationY+'&key='+ qqMapKey +'&size=200*150'">
+                <p/><i class="el-icon-map-location"></i>{{scope.row.repContent}}
+              </el-link>
+              <div v-if="scope.row.repType == 'link'"><el-tag size="mini">链接</el-tag>：<a :href="scope.row.repUrl" target="_blank">{{scope.row.repName}}</a></div>
+            </template>
+          </avue-crud>
+        </el-col>
+      </el-row>
       <el-dialog :title="handleType == 'add' ? '新增群发消息' : '修改群发消息'" :visible.sync="dialog1Visible" width="50%">
         <el-form label-width="100px">
           <el-form-item label="全部用户发送">
@@ -142,8 +172,9 @@
 
 <script>
   import { getPage, getObj, addObj, putObj, delObj } from '@/api/wxmp/wxmassmsg'
+  import { getList as getWxAppList } from '@/api/wxmp/wxapp'
   import { getPage as getPage2 } from '@/api/wxmp/wxuser'
-  import { listUserTags} from '@/api/wxmp/wxuser'
+  import { getList as listUserTags } from '@/api/wxmp/wxusertags'
   import { tableOption } from '@/const/crud/wxmp/wxmassmsg'
   import { tableOption2 } from '@/const/crud/wxmp/wxuser'
   import { mapGetters } from 'vuex'
@@ -161,6 +192,13 @@
     },
     data() {
       return {
+        filterText: '',
+        treeWxAppProps: {
+          label: 'name',
+          value: 'id'
+        },
+        treeWxAppData: [],
+        appId: null,
         tableOption2: tableOption2,
         tableData2: [],
         page2: {
@@ -174,7 +212,6 @@
         dialog1VisibleUser: false,
         loadingSub: false,
         userTagsData:[],
-        appId:this.$route.query.id,
         handleType:null,
         hackResetWxReplySelect: false,
         dialog1Visible: false,
@@ -198,8 +235,13 @@
         selectionData: []
       }
     },
+    watch: {
+      filterText(val) {
+        this.$refs.tree.filter(val)
+      }
+    },
     created() {
-      this.listUserTags()
+      this.getWxAppList()
     },
     mounted: function() { },
     computed: {
@@ -214,6 +256,39 @@
       }
     },
     methods: {
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      //加载公众号列表
+      getWxAppList(){
+        getWxAppList({
+          appType: '2'
+        }).then(response => {
+          let data = response.data
+          this.treeWxAppData = data
+          if(data && data.length > 0){
+            //默认加载第一个公众号的素材
+            this.nodeClick({
+              id: data[0].id
+            })
+          }
+        }).catch(() => {
+
+        })
+      },
+      nodeClick(data) {
+        if(this.appId != data.id){
+          this.$nextTick(() => {
+            this.$refs.tree.setCurrentKey(data.id)
+          })
+          this.appId = data.id
+          this.paramsSearch = {}
+          this.$refs.crud.searchReset()
+          this.getPage(this.page)
+          this.listUserTags()
+        }
+      },
       removeWxUser(index){
         this.wxUserList.splice(index, 1)
       },
@@ -249,6 +324,7 @@
         this.getPage2(this.page2)
       },
       listUserTags() {
+        this.userTagsData = []
         listUserTags({
           appId:this.appId
         }).then(response => {
@@ -351,22 +427,24 @@
         this.getPage2(this.page2)
       },
       getPage(page, params) {
-        this.tableLoading = true
-        getPage(Object.assign({
-          current: page.currentPage,
-          size: page.pageSize,
-          descs: this.page.descs,
-          ascs: this.page.ascs,
-          appId: this.appId,
-        }, params, this.paramsSearch)).then(response => {
-          this.tableData = response.data.data.records
-          this.page.total = response.data.data.total
-          this.page.currentPage = page.currentPage
-          this.page.pageSize = page.pageSize
-          this.tableLoading = false
-        }).catch(() => {
-          this.tableLoading=false
-        })
+        if(this.appId){
+          this.tableLoading = true
+          getPage(Object.assign({
+            current: page.currentPage,
+            size: page.pageSize,
+            descs: this.page.descs,
+            ascs: this.page.ascs,
+            appId: this.appId,
+          }, params, this.paramsSearch)).then(response => {
+            this.tableData = response.data.data.records
+            this.page.total = response.data.data.total
+            this.page.currentPage = page.currentPage
+            this.page.pageSize = page.pageSize
+            this.tableLoading = false
+          }).catch(() => {
+            this.tableLoading=false
+          })
+        }
       },
       /**
        * @title 数据删除

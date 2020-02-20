@@ -23,7 +23,7 @@ import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryResult;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
-import com.joolun.cloud.common.core.util.LocalDateTimeUtil;
+import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
@@ -38,7 +38,7 @@ import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
-import com.joolun.cloud.mall.common.util.Kuaidi100Util;
+import com.joolun.cloud.mall.common.util.Kuaidi100Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -114,8 +114,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			String destinationCountry = "";		//目的国
 			String destinationCom = "";			//目的国快递公司编码
 
-			Kuaidi100Util kuaidi100Util = new Kuaidi100Util(key);
-			String result = kuaidi100Util.subscribeData(company, number, from, to, callbackurl, salt, resultv2, autoCom, interCom, departureCountry, departureCom, destinationCountry, destinationCom, phone);
+			Kuaidi100Utils kuaidi100Utils = new Kuaidi100Utils(key);
+			String result = kuaidi100Utils.subscribeData(company, number, from, to, callbackurl, salt, resultv2, autoCom, interCom, departureCountry, departureCom, destinationCountry, destinationCom, phone);
 			JSONObject jSONObject = JSONUtil.parseObj(result);
 			if(!(Boolean)jSONObject.get("result")){
 				log.error("快递订阅失败：returnCode：{}；message：{}",jSONObject.get("returnCode"),jSONObject.get("message"));
@@ -447,7 +447,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					JSONObject jsonData = JSONUtil.parseObj(object);
 					OrderLogisticsDetail orderLogisticsDetail = new OrderLogisticsDetail();
 					orderLogisticsDetail.setLogisticsId(logisticsId);
-					orderLogisticsDetail.setLogisticsTime(LocalDateTimeUtil.parse(jsonData.getStr("time")));
+					orderLogisticsDetail.setLogisticsTime(LocalDateTimeUtils.parse(jsonData.getStr("time")));
 					orderLogisticsDetail.setLogisticsInformation(jsonData.getStr("context"));
 					listOrderLogisticsDetail.add(orderLogisticsDetail);
 				});

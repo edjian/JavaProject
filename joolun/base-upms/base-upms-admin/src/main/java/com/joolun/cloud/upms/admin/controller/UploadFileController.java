@@ -7,7 +7,7 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.WaterMarkUtils;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
-import com.joolun.cloud.common.storage.util.UploadFileUtil;
+import com.joolun.cloud.common.storage.util.UploadFileUtils;
 import com.joolun.cloud.upms.admin.service.SysConfigStorageService;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import io.swagger.annotations.Api;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +57,7 @@ public class UploadFileController {
 			//添加水印
 			file = WaterMarkUtils.markStr(file, Color.GRAY, sysConfigStorage.getWaterMarkContent());
 		}
-		responseData.put("link", UploadFileUtil.uploadFile(file,dir,sysConfigStorage));
+		responseData.put("link", UploadFileUtils.uploadFile(file,dir,sysConfigStorage));
 		return JSONUtil.toJsonStr(responseData);
 	}
 }
