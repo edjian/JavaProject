@@ -24,7 +24,7 @@
 ##### 第二种：执行升级脚本
 * JooLun在每次上新版本的时候都会提供sql升级脚本（joolun/db/升级脚本/xxx升级xxx.sql）
 * 必须对应自己当前的版本号执行（项目pom.xml文件查看版本号）
-* 升级脚本不包含base-nacos库，base-nacos请自行全量导入
+* 升级脚本不包含base_config库，base_config请自行全量导入
 * 升级完要清redis缓存再重启服务
 
 ### 常见问题
