@@ -17,9 +17,14 @@
 * [所有教程文档](http://git.joolun.com/joolun-mp-ma/mp-ma/wiki/_pages)
 
 ### 版本升级说明
-* JooLun在每次上新版本的时候都会提供sql升级脚本（db/升级脚本/xxx升级xxx.sql）
-* 必须对应自己当前的版本号执行
-* 升级脚本不包含base-nacos库的表，base-nacos表的脚本请自行全量执行
+##### 拉取完新版本代码后，数据库有两种方式升级；无特殊情况建议使用第一种全量导入
+##### 第一种：重新全量导入
+* 重新导入joolun/db下的4个全量脚本，无需理会升级脚本
+* 升级完要清redis缓存再重启服务
+##### 第二种：执行升级脚本
+* JooLun在每次上新版本的时候都会提供sql升级脚本（joolun/db/升级脚本/xxx升级xxx.sql）
+* 必须对应自己当前的版本号执行（项目pom.xml文件查看版本号）
+* 升级脚本不包含base-nacos库，base-nacos请自行全量导入
 * 升级完要清redis缓存再重启服务
 
 ### 常见问题
