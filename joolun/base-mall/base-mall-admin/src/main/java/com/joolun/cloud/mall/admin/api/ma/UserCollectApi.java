@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/usercollect")
-@Api(value = "usercollect", tags = "用户收藏管理")
+@Api(value = "usercollect", tags = "用户收藏API")
 public class UserCollectApi {
 
     private final UserCollectService userCollectService;

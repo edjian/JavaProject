@@ -17,6 +17,7 @@ export const tableOption = {
     menuType: 'text',
     searchShow: false,
     viewBtn: true,
+    searchMenuSpan: 6,
     column: [
         {
             label: '图片',

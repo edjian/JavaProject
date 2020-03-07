@@ -36,7 +36,7 @@ import io.swagger.annotations.Api;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxmassmsg")
-@Api(value = "wxmassmsg", tags = "wxmassmsg管理")
+@Api(value = "wxmassmsg", tags = "微信消息群发管理")
 public class WxMassMsgController {
 
     private final WxMassMsgService wxMassMsgService;

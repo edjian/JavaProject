@@ -14,6 +14,7 @@ import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/wxuser")
+@Api(value = "wxuser", tags = "小程序用户API")
 public class WxUserApi {
 
 	private final WxUserService wxUserService;

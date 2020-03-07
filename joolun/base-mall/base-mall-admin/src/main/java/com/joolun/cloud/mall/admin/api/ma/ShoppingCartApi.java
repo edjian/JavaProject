@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/shoppingcart")
-@Api(value = "shoppingcart", tags = "购物车接口")
+@Api(value = "shoppingcart", tags = "购物车API")
 public class ShoppingCartApi{
 
     private final ShoppingCartService shoppingCartService;

@@ -20,6 +20,7 @@ export const tableOption = {
   searchBtn: true,
   excelBtn: true,
   printBtn: true,
+  searchMenuSpan: 6,
   defaultSort:{
     prop:'createTime',
     order:'descending'
@@ -31,27 +32,29 @@ export const tableOption = {
       type: 'select',
       dicUrl: '/admin/dict/type/wx_req_type',
       search:true,
-      sortable:true
+      sortable:true,
+      width: 120
     },
     {
       label: '用户',
-      prop: 'headimgUrl',
+      prop: 'nickName',
       overHidden: false,
       align: 'right',
-      search:true,
-      slot:true
+      search: true,
+      slot: true,
+      width: 100
     },{
       label: '内容',
       prop: 'repContent',
       overHidden: true,
       align: 'left',
-      slot:true
+      slot: true
     },{
       label: '时间',
       type: 'date',
-      align: 'right',
       prop: 'createTime',
-      sortable:true
+      sortable: true,
+      width: 200
     },
 	  {
       label: '是否已读',
@@ -60,7 +63,8 @@ export const tableOption = {
       dicUrl: '/admin/dict/type/yes_no',
       search:true,
       sortable:true,
-      slot:true
+      slot:true,
+      width: 50
     }
   ]
 }

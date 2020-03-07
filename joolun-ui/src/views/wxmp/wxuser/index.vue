@@ -267,6 +267,7 @@
         }).then(response => {
           this.tableLoading = false
           this.checkedTags = []
+          this.$refs.crud.selectClear()
           if(response.data.code == '0'){
             this.getPage(this.page)
           }else{

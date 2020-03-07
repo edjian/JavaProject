@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.admin.service.WxMenuService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -30,56 +31,63 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxmenu")
+@Api(value = "wxmenu", tags = "微信自定义菜单管理")
 public class WxMenuController {
 
-  private final WxMenuService wxMenuService;
-
-  /**
-   * 通过appId查询自定义菜单
-   * @param appId
-   * @return R
-   */
-  @GetMapping("/list")
-  @PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_get')")
-  public R getWxMenuButton(String appId){
-    return R.ok(wxMenuService.getWxMenuButton(appId));
-  }
+	private final WxMenuService wxMenuService;
 
 	/**
-	 * 保存菜单
+	 * 通过appId查询自定义菜单
+	 *
+	 * @param appId
+	 * @param menuRuleId
+	 * @return R
+	 */
+	@GetMapping("/list")
+	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_get')")
+	public R getWxMenuButton(String appId, String menuRuleId) {
+		return R.ok(wxMenuService.getWxMenuButton(appId, menuRuleId));
+	}
+
+	/**
+	 * 保存并发布菜单
+	 *
 	 * @param
 	 * @return R
 	 */
-	@SysLog("保存菜单")
-	@PostMapping
+	@SysLog("保存并发布菜单")
+	@PostMapping("/release")
 	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
-	public R save(@RequestBody String data){
+	public R saveAndRelease(@RequestBody String data) {
 		JSONObject jSONObject = JSONUtil.parseObj(data);
 		String strWxMenu = jSONObject.getStr("strWxMenu");
 		String appId = jSONObject.getStr("appId");
-		wxMenuService.save(appId,strWxMenu);
-		return R.ok(Boolean.TRUE);
+		try {
+			return R.ok(wxMenuService.saveAndRelease(appId, strWxMenu));
+		} catch (WxErrorException e) {
+			e.printStackTrace();
+			log.error("发布自定义菜单失败appID:" + appId + ":" + e.getMessage());
+			return WxReturnCode.wxErrorExceptionHandler(e);
+		}
 	}
 
-  /**
-   * 保存并发布菜单
-   * @param
-   * @return R
-   */
-  @SysLog("保存并发布菜单")
-  @PostMapping("/release")
-  @PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
-  public R saveAndRelease(@RequestBody String data){
-	  JSONObject jSONObject = JSONUtil.parseObj(data);
-	  String strWxMenu = jSONObject.getStr("strWxMenu");
-	  String appId = jSONObject.getStr("appId");
-	  try {
-		  wxMenuService.saveAndRelease(appId,strWxMenu);
-		  return R.ok(Boolean.TRUE);
-	  } catch (WxErrorException e) {
-		  e.printStackTrace();
-		  log.error("发布自定义菜单失败appID:"+appId+":"+e.getMessage());
-		  return WxReturnCode.wxErrorExceptionHandler(e);
-	  }
-  }
+	/**
+	 * 删除菜单
+	 *
+	 * @param ruleId
+	 * @return R
+	 */
+	@SysLog("删除微信菜单")
+	@DeleteMapping("/{ruleId}")
+	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
+	public R removeByRuleId(@PathVariable String ruleId) {
+		try {
+			wxMenuService.removeByRuleId(ruleId);
+			return R.ok();
+		} catch (WxErrorException e) {
+			e.printStackTrace();
+			log.error("删除微信菜单失败ruleId:" + ruleId + ":" + e.getMessage());
+			return WxReturnCode.wxErrorExceptionHandler(e);
+		}
+	}
 }

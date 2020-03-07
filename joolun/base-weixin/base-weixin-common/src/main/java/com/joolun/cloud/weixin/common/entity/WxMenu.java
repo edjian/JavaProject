@@ -126,6 +126,10 @@ private static final long serialVersionUID = 1L;
 	 */
 	private String repThumbUrl;
 	/**
+	 * 菜单组ID
+	 */
+	private String menuRuleId;
+	/**
 	 * 图文消息的内容
 	 */
 	@TableField(typeHandler = JsonTypeHandler.class, jdbcType= JdbcType.VARCHAR)

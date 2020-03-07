@@ -115,6 +115,12 @@
 			<if test="query.orderNo != null">
 				AND order_info.`order_no` = #{query.orderNo}
 			</if>
+			<if test="query.beginTime != null">
+				AND order_info.`create_time` >= #{query.beginTime}
+			</if>
+			<if test="query.endTime != null">
+				AND #{query.endTime} >= order_info.`create_time`
+			</if>
 		</where>
 	</select>
 

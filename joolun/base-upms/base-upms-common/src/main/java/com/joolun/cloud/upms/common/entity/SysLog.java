@@ -92,6 +92,4 @@ public class SysLog implements Serializable {
 	@TableLogic
 	private String delFlag;
 
-
-
 }

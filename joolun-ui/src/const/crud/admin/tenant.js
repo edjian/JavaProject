@@ -1,4 +1,5 @@
 import {getByUserName} from '@/api/admin/user'
+import {getList} from '@/api/admin/tenant'
 
 const validateUserName = (rule, value, callback) => {
     if (window.openType === 'edit') {
@@ -15,15 +16,32 @@ const validateUserName = (rule, value, callback) => {
     }
 }
 
+const validateCode = (rule, value, callback) => {
+    if (window.openType === 'edit'){
+        callback()
+    }else{
+        getList({
+            code: value
+        }).then(response => {
+            let data = response.data.data
+            if (data.length > 0) {
+                callback(new Error('机构编码已经存在'))
+            } else {
+                callback()
+            }
+        })
+    }
+}
+
 export const tableOption = {
     dialogDrag: true,
     headerAlign: 'center',
     align: 'center',
     border: true,
     viewBtn: true,
-    delBtn: false,
     defaultExpandAll: true,
     labelWidth: 100,
+    searchMenuSpan: 6,
     column: [
         {
             label: '租户ID',
@@ -60,6 +78,9 @@ export const tableOption = {
             rules: [{
                 required: true,
                 message: '机构编码不能为空',
+                trigger: 'blur'
+            },{
+                validator: validateCode,
                 trigger: 'blur'
             }]
         },

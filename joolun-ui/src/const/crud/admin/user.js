@@ -27,6 +27,7 @@ export const tableOption = {
     viewBtn: true,
     excelBtn: true,
     printBtn: true,
+    searchMenuSpan: 6,
     column: [{
         fixed: true,
         label: 'id',

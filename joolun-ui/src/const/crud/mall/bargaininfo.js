@@ -19,6 +19,7 @@ export const tableOption = {
     printBtn: true,
     viewBtn: true,
     labelWidth: 120,
+    searchMenuSpan: 6,
     column: [
         {
             label: '创建时间',

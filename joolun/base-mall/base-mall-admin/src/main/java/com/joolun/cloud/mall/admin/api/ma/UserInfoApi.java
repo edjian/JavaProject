@@ -34,7 +34,7 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/userinfo")
-@Api(value = "userinfo", tags = "商城用户管理")
+@Api(value = "userinfo", tags = "商城用户API")
 public class UserInfoApi {
 
     private final UserInfoService userInfoService;

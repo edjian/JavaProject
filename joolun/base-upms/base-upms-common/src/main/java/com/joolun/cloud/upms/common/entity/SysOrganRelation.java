@@ -26,4 +26,8 @@ public class SysOrganRelation extends Model<SysOrganRelation> {
 	 */
 	private String descendant;
 
+	/**
+	 * 租户ID
+	 */
+	private String tenantId;
 }

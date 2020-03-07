@@ -22,6 +22,7 @@ export const tableOption = {
   delBtn: false,
   viewBtn: true,
   printBtn: true,
+  searchMenuSpan: 6,
   defaultSort:{
     prop:'createTime',
     order:'descending'

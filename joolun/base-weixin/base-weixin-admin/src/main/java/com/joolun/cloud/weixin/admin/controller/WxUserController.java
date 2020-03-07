@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.weixin.admin.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -20,6 +21,7 @@ import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxuser")
+@Api(value = "wxuser", tags = "微信用户管理")
 public class WxUserController {
 
 	private final WxUserService wxUserService;
@@ -61,6 +64,11 @@ public class WxUserController {
 							.likeRight(WxUser::getTagidList,"["+tagId+",")
 							.or()
 							.likeLeft(WxUser::getTagidList,","+tagId+"]"));
+		}else if(StrUtil.isNotBlank(wxUser.getNickName())){
+			String nickName = wxUser.getNickName();
+			wxUser.setNickName(null);
+			queryWrapper = Wrappers.lambdaQuery(wxUser)
+					.like(WxUser::getNickName,nickName);
 		}else{
 			queryWrapper = Wrappers.lambdaQuery(wxUser);
 		}

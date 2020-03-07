@@ -19,10 +19,16 @@ export const tableOption = {
   searchShow: false,
   menuWidth: 150,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [
     {
       label: '名称',
-      prop: 'name'
+      prop: 'name',
+      rules: [{
+        required: true,
+        message: "请输入名称",
+        trigger: "blur"
+      }]
     }
   ]
 }

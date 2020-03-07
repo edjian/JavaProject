@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/pointsconfig")
-@Api(value = "pointsconfig", tags = "积分设置Api")
+@Api(value = "pointsconfig", tags = "积分设置API")
 public class PointsConfigApi {
 
     private final PointsConfigService pointsConfigService;

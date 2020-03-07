@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/useraddress")
-@Api(value = "useraddress", tags = "用户收货地址管理")
+@Api(value = "useraddress", tags = "用户收货地址API")
 public class UserAddressApi {
 
     private final UserAddressService userAddressService;

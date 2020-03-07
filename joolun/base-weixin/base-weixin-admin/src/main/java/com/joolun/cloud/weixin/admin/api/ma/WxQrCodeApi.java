@@ -14,6 +14,7 @@ import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import com.joolun.cloud.weixin.common.dto.MaQrCodeDTO;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ import java.io.FileInputStream;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/wxqrcode")
+@Api(value = "wxqrcode", tags = "小程序码API")
 public class WxQrCodeApi {
 
 	/**

@@ -32,7 +32,7 @@ public class BaseSecurityInsideAspect {
 		String header = request.getHeader(SecurityConstants.FROM);
 		if (inside.value() && !StrUtil.equals(SecurityConstants.FROM_IN, header)) {
 			log.warn("访问接口 {} 没有权限", point.getSignature().getName());
-			throw new AccessDeniedException("Access is denied");
+			throw new AccessDeniedException("访问被拒绝，没有权限");
 		}
 		return point.proceed();
 	}

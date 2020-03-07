@@ -16,6 +16,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.admin.service.WxAutoReplyService;
 import com.joolun.cloud.weixin.common.entity.WxAutoReply;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxautoreply")
+@Api(value = "wxautoreply", tags = "消息自动回复")
 public class WxAutoReplyController {
 
     private final WxAutoReplyService wxAutoReplyService;

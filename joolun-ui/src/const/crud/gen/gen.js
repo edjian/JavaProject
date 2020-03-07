@@ -11,6 +11,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [{
     label: '表名称',
     prop: 'tableName',

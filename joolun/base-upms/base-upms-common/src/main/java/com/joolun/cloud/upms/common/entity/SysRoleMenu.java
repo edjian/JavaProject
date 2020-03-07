@@ -27,6 +27,5 @@ public class SysRoleMenu extends Model<SysRoleMenu> {
 	 */
 	private String menuId;
 
-	@TableField(exist = false)
 	private String tenantId;
 }

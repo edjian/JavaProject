@@ -473,7 +473,9 @@
       nodeClick(data) {
         if(this.appId != data.id){
           this.$nextTick(() => {
-            this.$refs.tree.setCurrentKey(data.id)
+            if(this.$refs.tree){
+              this.$refs.tree.setCurrentKey(data.id)
+            }
           })
           this.page.currentPage = 1
           this.appId = data.id

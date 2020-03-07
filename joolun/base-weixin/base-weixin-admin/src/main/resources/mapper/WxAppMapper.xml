@@ -49,6 +49,7 @@
 		  wa.`update_time`,
 		  wa.`del_flag`,
 		  wa.`tenant_id`,
+		  wa.`organ_id`,
 		  wa.`weixin_sign`,
 		  wa.`app_type`,
 		  wa.`secret`,

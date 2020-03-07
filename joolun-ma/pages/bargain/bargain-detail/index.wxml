@@ -60,7 +60,7 @@
         <navigator class="cu-btn round bg-cyan lg margin-left" hover-class='none' url='/pages/bargain/bargain-detail/index?id={{bargainInfo.id}}'>发起新砍价</navigator>
       </view>
       <view class="padding text-center" wx:if="{{(bargainInfo.bargainUser.status == '1' || bargainInfo.bargainUser.floorBuy == '0') && (bargainInfo.bargainUser.userId == wxUser.mallUserId)}}">
-        <button class="cu-btn round bg-green.light lg" bindtap="toBuy" wx:if="{{bargainInfo.bargainUser.status == '1' &&  bargainInfo.bargainUser.isBuy == '0'}}">¥ {{numberUtil.numberSubtract(bargainInfo.goodsSku.salesPrice,havCutPrice)}} 砍后价购买</button>
+        <button class="cu-btn round bg-green.light lg" bindtap="toBuy" wx:if="{{(bargainInfo.bargainUser.status == '1' || bargainInfo.bargainUser.floorBuy == '0') &&  bargainInfo.bargainUser.isBuy == '0'}}">¥ {{numberUtil.numberSubtract(bargainInfo.goodsSku.salesPrice,havCutPrice)}} 砍后价购买</button>
         <navigator hover-class='none' url='/pages/order/order-detail/index?id={{bargainInfo.bargainUser.orderId}}' class="cu-btn round bg-green.light lg" wx:if="{{bargainInfo.bargainUser.isBuy == '1'}}">已经砍后价购买</navigator>
       </view>
     </view>

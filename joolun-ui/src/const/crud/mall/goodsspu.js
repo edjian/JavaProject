@@ -18,6 +18,7 @@ export const tableOption = {
     printBtn: true,
     dialogWidth: '88%',
     selection: true,
+    searchMenuSpan: 6,
     column: [
         {
             label: '商品名称',

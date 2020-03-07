@@ -12,6 +12,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
@@ -33,6 +34,7 @@ import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 商城订单
@@ -53,7 +57,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/orderinfo")
-@Api(value = "orderinfo", tags = "商城订单管理")
+@Api(value = "orderinfo", tags = "商城订单API")
 public class OrderInfoApi {
 
     private final OrderInfoService orderInfoService;
@@ -305,5 +309,36 @@ public class OrderInfoApi {
 			return checkThirdSession;
 		}
 		return R.ok(orderLogisticsService.getById(logisticsId));
+	}
+
+	/**
+	 * 统计各个状态订单计数
+	 * @param orderInfo
+	 * @return R
+	 */
+	@GetMapping("/countAll")
+	public R count(HttpServletRequest request,OrderInfo orderInfo){
+		R checkThirdSession = BaseApi.checkThirdSession(orderInfo, request);
+		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
+			return checkThirdSession;
+		}
+		Map<String, Integer> countAll = new HashMap<>();
+		countAll.put(OrderInfoEnum.STATUS_0.getValue(),orderInfoService.count(Wrappers.query(orderInfo).lambda()
+				.isNull(OrderInfo::getStatus)
+				.eq(OrderInfo::getIsPay,CommonConstants.NO)));
+
+		countAll.put(OrderInfoEnum.STATUS_1.getValue(),orderInfoService.count(Wrappers.query(orderInfo).lambda()
+				.eq(OrderInfo::getStatus,OrderInfoEnum.STATUS_1.getValue())
+				.eq(OrderInfo::getIsPay,CommonConstants.YES)));
+
+		countAll.put(OrderInfoEnum.STATUS_2.getValue(),orderInfoService.count(Wrappers.query(orderInfo).lambda()
+				.eq(OrderInfo::getStatus,OrderInfoEnum.STATUS_2.getValue())
+				.eq(OrderInfo::getIsPay,CommonConstants.YES)));
+
+		countAll.put(OrderInfoEnum.STATUS_3.getValue(),orderInfoService.count(Wrappers.query(orderInfo).lambda()
+				.eq(OrderInfo::getStatus,OrderInfoEnum.STATUS_3.getValue())
+				.eq(OrderInfo::getIsPay,CommonConstants.YES)
+				.eq(OrderInfo::getAppraisesStatus,MallConstants.APPRAISES_STATUS_0)));
+		return R.ok(countAll);
 	}
 }

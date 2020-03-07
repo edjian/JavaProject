@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/couponinfo")
-@Api(value = "couponinfo", tags = "电子券Api")
+@Api(value = "couponinfo", tags = "电子券API")
 public class CouponInfoApi {
 
     private final CouponInfoService couponInfoService;

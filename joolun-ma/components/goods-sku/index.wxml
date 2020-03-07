@@ -18,7 +18,7 @@
             </view>
             <view class="text-price margin-top-xl text-bold text-red text-xl" wx:if="{{goodsSku != ''}}">{{goodsSku.salesPrice}}</view>
             <view class="text-gray text-sm" wx:if="{{goodsSku.stock != null}}">库存{{goodsSku.stock}}件</view>
-            <view class="text-black text-sm">选择
+            <view class="text-black text-sm" wx:if="{{goodsSpecData.length > 0}}">选择
               <view class="display-ib" wx:for="{{goodsSpecData}}" wx:key="index">
                 <view class="display-ib" wx:if="{{!item.checked}}">{{item.value}}</view>
                 <view class="display-ib" wx:if="{{item.checked}}" wx:for="{{item.leaf}}" wx:for-item="item2" wx:key="index">

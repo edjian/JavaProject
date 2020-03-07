@@ -40,6 +40,13 @@ Page({
         this.goodsCategoryGet()
       })
   },
+  onShow() {
+    //更新tabbar购物车数量
+    wx.setTabBarBadge({
+      index: 2,
+      text: app.globalData.shoppingCartCount
+    })
+  },
   goodsCategoryGet() {
     app.api.goodsCategoryGet()
       .then(res => {

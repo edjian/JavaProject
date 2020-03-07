@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.swagger.annotations.ApiModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 商城订单
@@ -199,6 +200,14 @@ public class OrderInfo extends Model<OrderInfo> {
 	 */
 	@TableField(exist = false)
 	private String statusDesc;
+
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@TableField(exist = false)
+	private LocalDateTime beginTime;
+
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@TableField(exist = false)
+	private LocalDateTime endTime;
 
 	public String getStatusDesc() {
 		if (CommonConstants.NO.equals(this.isPay) && this.status == null) {

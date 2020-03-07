@@ -26,6 +26,8 @@ export const tableOption = {
     addBtn: false,
     viewBtn: false,
     defaultExpandAll: true,
+    searchMenuSpan: 6,
+    dateBtn: true,
     column: [
         {
             label: '用户id',

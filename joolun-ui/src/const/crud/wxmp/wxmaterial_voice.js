@@ -20,6 +20,7 @@ export const tableOptionVoice = {
   excelBtn: true,
   printBtn: true,
   viewBtn: true,
+  searchMenuSpan: 6,
   column: [
 	  {
       label: 'media_id',

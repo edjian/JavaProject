@@ -1,12 +1,5 @@
 import request from '@/router/axios'
 
-export function roleList() {
-  return request({
-    url: '/admin/role/roleList',
-    method: 'get'
-  })
-}
-
 export function getPage(query) {
   return request({
     url: '/admin/role/page',
@@ -15,10 +8,11 @@ export function getPage(query) {
   })
 }
 
-export function organRoleList() {
+export function getList(query) {
   return request({
     url: '/admin/role/list',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

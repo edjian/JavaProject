@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/notice")
-@Api(value = "notice", tags = "商城通知管理")
+@Api(value = "notice", tags = "商城通知API")
 public class NoticeApi {
 
     private final NoticeService noticeService;

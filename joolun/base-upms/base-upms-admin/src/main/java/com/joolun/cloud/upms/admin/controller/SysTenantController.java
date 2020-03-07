@@ -47,10 +47,20 @@ public class SysTenantController {
 	@GetMapping("/page")
 	@PreAuthorize("@ato.hasAuthority('sys_tenant_index')")
 	public R getUserPage(Page page, SysTenant sysTenant) {
-		return R.ok(sysTenantService.page1(page, Wrappers.query(sysTenant).lambda().
-				eq(SysTenant::getParentId,CommonConstants.PARENT_ID)));
+		sysTenant.setParentId(CommonConstants.PARENT_ID);
+		return R.ok(sysTenantService.page(page, Wrappers.query(sysTenant)));
 	}
 
+	/**
+	 * list查询
+	 * @param sysTenant
+	 * @return
+	 */
+	@GetMapping("/list")
+	public R getList(SysTenant sysTenant) {
+		sysTenant.setParentId(CommonConstants.PARENT_ID);
+		return R.ok(sysTenantService.list(Wrappers.query(sysTenant)));
+	}
 
 	/**
 	 * 通过ID查询
@@ -78,6 +88,7 @@ public class SysTenantController {
 		String id = String.valueOf(IdUtil.getSnowflake(1,2).nextId());
 		TenantContextHolder.setTenantId(id);
 		sysTenant.setId(id);
+		sysTenant.setTenantId(id);
 		sysTenant.setParentId(CommonConstants.PARENT_ID);
 		return R.ok(sysTenantService.save(sysTenant));
 	}

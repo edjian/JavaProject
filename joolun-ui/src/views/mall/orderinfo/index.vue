@@ -14,7 +14,7 @@
                     <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
                 </el-tab-pane>
                 <el-tab-pane name="0">
-                    <span slot="label"><i class="el-icon-refrigerator"></i> 待付款</span>
+                    <span slot="label"><i class="el-icon-bank-card"></i> 待付款</span>
                 </el-tab-pane>
                 <el-tab-pane name="1">
                     <span slot="label"><i class="el-icon-refrigerator"></i> 待发货</span>
@@ -26,7 +26,7 @@
                     <span slot="label"><i class="el-icon-document"></i> 已完成</span>
                 </el-tab-pane>
                 <el-tab-pane name="4">
-                    <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+                    <span slot="label"><i class="el-icon-brush"></i> 待评价</span>
                 </el-tab-pane>
                 <el-tab-pane name="5">
                     <span slot="label"><i class="el-icon-circle-close"></i> 已取消</span>
@@ -44,7 +44,8 @@
                        @row-save="handleSave"
                        @row-del="handleDel"
                        @sort-change="sortChange"
-                       @search-change="searchChange">
+                       @search-change="searchChange"
+                       @date-change="dateChange">
                 <template slot-scope="scope" slot="status">
                     <div style="text-align: left">
                         <div class="grid-content">订单状态：
@@ -515,6 +516,7 @@
         name: 'orderinfo',
         data() {
             return {
+                date: [],
                 status: '-1',
                 tableData: [],
                 page: {
@@ -718,6 +720,14 @@
                     done()
                 })
             },
+            dateChange(date){
+                if(date){
+                    this.date = date
+                }else{
+                    this.date = []
+                }
+                this.getPage(this.page)
+            },
             searchChange(params,done) {
                 params = this.filterForm(params)
                 this.paramsSearch = params
@@ -746,7 +756,9 @@
                     size: page.pageSize,
                     descs: this.page.descs,
                     ascs: this.page.ascs,
-                    status: this.status != '-1' ? this.status : null
+                    status: this.status != '-1' ? this.status : null,
+                    beginTime: this.date[0],
+                    endTime: this.date[1]
                 }, params, this.paramsSearch)).then(response => {
                     this.tableData = response.data.data.records
                     this.page.total = response.data.data.total

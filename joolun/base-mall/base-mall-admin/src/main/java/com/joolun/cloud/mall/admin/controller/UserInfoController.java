@@ -48,6 +48,16 @@ public class UserInfoController {
         return R.ok(userInfoService.page(page, Wrappers.query(userInfo)));
     }
 
+	/**
+	 * 查询数量
+	 * @param userInfo
+	 * @return
+	 */
+	@GetMapping("/count")
+	public R getCount(UserInfo userInfo) {
+		return R.ok(userInfoService.count(Wrappers.query(userInfo)));
+	}
+
     /**
      * 通过id查询商城用户
      * @param id

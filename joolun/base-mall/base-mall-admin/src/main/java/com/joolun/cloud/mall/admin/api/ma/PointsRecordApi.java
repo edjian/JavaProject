@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/pointsrecord")
-@Api(value = "pointsrecord", tags = "积分变动记录Api")
+@Api(value = "pointsrecord", tags = "积分变动记录API")
 public class PointsRecordApi {
 
     private final PointsRecordService pointsRecordService;

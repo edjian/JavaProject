@@ -10,7 +10,6 @@ package com.joolun.cloud.weixin.common.entity;
 
 import cn.hutool.json.JSONUtil;
 import lombok.Data;
-import me.chanjar.weixin.common.bean.menu.WxMenuRule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Menu implements Serializable {
 
   private List<MenuButton> button = new ArrayList<>();
 
-  private WxMenuRule matchRule;
+  private MenuRule matchrule;
 
   /**
    * 反序列化

@@ -1,5 +1,6 @@
 package com.joolun.cloud.mall.admin.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.joolun.cloud.mall.admin.listener.RedisKeyExpirationListener;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class RedisListenerConfig {
 
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.addMessageListener(new RedisKeyExpirationListener(redisTemplate, redisConfigProperties, orderInfoService), new PatternTopic("__keyevent@" + redisConfigProperties.getDatabase() + "__:expired"));
+		container.addMessageListener(new RedisKeyExpirationListener(redisTemplate, redisConfigProperties, orderInfoService), new PatternTopic(StrUtil.format("__keyevent@{}__:expired", redisConfigProperties.getDatabase())));
 		return container;
 	}
 }

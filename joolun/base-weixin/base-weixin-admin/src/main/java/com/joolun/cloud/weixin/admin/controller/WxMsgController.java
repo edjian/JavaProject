@@ -52,7 +52,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxmsg")
-@Api(value = "wxmsg", tags = "wxmsg管理")
+@Api(value = "wxmsg", tags = "微信消息管理")
 public class WxMsgController {
 
     private final WxMsgService wxMsgService;

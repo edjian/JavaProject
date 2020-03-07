@@ -164,7 +164,7 @@
             if (valid) {
               this.$store.dispatch("LoginByUsername", this.loginForm).then(() => {
                 this.$store.commit("SET_TOP_MENU_INDEX", 0)
-                this.$router.go(0)
+                // this.$router.go(0)
                 this.$router.push({path: this.tagWel.value})
               }).catch(() => {
                 this.refreshCode()

@@ -9,6 +9,7 @@
 package com.joolun.cloud.weixin.admin.controller;
 
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/portal/{appid}")
+@Api(value = "wxportal", tags = "微信消息处理")
 public class WxPortalController {
 
     @GetMapping(produces = "text/plain;charset=utf-8")

@@ -20,6 +20,7 @@ export const tableOption = {
     printBtn: true,
     labelWidth: 120,
     viewBtn: true,
+    searchMenuSpan: 6,
     column: [
         {
             label: '用户初始积分',

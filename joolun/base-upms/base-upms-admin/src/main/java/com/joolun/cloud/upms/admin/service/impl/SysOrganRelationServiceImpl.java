@@ -41,6 +41,7 @@ public class SysOrganRelationServiceImpl extends ServiceImpl<SysOrganRelationMap
 			.selectList(Wrappers.<SysOrganRelation>query().lambda()
 				.eq(SysOrganRelation::getDescendant, sysOrgan.getParentId()))
 			.stream().map(relation -> {
+				relation.setTenantId(null);
 				relation.setDescendant(sysOrgan.getId());
 				return relation;
 			}).collect(Collectors.toList());

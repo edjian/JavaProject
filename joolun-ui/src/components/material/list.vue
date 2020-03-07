@@ -410,6 +410,10 @@
         }).then(function() {
           delObj(item.id)
             .then(function() {
+              let index = that.urls.indexOf(item.url)
+              if(index != -1){
+                that.urls.splice(index,1)
+              }
               that.getPage(that.page)
             })
         })

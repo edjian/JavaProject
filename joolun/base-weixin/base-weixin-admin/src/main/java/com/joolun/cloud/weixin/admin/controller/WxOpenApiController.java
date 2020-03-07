@@ -11,6 +11,7 @@ package com.joolun.cloud.weixin.admin.controller;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/open/api")
+@Api(value = "openapi", tags = "开发平台api")
 public class WxOpenApiController {
 
 	/**

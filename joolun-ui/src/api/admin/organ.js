@@ -8,6 +8,14 @@ export function fetchTree(query) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/admin/organ/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/admin/organ/',
@@ -35,12 +43,5 @@ export function putObj(obj) {
     url: '/admin/organ/',
     method: 'put',
     data: obj
-  })
-}
-
-export function getByCode(code) {
-  return request({
-    url: '/admin/organ/detail/' + code,
-    method: 'get'
   })
 }

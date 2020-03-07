@@ -46,7 +46,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/goodsappraises")
-@Api(value = "goodsappraises", tags = "商品评价管理")
+@Api(value = "goodsappraises", tags = "商品评价Api")
 public class GoodsAppraisesApi {
 
 	private final OrderInfoService orderInfoService;

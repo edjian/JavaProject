@@ -11,14 +11,22 @@ const app = getApp()
 Page({
   data: {
     wxUser: null,
-    userInfo: null
+    userInfo: null,
+    orderCountAll: []
   },
   onShow(){
+    //更新tabbar购物车数量
+    wx.setTabBarBadge({
+      index: 2,
+      text: app.globalData.shoppingCartCount
+    })
+    
     let wxUser = app.globalData.wxUser
     this.setData({
       wxUser: wxUser
     })
     this.userInfoGet()
+    this.orderCountAll()
   },
   onLoad(){
   },
@@ -51,6 +59,14 @@ Page({
       .then(res => {
         this.setData({
           userInfo: res.data
+        })
+      })
+  },
+  orderCountAll(){
+    app.api.orderCountAll()
+      .then(res => {
+        this.setData({
+          orderCountAll: res.data
         })
       })
   }

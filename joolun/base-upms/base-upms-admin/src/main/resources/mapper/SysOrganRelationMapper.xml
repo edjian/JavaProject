@@ -6,11 +6,8 @@
 	<resultMap id="BaseResultMap" type="com.joolun.cloud.upms.common.entity.SysOrganRelation">
 		<id column="ancestor" property="ancestor"/>
 		<result column="descendant" property="descendant"/>
+		<result column="tenant_id" property="tenantId"/>
 	</resultMap>
-
-	<sql id="Base_Column_List">
-        ancestor, descendant
-    </sql>
 
 	<!-- 更新机构关系 -->
 	<update id="updateOrganRelations">

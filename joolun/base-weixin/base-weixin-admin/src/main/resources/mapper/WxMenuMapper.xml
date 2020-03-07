@@ -34,6 +34,7 @@
 		<result property="repHqUrl" column="rep_hq_url"/>
 		<result property="repThumbMediaId" column="rep_thumb_media_id"/>
 		<result property="repThumbUrl" column="rep_thumb_url"/>
+		<result property="menuRuleId" column="menu_rule_id"/>
 		<result property="content" column="content"/>
 	</resultMap>
 </mapper>

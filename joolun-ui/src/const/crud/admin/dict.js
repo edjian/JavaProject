@@ -10,6 +10,7 @@ export const tableOption = {
     viewBtn: true,
     searchSize: 'mini',
     menuType: 'text',
+    searchMenuSpan: 6,
     column: [{
         label: '类型',
         prop: 'type',

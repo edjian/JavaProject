@@ -13,6 +13,12 @@ import ViewsRouter from './views/'
 import AvueRouter from './avue-router'
 import Store from '../store/'
 Vue.use(VueRouter)
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject)
+    return originalPush.call(this, location, onResolve, onReject);
+  return originalPush.call(this, location).catch(err => err);
+};
 let Router = new VueRouter({
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {

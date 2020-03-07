@@ -16,6 +16,14 @@ export function getPage(query) {
   })
 }
 
+export function getCount(query) {
+  return request({
+    url: '/mall/orderinfo/count',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/mall/orderinfo',

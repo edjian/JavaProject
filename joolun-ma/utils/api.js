@@ -148,6 +148,9 @@ module.exports = {
   orderDel: (id) => {//订单删除
     return request('/mall/api/ma/orderinfo/' + id, 'delete', null, false)
   },
+  orderCountAll: (data) => {//订单计数
+    return request('/mall/api/ma/orderinfo/countAll', 'get', data, false)
+  },
   orderLogisticsGet: (logisticsId) => {//订单物流查询
     return request('/mall/api/ma/orderinfo/orderlogistics/' + logisticsId, 'get', null, false)
   },

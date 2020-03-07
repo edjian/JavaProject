@@ -21,6 +21,7 @@ import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.weixin.admin.config.pay.WxPayConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.common.entity.WxApp;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxpay")
+@Api(value = "wxpay", tags = "微信支付")
 public class WxPayController {
 
 	private final WxAppService wxAppService;

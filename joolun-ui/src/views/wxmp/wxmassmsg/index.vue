@@ -147,7 +147,7 @@
         </span>
       </el-dialog>
       <el-dialog title="请选择用户" :visible.sync="dialog1VisibleUser" width="80%">
-        <avue-crud ref="crud"
+        <avue-crud ref="crud2"
                    :page="page2"
                    :data="tableData2"
                    :table-loading="tableLoading2"
@@ -321,6 +321,9 @@
       showWxUserList(){
         this.tableData2 = []
         this.dialog1VisibleUser = true
+        if(this.$refs.crud2){
+          this.$refs.crud2.searchReset()
+        }
         this.getPage2(this.page2)
       },
       listUserTags() {

@@ -25,5 +25,8 @@ public class SysUserRole extends Model<SysUserRole> {
 	 * 角色ID
 	 */
 	private String roleId;
-
+	/**
+	 * 租户ID
+	 */
+	private String tenantId;
 }

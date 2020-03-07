@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/goodsspuspec")
-@Api(value = "goodsspuspec", tags = "spu规格接口")
+@Api(value = "goodsspuspec", tags = "spu规格接口API")
 public class GoodsSpuSpecApi {
 
     private final GoodsSpuSpecService goodsSpuSpecService;

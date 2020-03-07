@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/ensuregoods")
-@Api(value = "ensuregoods", tags = "商品保障Api")
+@Api(value = "ensuregoods", tags = "商品保障API")
 public class EnsureGoodsApi {
 
     private final EnsureGoodsService ensureGoodsService;

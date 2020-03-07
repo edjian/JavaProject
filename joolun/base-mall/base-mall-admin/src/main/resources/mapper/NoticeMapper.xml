@@ -45,7 +45,6 @@
 		obj.`app_id`
 	</sql>
 
-	<!--重写getOne关联查询其它表-->
 	<select id="getOne2" resultMap="noticeMap2">
 		SELECT
 		<include refid="noticeSql"/>

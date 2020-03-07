@@ -1,8 +1,6 @@
 package com.joolun.cloud.upms.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.upms.admin.mapper.SysTenantMapper;
@@ -22,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+
 /**
  * 租户管理
  *
@@ -36,11 +36,6 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	private final SysRoleService sysRoleService;
 	private final SysUserRoleService sysUserRoleService;
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
-
-	@Override
-	public IPage<SysTenant> page1(IPage<SysTenant> page, Wrapper<SysTenant> queryWrapper) {
-		return baseMapper.selectPage1(page, queryWrapper);
-	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -68,6 +63,13 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 		sysUserRole.setRoleId(sysRole.getId());
 		sysUserRole.setUserId(sysUser.getId());
 		sysUserRoleService.save(sysUserRole);
+		return Boolean.TRUE;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public boolean removeById(Serializable id) {
+		baseMapper.deleteSysTenantById(id);
 		return Boolean.TRUE;
 	}
 }

@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/bargaincut")
-@Api(value = "bargaincut", tags = "砍价帮砍记录Api")
+@Api(value = "bargaincut", tags = "砍价帮砍记录API")
 public class BargainCutApi {
 
     private final BargainCutService bargainCutService;

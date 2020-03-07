@@ -14,6 +14,7 @@ import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import com.joolun.cloud.mall.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 用户
+ * 微信用户
  *
  * @author JL
  * @date 2019-08-25 15:39:39
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/wxuser")
+@Api(value = "userinfo", tags = "微信用户API")
 public class WxUserApi {
 
 	private final FeignWxUserService feignWxUserService;

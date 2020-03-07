@@ -22,6 +22,7 @@ export const tableOption = {
   delBtn: false,
   viewBtn: true,
   menu: false,
+  searchMenuSpan: 6,
   column: [
     {
       label: '用户编号',

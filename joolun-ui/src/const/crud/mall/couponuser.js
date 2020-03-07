@@ -20,6 +20,7 @@ export const tableOption = {
     printBtn: true,
     viewBtn: true,
     menu: false,
+    searchMenuSpan: 6,
     column: [
         {
             label: '领券时间',

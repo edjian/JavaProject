@@ -28,6 +28,7 @@ import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.dto.WxAppTree;
 import com.joolun.cloud.weixin.common.entity.WxApp;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -57,6 +58,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxapp")
+@Api(value = "wxapp", tags = "微信账号配置")
 public class WxAppController {
 
 	private final WxAppService wxAppService;

@@ -31,3 +31,10 @@ export function getList(query) {
     params: query
   })
 }
+
+export function delByRuleId(ruleId) {
+  return request({
+    url: '/weixin/wxmenu/' + ruleId,
+    method: 'delete'
+  })
+}

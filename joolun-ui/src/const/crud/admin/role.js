@@ -1,3 +1,39 @@
+import {getList} from '@/api/admin/role'
+
+const validateRoleName = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      roleName: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('角色名称已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
+const validateRoleCode = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      roleCode: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('角色编码已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
 export const tableOption = {
   dialogDrag:true,
   border: true,
@@ -10,6 +46,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [{
     label: '角色名称',
     prop: 'roleName',
@@ -24,6 +61,10 @@ export const tableOption = {
       max: 20,
       message: '长度在 3 到 20 个字符',
       trigger: 'blur'
+    },
+    {
+      validator: validateRoleName,
+      trigger: 'blur'
     }]
   }, {
     width: 120,
@@ -36,12 +77,16 @@ export const tableOption = {
       message: '角色编码不能为空',
       trigger: 'blur'
     },
-      {
-        min: 3,
-        max: 20,
-        message: '长度在 3 到 20 个字符',
-        trigger: 'blur'
-      }
+    {
+      min: 3,
+      max: 20,
+      message: '长度在 3 到 20 个字符',
+      trigger: 'blur'
+    },
+    {
+      validator: validateRoleCode,
+      trigger: 'blur'
+    }
     ]
   }, {
     width: 150,

@@ -22,6 +22,7 @@ export const tableOption = {
   expand: true,
   defaultExpandAll: true,
   labelWidth: 120,
+  searchMenuSpan: 6,
   column: [
     {
       label: '小程序名称',
@@ -109,6 +110,7 @@ export const tableOption = {
         {
           label: 'AppID',
           prop: 'id',
+          editDisabled: true,
           rules: [{
             required: true,
             message: "请输入AppID",

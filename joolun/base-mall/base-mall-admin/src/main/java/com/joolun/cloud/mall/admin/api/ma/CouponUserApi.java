@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/couponuser")
-@Api(value = "couponuser", tags = "电子券用户记录Api")
+@Api(value = "couponuser", tags = "电子券用户记录API")
 public class CouponUserApi {
 
     private final CouponUserService couponUserService;

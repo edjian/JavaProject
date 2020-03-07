@@ -12,6 +12,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [{
     label: '用户ID',
     prop: 'user_id',

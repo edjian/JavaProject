@@ -20,6 +20,7 @@ export const tableOption = {
     printBtn: true,
     viewBtn: true,
     labelWidth: 100,
+    searchMenuSpan: 6,
     column: [
         {
             label: '名称',

@@ -166,6 +166,8 @@ Page({
         this.setData({
           shoppingCartCount: shoppingCartCount
         })
+        //设置TabBar购物车数量
+        app.globalData.shoppingCartCount = shoppingCartCount + ''
       })
   },
   operateCartEvent(){

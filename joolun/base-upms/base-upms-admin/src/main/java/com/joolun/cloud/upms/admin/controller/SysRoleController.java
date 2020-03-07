@@ -94,8 +94,8 @@ public class SysRoleController {
 	 */
 	@GetMapping("/list")
 	@PreAuthorize("@ato.hasAuthority('sys_role_index')")
-	public List<SysRole> listRoles() {
-		return sysRoleService.list(Wrappers.emptyWrapper());
+	public List<SysRole> getList(SysRole sysRole) {
+		return sysRoleService.list(Wrappers.query(sysRole));
 	}
 
 	/**

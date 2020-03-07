@@ -12,7 +12,7 @@
       <el-row :span="24" :gutter="10">
         <el-col :xs="24"
                 :sm="24"
-                :md="3">
+                :md="4">
           <el-card class="box-card" shadow="never">
             <div slot="header" class="clearfix">
               <span>机构名称</span>

@@ -22,6 +22,7 @@ export const tableOption = {
   expand: true,
   defaultExpandAll: true,
   labelWidth: 120,
+  searchMenuSpan: 6,
   column: [
     {
       label: 'logo',
@@ -112,6 +113,7 @@ export const tableOption = {
       prop: 'id',
       search:true,
       hide:true,
+      editDisabled: true,
       rules: [{
         required: true,
         message: "请输入AppID",

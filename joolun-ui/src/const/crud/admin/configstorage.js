@@ -19,6 +19,7 @@ export const tableOption = {
     printBtn: true,
     viewBtn: true,
     labelWidth: 150,
+    searchMenuSpan: 6,
     group: [
         {
             icon: 'el-icon-s-order',

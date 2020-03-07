@@ -61,6 +61,27 @@ module.exports = {
           '^/gen': '/gen'
         }
       },
+      '/doc': {
+        target: url,
+        ws: true,
+        pathRewrite: {
+          '^/doc': '/doc'
+        }
+      },
+      '/webjars': {
+        target: url,
+        ws: true,
+        pathRewrite: {
+          '^/webjars': '/webjars'
+        }
+      },
+      '/swagger-resources': {
+        target: url,
+        ws: true,
+        pathRewrite: {
+          '^/swagger-resources': '/swagger-resources'
+        }
+      },
       '/weixin': {
         target: url,
         ws: true,

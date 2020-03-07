@@ -18,6 +18,7 @@ import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.common.entity.ImageManager;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.common.core.util.FileUtils;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -47,6 +48,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxmaterial")
+@Api(value = "wxmaterial", tags = "微信素材管理")
 public class WxMaterialController {
 
 	/**

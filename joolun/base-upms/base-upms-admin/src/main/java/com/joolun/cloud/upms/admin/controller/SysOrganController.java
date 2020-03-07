@@ -1,12 +1,14 @@
 package com.joolun.cloud.upms.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.upms.admin.service.SysOrganService;
 import com.joolun.cloud.upms.common.dto.OrganTree;
 import com.joolun.cloud.upms.common.entity.SysOrgan;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.upms.common.entity.SysTenant;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
@@ -46,16 +48,13 @@ public class SysOrganController {
 	}
 
 	/**
-	 * 根据code查询机构
-	 *
-	 * @param code
+	 * list查询
+	 * @param sysOrgan
 	 * @return
 	 */
-	@GetMapping("/detail/{code}")
-	public R userByUsername(@PathVariable String code) {
-		SysOrgan sysOrgan = new SysOrgan();
-		sysOrgan.setCode(code);
-		return R.ok(sysOrganService.getOne(new QueryWrapper<>(sysOrgan)));
+	@GetMapping("/list")
+	public R getList(SysOrgan sysOrgan) {
+		return R.ok(sysOrganService.list(Wrappers.query(sysOrgan)));
 	}
 
 	/**

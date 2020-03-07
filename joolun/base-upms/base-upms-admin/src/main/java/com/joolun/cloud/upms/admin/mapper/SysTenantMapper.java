@@ -1,13 +1,9 @@
 package com.joolun.cloud.upms.admin.mapper;
 
 import com.baomidou.mybatisplus.annotation.SqlParser;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.joolun.cloud.upms.common.entity.SysTenant;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -17,10 +13,12 @@ import org.apache.ibatis.annotations.Select;
  * @author JL
  * @since 2019-01-20
  */
+@SqlParser(filter=true)
 public interface SysTenantMapper extends BaseMapper<SysTenant> {
 
-	@SqlParser(filter=true)
-	@Select("select * from sys_organ ${ew.customSqlSegment}")
-	IPage<SysTenant> selectPage1(IPage<SysTenant> page, @Param(Constants.WRAPPER) Wrapper<SysTenant> queryWrapper);
-
+	/**
+	 * 通过租户ID删除租户
+	 * 包括base_upms库所有表的当前租户数据
+	 */
+	void deleteSysTenantById(Serializable id);
 }

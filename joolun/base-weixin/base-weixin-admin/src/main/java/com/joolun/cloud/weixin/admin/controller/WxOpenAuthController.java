@@ -14,6 +14,7 @@ import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -37,6 +38,7 @@ import java.io.IOException;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/open/auth")
+@Api(value = "openauth", tags = "开发平台授权控制")
 public class WxOpenAuthController {
 
 	private final WxAppService wxAppService;

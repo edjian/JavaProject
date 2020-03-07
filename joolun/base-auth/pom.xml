@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.joolun</groupId>
 		<artifactId>joolun</artifactId>
-		<version>2.7.1</version>
+		<version>2.7.2</version>
 	</parent>
 
 	<artifactId>base-auth</artifactId>
@@ -80,6 +80,44 @@
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+
+			<!--打包时复制jar包到指定文件目录-->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id><!--需要唯一-->
+						<phase>package</phase><!--当执行package操作时执行一下任务-->
+						<configuration>
+							<tasks><!--任务-->
+								<echo message="start.................................."/><!--打印-->
+								<echo message="load maven plugin ant-contrib-1.0b3"/>
+								<!--加载plugin ant-contrib的配置文件-->
+								<taskdef resource="net/sf/antcontrib/antlib.xml">
+									<classpath><!--加载jar包,${settings.localRepository}的值是你maven settings文件中配置的本地仓库位置-->
+										<pathelement location="${settings.localRepository}/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+									</classpath>
+								</taskdef>
+								<!--复制jar包-->
+								<if>
+									<equals arg1="${copy}" arg2="true"/><!--是否复制jar包-->
+									<then>
+										<echo message="Copy jar to your desired path."/>
+										<copy todir="${localDir}" overwrite="true"><!--执行复制操作,todir的值是将要复制jar包到的地方,overwrite是否重写-->
+											<fileset dir="${project.build.directory}"><!--${project.build.directory}值是你的target目录-->
+												<include name="*.jar"/><!--target目录下的jar包-->
+											</fileset>
+										</copy>
+									</then>
+								</if>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

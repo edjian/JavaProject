@@ -65,6 +65,16 @@ public class GoodsSpuController {
 				);
 	}
 
+	/**
+	 * 查询数量
+	 * @param goodsSpu
+	 * @return
+	 */
+	@GetMapping("/count")
+	public R getCount(GoodsSpu goodsSpu) {
+		return R.ok(goodsSpuService.count(Wrappers.query(goodsSpu)));
+	}
+
     /**
     * 通过id查询spu商品
     * @param id

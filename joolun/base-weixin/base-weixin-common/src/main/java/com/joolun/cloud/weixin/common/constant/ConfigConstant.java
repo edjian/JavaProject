@@ -72,4 +72,10 @@ public interface ConfigConstant {
 	String WX_MASS_STATUS_SENDING = "SENDING";
 	String WX_MASS_STATUS_SEND_FAIL = "SEND_FAIL";
 	String WX_MASS_STATUS_DELETE = "DELETE";
+
+	/**
+	 * 菜单类型(1:普通菜单，2:个性化菜单)
+	 */
+	String WX_MENU_TYPE_1 = "1";
+	String WX_MENU_TYPE_2 = "2";
 }

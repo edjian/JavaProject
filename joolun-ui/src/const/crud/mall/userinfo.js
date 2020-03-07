@@ -21,6 +21,7 @@ export const tableOption = {
   addBtn: false,
   delBtn: false,
   viewBtn: true,
+  searchMenuSpan: 6,
   column: [
     {
       label: '用户编码',
@@ -28,6 +29,21 @@ export const tableOption = {
       sortable: true,
       search: true,
       editDisabled: true
+    },
+    {
+      label: '用户来源',
+      prop: 'appType',
+      type: 'select',
+      sortable: true,
+      search: true,
+      editDisabled: true,
+      dicData: [{
+        label: '小程序',
+        value: '1'
+      },{
+        label: '公众号',
+        value: '2'
+      }]
     },
     {
       label: '昵称',
@@ -45,20 +61,20 @@ export const tableOption = {
       prop: 'country',
       sortable:true,
       search:true,
-      editDisplay:false
+      editDisabled:false
     },
     {
       label: '所在省份',
       prop: 'province',
       sortable:true,
-      editDisplay:false
+      editDisabled:false
     },
     {
       label: '所在城市',
       prop: 'city',
       sortable:true,
       search:true,
-      editDisplay:false
+      editDisabled:false
     },
     {
       label: '性别',
@@ -83,7 +99,8 @@ export const tableOption = {
     {
       label: '创建时间',
       prop: 'createTime',
-      sortable: true
+      sortable: true,
+      editDisabled: true
     },
   ]
 }

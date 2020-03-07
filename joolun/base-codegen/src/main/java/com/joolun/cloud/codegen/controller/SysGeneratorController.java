@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.codegen.entity.GenConfig;
 import com.joolun.cloud.codegen.service.SysGeneratorService;
 import com.joolun.cloud.common.core.util.R;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/generator")
+@Api(value = "generator", tags = "代码生成器")
 public class SysGeneratorController {
 	private final SysGeneratorService sysGeneratorService;
 

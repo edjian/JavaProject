@@ -7,7 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 /**
- * <version>2.7.1</version>
+ * <version>2.7.2</version>
  */
 import __config from './config/env'
 import api from './utils/api'
@@ -44,6 +44,18 @@ App({
       })
     })
   },
+  //获取购物车数量
+  shoppingCartCount() {
+    this.api.shoppingCartCount()
+      .then(res => {
+        let shoppingCartCount = res.data
+        this.globalData.shoppingCartCount = shoppingCartCount + ''
+        wx.setTabBarBadge({
+          index: 2,
+          text: this.globalData.shoppingCartCount
+        })
+      })
+  },
   //初始化，供每个页面调用 
   initPage: function () {
     let that = this
@@ -76,6 +88,8 @@ App({
                 that.globalData.thirdSession = wxUser.sessionKey
                 that.globalData.wxUser = wxUser
                 resolve("success")
+                //获取购物车数量
+                that.shoppingCartCount()
               })
           }
         }

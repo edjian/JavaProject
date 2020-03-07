@@ -48,7 +48,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/orderrefunds")
-@Api(value = "orderrefunds", tags = "退款详情管理")
+@Api(value = "orderrefunds", tags = "退款详情API")
 public class OrderRefundsApi {
 
     private final OrderRefundsService orderRefundsService;

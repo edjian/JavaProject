@@ -52,16 +52,16 @@
           </div>
           <el-row>
             <el-col :span="12">
-              <div id="interfaceSummaryChart" :style="{width: '80%', height: '500px'}"></div>
-            </el-col>
-            <el-col :span="12">
-              <div id="interfaceSummaryChart2" :style="{width: '80%', height: '500px'}"></div>
-            </el-col>
-            <el-col :span="12">
               <div id="userSummaryChart" :style="{width: '80%', height: '500px'}"></div>
             </el-col>
             <el-col :span="12">
               <div id="userCumulateChart" :style="{width: '80%', height: '500px'}"></div>
+            </el-col>
+            <el-col :span="12">
+              <div id="interfaceSummaryChart" :style="{width: '80%', height: '500px'}"></div>
+            </el-col>
+            <el-col :span="12">
+              <div id="interfaceSummaryChart2" :style="{width: '80%', height: '500px'}"></div>
             </el-col>
           </el-row>
         </el-card>
@@ -193,94 +193,6 @@
           this.seriesData5.push(0)
           this.seriesData6.push(0)
         }
-        //获取接口数据
-        getInterfaceSummary({
-          appId: this.appId,
-          startDate: this.startDate,
-          endDate: this.endDate
-        }).then(response => {
-          response.data.data.forEach((item, index, arr) => {
-            this.$set(this.seriesData1, index, item.callbackCount)
-            this.$set(this.seriesData2, index, item.maxTimeCost)
-            this.$set(this.seriesData3, index, item.totalTimeCost)
-            this.$set(this.seriesData4, index, item.failCount)
-          })
-          // 基于准备好的dom，初始化echarts实例
-          let interfaceSummaryChart = echarts.init(document.getElementById('interfaceSummaryChart'))
-          // 绘制图表
-          interfaceSummaryChart.setOption({
-            title: { text: '接口分析数据' },
-            color: ['#67C23A', '#e5323e'],
-            legend: {
-              data: ['被动回复用户消息的次数','失败次数']
-            },
-            tooltip: {},
-            xAxis: {
-              data: this.xAxisData
-            },
-            yAxis: {},
-            series: [{
-              name: '被动回复用户消息的次数',
-              type: 'bar',
-              label: {
-                normal: {
-                  show: true
-                }
-              },
-              barGap: 0,
-              data: this.seriesData1
-            },
-            {
-              name: '失败次数',
-              type: 'bar',
-              label: {
-                normal: {
-                  show: true
-                }
-              },
-              data: this.seriesData4
-            }]
-          })
-
-          // 基于准备好的dom，初始化echarts实例
-          let interfaceSummaryChart2 = echarts.init(document.getElementById('interfaceSummaryChart2'))
-          // 绘制图表
-          interfaceSummaryChart2.setOption({
-            title: { text: '接口分析数据' },
-            color: ['#E6A23C', '#409EFF'],
-            legend: {
-              data: ['最大耗时','总耗时']
-            },
-            tooltip: {},
-            xAxis: {
-              data: this.xAxisData
-            },
-            yAxis: {},
-            series: [
-              {
-                name: '最大耗时',
-                type: 'bar',
-                label: {
-                  normal: {
-                    show: true
-                  }
-                },
-                data: this.seriesData2
-              },
-              {
-                name: '总耗时',
-                type: 'bar',
-                label: {
-                  normal: {
-                    show: true
-                  }
-                },
-                data: this.seriesData3
-              }]
-          })
-        }).catch(() => {
-        })
-
         getUserSummary({
           appId: this.appId,
           startDate: this.startDate,
@@ -367,6 +279,94 @@
                 }
               }
             }]
+          })
+        }).catch(() => {
+        })
+
+        //获取接口数据
+        getInterfaceSummary({
+          appId: this.appId,
+          startDate: this.startDate,
+          endDate: this.endDate
+        }).then(response => {
+          response.data.data.forEach((item, index, arr) => {
+            this.$set(this.seriesData1, index, item.callbackCount)
+            this.$set(this.seriesData2, index, item.maxTimeCost)
+            this.$set(this.seriesData3, index, item.totalTimeCost)
+            this.$set(this.seriesData4, index, item.failCount)
+          })
+          // 基于准备好的dom，初始化echarts实例
+          let interfaceSummaryChart = echarts.init(document.getElementById('interfaceSummaryChart'))
+          // 绘制图表
+          interfaceSummaryChart.setOption({
+            title: { text: '接口分析数据' },
+            color: ['#67C23A', '#e5323e'],
+            legend: {
+              data: ['被动回复用户消息的次数','失败次数']
+            },
+            tooltip: {},
+            xAxis: {
+              data: this.xAxisData
+            },
+            yAxis: {},
+            series: [{
+              name: '被动回复用户消息的次数',
+              type: 'bar',
+              label: {
+                normal: {
+                  show: true
+                }
+              },
+              barGap: 0,
+              data: this.seriesData1
+            },
+            {
+              name: '失败次数',
+              type: 'bar',
+              label: {
+                normal: {
+                  show: true
+                }
+              },
+              data: this.seriesData4
+            }]
+          })
+
+          // 基于准备好的dom，初始化echarts实例
+          let interfaceSummaryChart2 = echarts.init(document.getElementById('interfaceSummaryChart2'))
+          // 绘制图表
+          interfaceSummaryChart2.setOption({
+            title: { text: '接口分析数据' },
+            color: ['#E6A23C', '#409EFF'],
+            legend: {
+              data: ['最大耗时','总耗时']
+            },
+            tooltip: {},
+            xAxis: {
+              data: this.xAxisData
+            },
+            yAxis: {},
+            series: [
+              {
+                name: '最大耗时',
+                type: 'bar',
+                label: {
+                  normal: {
+                    show: true
+                  }
+                },
+                data: this.seriesData2
+              },
+              {
+                name: '总耗时',
+                type: 'bar',
+                label: {
+                  normal: {
+                    show: true
+                  }
+                },
+                data: this.seriesData3
+              }]
           })
         }).catch(() => {
         })

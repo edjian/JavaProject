@@ -10,6 +10,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [{
     label: 'ID',
     prop: 'id',

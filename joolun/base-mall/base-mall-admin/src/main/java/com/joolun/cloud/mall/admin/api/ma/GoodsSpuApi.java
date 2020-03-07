@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/ma/goodsspu")
-@Api(value = "goodsspu", tags = "商品接口")
+@Api(value = "goodsspu", tags = "商品接口API")
 public class GoodsSpuApi {
 
     private final GoodsSpuService goodsSpuService;

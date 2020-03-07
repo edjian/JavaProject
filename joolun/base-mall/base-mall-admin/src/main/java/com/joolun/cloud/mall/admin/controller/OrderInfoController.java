@@ -57,6 +57,16 @@ public class OrderInfoController {
         return R.ok(orderInfoService.page1(page, Wrappers.query(orderInfo)));
     }
 
+	/**
+	 * 查询数量
+	 * @param orderInfo
+	 * @return
+	 */
+	@GetMapping("/count")
+	public R getCount(OrderInfo orderInfo) {
+		return R.ok(orderInfoService.count(Wrappers.query(orderInfo)));
+	}
+
     /**
     * 通过id查询商城订单
     * @param id

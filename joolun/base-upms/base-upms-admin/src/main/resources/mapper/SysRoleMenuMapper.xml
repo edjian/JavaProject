@@ -7,6 +7,7 @@
 	<resultMap id="BaseResultMap" type="com.joolun.cloud.upms.common.entity.SysRoleMenu">
 		<id column="role_id" property="roleId"/>
 		<result column="menu_id" property="menuId"/>
+		<result column="tenant_id" property="tenantId"/>
 	</resultMap>
 
 </mapper>

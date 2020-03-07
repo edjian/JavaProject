@@ -17,6 +17,7 @@ import com.joolun.cloud.weixin.admin.service.WxUserService;
 import com.joolun.cloud.weixin.common.entity.WxUserTagsDict;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -37,6 +38,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxusertags")
+@Api(value = "wxusertags", tags = "微信用户标签管理")
 public class WxUserTagsController {
 
 	private final WxUserService wxUserService;

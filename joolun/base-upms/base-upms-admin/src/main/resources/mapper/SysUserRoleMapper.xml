@@ -7,6 +7,7 @@
 	<resultMap id="BaseResultMap" type="com.joolun.cloud.upms.common.entity.SysUserRole">
 		<id column="user_id" property="userId"/>
 		<result column="role_id" property="roleId"/>
+		<result column="tenant_id" property="tenantId"/>
 	</resultMap>
 
 	<!--根据用户Id删除该用户的角色关系-->

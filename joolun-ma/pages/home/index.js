@@ -28,6 +28,13 @@ Page({
         this.loadData()
       })
   },
+  onShow(){
+    //更新tabbar购物车数量
+    wx.setTabBarBadge({
+      index: 2,
+      text: app.globalData.shoppingCartCount
+    })
+  },
   loadData(){
     this.swiperGet()
     this.noticeGet()

@@ -8,6 +8,7 @@
         :permission="permissionList"
         :table-loading="tableLoading"
         :before-open="beforeOpen"
+        @search-change="searchChange"
         @refresh-change="refreshChange"
         @row-update="handleUpdate"
         @row-save="handleSave"
@@ -16,7 +17,7 @@
                   slot-scope="scope">
           <el-button size="mini"
                      type="text"
-                     icon="el-icon-plus"
+                     icon="el-icon-suitcase"
                      v-if="permissions.sys_role_perm"
                      @click="handlePermission(scope.row,scope.index)">管理员角色权限
           </el-button>
@@ -171,6 +172,13 @@
                 }).catch(() => {
                     loading()
                 })
+            },
+            searchChange(params,done) {
+              params = this.filterForm(params)
+              this.paramsSearch = params
+              this.page.currentPage = 1
+              this.getPage(this.page, params)
+              done()
             },
             /**
              * 刷新回调

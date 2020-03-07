@@ -8,6 +8,14 @@ export function getPage(query) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/admin/tenant/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/admin/tenant/',

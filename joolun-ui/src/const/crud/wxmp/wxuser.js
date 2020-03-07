@@ -24,6 +24,7 @@ export const tableOption = {
   searchShow: false,
   menuWidth: 150,
   menuType:'text',
+  searchMenuSpan: 6,
   defaultSort:{
     prop: 'subscribeTime',
     order: 'descending'
@@ -48,13 +49,18 @@ export const tableOption = {
     {
       label: '是否订阅',
       prop: 'subscribe',
-      width:90,
+      width:80,
       type: 'select',
       sortable:true,
       search:true,
       editDisplay:false,
       slot:true,
       dicUrl: '/admin/dict/type/wx_subscribe'
+    },
+    {
+      label: 'openId',
+      prop: 'openId',
+      search:true
     },
     {
       label: '关注渠道',
@@ -85,33 +91,37 @@ export const tableOption = {
       dicUrl: '/admin/dict/type/wx_sex'
     },
     {
-      label: '所在国家',
+      label: '国家',
       prop: 'country',
       sortable:true,
       search:true,
-      editDisplay:false
+      editDisplay:false,
+      width: 60
     },
     {
-      label: '所在省份',
+      label: '省份',
       prop: 'province',
       sortable:true,
-      editDisplay:false
+      editDisplay:false,
+      width: 60
     },
     {
-      label: '所在城市',
+      label: '城市',
       prop: 'city',
       sortable: true,
       search: true,
-      editDisplay: false
+      editDisplay: false,
+      width: 60
     },
     {
-      label: '用户语言',
+      label: '语言',
       prop: 'language',
       sortable:true,
-      editDisplay:false
+      editDisplay:false,
+      width: 60
     },
     {
-      label: '标签列表',
+      label: '标签',
       prop: 'tagidList',
       type: 'select',
       editDisplay: false,
@@ -123,7 +133,7 @@ export const tableOption = {
       }
     },
     {
-      label: '用户备注',
+      label: '备注',
       prop: 'remark'
     },
     {
@@ -134,12 +144,6 @@ export const tableOption = {
       sortable: true,
       search: true,
       editDisplay: false
-    },
-    {
-      label: '用户标识',
-      prop: 'openId',
-      hide:true,
-      editDisplay:false
     },
     {
       label: 'union_id',
@@ -187,7 +191,8 @@ export const tableOption = {
       prop: 'latitude',
       slot: true,
       editDisplay: false,
-      viewDisplay: false
+      viewDisplay: false,
+      width: 60
     }
   ]
 }
@@ -210,6 +215,7 @@ export const tableOption2 = {
   menu: false,
   menuWidth: 150,
   menuType:'text',
+  searchMenuSpan: 6,
   defaultSort:{
     prop: 'subscribeTime',
     order: 'descending'
@@ -260,27 +266,27 @@ export const tableOption2 = {
       dicUrl: '/admin/dict/type/wx_sex'
     },
     {
-      label: '所在国家',
+      label: '国家',
       prop: 'country',
       sortable:true,
       search:true,
       editDisplay:false
     },
     {
-      label: '所在省份',
+      label: '省份',
       prop: 'province',
       sortable:true,
       editDisplay:false
     },
     {
-      label: '所在城市',
+      label: '城市',
       prop: 'city',
       sortable:true,
       search:true,
       editDisplay:false
     },
     {
-      label: '用户语言',
+      label: '语言',
       prop: 'language',
       sortable:true,
       search:true,

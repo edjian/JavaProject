@@ -11,6 +11,7 @@ package com.joolun.cloud.weixin.admin.controller;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -30,6 +31,7 @@ import java.text.SimpleDateFormat;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wxsummary")
+@Api(value = "wxsummary", tags = "微信账号配置管理")
 public class WxSummaryController {
 
 	/**
@@ -40,7 +42,7 @@ public class WxSummaryController {
 	 * @return
 	 */
 	@GetMapping("/usersummary")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
 	public R getUsersummary(String appId, String startDate, String endDate) {
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
@@ -66,7 +68,7 @@ public class WxSummaryController {
 	 * @return
 	 */
 	@GetMapping("/usercumulate")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
 	public R getUserCumulate(String appId, String startDate, String endDate){
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
@@ -92,7 +94,7 @@ public class WxSummaryController {
 	 * @return
 	 */
 	@GetMapping("/interfacesummary")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
 	public R getInterfaceSummary(String appId, String startDate, String endDate){
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);

@@ -6,6 +6,7 @@ import com.joolun.cloud.codegen.entity.SysDatasource;
 import com.joolun.cloud.codegen.service.SysDatasourceService;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/dsconf")
+@Api(value = "dsconf", tags = "数据源管理")
 public class SysDatasourceController {
 	private final SysDatasourceService sysDatasourceService;
 

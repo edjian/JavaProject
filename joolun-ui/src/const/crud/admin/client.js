@@ -10,6 +10,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   column: [{
     width: 150,
     label: '终端ID',

@@ -18,8 +18,8 @@ export const tableOption1 = {
   addBtn:false,
   delBtn:false,
   editBtn:false,
-  viewBtn: true,
   searchShow:false,
+  searchMenuSpan: 6,
   // defaultSort:{
   //    prop: 'id',
   //    order: 'descending'
@@ -46,6 +46,7 @@ export const tableOption2 = {
   addBtn:false,
   delBtn:false,
   editBtn:false,
+  searchMenuSpan: 6,
   // defaultSort:{
   //    prop: 'id',
   //    order: 'descending'
@@ -80,6 +81,7 @@ export const tableOption3 = {
   addBtn:false,
   delBtn:false,
   editBtn:false,
+  searchMenuSpan: 6,
   // defaultSort:{
   //    prop: 'id',
   //    order: 'descending'

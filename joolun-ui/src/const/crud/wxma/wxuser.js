@@ -23,6 +23,7 @@ export const tableOption = {
   searchShow: false,
   menuWidth: 150,
   menuType:'text',
+  searchMenuSpan: 6,
   defaultSort:{
     prop: 'createTime',
     order: 'descending'

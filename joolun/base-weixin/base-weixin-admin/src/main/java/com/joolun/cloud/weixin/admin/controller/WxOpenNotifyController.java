@@ -12,6 +12,7 @@ import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.common.entity.WxApp;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/open/notify")
+@Api(value = "opennotify", tags = "开发平台回调控制")
 public class WxOpenNotifyController {
 
 	private final WxAppService wxAppService;

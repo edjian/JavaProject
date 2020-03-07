@@ -48,6 +48,10 @@ public class SysTenant extends Model<SysTenant> {
 	@NotNull(message = "机构类型不能为空")
 	private String type;
 	/**
+	 * 租户ID
+	 */
+	private String tenantId;
+	/**
 	 * 电话
 	 */
 	private String phone;

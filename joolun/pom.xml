@@ -5,7 +5,7 @@
 
 	<groupId>com.joolun</groupId>
 	<artifactId>joolun</artifactId>
-	<version>2.7.1</version>
+	<version>2.7.2</version>
 	<name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 	<organization>
@@ -14,6 +14,10 @@
 	</organization>
 
 	<properties>
+		<!--打包配置-->
+		<copy>true</copy>
+		<localDir>C:/joolun-jar</localDir>
+		<!--打包配置-->
 		<spring-boot.version>2.1.10.RELEASE</spring-boot.version>
 		<spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
@@ -21,7 +25,7 @@
 		<mybatis-plus.version>3.3.0</mybatis-plus.version>
 		<druid.version>1.1.21</druid.version>
 		<hutool.version>5.1.0</hutool.version>
-		<weixin-java.version>3.6.0</weixin-java.version>
+		<weixin-java.version>3.7.0</weixin-java.version>
 		<spring-platform.version>Cairo-SR8</spring-platform.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -49,9 +53,30 @@
 		<minio.version>6.0.8</minio.version>
 		<docker.version>1.2.0</docker.version>
 		<aliyun-java-sdk-core.version>4.4.6</aliyun-java-sdk-core.version>
+		<ant-contrib.version>1.0b3</ant-contrib.version>
+		<ant-jsch.version>1.10.7</ant-jsch.version>
+		<oshi.version>3.9.1</oshi.version>
 	</properties>
 
 	<dependencies>
+		<!-- 获取系统信息 -->
+		<dependency>
+			<groupId>com.github.oshi</groupId>
+			<artifactId>oshi-core</artifactId>
+			<version>${oshi.version}</version>
+		</dependency>
+		<!--能在pom里面写if判断的依赖-->
+		<dependency>
+			<groupId>ant-contrib</groupId>
+			<artifactId>ant-contrib</artifactId>
+			<version>${ant-contrib.version}</version>
+		</dependency>
+		<!--使用scp功能-->
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-jsch</artifactId>
+			<version>${ant-jsch.version}</version>
+		</dependency>
 		<!--配置文件处理器-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -450,7 +475,6 @@
 	</build>
 
 	<repositories>
-		<!--阿里云私服-->
 		<repository>
 			<id>aliyun</id>
 			<name>aliyun</name>

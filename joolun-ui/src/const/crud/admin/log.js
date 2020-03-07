@@ -16,6 +16,7 @@ export const tableOption = {
   excelBtn: true,
   printBtn: true,
   menuType:'text',
+  searchMenuSpan: 6,
   props: {
     label: 'label',
     value: 'value'

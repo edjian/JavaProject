@@ -53,7 +53,7 @@
             <template slot="appName" slot-scope="scope" >
               <el-tag type="success" size="mini">{{scope.row.appName}}</el-tag>
             </template>
-            <template slot="headimgUrl" slot-scope="scope" >
+            <template slot="nickName" slot-scope="scope" >
               <el-badge :value="scope.row.countMsg" class="count-msg">
                 <img class="head-img" :src="scope.row.headimgUrl"/>
               </el-badge>
@@ -314,4 +314,7 @@
 </script>
 
 <style lang="scss" scoped>
+  .head-img{
+    width: 50px;
+  }
 </style>

@@ -35,7 +35,7 @@
                   slot-scope="scope">
           <el-button size="mini"
                      type="text"
-                     icon="el-icon-plus"
+                     icon="el-icon-suitcase"
                      v-if="permissions.sys_role_perm"
                      @click="handlePermission(scope.row,scope.index)">权限
           </el-button>
@@ -181,6 +181,8 @@
             this.dialogPermissionVisible = true
             this.id = row.id
             this.roleCode = row.roleCode
+            this.listLoading = false
+          }).catch(function () {
             this.listLoading = false
           })
       },

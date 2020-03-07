@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/goodscategory")
-@Api(value = "goodscategory", tags = "goodscategory管理")
+@Api(value = "goodscategory", tags = "商品类目管理")
 public class GoodsCategoryController {
 
     private final GoodsCategoryService goodsCategoryService;
