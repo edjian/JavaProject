@@ -72,8 +72,16 @@ public class SysOrganRelationServiceImpl extends ServiceImpl<SysOrganRelationMap
 	 * @param relation
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void updateOrganRealtion(SysOrganRelation relation) {
-		baseMapper.updateOrganRelations(relation);
+		List<SysOrganRelation> relationList = baseMapper.listOrganRelations(relation)
+				.stream().map(relation2 -> {
+			relation2.setTenantId(null);
+			return relation2;
+		}).collect(Collectors.toList());
+		if (CollUtil.isNotEmpty(relationList)) {
+			this.saveBatch(relationList);
+		}
 	}
 
 }

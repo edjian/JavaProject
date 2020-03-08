@@ -3,6 +3,8 @@ package com.joolun.cloud.upms.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.upms.common.entity.SysOrganRelation;
 
+import java.util.List;
+
 /**
  * <p>
  * Mapper 接口
@@ -23,6 +25,6 @@ public interface SysOrganRelationMapper extends BaseMapper<SysOrganRelation> {
 	 *
 	 * @param sysOrganRelation
 	 */
-	void updateOrganRelations(SysOrganRelation sysOrganRelation);
+	List<SysOrganRelation> listOrganRelations(SysOrganRelation sysOrganRelation);
 
 }
