@@ -455,7 +455,9 @@
         }).catch(() => {
 
         })
-        getCountOrderinfo().then(response => {
+        getCountOrderinfo({
+          isPay: '1'
+        }).then(response => {
           let data = response.data.data
           this.option1.data[2].count = data
         }).catch(() => {
