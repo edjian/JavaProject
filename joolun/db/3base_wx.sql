@@ -72,13 +72,6 @@ CREATE TABLE `wx_app` (
   KEY `ids_tenant_id` (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='微信应用';
 
-/*Data for the table `wx_app` */
-
-insert  into `wx_app`(`id`,`create_id`,`create_time`,`update_id`,`update_time`,`del_flag`,`tenant_id`,`organ_id`,`weixin_sign`,`app_type`,`secret`,`token`,`aes_key`,`name`,`is_component`,`weixin_type`,`weixin_hao`,`verify_type`,`logo`,`qr_code`,`principal_name`,`community`,`remarks`,`vip_card_id`,`mch_id`,`mch_key`,`key_path`) values 
-('wx1c254bf1dea2184d',NULL,'2019-06-07 23:25:25',NULL,'2019-09-21 13:28:50','0','1','1','gh_1c05b0bedc0a','2','5518b5679c2dbe8da360497e4280c93d','gh_1c05b0bedc0a','','微信测试号3','0','2',NULL,'0',NULL,'http://weixin.qq.com/q/02rqS7dPmnc2k10000007E',NULL,'','',NULL,NULL,NULL,NULL),
-('wxd5b98bbec200013b',NULL,'2019-09-29 16:15:24',NULL,'2019-11-19 16:39:57','0','1','3','gh_d01b456ef38a','1','c05347089e2a097cca44d3bbbcbfb787','','','JooLun','0',NULL,NULL,NULL,NULL,'http://joolun-base-test.oss-cn-zhangjiakou.aliyuncs.com/c119f0d1694aeabc99344814d9b3fe4a.jpg','','','',NULL,'1540226241','012030fb597e1af7f6b3911b93688ce7','D:\\joolun-file\\cert\\1\\wxd5b98bbec200013b\\apiclient_certa82d7e22-4606-4df6-a010-71fa0d493ba86761991698168029625.p12'),
-('wxfd19ebed74478150',NULL,'2019-09-29 15:15:05',NULL,'2019-09-29 15:18:30','0','1','3','gh_7b270bf6cf5b','2','f06d8ecfd945f20025d935ef9eb1ea07','gh_7b270bf6cf5b','','微信测试号','0','2',NULL,'-1','','http://weixin.qq.com/q/02H6bmdmtcc6l10000007c','','','',NULL,NULL,NULL,NULL);
-
 /*Table structure for table `wx_auto_reply` */
 
 DROP TABLE IF EXISTS `wx_auto_reply`;
