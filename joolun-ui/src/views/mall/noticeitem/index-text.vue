@@ -209,24 +209,26 @@
                 this.getPage(this.page)
             },
             getPage(page, params) {
-                this.tableLoading = true
-                getPage(Object.assign({
-                    current: page.currentPage,
-                    size: page.pageSize,
-                    descs: this.page.descs,
-                    ascs: this.page.ascs,
-                    appId: this.appId,
-                    noticeType: this.noticeType
-                }, params, this.paramsSearch)).then(response => {
-                    let tableData = response.data.data.records
-                    this.tableData = tableData
-                    this.page.total = response.data.data.total
-                    this.page.currentPage = page.currentPage
-                    this.page.pageSize = page.pageSize
-                    this.tableLoading = false
-                }).catch(() => {
-                    this.tableLoading = false
-                })
+             	if(this.appId){
+                    this.tableLoading = true
+                    getPage(Object.assign({
+                        current: page.currentPage,
+                        size: page.pageSize,
+                        descs: this.page.descs,
+                        ascs: this.page.ascs,
+                        appId: this.appId,
+                        noticeType: this.noticeType
+                    }, params, this.paramsSearch)).then(response => {
+                        let tableData = response.data.data.records
+                        this.tableData = tableData
+                        this.page.total = response.data.data.total
+                        this.page.currentPage = page.currentPage
+                        this.page.pageSize = page.pageSize
+                        this.tableLoading = false
+                    }).catch(() => {
+                        this.tableLoading = false
+                    })
+                }
             },
             /**
              * @title 数据删除
