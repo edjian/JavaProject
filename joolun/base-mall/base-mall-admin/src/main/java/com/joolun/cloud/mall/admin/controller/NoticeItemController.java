@@ -53,7 +53,7 @@ public class NoticeItemController {
 		notice.setType(noticeItem.getNoticeType());
 		notice = noticeService.getOne(Wrappers.query(notice));
 		if(notice == null){
-			return R.ok();
+			return R.ok(page);
 		}
 		noticeItem.setNoticeId(notice.getId());
         return R.ok(noticeItemService.page(page,Wrappers.query(noticeItem)));
