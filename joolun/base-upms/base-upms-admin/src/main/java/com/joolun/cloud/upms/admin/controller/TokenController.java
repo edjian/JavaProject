@@ -5,6 +5,7 @@ import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,9 @@ public class TokenController {
 	 * @param params 参数集
 	 * @return token集合
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys_token_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:token:index')")
 	public R getTokenPage(@RequestParam Map<String, Object> params) {
 		return feignTokenService.getTokenPage(params, SecurityConstants.FROM_IN);
 	}
@@ -40,9 +42,10 @@ public class TokenController {
 	 * @param token getTokenPage
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "删除")
 	@SysLog("删除用户token")
 	@DeleteMapping("/{token}")
-	@PreAuthorize("@ato.hasAuthority('sys_token_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:token:del')")
 	public R removeById(@PathVariable String token) {
 		return feignTokenService.removeTokenById(token, SecurityConstants.FROM_IN);
 	}

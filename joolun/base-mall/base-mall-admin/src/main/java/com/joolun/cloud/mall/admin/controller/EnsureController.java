@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.DeliveryPlace;
 import com.joolun.cloud.mall.common.entity.Ensure;
 import com.joolun.cloud.mall.admin.service.EnsureService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,9 @@ public class EnsureController {
      * @param ensure 保障服务
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_ensure_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensure:index')")
     public R getPage(Page page, Ensure ensure) {
         return R.ok(ensureService.page(page, Wrappers.query(ensure)));
     }
@@ -55,8 +57,9 @@ public class EnsureController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "保障服务查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_ensure_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensure:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(ensureService.getById(id));
     }
@@ -66,8 +69,9 @@ public class EnsureController {
 	 * @param ensure
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_ensure_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:ensure:index')")
 	public List<Ensure> getList(Ensure ensure) {
 		return ensureService.list(Wrappers.query(ensure).lambda()
 				.select(Ensure::getId,
@@ -79,9 +83,10 @@ public class EnsureController {
      * @param ensure 保障服务
      * @return R
      */
+	@ApiOperation(value = "保障服务新增")
     @SysLog("新增保障服务")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_ensure_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensure:add')")
     public R save(@RequestBody Ensure ensure) {
         return R.ok(ensureService.save(ensure));
     }
@@ -91,9 +96,10 @@ public class EnsureController {
      * @param ensure 保障服务
      * @return R
      */
+	@ApiOperation(value = "保障服务修改")
     @SysLog("修改保障服务")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_ensure_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensure:edit')")
     public R updateById(@RequestBody Ensure ensure) {
         return R.ok(ensureService.updateById(ensure));
     }
@@ -103,9 +109,10 @@ public class EnsureController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "保障服务删除")
     @SysLog("删除保障服务")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_ensure_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensure:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(ensureService.removeById(id));
     }

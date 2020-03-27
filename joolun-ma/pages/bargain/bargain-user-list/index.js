@@ -22,7 +22,24 @@ Page({
       
     },
     loadmore: true,
-    bargainUserList: []
+    bargainUserList: [],
+    tabCur: 0,
+    status: [
+      {
+        value: '全部砍价',
+        key: ''
+      },
+      {
+        value: '砍价中',
+        key: '0'
+      }, {
+        value: '已完成',
+        key: '1'
+      }, {
+        value: '已过期',
+        key: '2'
+      }
+    ],
   },
   onShow() {
     
@@ -57,6 +74,16 @@ Page({
         ['page.current']: this.data.page.current + 1
       })
       this.bargainUserPage()
+    }
+  },
+  tabSelect(e) {
+    let dataset = e.currentTarget.dataset
+    if (dataset.index != this.data.tabCur) {
+      this.setData({
+        tabCur: dataset.index,
+        ['parameter.status']: dataset.key
+      })
+      this.refresh()
     }
   },
   refresh(){

@@ -12,8 +12,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.mall.admin.service.BargainUserService;
+import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.BargainInfo;
 import com.joolun.cloud.mall.admin.service.BargainInfoService;
+import com.joolun.cloud.mall.common.entity.BargainUser;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +38,7 @@ import io.swagger.annotations.Api;
 public class BargainInfoController {
 
     private final BargainInfoService bargainInfoService;
+	private final BargainUserService bargainUserService;
 
     /**
      * 分页列表
@@ -41,8 +46,9 @@ public class BargainInfoController {
      * @param bargainInfo 砍价
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_bargaininfo_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaininfo:index')")
     public R getPage(Page page, BargainInfo bargainInfo) {
         return R.ok(bargainInfoService.page(page, Wrappers.query(bargainInfo)));
     }
@@ -52,8 +58,9 @@ public class BargainInfoController {
 	 * @param bargainInfo 砍价
 	 * @return
 	 */
+	@ApiOperation(value = "list列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_bargaininfo_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:bargaininfo:index')")
 	public R getList(BargainInfo bargainInfo) {
 		return R.ok(bargainInfoService.list(Wrappers.query(bargainInfo)));
 	}
@@ -63,8 +70,9 @@ public class BargainInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargaininfo_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaininfo:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(bargainInfoService.getById(id));
     }
@@ -74,9 +82,10 @@ public class BargainInfoController {
      * @param bargainInfo 砍价
      * @return R
      */
+	@ApiOperation(value = "砍价新增")
     @SysLog("新增砍价")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargaininfo_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaininfo:add')")
     public R save(@RequestBody BargainInfo bargainInfo) {
         return R.ok(bargainInfoService.save(bargainInfo));
     }
@@ -86,9 +95,10 @@ public class BargainInfoController {
      * @param bargainInfo 砍价
      * @return R
      */
+	@ApiOperation(value = "砍价修改")
     @SysLog("修改砍价")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargaininfo_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaininfo:edit')")
     public R updateById(@RequestBody BargainInfo bargainInfo) {
         return R.ok(bargainInfoService.updateById(bargainInfo));
     }
@@ -98,10 +108,16 @@ public class BargainInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价删除")
     @SysLog("删除砍价")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargaininfo_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaininfo:del')")
     public R removeById(@PathVariable String id) {
+		int count = bargainUserService.count(Wrappers.<BargainUser>lambdaQuery()
+				.eq(BargainUser::getBargainId,id));
+		if(count > 0){
+			return R.failed(MyReturnCode.ERR_80020.getMsg());
+		}
         return R.ok(bargainInfoService.removeById(id));
     }
 

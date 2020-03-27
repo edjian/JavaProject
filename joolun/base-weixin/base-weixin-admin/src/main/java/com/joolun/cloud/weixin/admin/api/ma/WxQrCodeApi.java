@@ -15,6 +15,7 @@ import com.joolun.cloud.weixin.common.dto.MaQrCodeDTO;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,7 @@ public class WxQrCodeApi {
 	 * @param maQrCodeDTO
 	 * @return
 	 */
+	@ApiOperation(value = "生成小程序码")
 	@PostMapping("/unlimited")
 	public R getUnlimited(HttpServletRequest request, @RequestBody MaQrCodeDTO maQrCodeDTO){
 		try {

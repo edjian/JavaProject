@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.admin.service.CouponInfoService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,9 @@ public class CouponInfoController {
      * @param couponInfo 电子券
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_couponinfo_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:couponinfo:index')")
     public R getPage(Page page, CouponInfo couponInfo) {
         return R.ok(couponInfoService.page(page, Wrappers.query(couponInfo)));
     }
@@ -54,8 +56,9 @@ public class CouponInfoController {
 	 * @param couponInfo
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_couponinfo_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:couponinfo:index')")
 	public List<CouponInfo> getList(CouponInfo couponInfo) {
 		return couponInfoService.list(Wrappers.query(couponInfo).lambda()
 				.select(CouponInfo::getId,
@@ -67,8 +70,9 @@ public class CouponInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询电子券")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_couponinfo_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:couponinfo:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(couponInfoService.getById2(id));
     }
@@ -78,9 +82,10 @@ public class CouponInfoController {
      * @param couponInfo 电子券
      * @return R
      */
+	@ApiOperation(value = "新增电子券")
     @SysLog("新增电子券")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_couponinfo_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:couponinfo:add')")
     public R save(@RequestBody CouponInfo couponInfo) {
         return R.ok(couponInfoService.save(couponInfo));
     }
@@ -90,9 +95,10 @@ public class CouponInfoController {
      * @param couponInfo 电子券
      * @return R
      */
+	@ApiOperation(value = "修改电子券")
     @SysLog("修改电子券")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_couponinfo_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:couponinfo:edit')")
     public R updateById(@RequestBody CouponInfo couponInfo) {
         return R.ok(couponInfoService.updateById1(couponInfo));
     }
@@ -102,9 +108,10 @@ public class CouponInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id删除电子券")
     @SysLog("删除电子券")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_couponinfo_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:couponinfo:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(couponInfoService.removeById(id));
     }

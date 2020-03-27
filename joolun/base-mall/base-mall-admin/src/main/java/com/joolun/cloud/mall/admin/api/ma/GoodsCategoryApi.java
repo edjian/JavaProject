@@ -11,6 +11,7 @@ package com.joolun.cloud.mall.admin.api.ma;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class GoodsCategoryApi {
     /**
     * 返回树形集合
     */
+	@ApiOperation(value = "返回树形集合")
     @GetMapping("/tree")
     public R goodsCategoryTree(HttpServletRequest request) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

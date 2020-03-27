@@ -2,7 +2,8 @@ const fsm = wx.getFileSystemManager();
 const FILE_BASE_NAME = 'tmp_base64src'; //自定义文件名
 
 function base64src(base64data, cb) {
-  const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}`;
+  base64data = base64data.replace(/[\r\n]/g, '')
+  const filePath = `${wx.env.USER_DATA_PATH}/${FILE_BASE_NAME}` + Date.parse(new Date());
   const buffer = wx.base64ToArrayBuffer(base64data);
   fsm.writeFile({
     filePath: filePath,

@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;
 import com.joolun.cloud.mall.admin.service.ShoppingCartService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class ShoppingCartController {
 	 * @param shoppingCart 购物车
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('admin_shoppingcart_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:shoppingcart:index')")
 	public R getShoppingCartPage(Page page, ShoppingCart shoppingCart) {
 		return R.ok(shoppingCartService.page(page,Wrappers.query(shoppingCart)));
 	}
@@ -52,8 +54,9 @@ public class ShoppingCartController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id查询购物车")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('admin_shoppingcart_get')")
+	@PreAuthorize("@ato.hasAuthority('mall:shoppingcart:get')")
 	public R getById(@PathVariable("id") String id){
 		return R.ok(shoppingCartService.getById(id));
 	}
@@ -63,9 +66,10 @@ public class ShoppingCartController {
 	 * @param shoppingCart 购物车
 	 * @return R
 	 */
+	@ApiOperation(value = "新增购物车")
 	@SysLog("新增购物车")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('admin_shoppingcart_add')")
+	@PreAuthorize("@ato.hasAuthority('mall:shoppingcart:add')")
 	public R save(@RequestBody ShoppingCart shoppingCart){
 		return R.ok(shoppingCartService.save(shoppingCart));
 	}
@@ -75,9 +79,10 @@ public class ShoppingCartController {
 	 * @param shoppingCart 购物车
 	 * @return R
 	 */
+	@ApiOperation(value = "修改购物车")
 	@SysLog("修改购物车")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('admin_shoppingcart_edit')")
+	@PreAuthorize("@ato.hasAuthority('mall:shoppingcart:edit')")
 	public R updateById(@RequestBody ShoppingCart shoppingCart){
 		return R.ok(shoppingCartService.updateById(shoppingCart));
 	}
@@ -87,9 +92,10 @@ public class ShoppingCartController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id删除购物车")
 	@SysLog("删除购物车")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('admin_shoppingcart_del')")
+	@PreAuthorize("@ato.hasAuthority('mall:shoppingcart:del')")
 	public R removeById(@PathVariable String id){
 		return R.ok(shoppingCartService.removeById(id));
 	}

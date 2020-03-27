@@ -57,10 +57,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_pointsconfig_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_pointsconfig_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_pointsconfig_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_pointsconfig_get, false)
+                    addBtn: this.permissions['mall:pointsconfig:add'],
+                    delBtn: this.permissions['mall:pointsconfig:del'],
+                    editBtn: this.permissions['mall:pointsconfig:edit'],
+                    viewBtn: this.permissions['mall:pointsconfig:get']
                 };
             }
         },
@@ -172,7 +172,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

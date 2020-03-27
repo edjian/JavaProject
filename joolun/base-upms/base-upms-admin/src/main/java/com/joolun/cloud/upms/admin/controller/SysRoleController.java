@@ -12,6 +12,7 @@ import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.upms.common.entity.SysRoleMenu;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,9 @@ public class SysRoleController {
 	 * @param id ID
 	 * @return 角色信息
 	 */
+	@ApiOperation(value = "通过ID查询角色信息")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_role_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysRoleService.getById(id));
 	}
@@ -48,9 +50,10 @@ public class SysRoleController {
 	 * @param sysRole 角色信息
 	 * @return ok、false
 	 */
+	@ApiOperation(value = "添加角色")
 	@SysLog("添加角色")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_role_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:add')")
 	public R save(@Valid @RequestBody SysRole sysRole) {
 		return R.ok(sysRoleService.save(sysRole));
 	}
@@ -61,9 +64,10 @@ public class SysRoleController {
 	 * @param sysRole 角色信息
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "修改角色")
 	@SysLog("修改角色")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_role_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:edit')")
 	public R update(@Valid @RequestBody SysRole sysRole) {
 		if(!this.judeAdmin(sysRole.getId())){
 			return R.failed("管理员角色不能操作");
@@ -77,9 +81,10 @@ public class SysRoleController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "删除角色")
 	@SysLog("删除角色")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_role_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:del')")
 	public R removeById(@PathVariable String id) {
 		if(!this.judeAdmin(id)){
 			return R.failed("管理员角色不能操作");
@@ -92,8 +97,9 @@ public class SysRoleController {
 	 *
 	 * @return 角色列表
 	 */
+	@ApiOperation(value = "获取角色列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('sys_role_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:index')")
 	public List<SysRole> getList(SysRole sysRole) {
 		return sysRoleService.list(Wrappers.query(sysRole));
 	}
@@ -104,6 +110,7 @@ public class SysRoleController {
 	 * @param page 分页对象
 	 * @return 分页对象
 	 */
+	@ApiOperation(value = "分页查询角色信息")
 	@GetMapping("/page")
 	public R getRolePage(Page page) {
 		return R.ok(sysRoleService.page(page, Wrappers.emptyWrapper()));
@@ -116,9 +123,10 @@ public class SysRoleController {
 	 * @param sysRoleMenu menuId 菜单ID拼成的字符串，每个id之间根据逗号分隔
 	 * @return ok、false
 	 */
+	@ApiOperation(value = "更新角色菜单")
 	@SysLog("更新角色菜单")
 	@PutMapping("/menu")
-	@PreAuthorize("@ato.hasAuthority('sys_role_perm')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:perm')")
 	public R saveRoleMenus(@RequestBody SysRoleMenu sysRoleMenu) {
 		String roleId = sysRoleMenu.getRoleId();
 		String menuIds = sysRoleMenu.getMenuId();
@@ -152,9 +160,10 @@ public class SysRoleController {
 	 * @param sysRoleMenu menuIds 菜单ID拼成的字符串，每个id之间根据逗号分隔
 	 * @return ok、false
 	 */
+	@ApiOperation(value = "更新租户管理员角色菜单")
 	@SysLog("更新租户管理员角色菜单")
 	@PutMapping("/menu/tenant")
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:edit')")
 	public R saveRoleMenusTenant(@RequestBody SysRoleMenu sysRoleMenu) {
 		String tenantId = sysRoleMenu.getTenantId();
 		String roleId = sysRoleMenu.getRoleId();

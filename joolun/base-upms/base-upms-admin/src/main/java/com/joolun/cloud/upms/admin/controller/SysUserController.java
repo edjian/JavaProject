@@ -54,6 +54,7 @@ public class SysUserController {
 	 *
 	 * @return 用户信息
 	 */
+	@ApiOperation(value = "获取当前用户全部信息")
 	@GetMapping(value = {"/info"})
 	public R info() {
 		String username = SecurityUtils.getUser().getUsername();
@@ -70,6 +71,7 @@ public class SysUserController {
 	 *
 	 * @return 用户信息
 	 */
+	@ApiOperation(value = "获取指定用户全部信息")
 	@Inside
 	@GetMapping("/info/{username}")
 	public R info(@PathVariable String username) {
@@ -97,8 +99,9 @@ public class SysUserController {
 	 * @param id ID
 	 * @return 用户信息
 	 */
+	@ApiOperation(value = "通过ID查询用户信息")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_user_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:get')")
 	public R user(@PathVariable String id) {
 		return R.ok(sysUserService.selectUserVoById(id));
 	}
@@ -109,6 +112,7 @@ public class SysUserController {
 	 * @param username 用户名
 	 * @return
 	 */
+	@ApiOperation(value = "根据用户名查询用户信息")
 	@GetMapping("/detail/{username}")
 	public R userByUsername(@PathVariable String username) {
 		SysUser sysUser = new SysUser();
@@ -124,7 +128,7 @@ public class SysUserController {
 	 */
 	@SysLog("删除用户信息")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_user_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:del')")
 	@ApiOperation(value = "删除用户", notes = "根据ID删除用户")
 	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "int", paramType = "path")
 	public R userDel(@PathVariable String id) {
@@ -146,9 +150,10 @@ public class SysUserController {
 	 * @param userDto 用户信息
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "添加用户")
 	@SysLog("添加用户")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_user_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:add')")
 	public R user(@RequestBody UserDTO userDto) {
 		try{
 			return R.ok(sysUserService.saveUser(userDto));
@@ -163,9 +168,10 @@ public class SysUserController {
 	 * @param userDto 用户信息
 	 * @return R
 	 */
+	@ApiOperation(value = "更新用户信息")
 	@SysLog("更新用户信息")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_user_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:edit')")
 	public R updateUser(@Valid @RequestBody UserDTO userDto) {
 		try{
 			//查询出管理员角色，判断管理员角色是否至少有1个用户
@@ -194,9 +200,10 @@ public class SysUserController {
 	 * @param userDto
 	 * @return
 	 */
+	@ApiOperation(value = "修改用户密码")
 	@SysLog("修改用户密码")
 	@PutMapping("/password")
-	@PreAuthorize("@ato.hasAuthority('sys_user_password')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:password')")
 	public R editPassword(@Valid @RequestBody UserDTO userDto) {
 		SysUser sysUser = new SysUser();
 		sysUser.setId(userDto.getId());
@@ -212,8 +219,9 @@ public class SysUserController {
 	 * @param userDTO 查询参数列表
 	 * @return 用户集合
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys_user_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:user:index')")
 	public R getUserPage(Page page, UserDTO userDTO) {
 		return R.ok(sysUserService.getUsersWithRolePage(page, userDTO));
 	}
@@ -224,6 +232,7 @@ public class SysUserController {
 	 * @param userDto userDto
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "修改个人信息")
 	@SysLog("修改个人信息")
 	@PutMapping("/edit")
 	public R updateUserInfo(@Valid @RequestBody UserDTO userDto) {
@@ -234,6 +243,7 @@ public class SysUserController {
 	 * @param username 用户名称
 	 * @return 上级机构用户列表
 	 */
+	@ApiOperation(value = "查询")
 	@GetMapping("/ancestor/{username}")
 	public R listAncestorUsers(@PathVariable String username) {
 		return R.ok(sysUserService.listAncestorUsers(username));
@@ -244,6 +254,7 @@ public class SysUserController {
 	 * @param userRegister
 	 * @return
 	 */
+	@ApiOperation(value = "自助注册")
 	@PostMapping("/register")
 	public R register(@RequestBody UserRegister userRegister){
 		//校验验证码

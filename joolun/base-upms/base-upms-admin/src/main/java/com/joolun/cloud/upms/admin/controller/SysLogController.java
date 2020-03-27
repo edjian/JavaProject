@@ -9,6 +9,7 @@ import com.joolun.cloud.upms.common.vo.PreLogVO;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.security.annotation.Inside;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,9 @@ public class SysLogController {
 	 * @param sysLog 系统日志
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys_log_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:log:index')")
 	public R getLogPage(Page page, SysLog sysLog) {
 		return R.ok(sysLogService.page(page, Wrappers.query(sysLog)));
 	}
@@ -49,8 +51,9 @@ public class SysLogController {
 	 * @param id ID
 	 * @return
 	 */
+	@ApiOperation(value = "删除日志")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_log_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:log:del')")
 	public R removeById(@PathVariable String id) {
 		return R.ok(sysLogService.removeById(id));
 	}
@@ -61,6 +64,7 @@ public class SysLogController {
 	 * @param sysLog 日志实体
 	 * @return
 	 */
+	@ApiOperation(value = "插入日志")
 	@Inside
 	@PostMapping("/save")
 	public R save(@Valid @RequestBody SysLog sysLog) {
@@ -73,6 +77,7 @@ public class SysLogController {
 	 * @param preLogVOList 日志实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "批量插入异常日志")
 	@PostMapping("/logs")
 	public R saveBatchLogs(@RequestBody List<PreLogVO> preLogVOList) {
 		return R.ok(sysLogService.saveBatchLogs(preLogVOList));

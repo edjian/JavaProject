@@ -15,7 +15,7 @@
                 :md="3">
           <el-card shadow="never">
             <div slot="header">
-              <span>公众号名称</span>
+              <span>小程序名称</span>
             </div>
             <el-input
                     placeholder="输入关键字进行过滤"
@@ -139,10 +139,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_noticeitem_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_noticeitem_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_noticeitem_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_noticeitem_get, false)
+                    addBtn: this.permissions['mall:noticeitem:add'],
+                    delBtn: this.permissions['mall:noticeitem:del'],
+                    editBtn: this.permissions['mall:noticeitem:edit'],
+                    viewBtn: this.permissions['mall:noticeitem:get']
                 };
             }
         },
@@ -209,24 +209,26 @@
                 this.getPage(this.page)
             },
             getPage(page, params) {
+              if(this.appId){
                 this.tableLoading = true
                 getPage(Object.assign({
-                    current: page.currentPage,
-                    size: page.pageSize,
-                    descs: this.page.descs,
-                    ascs: this.page.ascs,
-                    appId: this.appId,
-                    noticeType: this.noticeType
+                  current: page.currentPage,
+                  size: page.pageSize,
+                  descs: this.page.descs,
+                  ascs: this.page.ascs,
+                  appId: this.appId,
+                  noticeType: this.noticeType
                 }, params, this.paramsSearch)).then(response => {
-                    let tableData = response.data.data.records
-                    this.tableData = tableData
-                    this.page.total = response.data.data.total
-                    this.page.currentPage = page.currentPage
-                    this.page.pageSize = page.pageSize
-                    this.tableLoading = false
+                  let tableData = response.data.data.records
+                  this.tableData = tableData
+                  this.page.total = response.data.data.total
+                  this.page.currentPage = page.currentPage
+                  this.page.pageSize = page.pageSize
+                  this.tableLoading = false
                 }).catch(() => {
-                    this.tableLoading = false
+                  this.tableLoading = false
                 })
+              }
             },
             /**
              * @title 数据删除
@@ -299,7 +301,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-              this.getPage(page)
+              this.getPage(this.page)
             }
         }
     }

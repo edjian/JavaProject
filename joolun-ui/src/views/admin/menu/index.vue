@@ -21,7 +21,7 @@
         </template>
         <template slot="menu" slot-scope="scope">
           <el-button type="text"
-                     v-if="permissions.sys_menu_add"
+                     v-if="permissions['sys:menu:add']"
                      icon="el-icon-plus"
                      size="small"
                      plain
@@ -74,10 +74,10 @@
       ...mapGetters(["elements", "permissions"]),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_menu_add, false),
-          delBtn: this.vaildData(this.permissions.sys_menu_del, false),
-          editBtn: this.vaildData(this.permissions.sys_menu_edit, false),
-          viewBtn: this.vaildData(this.permissions.sys_menu_get, false)
+          addBtn: this.permissions['sys:menu:add'],
+          delBtn: this.permissions['sys:menu:del'],
+          editBtn: this.permissions['sys:menu:edit'],
+          viewBtn: this.permissions['sys:menu:get']
         }
       }
     },
@@ -159,7 +159,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       addChildrenMenu(row, index){
         this.form.parentId = row.id

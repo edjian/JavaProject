@@ -329,22 +329,12 @@ Page({
                 baseLine: 'middle',
                 text: [
                   {
-                    text: '商家发货&售后',
+                    text: this.data.goodsSpu.sellPoint,
                     fontSize: 28,
                     color: '#929292',
-                  },
-                  {
-                    text: '七天退货',
-                    fontSize: 28,
-                    color: '#929292',
-                    marginLeft: 50,
-                  },
-                  {
-                    text: '运费险',
-                    fontSize: 28,
-                    color: '#929292',
-                    marginLeft: 50,
-                  },
+                    width: 570,
+                    lineNum: 1,
+                  }
                 ]
               },
               {

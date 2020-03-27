@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_bargaincut_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_bargaincut_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_bargaincut_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_bargaincut_get, false)
+                    addBtn: this.permissions['mall:bargaincut:add'],
+                    delBtn: this.permissions['mall:bargaincut:del'],
+                    editBtn: this.permissions['mall:bargaincut:edit'],
+                    viewBtn: this.permissions['mall:bargaincut:get']
                 };
             }
         },
@@ -172,7 +172,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

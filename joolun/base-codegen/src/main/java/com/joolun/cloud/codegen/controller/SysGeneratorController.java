@@ -6,6 +6,7 @@ import com.joolun.cloud.codegen.entity.GenConfig;
 import com.joolun.cloud.codegen.service.SysGeneratorService;
 import com.joolun.cloud.common.core.util.R;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ public class SysGeneratorController {
 	 * @param id        数据源编号
 	 * @return 数据库表
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
 	public R getPage(Page page, String tableName, String id) {
 		return R.ok(sysGeneratorService.getPage(page, tableName, id));
@@ -41,6 +43,7 @@ public class SysGeneratorController {
 	/**
 	 * 生成代码
 	 */
+	@ApiOperation(value = "生成代码")
 	@SneakyThrows
 	@PostMapping("/code")
 	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {

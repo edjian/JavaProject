@@ -90,7 +90,7 @@
             <template slot-scope="scope"
                       slot="menu">
               <el-button type="text"
-                         v-if="permissions.wxmp_wxmsg_index"
+                         v-if="permissions['wxmp:wxmsg:index']"
                          icon="el-icon-chat-line-round"
                          size="small"
                          plain
@@ -159,10 +159,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxmsg_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxmsg_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxmsg_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxmsg_get, false)
+          addBtn: this.permissions['wxmp:wxmsg:add'],
+          delBtn: this.permissions['wxmp:wxmsg:del'],
+          editBtn: this.permissions['wxmp:wxmsg:edit'],
+          viewBtn: this.permissions['wxmp:wxmsg:get']
         };
       }
     },
@@ -307,7 +307,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

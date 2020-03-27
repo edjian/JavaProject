@@ -108,10 +108,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.mall_goodsspec_add, false),
-          delBtn: this.vaildData(this.permissions.mall_goodsspec_del, false),
-          editBtn: this.vaildData(this.permissions.mall_goodsspec_edit, false),
-          viewBtn: this.vaildData(this.permissions.mall_goodsspec_get, false)
+          addBtn: this.permissions['mall:goodsspec:add'],
+          delBtn: this.permissions['mall:goodsspec:del'],
+          editBtn: this.permissions['mall:goodsspec:edit'],
+          viewBtn: this.permissions['mall:goodsspec:get']
         };
       }
     },
@@ -220,7 +220,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
 
       handleItem: function (row) {
@@ -335,7 +335,7 @@
        * 刷新回调
        */
       refreshChange2(val) {
-        this.getPage2(val.page)
+        this.getPage2(this.page2)
       }
     }
   }

@@ -7,6 +7,7 @@ import com.joolun.cloud.codegen.service.SysDatasourceService;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class SysDatasourceController {
 	 * @param sysDatasource 数据源表
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
 	public R getSysDatasourceConfPage(Page page, SysDatasource sysDatasource) {
 		return R.ok(sysDatasourceService.page(page, Wrappers.query(sysDatasource)));
@@ -40,6 +42,7 @@ public class SysDatasourceController {
 	 *
 	 * @return
 	 */
+	@ApiOperation(value = "查询全部数据源")
 	@GetMapping("/list")
 	public R list() {
 		return R.ok(sysDatasourceService.list());
@@ -52,6 +55,7 @@ public class SysDatasourceController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id查询数据源表")
 	@GetMapping("/{id}")
 	public R getById(@PathVariable("id") String id) {
 		return R.ok(sysDatasourceService.getById(id));
@@ -63,6 +67,7 @@ public class SysDatasourceController {
 	 * @param sysDatasource 数据源表
 	 * @return R
 	 */
+	@ApiOperation(value = "新增数据源表")
 	@SysLog("新增数据源表")
 	@PostMapping
 	public R save(@RequestBody SysDatasource sysDatasource) {
@@ -75,6 +80,7 @@ public class SysDatasourceController {
 	 * @param sysDatasource 数据源表
 	 * @return R
 	 */
+	@ApiOperation(value = "修改数据源表")
 	@SysLog("修改数据源表")
 	@PutMapping
 	public R updateById(@RequestBody SysDatasource sysDatasource) {
@@ -87,6 +93,7 @@ public class SysDatasourceController {
 	 * @param id id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id删除数据源表")
 	@SysLog("删除数据源表")
 	@DeleteMapping("/{id}")
 	public R removeById(@PathVariable String id) {

@@ -22,6 +22,7 @@ import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -50,8 +51,9 @@ public class WxUserController {
 	* @param wxUser 微信用户
 	* @return
 	*/
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:index')")
 	public R getWxUserPage(Page page, WxUser wxUser,String tagId) {
 		Wrapper<WxUser> queryWrapper;
 		if(StringUtils.isNotBlank(tagId)){
@@ -81,8 +83,9 @@ public class WxUserController {
 	* @param id id
 	* @return R
 	*/
+	@ApiOperation(value = "通过id查询微信用户")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_get')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:get')")
 	public R getById(@PathVariable("id") String id){
 	return R.ok(wxUserService.getById(id));
 	}
@@ -92,9 +95,10 @@ public class WxUserController {
 	* @param wxUser 微信用户
 	* @return R
 	*/
+	@ApiOperation(value = "新增微信用户")
 	@SysLog("新增微信用户")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:add')")
 	public R save(@RequestBody WxUser wxUser){
 	return R.ok(wxUserService.save(wxUser));
 	}
@@ -104,9 +108,10 @@ public class WxUserController {
 	* @param wxUser 微信用户
 	* @return R
 	*/
+	@ApiOperation(value = "修改微信用户")
 	@SysLog("修改微信用户")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_edit')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:edit')")
 	public R updateById(@RequestBody WxUser wxUser){
 	return R.ok(wxUserService.updateById(wxUser));
 	}
@@ -116,16 +121,18 @@ public class WxUserController {
 	* @param id id
 	* @return R
 	*/
+	@ApiOperation(value = "通过id删除微信用户")
 	@SysLog("删除微信用户")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_del')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:del')")
 	public R removeById(@PathVariable String id){
     return R.ok(wxUserService.removeById(id));
   }
 
+	@ApiOperation(value = "同步微信用户")
 	@SysLog("同步微信用户")
 	@PostMapping("/synchron")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_synchro')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:synchro')")
 	public R synchron(@RequestBody WxUser wxUser){
 		try {
 			wxUserService.synchroWxUser(wxUser.getAppId());
@@ -142,9 +149,10 @@ public class WxUserController {
 	 * @param wxUser
 	 * @return
 	 */
+	@ApiOperation(value = "修改微信用户备注")
 	@SysLog("修改微信用户备注")
 	@PutMapping("/remark")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_edit_remark')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:edit:remark')")
 	public R remark(@RequestBody WxUser wxUser){
 		try {
 			return R.ok(wxUserService.updateRemark(wxUser));
@@ -160,8 +168,9 @@ public class WxUserController {
 	 * @param data
 	 * @return
 	 */
+	@ApiOperation(value = "打标签")
 	@PutMapping("/tagid-list")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxuser_tagging')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxuser:tagging')")
 	public R tagidList(@RequestBody JSONObject data){
 		try {
 			String appId = data.getStr("appId");
@@ -185,6 +194,7 @@ public class WxUserController {
 	 * @param id id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id查询微信用户")
 	@Inside
 	@GetMapping("/inside/{id}")
 	public R getByIdInside(@PathVariable("id") String id){
@@ -196,6 +206,7 @@ public class WxUserController {
 	 * @param wxOpenDataDTO
 	 * @return R
 	 */
+	@ApiOperation(value = "保存微信用户")
 	@Inside
 	@PostMapping("/inside")
 	public R saveInside(@RequestBody WxOpenDataDTO wxOpenDataDTO){

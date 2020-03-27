@@ -92,7 +92,7 @@ export const tableOption = {
             type: 'radio',
             sortable: true,
             slot: true,
-            width: 150,
+            width: 200,
             display: false
         },
         {

@@ -78,6 +78,8 @@ public class BaseApi {
 				((BargainUser) baseEntity).setUserId(mallUserId_session);
 			}else if (baseEntity instanceof BargainCut){
 				((BargainCut) baseEntity).setUserId(mallUserId_session);
+			}else if (baseEntity instanceof GrouponUser){
+				((GrouponUser) baseEntity).setUserId(mallUserId_session);
 			}
 			return R.ok(baseEntity);
 		}

@@ -10,3 +10,7 @@
 @import './iview.scss';
 //heyui
 @import './hey.scss';
+
+.el-card {
+  opacity: unset!important;
+}

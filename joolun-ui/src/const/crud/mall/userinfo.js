@@ -55,6 +55,13 @@ export const tableOption = {
       type: 'upload',
       imgWidth:50,
       listType:'picture-img',
+      span: 24,
+      action: '/admin/file/upload?fileType=image&dir=mall/user/',
+      propsHttp: {
+        url: 'link'
+      },
+      loadText: '图上上传中，请稍等',
+      tip: '只能上传jpg/png文件，且不超过100kb'
     },
     {
       label: '所在国家',

@@ -24,7 +24,12 @@
     "pages/bargain/bargain-list/index",
     "pages/bargain/bargain-detail/index",
     "pages/bargain/bargain-user-list/index",
-    "pages/bargain/bargain-order-confirm/index"
+    "pages/bargain/bargain-order-confirm/index",
+    "pages/groupon/groupon-list/index",
+    "pages/groupon/groupon-detail/index",
+    "pages/groupon/groupon-user-list/index",
+    "pages/groupon/groupon-user-detail/index",
+    "pages/groupon/groupon-order-confirm/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",

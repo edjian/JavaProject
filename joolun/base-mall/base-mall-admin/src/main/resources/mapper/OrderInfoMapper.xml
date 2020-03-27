@@ -41,6 +41,7 @@
 		<result property="appraisesStatus" column="appraises_status"/>
 		<result property="userMessage" column="user_message"/>
 		<result property="orderType" column="order_type"/>
+		<result property="marketId" column="market_id"/>
 		<result property="relationId" column="relation_id"/>
 	</resultMap>
 
@@ -85,6 +86,7 @@
 		order_info.`transaction_id`,
 		order_info.`remark`,
 		order_info.`order_type`,
+		order_info.`market_id`,
 		order_info.`relation_id`
 	</sql>
 

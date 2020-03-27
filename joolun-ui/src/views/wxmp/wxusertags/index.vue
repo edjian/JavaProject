@@ -104,10 +104,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxusertags_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxusertags_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxusertags_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxusertags_get, false)
+          addBtn: this.permissions['wxmp:wxusertags:add'],
+          delBtn: this.permissions['wxmp:wxusertags:del'],
+          editBtn: this.permissions['wxmp:wxusertags:edit'],
+          viewBtn: this.permissions['wxmp:wxusertags:get']
         }
       }
     },
@@ -246,7 +246,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

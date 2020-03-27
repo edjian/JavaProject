@@ -8,7 +8,7 @@
 -->
 <view class="flex justify-end">
   <button class="cu-btn round line-grey margin-right" bindtap="orderDel" loading="{{loading}}" 
-  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '5'}}">
+  disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '5' && orderInfo.isPay == '0'}}">
     删除订单
   </button>
   <button class="cu-btn round line-grey margin-right" bindtap="orderCancel" loading="{{loading}}" 

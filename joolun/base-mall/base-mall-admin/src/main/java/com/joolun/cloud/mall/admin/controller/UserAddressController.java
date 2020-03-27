@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.UserAddress;
 import com.joolun.cloud.mall.admin.service.UserAddressService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class UserAddressController {
     * @param userAddress 用户收货地址
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_useraddress_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:useraddress:index')")
     public R getUserAddressPage(Page page, UserAddress userAddress) {
         return R.ok(userAddressService.page(page,Wrappers.query(userAddress)));
     }
@@ -52,8 +54,9 @@ public class UserAddressController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询用户收货地址")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_useraddress_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:useraddress:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(userAddressService.getById(id));
     }
@@ -63,9 +66,10 @@ public class UserAddressController {
     * @param userAddress 用户收货地址
     * @return R
     */
+	@ApiOperation(value = "新增用户收货地址")
     @SysLog("新增用户收货地址")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_useraddress_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:useraddress:add')")
     public R save(@RequestBody UserAddress userAddress){
         return R.ok(userAddressService.save(userAddress));
     }
@@ -75,9 +79,10 @@ public class UserAddressController {
     * @param userAddress 用户收货地址
     * @return R
     */
+	@ApiOperation(value = "修改用户收货地址")
     @SysLog("修改用户收货地址")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_useraddress_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:useraddress:edit')")
     public R updateById(@RequestBody UserAddress userAddress){
         return R.ok(userAddressService.updateById(userAddress));
     }
@@ -87,9 +92,10 @@ public class UserAddressController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除用户收货地址")
     @SysLog("删除用户收货地址")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_useraddress_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:useraddress:del')")
     public R removeById(@PathVariable String id){
         return R.ok(userAddressService.removeById(id));
     }

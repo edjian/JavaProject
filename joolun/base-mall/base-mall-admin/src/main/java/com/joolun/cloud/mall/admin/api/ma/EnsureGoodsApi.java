@@ -13,6 +13,7 @@ import com.joolun.cloud.mall.admin.service.EnsureGoodsService;
 import com.joolun.cloud.mall.common.entity.Ensure;
 import com.joolun.cloud.mall.common.entity.EnsureGoods;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class EnsureGoodsApi {
      * @param ensureGoods 商品保障
      * @return
      */
+	@ApiOperation(value = "通过spuID，查询商品保障")
     @GetMapping("/listEnsureBySpuId")
     public R listEnsureBySpuId(HttpServletRequest request, EnsureGoods ensureGoods) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

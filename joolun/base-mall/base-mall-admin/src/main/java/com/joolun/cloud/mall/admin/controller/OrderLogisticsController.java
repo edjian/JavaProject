@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.OrderLogistics;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class OrderLogisticsController {
     * @param orderLogistics 订单物流
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogistics_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogistics:index')")
     public R getOrderLogisticsPage(Page page, OrderLogistics orderLogistics) {
         return R.ok(orderLogisticsService.page(page,Wrappers.query(orderLogistics)));
     }
@@ -53,8 +55,9 @@ public class OrderLogisticsController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询订单物流")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogistics_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogistics:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(orderLogisticsService.getById(id));
     }
@@ -64,9 +67,10 @@ public class OrderLogisticsController {
     * @param orderLogistics 订单物流
     * @return R
     */
+	@ApiOperation(value = "新增订单物流")
     @SysLog("新增订单物流")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogistics_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogistics:add')")
     public R save(@RequestBody OrderLogistics orderLogistics){
         return R.ok(orderLogisticsService.save(orderLogistics));
     }
@@ -76,9 +80,10 @@ public class OrderLogisticsController {
     * @param orderLogistics 订单物流
     * @return R
     */
+	@ApiOperation(value = "修改订单物流")
     @SysLog("修改订单物流")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogistics_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogistics:edit')")
     public R updateById(@RequestBody OrderLogistics orderLogistics){
         return R.ok(orderLogisticsService.updateById(orderLogistics));
     }
@@ -88,9 +93,10 @@ public class OrderLogisticsController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除订单物流")
     @SysLog("删除订单物流")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogistics_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogistics:del')")
     public R removeById(@PathVariable String id){
         return R.ok(orderLogisticsService.removeById(id));
     }
@@ -100,6 +106,7 @@ public class OrderLogisticsController {
 	 * @param type
 	 * @return
 	 */
+	@ApiOperation(value = "获取相关枚举数据的字典")
 	@GetMapping("/dict/{type}")
 	public R getDictByType(@PathVariable String type) {
 		return R.ok(OrderLogisticsEnum.queryAll(type));

@@ -36,9 +36,9 @@
 
   <view class="cu-list grid col-5 no-border">
     <view class="cu-item">
-      <navigator url="/pages/goods/goods-category/index" open-type="switchTab" hover-class="none">
-        <view class="lg text-blue cuIcon-list"></view>
-        <text class="text-black">商品分类</text>
+      <navigator url="/pages/groupon/groupon-list/index" hover-class="none">
+        <view class="lg text-blue cuIcon-group"></view>
+        <text class="text-black">拼团活动</text>
       </navigator>
     </view>
     <view class="cu-item">

@@ -12,10 +12,10 @@
       {{orderInfo.statusDesc}}
     </view>
     <view class="text-black margin-left" wx:if="{{orderInfo.isPay == '0' && !orderInfo.status}}">
-      请在{{countDown.min}}分{{countDown.sec}}秒内付款，超时订单将自动取消
+      请在<count-down outTime="{{1000 * orderInfo.outTime}}" bind:countDownDone="countDownDone"/>内付款，超时订单将自动取消
     </view>
     <view class="text-black margin-left" wx:if="{{orderInfo.status == '2'}}">
-      还剩{{countDown.day}}天{{countDown.hou}}时{{countDown.min}}分{{countDown.sec}}秒自动确认
+      还剩<count-down outTime="{{1000 * orderInfo.outTime}}" bind:countDownDone="countDownDone"/>自动确认
     </view>
   </view>
   <view class="cu-list cu-card menu-avatar">
@@ -56,7 +56,9 @@
               <view class="content response">
                 <image src="{{item.picUrl ? item.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
                 <view class="desc row-info">
-                  <view class="text-black margin-top-sm overflow-2">{{item.spuName}}</view>
+                  <view class="text-black margin-top-sm overflow-2">
+                    {{item.spuName}}
+                  </view>
                   <view class="text-gray text-sm margin-top-sm overflow-2" wx:if="{{item.specInfo}}">{{item.specInfo}}</view>
                   <view class="flex justify-between">
                     <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item.salesPrice}}</view>
@@ -116,7 +118,10 @@
             <text class="text-grey">支付金额</text>
           </view>
           <view class="action">
-            <text class="text-red text-bold" wx:if="{{orderInfo.orderType != '0'}}">{{orderInfo.orderType == '1' ? '砍价后' : ''}} </text><text class="text-price text-red text-bold">{{orderInfo.paymentPrice}}</text>
+            <text class="text-red text-bold" wx:if="{{orderInfo.orderType != '0'}}">
+              {{orderInfo.orderType == '1' ? '砍价后' : orderInfo.orderType == '2' ? '拼团价' : ''}} 
+            </text>
+            <text class="text-price text-red text-bold">{{orderInfo.paymentPrice}}</text>
           </view>
         </view>
       </view>
@@ -131,7 +136,8 @@
       </view>
       <view class="margin flex">
         <text class="flex-sub">订单编号</text>
-        <view class="flex-twice">{{orderInfo.orderNo}}
+        <view class="flex-twice">
+          {{orderInfo.orderNo}}
           <button class="cu-btn sm" bindtap="copyData" data-data="{{orderInfo.orderNo}}">复制</button>
         </view>
       </view>

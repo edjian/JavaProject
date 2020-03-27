@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.Notice;
 import com.joolun.cloud.mall.admin.service.NoticeService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class NoticeController {
     * @param notice 商城通知
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_notice_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:notice:index')")
     public R getNoticePage(Page page, Notice notice) {
         return R.ok(noticeService.page(page,Wrappers.query(notice)));
     }
@@ -52,8 +54,9 @@ public class NoticeController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商城通知")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_notice_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:notice:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(noticeService.getById(id));
     }
@@ -63,9 +66,10 @@ public class NoticeController {
     * @param notice 商城通知
     * @return R
     */
+	@ApiOperation(value = "新增商城通知")
     @SysLog("新增商城通知")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_notice_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:notice:add')")
     public R save(@RequestBody Notice notice){
         return R.ok(noticeService.save(notice));
     }
@@ -75,9 +79,10 @@ public class NoticeController {
     * @param notice 商城通知
     * @return R
     */
+	@ApiOperation(value = "修改商城通知")
     @SysLog("修改商城通知")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_notice_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:notice:edit')")
     public R updateById(@RequestBody Notice notice){
         return R.ok(noticeService.updateById(notice));
     }
@@ -87,9 +92,10 @@ public class NoticeController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除商城通知")
     @SysLog("删除商城通知")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_notice_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:notice:del')")
     public R removeById(@PathVariable String id){
         return R.ok(noticeService.removeById(id));
     }

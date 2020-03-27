@@ -99,7 +99,7 @@
       }
     },
     created() {
-      if(this.permissions.wxmp_wxmsg_index){
+      if(this.permissions['wxmp:wxmsg:index']){
         this.refreshChange()
       }
     },
@@ -107,10 +107,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxmsg_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxmsg_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxmsg_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxmsg_get, false)
+          addBtn: this.permissions['wxmp:wxmsg:add'],
+          delBtn: this.permissions['wxmp:wxmsg:del'],
+          editBtn: this.permissions['wxmp:wxmsg:edit'],
+          viewBtn: this.permissions['wxmp:wxmsg:get']
         };
       }
     },

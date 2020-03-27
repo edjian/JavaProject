@@ -39,7 +39,7 @@ public class WxOpenApiController {
 	 * @return
 	 */
     @GetMapping("/authorizer-info/{appId}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
     public R getAuthorizerInfo(@PathVariable("appId") String appId){
         try {
             WxOpenAuthorizerInfoResult wxOpenAuthorizerInfoResult = WxOpenConfiguration.getOpenService().getWxOpenComponentService().getAuthorizerInfo(appId);

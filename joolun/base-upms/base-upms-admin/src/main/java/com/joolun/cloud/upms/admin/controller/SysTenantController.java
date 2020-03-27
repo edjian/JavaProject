@@ -10,6 +10,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.upms.admin.service.SysTenantService;
 import com.joolun.cloud.upms.common.entity.SysTenant;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,8 +45,9 @@ public class SysTenantController {
 	 * @param sysTenant 查询参数列表
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:index')")
 	public R getUserPage(Page page, SysTenant sysTenant) {
 		sysTenant.setParentId(CommonConstants.PARENT_ID);
 		return R.ok(sysTenantService.page(page, Wrappers.query(sysTenant)));
@@ -56,6 +58,7 @@ public class SysTenantController {
 	 * @param sysTenant
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
 	public R getList(SysTenant sysTenant) {
 		sysTenant.setParentId(CommonConstants.PARENT_ID);
@@ -68,8 +71,9 @@ public class SysTenantController {
 	 * @param id ID
 	 * @return Systenant
 	 */
+	@ApiOperation(value = "通过ID查询")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:get')")
 	public R getById(@PathVariable String id) {
 		TenantContextHolder.setTenantId(id);
 		return R.ok(sysTenantService.getById(id));
@@ -81,9 +85,10 @@ public class SysTenantController {
 	 * @param sysTenant 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "添加")
 	@SysLog("添加租户")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:add')")
 	public R save(@Valid @RequestBody SysTenant sysTenant) {
 		String id = String.valueOf(IdUtil.getSnowflake(1,2).nextId());
 		TenantContextHolder.setTenantId(id);
@@ -99,9 +104,10 @@ public class SysTenantController {
 	 * @param id ID
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "删除")
 	@SysLog("删除租户")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:del')")
 	public R removeById(@PathVariable String id) {
 		TenantContextHolder.setTenantId(id);
 		return R.ok(sysTenantService.removeById(id));
@@ -113,9 +119,10 @@ public class SysTenantController {
 	 * @param sysTenant 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "编辑")
 	@SysLog("编辑租户")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:edit')")
 	public R update(@Valid @RequestBody SysTenant sysTenant) {
 		TenantContextHolder.setTenantId(sysTenant.getId());
 		sysTenant.setParentId(CommonConstants.PARENT_ID);

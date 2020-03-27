@@ -22,6 +22,7 @@ import com.joolun.cloud.weixin.admin.config.pay.WxPayConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +51,7 @@ public class WxPayController {
 	 * @param request 统一下单请求参数
 	 * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
 	 */
+	@ApiOperation(value = "调用统一下单接口")
 	@Inside
 	@PostMapping("/unifiedOrder")
 	public R unifiedOrder(@RequestBody WxPayUnifiedOrderRequest request) {
@@ -58,7 +60,7 @@ public class WxPayController {
 			return R.ok(wxPayService.createOrder(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getReturnMsg());
+			return R.failed(e.getErrCodeDes());
 		}
 	}
 
@@ -67,6 +69,7 @@ public class WxPayController {
 	 * @param xmlData
 	 * @return
 	 */
+	@ApiOperation(value = "处理支付回调数据")
 	@Inside
 	@PostMapping("/notifyOrder")
 	public R notifyOrder(@RequestBody String xmlData) {
@@ -78,7 +81,7 @@ public class WxPayController {
 			return R.ok(notifyResult,wxApp.getTenantId());
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getReturnMsg());
+			return R.failed(e.getErrCodeDes());
 		}
 	}
 
@@ -93,6 +96,7 @@ public class WxPayController {
 	 * @return 退款操作结果 wx pay refund result
 	 * @throws WxPayException the wx pay exception
 	 */
+	@ApiOperation(value = "申请退款")
 	@Inside
 	@PostMapping("/refundOrder")
 	public R refundOrder(@RequestBody WxPayRefundRequest request) {
@@ -101,7 +105,7 @@ public class WxPayController {
 			return R.ok(wxPayService.refund(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getReturnMsg());
+			return R.failed(e.getErrCodeDes());
 		}
 	}
 
@@ -110,6 +114,7 @@ public class WxPayController {
 	 * @param xmlData
 	 * @return
 	 */
+	@ApiOperation(value = "处理退款回调数据")
 	@Inside
 	@PostMapping("/notifyRefunds")
 	public R notifyRefunds(@RequestBody String xmlData) {
@@ -121,7 +126,7 @@ public class WxPayController {
 			return R.ok(notifyResult,wxApp.getTenantId());
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getReturnMsg());
+			return R.failed(e.getErrCodeDes());
 		}
 	}
 
@@ -130,6 +135,7 @@ public class WxPayController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value = "查询订单")
 	@Inside
 	@PostMapping("/queryOrder")
 	public R refundOrder(@RequestBody WxPayOrderQueryRequest request) {
@@ -138,7 +144,7 @@ public class WxPayController {
 			return R.ok(wxPayService.queryOrder(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getReturnMsg());
+			return R.failed(e.getErrCodeDes());
 		}
 	}
 }

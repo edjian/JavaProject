@@ -15,6 +15,7 @@ import com.joolun.cloud.mall.admin.service.UserCollectService;
 import com.joolun.cloud.mall.common.dto.UserCollectAddDTO;
 import com.joolun.cloud.mall.common.entity.UserCollect;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class UserCollectApi {
     * @param userCollect 用户收藏
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getUserCollectPage(HttpServletRequest request, Page page, UserCollect userCollect) {
 		R checkThirdSession = BaseApi.checkThirdSession(userCollect, request);
@@ -57,6 +59,7 @@ public class UserCollectApi {
     * @param userCollectAddDTO 用户收藏
     * @return R
     */
+	@ApiOperation(value = "新增用户收藏")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody UserCollectAddDTO userCollectAddDTO){
 		UserCollect userCollect = new UserCollect();
@@ -84,6 +87,7 @@ public class UserCollectApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除用户收藏")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

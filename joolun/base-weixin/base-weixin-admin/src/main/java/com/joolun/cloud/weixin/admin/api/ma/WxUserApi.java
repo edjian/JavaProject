@@ -15,6 +15,7 @@ import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class WxUserApi {
 	 * @param loginMaDTO
 	 * @return
 	 */
+	@ApiOperation(value = "小程序用户登录")
 	@PostMapping("/login")
 	public R login(HttpServletRequest request, @RequestBody LoginMaDTO loginMaDTO){
 		try {

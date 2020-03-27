@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.DeliveryPlace;
 import com.joolun.cloud.mall.admin.service.DeliveryPlaceService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,9 @@ public class DeliveryPlaceController {
      * @param deliveryPlace 发货地
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_deliveryplace_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:deliveryplace:index')")
     public R getPage(Page page, DeliveryPlace deliveryPlace) {
         return R.ok(deliveryPlaceService.page(page, Wrappers.query(deliveryPlace)));
     }
@@ -55,8 +57,9 @@ public class DeliveryPlaceController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "发货地查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_deliveryplace_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:deliveryplace:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(deliveryPlaceService.getById(id));
     }
@@ -66,8 +69,9 @@ public class DeliveryPlaceController {
 	 * @param deliveryPlace
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_deliveryplace_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:deliveryplace:index')")
 	public List<DeliveryPlace> getList(DeliveryPlace deliveryPlace) {
 		return deliveryPlaceService.list(Wrappers.query(deliveryPlace).lambda()
 				.select(DeliveryPlace::getId,
@@ -79,9 +83,10 @@ public class DeliveryPlaceController {
      * @param deliveryPlace 发货地
      * @return R
      */
+	@ApiOperation(value = "发货地新增")
     @SysLog("新增发货地")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_deliveryplace_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:deliveryplace:add')")
     public R save(@RequestBody DeliveryPlace deliveryPlace) {
         return R.ok(deliveryPlaceService.save(deliveryPlace));
     }
@@ -91,9 +96,10 @@ public class DeliveryPlaceController {
      * @param deliveryPlace 发货地
      * @return R
      */
+	@ApiOperation(value = "发货地修改")
     @SysLog("修改发货地")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_deliveryplace_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:deliveryplace:edit')")
     public R updateById(@RequestBody DeliveryPlace deliveryPlace) {
         return R.ok(deliveryPlaceService.updateById(deliveryPlace));
     }
@@ -103,9 +109,10 @@ public class DeliveryPlaceController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "发货地删除")
     @SysLog("删除发货地")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_deliveryplace_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:deliveryplace:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(deliveryPlaceService.removeById(id));
     }

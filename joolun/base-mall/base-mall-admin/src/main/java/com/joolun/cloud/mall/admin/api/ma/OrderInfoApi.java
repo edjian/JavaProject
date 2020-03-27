@@ -24,17 +24,21 @@ import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
+import com.joolun.cloud.mall.admin.service.GrouponInfoService;
+import com.joolun.cloud.mall.admin.service.GrouponUserService;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
+import com.joolun.cloud.mall.common.entity.GrouponInfo;
+import com.joolun.cloud.mall.common.entity.GrouponUser;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import io.swagger.annotations.Api;
-import io.swagger.models.auth.In;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 商城订单
@@ -64,13 +66,16 @@ public class OrderInfoApi {
 	private final FeignWxPayService feignWxPayService;
 	private final MallConfigProperties mallConfigProperties;
 	private final OrderLogisticsService orderLogisticsService;
+	private final GrouponInfoService grouponInfoService;
+	private final GrouponUserService grouponUserService;
 
-    /**
-    * 分页查询
-    * @param page 分页对象
-    * @param orderInfo 商城订单
-    * @return
-    */
+	/**
+	* 分页查询
+	* @param page 分页对象
+	* @param orderInfo 商城订单
+	* @return
+	*/
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getOrderInfoPage(HttpServletRequest request, Page page, OrderInfo orderInfo) {
 		//检验用户session登录
@@ -86,6 +91,7 @@ public class OrderInfoApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商城订单")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id){
 		//检验用户session登录
@@ -101,6 +107,7 @@ public class OrderInfoApi {
     * @param placeOrderDTO 商城订单
     * @return R
     */
+	@ApiOperation(value = "新增商城订单")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody PlaceOrderDTO placeOrderDTO){
 		//检验用户session登录
@@ -125,6 +132,7 @@ public class OrderInfoApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除商城订单")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id){
 		//检验用户session登录
@@ -136,7 +144,7 @@ public class OrderInfoApi {
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
 		}
-		if(!OrderInfoEnum.STATUS_5.getValue().equals(orderInfo.getStatus())){
+		if(!OrderInfoEnum.STATUS_5.getValue().equals(orderInfo.getStatus()) || CommonConstants.YES.equals(orderInfo.getIsPay())){
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
 		}
 		return R.ok(orderInfoService.removeById(id));
@@ -147,6 +155,7 @@ public class OrderInfoApi {
 	 * @param id 商城订单
 	 * @return R
 	 */
+	@ApiOperation(value = "取消商城订单")
 	@PutMapping("/cancel/{id}")
 	public R orderCancel(HttpServletRequest request, @PathVariable String id){
 		//检验用户session登录
@@ -170,6 +179,7 @@ public class OrderInfoApi {
 	 * @param id 商城订单
 	 * @return R
 	 */
+	@ApiOperation(value = "商城订单确认收货")
 	@PutMapping("/receive/{id}")
 	public R orderReceive(HttpServletRequest request, @PathVariable String id){
 		//检验用户session登录
@@ -194,6 +204,7 @@ public class OrderInfoApi {
 	 * @param request 统一下单请求参数
 	 * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
 	 */
+	@ApiOperation(value = "调用统一下单接口")
 	@PostMapping("/unifiedOrder")
 	public R unifiedOrder(HttpServletRequest request, @RequestBody OrderInfo orderInfo){
 		//检验用户session登录
@@ -214,11 +225,36 @@ public class OrderInfoApi {
 			orderInfoService.notifyOrder(orderInfo);
 			return R.ok();
 		}
+		if(MallConstants.ORDER_TYPE_2.equals(orderInfo.getOrderType())){//拼团订单
+			GrouponInfo grouponInfo = grouponInfoService.getOne(Wrappers.<GrouponInfo>lambdaQuery()
+					.eq(GrouponInfo::getId,orderInfo.getMarketId())
+					.eq(GrouponInfo::getEnable,CommonConstants.YES)
+					.lt(GrouponInfo::getValidBeginTime,LocalDateTime.now())
+					.gt(GrouponInfo::getValidEndTime,LocalDateTime.now()));
+			if(grouponInfo == null){//判断拼团的有效性
+				return R.failed(MyReturnCode.ERR_80010.getCode(), MyReturnCode.ERR_80010.getMsg());
+			}
+			if(StrUtil.isNotBlank(orderInfo.getRelationId())){
+				//校验当前用户是否已经参与
+				GrouponUser grouponUser1 = grouponUserService.getOne(Wrappers.<GrouponUser>lambdaQuery()
+						.eq(GrouponUser::getGroupId,orderInfo.getRelationId())
+						.eq(GrouponUser::getUserId,wxUser.getMallUserId()));
+				if(grouponUser1 != null){
+					return R.failed(MyReturnCode.ERR_80012.getCode(), MyReturnCode.ERR_80012.getMsg());
+				}
+				//校验拼团人数
+				GrouponUser grouponUser = grouponUserService.getById(orderInfo.getRelationId());
+				Integer havCountGrouponing = grouponUserService.selectCountGrouponing(orderInfo.getRelationId());
+				if(havCountGrouponing >= grouponUser.getGrouponNum()){
+					return R.failed(MyReturnCode.ERR_80011.getCode(), MyReturnCode.ERR_80011.getMsg());
+				}
+			}
+		}
 		String appId = BaseApi.getAppId(request);
 		WxPayUnifiedOrderRequest wxPayUnifiedOrderRequest = new WxPayUnifiedOrderRequest();
 		wxPayUnifiedOrderRequest.setAppid(appId);
 		wxPayUnifiedOrderRequest.setBody("Joolun商城商品");
-		wxPayUnifiedOrderRequest.setOutTradeNo(orderInfo.getId());
+		wxPayUnifiedOrderRequest.setOutTradeNo(orderInfo.getOrderNo());
 		wxPayUnifiedOrderRequest.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
 		wxPayUnifiedOrderRequest.setTradeType("JSAPI");
 		wxPayUnifiedOrderRequest.setNotifyUrl(mallConfigProperties.getNotifyHost()+"/mall/api/ma/orderinfo/notify-order");
@@ -233,6 +269,7 @@ public class OrderInfoApi {
 	 * @return
 	 * @throws WxPayException
 	 */
+	@ApiOperation(value = "支付回调")
 	@PostMapping("/notify-order")
 	public String notifyOrder(@RequestBody String xmlData) {
 		log.info("支付回调:"+xmlData);
@@ -240,7 +277,8 @@ public class OrderInfoApi {
 		if(r.isOk()){
 			TenantContextHolder.setTenantId(r.getMsg());
 			WxPayOrderNotifyResult notifyResult = BeanUtil.mapToBean((Map<Object, Object>) r.getData(),WxPayOrderNotifyResult.class,true);
-			OrderInfo orderInfo = orderInfoService.getById(notifyResult.getOutTradeNo());
+			OrderInfo orderInfo = orderInfoService.getOne(Wrappers.<OrderInfo>lambdaQuery()
+					.eq(OrderInfo::getOrderNo,notifyResult.getOutTradeNo()));
 			if(orderInfo != null){
 				if(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()){
 					String timeEnd = notifyResult.getTimeEnd();
@@ -265,6 +303,7 @@ public class OrderInfoApi {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value = "物流信息回调")
 	@PostMapping("/notify-logisticsr")
 	public String notifyLogisticsr(HttpServletRequest request, HttpServletResponse response) {
 		String param = request.getParameter("param");
@@ -302,6 +341,7 @@ public class OrderInfoApi {
 	 * @param logisticsId
 	 * @return R
 	 */
+	@ApiOperation(value = "通过物流id查询订单物流")
 	@GetMapping("/orderlogistics/{logisticsId}")
 	public R getOrderLogistics(HttpServletRequest request, @PathVariable("logisticsId") String logisticsId){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -316,6 +356,7 @@ public class OrderInfoApi {
 	 * @param orderInfo
 	 * @return R
 	 */
+	@ApiOperation(value = "统计各个状态订单计数")
 	@GetMapping("/countAll")
 	public R count(HttpServletRequest request,OrderInfo orderInfo){
 		R checkThirdSession = BaseApi.checkThirdSession(orderInfo, request);

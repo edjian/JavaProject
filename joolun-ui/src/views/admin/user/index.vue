@@ -35,7 +35,7 @@
             <template slot-scope="scope"
                       slot="menu">
               <el-button type="text"
-                         v-if="permissions.sys_user_password"
+                         v-if="permissions['sys:user:password']"
                          icon="el-icon-key"
                          size="small"
                          plain
@@ -110,10 +110,10 @@
       ...mapGetters(["permissions"]),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_user_add, false),
-          delBtn: this.vaildData(this.permissions.sys_user_del, false),
-          editBtn: this.vaildData(this.permissions.sys_user_edit, false),
-          viewBtn: this.vaildData(this.permissions.sys_user_get, false)
+          addBtn: this.permissions['sys:user:add'],
+          delBtn: this.permissions['sys:user:del'],
+          editBtn: this.permissions['sys:user:edit'],
+          viewBtn: this.permissions['sys:user:get']
         }
       }
     },
@@ -190,7 +190,7 @@
         done()
       },
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       handleSave(row, done, loading) {
         addObj(this.form).then(() => {

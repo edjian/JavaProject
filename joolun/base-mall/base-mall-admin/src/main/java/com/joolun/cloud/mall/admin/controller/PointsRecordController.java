@@ -19,6 +19,7 @@ import com.joolun.cloud.mall.common.entity.PointsRecord;
 import com.joolun.cloud.mall.admin.service.PointsRecordService;
 import com.joolun.cloud.mall.common.entity.UserInfo;
 import com.joolun.cloud.upms.common.entity.SysUser;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,9 @@ public class PointsRecordController {
 	 * @param pointsRecord 积分变动记录
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_pointsrecord_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:pointsrecord:index')")
     public R getPointsRecordPage(Page page, PointsRecord pointsRecord, UserInfo userInfo) {
     	if(userInfo.getUserCode() != null && userInfo.getUserCode()!= 0){
     		int userCode = userInfo.getUserCode();
@@ -68,8 +70,9 @@ public class PointsRecordController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询积分变动记录")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_pointsrecord_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:pointsrecord:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(pointsRecordService.getById(id));
     }
@@ -79,9 +82,10 @@ public class PointsRecordController {
      * @param pointsRecord 积分变动记录
      * @return R
      */
+	@ApiOperation(value = "新增积分变动记录")
     @SysLog("新增积分变动记录")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_pointsrecord_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:pointsrecord:add')")
     public R save(@RequestBody PointsRecord pointsRecord) {
         return R.ok(pointsRecordService.save(pointsRecord));
     }
@@ -91,9 +95,10 @@ public class PointsRecordController {
      * @param pointsRecord 积分变动记录
      * @return R
      */
+	@ApiOperation(value = "修改积分变动记录")
     @SysLog("修改积分变动记录")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_pointsrecord_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:pointsrecord:edit')")
     public R updateById(@RequestBody PointsRecord pointsRecord) {
         return R.ok(pointsRecordService.updateById(pointsRecord));
     }
@@ -103,9 +108,10 @@ public class PointsRecordController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id删除积分变动记录")
     @SysLog("删除积分变动记录")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_pointsrecord_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:pointsrecord:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(pointsRecordService.removeById(id));
     }

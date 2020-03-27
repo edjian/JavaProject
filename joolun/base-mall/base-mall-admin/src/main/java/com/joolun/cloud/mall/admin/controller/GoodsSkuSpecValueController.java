@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue;
 import com.joolun.cloud.mall.admin.service.GoodsSkuSpecValueService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class GoodsSkuSpecValueController {
     * @param goodsSkuSpecValue 商品sku规格值
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsskuspecvalue_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsskuspecvalue:index')")
     public R getGoodsSkuSpecValuePage(Page page, GoodsSkuSpecValue goodsSkuSpecValue) {
         return R.ok(goodsSkuSpecValueService.page(page,Wrappers.query(goodsSkuSpecValue)));
     }
@@ -53,8 +55,9 @@ public class GoodsSkuSpecValueController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商品sku规格值")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsskuspecvalue_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsskuspecvalue:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(goodsSkuSpecValueService.getById(id));
     }
@@ -64,9 +67,10 @@ public class GoodsSkuSpecValueController {
     * @param goodsSkuSpecValue 商品sku规格值
     * @return R
     */
+	@ApiOperation(value = "新增商品sku规格值")
     @SysLog("新增商品sku规格值")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsskuspecvalue_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsskuspecvalue:add')")
     public R save(@RequestBody GoodsSkuSpecValue goodsSkuSpecValue){
         return R.ok(goodsSkuSpecValueService.save(goodsSkuSpecValue));
     }
@@ -76,9 +80,10 @@ public class GoodsSkuSpecValueController {
     * @param goodsSkuSpecValue 商品sku规格值
     * @return R
     */
+	@ApiOperation(value = "修改商品sku规格值")
     @SysLog("修改商品sku规格值")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsskuspecvalue_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsskuspecvalue:edit')")
     public R updateById(@RequestBody GoodsSkuSpecValue goodsSkuSpecValue){
         return R.ok(goodsSkuSpecValueService.updateById(goodsSkuSpecValue));
     }
@@ -88,9 +93,10 @@ public class GoodsSkuSpecValueController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除商品sku规格值")
     @SysLog("删除商品sku规格值")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsskuspecvalue_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsskuspecvalue:del')")
     public R removeById(@PathVariable String id){
         return R.ok(goodsSkuSpecValueService.removeById(id));
     }

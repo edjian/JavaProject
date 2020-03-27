@@ -17,6 +17,7 @@ import com.joolun.cloud.mall.common.entity.BargainCut;
 import com.joolun.cloud.mall.common.entity.BargainInfo;
 import com.joolun.cloud.mall.common.entity.BargainUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,7 @@ public class BargainInfoApi {
      * @param bargainInfo 砍价
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
     public R getPage(HttpServletRequest request, Page page, BargainInfo bargainInfo) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -59,6 +61,7 @@ public class BargainInfoApi {
      * @param bargainUser
      * @return R
      */
+	@ApiOperation(value = "砍价查询")
     @GetMapping
     public R get(HttpServletRequest request, BargainUser bargainUser) {
 		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);

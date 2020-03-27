@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.ShoppingCartService;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class ShoppingCartApi{
 	 * @param shoppingCart 购物车
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getShoppingCartPage(HttpServletRequest request, Page page, ShoppingCart shoppingCart) {
 		//检验用户session登录
@@ -56,6 +58,7 @@ public class ShoppingCartApi{
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
 	public R getShoppingCartCount(HttpServletRequest request,ShoppingCart shoppingCart) {
 		//检验用户session登录
@@ -72,6 +75,7 @@ public class ShoppingCartApi{
 	 * @param shoppingCart
 	 * @return
 	 */
+	@ApiOperation(value = "加入购物车")
 	@PostMapping
 	public R save(HttpServletRequest request, @RequestBody ShoppingCart shoppingCart){
 		//检验用户session登录
@@ -88,6 +92,7 @@ public class ShoppingCartApi{
 	 * @param shoppingCart
 	 * @return
 	 */
+	@ApiOperation(value = "修改购物车商品")
 	@PutMapping
 	public R edit(HttpServletRequest request, @RequestBody ShoppingCart shoppingCart){
 		//检验用户session登录
@@ -104,6 +109,7 @@ public class ShoppingCartApi{
 	 * @param ids
 	 * @return
 	 */
+	@ApiOperation(value = "删除购物车商品数量")
 	@PostMapping("/del")
 	public R del(HttpServletRequest request, @RequestBody List<String> ids){
 		//检验用户session登录

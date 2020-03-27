@@ -196,7 +196,7 @@
         this.box = true
       },
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       refreshDsChange() {
         this.getDsList(this.page)

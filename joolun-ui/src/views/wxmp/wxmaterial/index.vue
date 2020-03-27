@@ -51,7 +51,7 @@
                         :file-list="fileList"
                         :before-upload="beforeImageUpload"
                         :data="uploadData">
-                  <el-button size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add">点击上传</el-button>
+                  <el-button size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']">点击上传</el-button>
                   <div slot="tip" class="el-upload__tip">
                     支持bmp/png/jpeg/jpg/gif格式，大小不超过2M
                   </div>
@@ -95,7 +95,7 @@
                         :file-list="fileList"
                         :before-upload="beforeVoiceUpload"
                         :data="uploadData">
-                  <el-button size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add">点击上传</el-button>
+                  <el-button size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']">点击上传</el-button>
                   <div slot="tip" class="el-upload__tip">
                     格式支持mp3/wma/wav/amr，文件大小不超过2M，播放长度不超过60s
                   </div>
@@ -123,13 +123,13 @@
                         label="操作">
                   <template slot-scope="scope">
                     <el-button type="text"
-                               v-if="permissions.wxmp_wxmaterial_get"
+                               v-if="permissions['wxmp:wxmaterial:get']"
                                icon="el-icon-download"
                                size="small"
                                plain
                                @click="handleDown(scope.row)">下载</el-button>
                     <el-button type="text"
-                               v-if="permissions.wxmp_wxmaterial_del"
+                               v-if="permissions['wxmp:wxmaterial:del']"
                                icon="el-icon-delete"
                                size="small"
                                plain
@@ -152,7 +152,7 @@
             <el-tab-pane name="video">
               <span slot="label"><i class="el-icon-video-play"></i> 视频</span>
               <div class="add_but">
-                <el-button size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add" @click="handleAddVideo">新建</el-button>
+                <el-button size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']" @click="handleAddVideo">新建</el-button>
               </div>
               <el-dialog title="新建视频" :visible.sync="dialogVideoVisible" v-loading="addMaterialLoading">
                 <el-upload
@@ -166,7 +166,7 @@
                         :before-upload="beforeVideoUpload"
                         :auto-upload="false"
                         :data="uploadData">
-                  <el-button slot="trigger" size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add">选择视频</el-button>
+                  <el-button slot="trigger" size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']">选择视频</el-button>
                   <div class="el-upload__tip">
                     格式支持MP4，文件大小不超过10MB
                   </div>
@@ -208,13 +208,13 @@
                         label="操作">
                   <template slot-scope="scope">
                     <el-button type="text"
-                               v-if="permissions.wxmp_wxmaterial_get"
+                               v-if="permissions['wxmp:wxmaterial:get']"
                                icon="el-icon-view"
                                size="small"
                                plain
                                @click="handleInfo(scope.row)">查看</el-button>
                     <el-button type="text"
-                               v-if="permissions.wxmp_wxmaterial_del"
+                               v-if="permissions['wxmp:wxmaterial:del']"
                                icon="el-icon-delete"
                                size="small"
                                plain
@@ -240,9 +240,10 @@
                 <el-button type="primary"
                            @click="handleAddNews"
                            size="mini"
-                           v-if="permissions.wxmp_wxmaterial_add">新 增</el-button>
+                           v-if="permissions['wxmp:wxmaterial:add']">新 增</el-button>
               </div>
               <el-dialog :title="operateMaterial=='add'?'新建图文':'修改图文'"
+                         append-to-body
                          :before-close="dialogNewsClose"
                          :close-on-click-modal="false"
                          :visible.sync="dialogNewsVisible"
@@ -301,8 +302,8 @@
                                 :file-list="fileList"
                                 :before-upload="beforeThumbImageUpload"
                                 :data="uploadData">
-                          <el-button slot="trigger" size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add">本地上传</el-button>
-                          <el-button size="mini" type="primary" v-if="permissions.wxmp_wxmaterial_add" @click="openMaterial" style="margin-left: 5px">素材库选择</el-button>
+                          <el-button slot="trigger" size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']">本地上传</el-button>
+                          <el-button size="mini" type="primary" v-if="permissions['wxmp:wxmaterial:add']" @click="openMaterial" style="margin-left: 5px">素材库选择</el-button>
                           <div slot="tip" class="el-upload__tip">支持bmp/png/jpeg/jpg/gif格式，大小不超过2M</div>
                         </el-upload>
                       </div>
@@ -862,7 +863,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

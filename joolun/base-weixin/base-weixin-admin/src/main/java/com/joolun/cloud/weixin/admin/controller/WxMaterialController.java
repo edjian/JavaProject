@@ -19,6 +19,7 @@ import com.joolun.cloud.weixin.common.entity.ImageManager;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.common.core.util.FileUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -58,8 +59,9 @@ public class WxMaterialController {
 	 * @param mediaType
 	 * @return
 	 */
+	@ApiOperation(value = "上传非图文微信素材")
 	@PostMapping("/materialFileUpload")
-	//	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_add')")
+	//	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:add')")
 	public R materialFileUpload(@RequestParam("file") MultipartFile mulFile,
 								@RequestParam("title") String title,
 								@RequestParam("introduction") String introduction,
@@ -97,8 +99,9 @@ public class WxMaterialController {
 	 * @param data
 	 * @return
 	 */
+	@ApiOperation(value = "新增图文消息")
 	@PostMapping("/materialNews")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:add')")
 	public R materialNewsUpload(@RequestBody JSONObject data) {
 		try {
 			String appId = data.getStr("appId");
@@ -125,8 +128,9 @@ public class WxMaterialController {
 	 * @param data
 	 * @return
 	 */
+	@ApiOperation(value = "修改图文消息")
 	@PutMapping("/materialNews")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_edit')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:edit')")
 	public R materialNewsUpdate(@RequestBody JSONObject data) {
 		try {
 			String appId = data.getStr("appId");
@@ -160,8 +164,9 @@ public class WxMaterialController {
 	 * @param mulFile
 	 * @return
 	 */
+	@ApiOperation(value = "上传图文消息内的图片获取URL")
 	@PostMapping("/newsImgUpload")
-	//	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_add')")
+	//	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:add')")
 	public String newsImgUpload(@RequestParam("file") MultipartFile mulFile,@RequestParam("appId") String appId) throws Exception {
 		File file = FileUtils.multipartFileToFile(mulFile);
 		WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
@@ -176,9 +181,10 @@ public class WxMaterialController {
 	 * @param
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id删除微信素材")
 	@SysLog("删除微信素材")
 	@DeleteMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_del')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:del')")
 	public R materialDel(String id,String appId){
 		WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
 		try {
@@ -196,8 +202,9 @@ public class WxMaterialController {
 	* @param type
 	* @return
 	*/
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:index')")
 	public R getWxMaterialPage(Page page,String appId, String type) {
 		try {
 		  WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
@@ -220,8 +227,9 @@ public class WxMaterialController {
 	 * @param type
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询2")
 	@GetMapping("/page-manager")
-//	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:index')")
 	public String getWxMaterialPageManager(Integer count, Integer offset, String appId, String type) throws WxErrorException {
 		List<ImageManager> listImageManager = new ArrayList<>();
 		WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
@@ -241,8 +249,9 @@ public class WxMaterialController {
 	* @param
 	* @return R
 	*/
+	@ApiOperation(value = "获取微信视频素材")
 	@GetMapping("/materialVideo")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_get')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:get')")
 	public R getMaterialVideo(String appId,String mediaId){
 	  WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
 	  try {
@@ -259,8 +268,9 @@ public class WxMaterialController {
 	 * @param
 	 * @return R
 	 */
+	@ApiOperation(value = "获取微信素材直接文件")
 	@GetMapping("/materialOther")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmaterial_get')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmaterial:get')")
 	public ResponseEntity<byte[]> getMaterialOther(String appId, String mediaId,String fileName) throws Exception {
 		try {
 			WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();
@@ -288,8 +298,9 @@ public class WxMaterialController {
 	 * @param
 	 * @return R
 	 */
+	@ApiOperation(value = "获取微信临时素材直接文件")
 	@GetMapping("/tempMaterialOther")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:index')")
 	public ResponseEntity<byte[]> getTempMaterialOther(String appId, String mediaId,String fileName) throws Exception {
 		try {
 			WxMpMaterialService wxMpMaterialService = WxMpConfiguration.getMpService(appId).getMaterialService();

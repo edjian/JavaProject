@@ -67,17 +67,17 @@
                          @click="dialogTagging = true; taggingType = 'tagging'"
                          size="small"
                          icon="el-icon-document"
-                         v-if="permissions.wxmp_wxuser_tagging">打标签</el-button>
+                         v-if="permissions['wxmp:wxuser:tagging']">打标签</el-button>
               <el-button type="warning"
                          @click="dialogTagging = true; taggingType = 'unTagging'"
                          size="small"
                          icon="el-icon-document"
-                         v-if="permissions.wxmp_wxuser_tagging">去除标签</el-button>
+                         v-if="permissions['wxmp:wxuser:tagging']">去除标签</el-button>
               <el-button type="danger"
                          @click="synchroWxUser"
                          size="small"
                          icon="el-icon-refresh"
-                         v-if="permissions.wxmp_wxuser_synchro">同步用户</el-button>
+                         v-if="permissions['wxmp:wxuser:synchro']">同步用户</el-button>
               <el-dialog
                 :title='taggingType == "tagging"?"请选择要打的标签":"请选择要去除的标签"'
                 :visible.sync="dialogTagging"
@@ -93,13 +93,13 @@
             </template>
             <template slot="menu" slot-scope="scope">
               <el-button type="text"
-                         v-if="permissions.wxmp_wxuser_edit_remark"
+                         v-if="permissions['wxmp:wxuser:edit:remark']"
                          icon="el-icon-edit"
                          size="small"
                          plain
                          @click="updateRemark(scope.row,scope.index)">修改备注</el-button>
               <el-button type="text"
-                         v-if="permissions.wxmp_wxmsg_index"
+                         v-if="permissions['wxmp:wxmsg:index']"
                          icon="el-icon-chat-line-round"
                          size="small"
                          plain
@@ -179,10 +179,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxuser_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxuser_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxuser_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxuser_get, false)
+          addBtn: this.permissions['wxmp:wxuser:add'],
+          delBtn: this.permissions['wxmp:wxuser:del'],
+          editBtn: this.permissions['wxmp:wxuser:edit'],
+          viewBtn: this.permissions['wxmp:wxuser:get'],
         }
       }
     },
@@ -440,7 +440,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

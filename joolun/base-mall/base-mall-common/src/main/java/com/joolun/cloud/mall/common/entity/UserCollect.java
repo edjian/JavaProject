@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
@@ -34,35 +35,43 @@ public class UserCollect extends Model<UserCollect> {
     /**
    * PK
    */
+	@ApiModelProperty(value = "PK")
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
    * 所属租户
    */
+	@ApiModelProperty(value = "所属租户")
     private String tenantId;
     /**
    * 逻辑删除标记（0：显示；1：隐藏）
    */
+	@ApiModelProperty(value = "逻辑删除标记")
     private String delFlag;
     /**
    * 创建时间
    */
+	@ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
     /**
    * 最后更新时间
    */
+	@ApiModelProperty(value = "最后更新时间")
     private LocalDateTime updateTime;
     /**
    * 类型1、商品
    */
+	@ApiModelProperty(value = "类型")
     private String type;
     /**
    * 用户编号
    */
+	@ApiModelProperty(value = "用户编号")
     private String userId;
     /**
    * 关联ID：商品类型为商品ID
    */
+	@ApiModelProperty(value = "关联ID")
     private String relationId;
 	@TableField(exist = false)
     private GoodsSpu goodsSpu;

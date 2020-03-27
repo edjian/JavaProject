@@ -27,35 +27,46 @@ const request = (url, method, data, showLoading) => {
       success(res) {
         if (res.statusCode == 200) {
           if (res.data.code != 0) {
-            wx.showToast({
-              title: res.data.msg+'',
-              icon: 'none',
-              duration: 5000
+            console.log(res.data)
+            wx.showModal({
+              title: '提示',
+              content: res.data.msg + '',
+              success(res) {
+                
+              }
             })
             reject(res.data.msg)
           }
           resolve(res.data)
         } else if (res.statusCode == 404) {
-          wx.showToast({
-            title: '接口请求出错，请检查手机网络',
-            icon: 'none',
-            duration: 5000
+          wx.showModal({
+            title: '提示',
+            content: '接口请求出错，请检查手机网络',
+            success(res) {
+
+            }
           })
           reject()
         } else {
-          wx.showToast({
-            title: res.data.msg + '',
-            icon: 'none',
-            duration: 5000
+          console.log(res)
+          wx.showModal({
+            title: '提示',
+            content: res.errMsg + '',
+            success(res) {
+
+            }
           })
           reject()
         }
       },
       fail(error) {
-        wx.showToast({
-          title: '接口请求出错',
-          icon: 'none',
-          duration: 2000
+        console.log(error)
+        wx.showModal({
+          title: '提示',
+          content: '接口请求出错：' + error.errMsg,
+          success(res) {
+
+          }
         })
         reject(error)
       },
@@ -234,5 +245,20 @@ module.exports = {
   },
   listEnsureBySpuId: (data) => {//通过spuID，查询商品保障
     return request('/mall/api/ma/ensuregoods/listEnsureBySpuId', 'get', data, true)
+  },
+  grouponInfoPage: (data) => {//拼团列表
+    return request('/mall/api/ma/grouponinfo/page', 'get', data, false)
+  },
+  grouponInfoGet: (id) => {//拼团详情
+    return request('/mall/api/ma/grouponinfo/' + id, 'get', null, true)
+  },
+  grouponUserPageGrouponing: (data) => {//拼团中分页列表
+    return request('/mall/api/ma/grouponuser/page/grouponing', 'get', data, true)
+  },
+  grouponUserPage: (data) => {//拼团记录列表
+    return request('/mall/api/ma/grouponuser/page', 'get', data, true)
+  },
+  grouponUserGet: (id) => {//拼团记录详情
+    return request('/mall/api/ma/grouponuser/' + id, 'get', null, false)
   },
 }

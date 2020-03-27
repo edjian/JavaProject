@@ -17,6 +17,7 @@ import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.entity.GoodsSku;
 import com.joolun.cloud.mall.admin.service.GoodsSkuService;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +50,9 @@ public class GoodsSkuController {
     * @param goodsSku 商品sku
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_goodssku_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodssku:index')")
     public R getGoodsSkuPage(Page page, GoodsSku goodsSku) {
         return R.ok(goodsSkuService.page(page,Wrappers.query(goodsSku)));
     }
@@ -60,8 +62,9 @@ public class GoodsSkuController {
 	 * @param spuId
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list/{spuId}")
-	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
 	public List<GoodsSku> getList(@PathVariable("spuId") String spuId) {
 		GoodsSpu goodsSpu = goodsSpuService.getById(spuId);
 		List<GoodsSku> listRs = goodsSkuService.listGoodsSkuBySpuId(spuId).stream()
@@ -87,8 +90,9 @@ public class GoodsSkuController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商品sku")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodssku_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodssku:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(goodsSkuService.getById(id));
     }
@@ -98,9 +102,10 @@ public class GoodsSkuController {
     * @param goodsSku 商品sku
     * @return R
     */
+	@ApiOperation(value = "新增商品sku")
     @SysLog("新增商品sku")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodssku_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodssku:add')")
     public R save(@RequestBody GoodsSku goodsSku){
         return R.ok(goodsSkuService.save(goodsSku));
     }
@@ -110,9 +115,10 @@ public class GoodsSkuController {
     * @param goodsSku 商品sku
     * @return R
     */
+	@ApiOperation(value = "修改商品sku")
     @SysLog("修改商品sku")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodssku_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodssku:edit')")
     public R updateById(@RequestBody GoodsSku goodsSku){
         return R.ok(goodsSkuService.updateById(goodsSku));
     }
@@ -122,9 +128,10 @@ public class GoodsSkuController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除商品sku")
     @SysLog("删除商品sku")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodssku_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodssku:del')")
     public R removeById(@PathVariable String id){
         return R.ok(goodsSkuService.removeById(id));
     }

@@ -35,7 +35,7 @@ Page({
     //更新tabbar购物车数量
     wx.setTabBarBadge({
       index: 2,
-      text: app.globalData.shoppingCartCount
+      text: app.globalData.shoppingCartCount + ''
     })
     app.initPage()
       .then(res => {
@@ -63,7 +63,7 @@ Page({
         app.globalData.shoppingCartCount = res.data.total + ''
         wx.setTabBarBadge({
           index: 2,
-          text: app.globalData.shoppingCartCount
+          text: app.globalData.shoppingCartCount + ''
         })
 
         let shoppingCartData = []
@@ -191,7 +191,8 @@ Page({
   checkboxHandle(selectValue){
     let that = this
     let shoppingCartData = this.data.shoppingCartData
-    let isAllSelect = true
+    let isAllSelect = false
+    if (shoppingCartData.length == selectValue.length) { isAllSelect = true }
     if (selectValue.length > 0) {
       let shoppingCartIds = []
       shoppingCartData.forEach(function (shoppingCart, index) {
@@ -201,11 +202,9 @@ Page({
           if (!that.data.operation){
             shoppingCart.checked = true
           }else{//如果是购买操作，需过滤不符商品
-            if (shoppingCart.goodsSku
-              && shoppingCart.quantity <= shoppingCart.goodsSku.stock) {
+            if (shoppingCart.goodsSku && shoppingCart.quantity <= shoppingCart.goodsSku.stock) {
               shoppingCart.checked = true
             } else {
-              isAllSelect = false
               shoppingCart.checked = false
               selectValue.splice(selectValueIndex, 1)
             }
@@ -220,7 +219,6 @@ Page({
         }
       })
     }else{
-      isAllSelect = false
       shoppingCartData.forEach(function (shoppingCart, index) {
         shoppingCart.checked = false
       })

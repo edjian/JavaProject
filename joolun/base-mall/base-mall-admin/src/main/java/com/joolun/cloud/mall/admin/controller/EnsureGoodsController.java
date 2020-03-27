@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.EnsureGoods;
 import com.joolun.cloud.mall.admin.service.EnsureGoodsService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class EnsureGoodsController {
      * @param ensureGoods 商品保障
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_ensuregoods_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensuregoods:index')")
     public R getPage(Page page, EnsureGoods ensureGoods) {
         return R.ok(ensureGoodsService.page(page, Wrappers.query(ensureGoods)));
     }
@@ -52,8 +54,9 @@ public class EnsureGoodsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "商品保障查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_ensuregoods_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensuregoods:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(ensureGoodsService.getById(id));
     }
@@ -63,9 +66,10 @@ public class EnsureGoodsController {
      * @param ensureGoods 商品保障
      * @return R
      */
+	@ApiOperation(value = "商品保障新增")
     @SysLog("新增商品保障")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_ensuregoods_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensuregoods:add')")
     public R save(@RequestBody EnsureGoods ensureGoods) {
         return R.ok(ensureGoodsService.save(ensureGoods));
     }
@@ -75,9 +79,10 @@ public class EnsureGoodsController {
      * @param ensureGoods 商品保障
      * @return R
      */
+	@ApiOperation(value = "商品保障修改")
     @SysLog("修改商品保障")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_ensuregoods_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensuregoods:edit')")
     public R updateById(@RequestBody EnsureGoods ensureGoods) {
         return R.ok(ensureGoodsService.updateById(ensureGoods));
     }
@@ -87,9 +92,10 @@ public class EnsureGoodsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "商品保障删除")
     @SysLog("删除商品保障")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_ensuregoods_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:ensuregoods:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(ensureGoodsService.removeById(id));
     }

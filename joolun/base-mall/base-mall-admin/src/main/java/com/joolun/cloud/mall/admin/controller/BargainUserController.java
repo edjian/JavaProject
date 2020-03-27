@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.BargainUser;
 import com.joolun.cloud.mall.admin.service.BargainUserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class BargainUserController {
      * @param bargainUser 砍价记录
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:index')")
     public R getPage(Page page, BargainUser bargainUser) {
         return R.ok(bargainUserService.page1(page, bargainUser));
     }
@@ -52,8 +54,9 @@ public class BargainUserController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价记录查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(bargainUserService.getById(id));
     }
@@ -63,9 +66,10 @@ public class BargainUserController {
      * @param bargainUser 砍价记录
      * @return R
      */
+	@ApiOperation(value = "砍价记录新增")
     @SysLog("新增砍价记录")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:add')")
     public R save(@RequestBody BargainUser bargainUser) {
         return R.ok(bargainUserService.save(bargainUser));
     }
@@ -75,9 +79,10 @@ public class BargainUserController {
      * @param bargainUser 砍价记录
      * @return R
      */
+	@ApiOperation(value = "砍价记录修改")
     @SysLog("修改砍价记录")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:edit')")
     public R updateById(@RequestBody BargainUser bargainUser) {
         return R.ok(bargainUserService.updateById(bargainUser));
     }
@@ -87,9 +92,10 @@ public class BargainUserController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价记录删除")
     @SysLog("删除砍价记录")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(bargainUserService.removeById(id));
     }

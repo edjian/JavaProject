@@ -55,11 +55,11 @@
                          @click="handleAdd"
                          size="small"
                          icon="el-icon-s-promotion"
-                         v-if="permissions.wxmp_wxmassmsg_add">新增群发</el-button>
+                         v-if="permissions['wxmp:wxmassmsg:add']">新增群发</el-button>
             </template>
             <template slot-scope="scope" slot="menu">
               <el-button type="text"
-                         v-if="permissions.wxmp_wxmassmsg_del && scope.row.msgStatus=='SEND_SUCCESS' && (scope.row.repType == 'news' || scope.row.repType == 'video')"
+                         v-if="permissions['wxmp:wxmassmsg:del'] && scope.row.msgStatus=='SEND_SUCCESS' && (scope.row.repType == 'news' || scope.row.repType == 'video')"
                          icon="el-icon-delete"
                          size="small"
                          plain
@@ -248,10 +248,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxmassmsg_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxmassmsg_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxmassmsg_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxmassmsg_get, false)
+          addBtn: this.permissions['wxmp:wxmassmsg:add'],
+          delBtn: this.permissions['wxmp:wxmassmsg:del'],
+          editBtn: this.permissions['wxmp:wxmassmsg:edit'],
+          viewBtn: this.permissions['wxmp:wxmassmsg:get']
         };
       }
     },
@@ -515,10 +515,10 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       refreshChange2(page) {
-        this.getPage2(page)
+        this.getPage2(this.page)
       }
     }
   }

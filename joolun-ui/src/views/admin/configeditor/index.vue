@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.sys_configeditor_add, false),
-                    delBtn: this.vaildData(this.permissions.sys_configeditor_del, false),
-                    editBtn: this.vaildData(this.permissions.sys_configeditor_edit, false),
-                    viewBtn: this.vaildData(this.permissions.sys_configeditor_get, false)
+                    addBtn: this.permissions['sys:configeditor:add'],
+                    delBtn: this.permissions['sys:configeditor:del'],
+                    editBtn: this.permissions['sys:configeditor:edit'],
+                    viewBtn: this.permissions['sys:configeditor:get']
                 };
             }
         },
@@ -172,7 +172,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

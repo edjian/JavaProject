@@ -28,7 +28,8 @@ Page({
     bargainCutList: [],
     shareShow: '',
     wxUser: null,
-    modalRule: ''
+    modalRule: '',
+    outTime: null
   },
   onLoad(options) {
     let id
@@ -110,6 +111,10 @@ Page({
           specInfo: specInfo
         })
         if (bargainInfo.bargainUser){
+          let outTime = null
+          if (bargainInfo.bargainUser.status == '0') {
+            outTime = new Date(bargainInfo.bargainUser.validEndTime).getTime() - new Date().getTime()
+          }
           let canCutPrice = bargainInfo.goodsSku.salesPrice - bargainInfo.bargainPrice//可砍
           let havCutPrice = bargainInfo.bargainUser.havBargainAmount//已砍
           let cutPercent = Number((havCutPrice / canCutPrice) * 100).toFixed(2)+'%'
@@ -119,7 +124,8 @@ Page({
             cutPercent: cutPercent,
             canCutPrice: canCutPrice,
             havCutPrice: havCutPrice,
-            bargainCutList: []
+            bargainCutList: [],
+            outTime: outTime
           })
           this.bargainCutPage()
         }
@@ -281,22 +287,12 @@ Page({
                 baseLine: 'middle',
                 text: [
                   {
-                    text: '商家发货&售后',
+                    text: this.data.bargainInfo.goodsSpu.sellPoint,
                     fontSize: 28,
                     color: '#929292',
-                  },
-                  {
-                    text: '七天退货',
-                    fontSize: 28,
-                    color: '#929292',
-                    marginLeft: 50,
-                  },
-                  {
-                    text: '运费险',
-                    fontSize: 28,
-                    color: '#929292',
-                    marginLeft: 50,
-                  },
+                    width: 570,
+                    lineNum: 1,
+                  }
                 ]
               },
               {
@@ -441,11 +437,15 @@ Page({
         weight: goodsSku.weight,
         volume: goodsSku.volume,
         orderType: '1',
+        marketId: bargainInfo.id,
         relationId: bargainUser.id
       }]
     })
     wx.navigateTo({
       url: '/pages/bargain/bargain-order-confirm/index'
     })
+  },
+  countDownDone() {
+    this.onLoad()
   }
 })

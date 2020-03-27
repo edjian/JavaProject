@@ -15,7 +15,7 @@
                 :md="3">
           <el-card shadow="never">
             <div slot="header">
-              <span>公众号名称</span>
+              <span>小程序名称</span>
             </div>
             <el-input
                     placeholder="输入关键字进行过滤"
@@ -109,10 +109,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxuser_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxuser_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxuser_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxuser_get, false)
+          addBtn: this.permissions['wxmp:wxuser:add'],
+          delBtn: this.permissions['wxmp:wxuser:del'],
+          editBtn: this.permissions['wxmp:wxuser:edit'],
+          viewBtn: this.permissions['wxmp:wxuser:get']
         }
       }
     },
@@ -253,7 +253,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

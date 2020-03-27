@@ -15,6 +15,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import com.joolun.cloud.upms.admin.service.SysConfigStorageService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class SysConfigStorageController {
      * @param sysConfigStorage 存储配置
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('sys_configstorage_index')")
+    @PreAuthorize("@ato.hasAuthority('sys:configstorage:index')")
     public R getPage(Page page, SysConfigStorage sysConfigStorage) {
         return R.ok(sysConfigStorageService.page(page, Wrappers.query(sysConfigStorage)));
     }
@@ -53,8 +55,9 @@ public class SysConfigStorageController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "存储配置查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('sys_configstorage_get')")
+    @PreAuthorize("@ato.hasAuthority('sys:configstorage:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(sysConfigStorageService.getById(id));
     }
@@ -64,9 +67,10 @@ public class SysConfigStorageController {
      * @param sysConfigStorage 存储配置
      * @return R
      */
+	@ApiOperation(value = "存储配置新增")
     @SysLog("新增存储配置")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('sys_configstorage_add')")
+    @PreAuthorize("@ato.hasAuthority('sys:configstorage:add')")
     public R save(@RequestBody SysConfigStorage sysConfigStorage) {
         return R.ok(sysConfigStorageService.save(sysConfigStorage));
     }
@@ -76,9 +80,10 @@ public class SysConfigStorageController {
      * @param sysConfigStorage 存储配置
      * @return R
      */
+	@ApiOperation(value = "存储配置修改")
     @SysLog("修改存储配置")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('sys_configstorage_edit')")
+    @PreAuthorize("@ato.hasAuthority('sys:configstorage:edit')")
     public R updateById(@RequestBody SysConfigStorage sysConfigStorage) {
 		if(StrUtil.isNotBlank(sysConfigStorage.getId())){
 			sysConfigStorageService.updateById(sysConfigStorage);
@@ -94,9 +99,10 @@ public class SysConfigStorageController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "存储配置删除")
     @SysLog("删除存储配置")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('sys_configstorage_del')")
+    @PreAuthorize("@ato.hasAuthority('sys:configstorage:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(sysConfigStorageService.removeById(id));
     }
@@ -105,8 +111,9 @@ public class SysConfigStorageController {
 	 * 查询存储配置
 	 * @return R
 	 */
+	@ApiOperation(value = "查询存储配置")
 	@GetMapping()
-	@PreAuthorize("@ato.hasAuthority('sys_configstorage_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:configstorage:get')")
 	public R get() {
 		return R.ok(sysConfigStorageService.getOne(Wrappers.emptyWrapper()));
 	}

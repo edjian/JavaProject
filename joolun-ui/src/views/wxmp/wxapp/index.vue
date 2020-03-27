@@ -41,7 +41,7 @@
                  @sort-change="sortChange"
                  @search-change="searchChange">
             <template slot="menuLeft">
-              <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions.wxmp_wxapp_add" @click="toAuth">
+              <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions['wxmp:wxapp:add']" @click="toAuth">
                 一键授权添加
               </el-button>
             </template>
@@ -72,7 +72,7 @@
                              icon="el-icon-s-grid"
                              v-if="!props.row.qrCode" @click="createQrCode(props.row.id)" style="margin-top: 30%">生成二维码</el-button>
                   <el-button type="warning"
-                             v-if="permissions.wxmp_wxapp_edit && props.row.isComponent == '0'"
+                             v-if="permissions['wxmp:wxapp:edit'] && props.row.isComponent == '0'"
                              icon="el-icon-s-promotion"
                              size="small"
                              @click="toAccess(props.row)">接入系统</el-button>
@@ -81,7 +81,7 @@
                   <el-image
                     style="width: 160px; height: 160px"
                     :src="props.row.qrCode"></el-image><p/>
-                  <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions.wxmp_wxapp_add" @click="toAuth">
+                  <el-button type="warning" size="small" icon="el-icon-connection" v-if="permissions['wxmp:wxapp:add']" @click="toAuth">
                     重新授权
                   </el-button>
                   <el-button type="success" size="small" icon="el-icon-connection" @click="getAuthorizerInfo(props.row.id)">
@@ -209,10 +209,10 @@
       }),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxapp_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxapp_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxapp_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxapp_get, false)
+          addBtn: this.permissions['wxmp:wxapp:add'],
+          delBtn: this.permissions['wxmp:wxapp:del'],
+          editBtn: this.permissions['wxmp:wxapp:edit'],
+          viewBtn: this.permissions['wxmp:wxapp:get']
         }
       }
     },
@@ -398,7 +398,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       getAccessToken(appId){
         this.tableLoading = true

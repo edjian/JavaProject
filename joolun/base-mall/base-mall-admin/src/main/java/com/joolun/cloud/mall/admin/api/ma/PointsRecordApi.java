@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.PointsRecordService;
 import com.joolun.cloud.mall.common.entity.PointsRecord;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class PointsRecordApi {
      * @param pointsRecord 积分变动记录
      * @return
      */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getPointsRecordPage(HttpServletRequest request, Page page, PointsRecord pointsRecord) {
 		R checkThirdSession = BaseApi.checkThirdSession(pointsRecord, request);

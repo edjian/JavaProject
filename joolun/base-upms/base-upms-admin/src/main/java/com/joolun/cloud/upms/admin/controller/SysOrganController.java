@@ -11,6 +11,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.upms.common.entity.SysTenant;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,8 +42,9 @@ public class SysOrganController {
 	 * @param id ID
 	 * @return SysOrgan
 	 */
+	@ApiOperation(value = "通过ID查询")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_organ_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:organ:get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysOrganService.getById(id));
 	}
@@ -52,6 +54,7 @@ public class SysOrganController {
 	 * @param sysOrgan
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
 	public R getList(SysOrgan sysOrgan) {
 		return R.ok(sysOrganService.list(Wrappers.query(sysOrgan)));
@@ -62,6 +65,7 @@ public class SysOrganController {
 	 *
 	 * @return 树形菜单
 	 */
+	@ApiOperation(value = "返回树形菜单集合")
 	@GetMapping(value = "/tree")
 	public R getTree() {
 		return R.ok(sysOrganService.selectTree());
@@ -73,9 +77,10 @@ public class SysOrganController {
 	 * @param sysOrgan 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "添加")
 	@SysLog("添加机构")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_organ_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:organ:add')")
 	public R save(@Valid @RequestBody SysOrgan sysOrgan) {
 		try {
 			if(CommonConstants.PARENT_ID.equals(sysOrgan.getParentId())){
@@ -100,9 +105,10 @@ public class SysOrganController {
 	 * @param id ID
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "删除")
 	@SysLog("删除机构")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_organ_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:organ:del')")
 	public R removeById(@PathVariable String id) {
 		SysOrgan sysOrgan2 = sysOrganService.getById(id);
 		if(CommonConstants.PARENT_ID.equals(sysOrgan2.getParentId())){
@@ -117,9 +123,10 @@ public class SysOrganController {
 	 * @param sysOrgan 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "编辑")
 	@SysLog("编辑机构")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_organ_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:organ:edit')")
 	public R update(@Valid @RequestBody SysOrgan sysOrgan) {
 		try {
 			SysOrgan sysOrgan2 = sysOrganService.getById(sysOrgan.getId());

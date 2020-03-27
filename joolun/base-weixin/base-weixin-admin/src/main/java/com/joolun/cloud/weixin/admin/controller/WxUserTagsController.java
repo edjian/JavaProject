@@ -18,6 +18,7 @@ import com.joolun.cloud.weixin.common.entity.WxUserTagsDict;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -47,8 +48,9 @@ public class WxUserTagsController {
 	* 获取微信用户标签
 	* @return
 	*/
+	@ApiOperation(value = "获取微信用户标签")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxusertags_list')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:list')")
 	public R getWxUserList(String appId) {
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
 		try {
@@ -66,8 +68,9 @@ public class WxUserTagsController {
 	 * @param appId
 	 * @return
 	 */
+	@ApiOperation(value = "获取微信用户标签字典")
 	@GetMapping("/dict")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxusertags_list')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:list')")
 	public R getWxUserTagsDict(String appId) {
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
 		try {
@@ -92,9 +95,10 @@ public class WxUserTagsController {
 	 * 新增微信用户标签
 	 * @return
 	 */
+	@ApiOperation(value = "新增微信用户标签")
 	@SysLog("新增微信用户标签")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxusertags_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:add')")
 	public R save(@RequestBody JSONObject data){
 		String appId = data.getStr("appId");
 		String name = data.getStr("name");
@@ -112,9 +116,10 @@ public class WxUserTagsController {
 	 * 修改微信用户标签
 	 * @return
 	 */
+	@ApiOperation(value = "修改微信用户标签")
 	@SysLog("修改微信用户标签")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxusertags_edit')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:edit')")
 	public R updateById(@RequestBody JSONObject data){
 		String appId = data.getStr("appId");
 		Long id = data.getLong("id");
@@ -135,9 +140,10 @@ public class WxUserTagsController {
 	 * @param appId
 	 * @return
 	 */
+	@ApiOperation(value = "删除微信用户标签")
 	@SysLog("删除微信用户标签")
 	@DeleteMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxusertags_del')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:del')")
 	public R removeById(Long id,String appId){
 		int count = wxUserService.count(Wrappers.<WxUser>lambdaQuery()
 				.eq(WxUser::getAppId, appId)

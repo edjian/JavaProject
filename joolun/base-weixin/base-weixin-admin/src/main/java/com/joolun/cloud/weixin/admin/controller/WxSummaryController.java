@@ -12,6 +12,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -41,8 +42,9 @@ public class WxSummaryController {
 	 * @param endDate
 	 * @return
 	 */
+	@ApiOperation(value = "获取用户增减数据")
 	@GetMapping("/usersummary")
-//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp:wxsummary:index')")
 	public R getUsersummary(String appId, String startDate, String endDate) {
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
@@ -67,8 +69,9 @@ public class WxSummaryController {
 	 * @param endDate
 	 * @return
 	 */
+	@ApiOperation(value = "获取累计用户数据")
 	@GetMapping("/usercumulate")
-//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp:wxsummary:index')")
 	public R getUserCumulate(String appId, String startDate, String endDate){
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);
@@ -93,8 +96,9 @@ public class WxSummaryController {
 	 * @param endDate
 	 * @return
 	 */
+	@ApiOperation(value = "获取接口分析数据")
 	@GetMapping("/interfacesummary")
-//	@PreAuthorize("@ato.hasAuthority('wxmp_wxsummary_index')")
+//	@PreAuthorize("@ato.hasAuthority('wxmp:wxsummary:index')")
 	public R getInterfaceSummary(String appId, String startDate, String endDate){
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(appId);

@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.OrderLogisticsDetail;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsDetailService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class OrderLogisticsDetailController {
     * @param orderLogisticsDetail 物流详情
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogisticsdetail_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogisticsdetail:index')")
     public R getOrderLogisticsDetailPage(Page page, OrderLogisticsDetail orderLogisticsDetail) {
         return R.ok(orderLogisticsDetailService.page(page,Wrappers.query(orderLogisticsDetail)));
     }
@@ -52,8 +54,9 @@ public class OrderLogisticsDetailController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询物流详情")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogisticsdetail_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogisticsdetail:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(orderLogisticsDetailService.getById(id));
     }
@@ -63,9 +66,10 @@ public class OrderLogisticsDetailController {
     * @param orderLogisticsDetail 物流详情
     * @return R
     */
+	@ApiOperation(value = "新增物流详情")
     @SysLog("新增物流详情")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogisticsdetail_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogisticsdetail:add')")
     public R save(@RequestBody OrderLogisticsDetail orderLogisticsDetail){
         return R.ok(orderLogisticsDetailService.save(orderLogisticsDetail));
     }
@@ -75,9 +79,10 @@ public class OrderLogisticsDetailController {
     * @param orderLogisticsDetail 物流详情
     * @return R
     */
+	@ApiOperation(value = "修改物流详情")
     @SysLog("修改物流详情")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogisticsdetail_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogisticsdetail:edit')")
     public R updateById(@RequestBody OrderLogisticsDetail orderLogisticsDetail){
         return R.ok(orderLogisticsDetailService.updateById(orderLogisticsDetail));
     }
@@ -87,9 +92,10 @@ public class OrderLogisticsDetailController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除物流详情")
     @SysLog("删除物流详情")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderlogisticsdetail_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderlogisticsdetail:del')")
     public R removeById(@PathVariable String id){
         return R.ok(orderLogisticsDetailService.removeById(id));
     }

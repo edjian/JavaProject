@@ -184,10 +184,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_couponinfo_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_couponinfo_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_couponinfo_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_couponinfo_get, false)
+                    addBtn: this.permissions['mall:couponinfo:add'],
+                    delBtn: this.permissions['mall:couponinfo:del'],
+                    editBtn: this.permissions['mall:couponinfo:edit'],
+                    viewBtn: this.permissions['mall:couponinfo:get']
                 };
             }
         },
@@ -430,7 +430,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

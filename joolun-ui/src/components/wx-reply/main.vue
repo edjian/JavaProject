@@ -42,7 +42,7 @@
                 :file-list="fileList"
                 :before-upload="beforeImageUpload"
                 :data="uploadData">
-                <el-button type="primary" v-if="permissions.wxmp_wxmaterial_add">上传图片</el-button>
+                <el-button type="primary" v-if="permissions['wxmp:wxmaterial:add']">上传图片</el-button>
                 <div slot="tip" class="el-upload__tip">
                   支持bmp/png/jpeg/jpg/gif格式，大小不超过2M
                 </div>
@@ -82,7 +82,7 @@
                 :file-list="fileList"
                 :before-upload="beforeVoiceUpload"
                 :data="uploadData">
-                <el-button type="primary" v-if="permissions.wxmp_wxmaterial_add">点击上传</el-button>
+                <el-button type="primary" v-if="permissions['wxmp:wxmaterial:add']">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">
                   格式支持mp3/wma/wav/amr，文件大小不超过2M，播放长度不超过60s
                 </div>
@@ -108,7 +108,7 @@
         <div style="margin: 20px 0;"></div>
         <div style="text-align: center">
           <el-button type="success" @click="openMaterial">素材库选择<i class="el-icon-circle-check el-icon--right"></i></el-button>
-<!--          <el-button type="primary" v-if="permissions.wxmp_wxmaterial_add">新建视频<i class="el-icon-upload el-icon&#45;&#45;right"></i></el-button>-->
+<!--          <el-button type="primary" v-if="permissions['wxmp:wxmaterial:add']">新建视频<i class="el-icon-upload el-icon&#45;&#45;right"></i></el-button>-->
         </div>
         <el-dialog title="选择视频" :visible.sync="dialogVideoVisible" width="90%" append-to-body>
           <WxMaterialSelect :appId="appId" :objData="objData" @selectMaterial="selectMaterial"></WxMaterialSelect>
@@ -153,8 +153,8 @@
                 :file-list="fileList"
                 :before-upload="beforeThumbImageUpload"
                 :data="uploadData">
-                <el-button slot="trigger" size="mini" type="text" v-if="permissions.wxmp_wxmaterial_add">本地上传</el-button>
-                <el-button size="mini" type="text" v-if="permissions.wxmp_wxmaterial_add" @click="openMaterial" style="margin-left: 5px">素材库选择</el-button>
+                <el-button slot="trigger" size="mini" type="text" v-if="permissions['wxmp:wxmaterial:add']">本地上传</el-button>
+                <el-button size="mini" type="text" v-if="permissions['wxmp:wxmaterial:add']" @click="openMaterial" style="margin-left: 5px">素材库选择</el-button>
               </el-upload>
             </div>
           </div>
@@ -193,10 +193,14 @@
     },
     props: {
       appId:{
-        type:String
+        type: String
       },
       objData:{
-        type:Object
+        type: Object
+      },
+      oneNews:{
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -345,6 +349,12 @@
               tempObjItem.repUrl = data.downUrl
             }
           })
+        }
+        if(this.oneNews && this.objData.repType == 'news' && item.content.articles.length>1){
+          this.$alert('您选择的是多图文，微信限制只能回复1条图文消息，将默认选择第一篇', '提示', {
+            confirmButtonText: '确定'
+          })
+          item.content.articles = item.content.articles.slice(0,1)
         }
         this.tempObj.set(this.objData.repType,tempObjItem)
       },

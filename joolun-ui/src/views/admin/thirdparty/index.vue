@@ -47,9 +47,9 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_third_party_add, false),
-          delBtn: this.vaildData(this.permissions.sys_third_party_del, false),
-          editBtn: this.vaildData(this.permissions.sys_third_party_edit, false)
+          addBtn: this.permissions['sys:third:party:add'],
+          delBtn: this.permissions['sys:third:party:del'],
+          editBtn: this.permissions['sys:third:party:edit']
         };
       }
     },
@@ -144,7 +144,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       /**
        * 搜索回调

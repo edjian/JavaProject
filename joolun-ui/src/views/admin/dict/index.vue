@@ -98,9 +98,9 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_dict_add, false),
-          delBtn: this.vaildData(this.permissions.sys_dict_del, false),
-          editBtn: this.vaildData(this.permissions.sys_dict_edit, false)
+          addBtn: this.permissions['sys:dict:add'],
+          delBtn: this.permissions['sys:dict:del'],
+          editBtn: this.permissions['sys:dict:edit']
         };
       }
     },
@@ -316,7 +316,7 @@
        * 刷新回调
        */
       refreshChange2(val) {
-        this.getPage2(val)
+        this.getPage2(this.page2)
       }
     }
   }

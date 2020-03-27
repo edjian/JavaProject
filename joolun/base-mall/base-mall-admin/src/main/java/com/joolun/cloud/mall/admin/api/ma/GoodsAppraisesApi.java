@@ -21,6 +21,7 @@ import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,6 +60,7 @@ public class GoodsAppraisesApi {
     * @param goodsAppraises 商品评价
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getGoodsAppraisesPage(HttpServletRequest request, Page page, GoodsAppraises goodsAppraises) {
 		R checkThirdSession = BaseApi.checkThirdSession(goodsAppraises, request);
@@ -73,6 +75,7 @@ public class GoodsAppraisesApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商品评价")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -87,6 +90,7 @@ public class GoodsAppraisesApi {
     * @param listGoodsAppraises 商品评价
     * @return R
     */
+	@ApiOperation(value = "新增商品评价")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody List<GoodsAppraises> listGoodsAppraises){
     	WxUser wxUser = new WxUser();
@@ -114,6 +118,7 @@ public class GoodsAppraisesApi {
     * @param goodsAppraises 商品评价
     * @return R
     */
+	@ApiOperation(value = "修改商品评价")
     @PutMapping
     public R updateById(HttpServletRequest request, @RequestBody GoodsAppraises goodsAppraises){
 		R checkThirdSession = BaseApi.checkThirdSession(goodsAppraises, request);
@@ -128,6 +133,7 @@ public class GoodsAppraisesApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除商品评价")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

@@ -109,8 +109,23 @@ public interface MallConstants {
 	String BARGAIN_USER_STATUS_2 = "2";
 
 	/**
-	 * 订单类型（0、普通订单；1、砍价订单）
+	 * 拼团状态（0：未开始；1：活动中；2：已过期）
+	 */
+	String GROUPON_INFO_STATUS_0 = "0";
+	String GROUPON_INFO_STATUS_1 = "1";
+	String GROUPON_INFO_STATUS_2 = "2";
+
+	/**
+	 * 拼团记录状态（0：拼团中；1：完成拼团；2：已过期）
+	 */
+	String GROUPON_USER_STATUS_0 = "0";
+	String GROUPON_USER_STATUS_1 = "1";
+	String GROUPON_USER_STATUS_2 = "2";
+
+	/**
+	 * 订单类型（0、普通订单；1、砍价订单；2、拼团订单）
 	 */
 	String ORDER_TYPE_0 = "0";
 	String ORDER_TYPE_1 = "1";
+	String ORDER_TYPE_2 = "2";
 }

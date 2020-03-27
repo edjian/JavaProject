@@ -110,6 +110,17 @@
 			<if test="query.skuId != null">
 				AND bargain_user.`sku_id` = #{query.skuId}
 			</if>
+			<if test='query.status == "0"'>
+				AND bargain_user.`status` = '0'
+				AND bargain_user.`valid_end_time` > now()
+			</if>
+			<if test='query.status == "1"'>
+				AND bargain_user.`status` = '1'
+			</if>
+			<if test='query.status == "2"'>
+				AND bargain_user.`status` = '0'
+				AND now() > bargain_user.`valid_end_time`
+			</if>
 		</where>
 	</select>
 </mapper>

@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_add, false),
-                    delBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_del, false),
-                    editBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_edit, false),
-                    viewBtn: this.vaildData(this.permissions.${moduleName}_${pathName}_get, false)
+                    addBtn: this.permissions['${moduleName}:${pathName}:add'],
+                    delBtn: this.permissions['${moduleName}:${pathName}:del'],
+                    editBtn: this.permissions['${moduleName}:${pathName}:edit'],
+                    viewBtn: this.permissions['${moduleName}:${pathName}:get']
                 };
             }
         },
@@ -172,7 +172,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.FreightTemplat;
 import com.joolun.cloud.mall.admin.service.FreightTemplatService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,9 @@ public class FreightTemplatController {
      * @param freightTemplat 运费模板
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_freighttemplat_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:freighttemplat:index')")
     public R getPage(Page page, FreightTemplat freightTemplat) {
         return R.ok(freightTemplatService.page(page, Wrappers.query(freightTemplat)));
     }
@@ -54,8 +56,9 @@ public class FreightTemplatController {
 	 * @param freightTemplat
 	 * @return
 	 */
+	@ApiOperation(value = "list列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_freighttemplat_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:freighttemplat:index')")
 	public List<FreightTemplat> getList(FreightTemplat freightTemplat) {
 		return freightTemplatService.list(Wrappers.query(freightTemplat));
 	}
@@ -65,8 +68,9 @@ public class FreightTemplatController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "运费模板查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_freighttemplat_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:freighttemplat:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(freightTemplatService.getById(id));
     }
@@ -76,9 +80,10 @@ public class FreightTemplatController {
      * @param freightTemplat 运费模板
      * @return R
      */
+	@ApiOperation(value = "运费模板新增")
     @SysLog("新增运费模板")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_freighttemplat_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:freighttemplat:add')")
     public R save(@RequestBody FreightTemplat freightTemplat) {
         return R.ok(freightTemplatService.save(freightTemplat));
     }
@@ -88,9 +93,10 @@ public class FreightTemplatController {
      * @param freightTemplat 运费模板
      * @return R
      */
+	@ApiOperation(value = "运费模板修改")
     @SysLog("修改运费模板")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_freighttemplat_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:freighttemplat:edit')")
     public R updateById(@RequestBody FreightTemplat freightTemplat) {
         return R.ok(freightTemplatService.updateById(freightTemplat));
     }
@@ -100,9 +106,10 @@ public class FreightTemplatController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "运费模板删除")
     @SysLog("删除运费模板")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_freighttemplat_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:freighttemplat:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(freightTemplatService.removeById(id));
     }

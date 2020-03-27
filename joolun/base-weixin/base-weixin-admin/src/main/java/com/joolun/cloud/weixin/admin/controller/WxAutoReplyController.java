@@ -17,6 +17,7 @@ import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.admin.service.WxAutoReplyService;
 import com.joolun.cloud.weixin.common.entity.WxAutoReply;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,9 @@ public class WxAutoReplyController {
     * @param wxAutoReply 消息自动回复
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxautoreply_index')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxautoreply:index')")
     public R getWxAutoReplyPage(Page page, WxAutoReply wxAutoReply) {
     	return R.ok(wxAutoReplyService.page(page,Wrappers.query(wxAutoReply)));
     }
@@ -56,8 +58,9 @@ public class WxAutoReplyController {
     * @param id id
     * @return R
     */
+	@ApiOperation(value = "通过id查询消息自动回复")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxautoreply_get')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxautoreply:get')")
     public R getById(@PathVariable("id") String id){
     return R.ok(wxAutoReplyService.getById(id));
     }
@@ -67,9 +70,10 @@ public class WxAutoReplyController {
     * @param wxAutoReply 消息自动回复
     * @return R
     */
+	@ApiOperation(value = "新增消息自动回复")
     @SysLog("新增消息自动回复")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxautoreply_add')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxautoreply:add')")
     public R save(@RequestBody WxAutoReply wxAutoReply){
 		this.jude(wxAutoReply);
     	return R.ok(wxAutoReplyService.save(wxAutoReply));
@@ -80,9 +84,10 @@ public class WxAutoReplyController {
     * @param wxAutoReply 消息自动回复
     * @return R
     */
+	@ApiOperation(value = "修改消息自动回复")
     @SysLog("修改消息自动回复")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxautoreply_edit')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxautoreply:edit')")
     public R updateById(@RequestBody WxAutoReply wxAutoReply){
 		this.jude(wxAutoReply);
     	return R.ok(wxAutoReplyService.updateById(wxAutoReply));
@@ -93,9 +98,10 @@ public class WxAutoReplyController {
     * @param id id
     * @return R
     */
+	@ApiOperation(value = "通过id删除消息自动回复")
     @SysLog("删除消息自动回复")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxautoreply_del')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxautoreply:del')")
     public R removeById(@PathVariable String id){
     return R.ok(wxAutoReplyService.removeById(id));
     }

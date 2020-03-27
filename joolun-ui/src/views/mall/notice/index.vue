@@ -55,10 +55,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.admin_notice_add, false),
-          delBtn: this.vaildData(this.permissions.admin_notice_del, false),
-          editBtn: this.vaildData(this.permissions.admin_notice_edit, false),
-          viewBtn: this.vaildData(this.permissions.admin_notice_get, false)
+          addBtn: this.permissions['admin:notice:add'],
+          delBtn: this.permissions['admin:notice:del'],
+          editBtn: this.permissions['admin:notice:edit'],
+          viewBtn: this.permissions['admin:notice:get']
         };
       }
     },
@@ -167,7 +167,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

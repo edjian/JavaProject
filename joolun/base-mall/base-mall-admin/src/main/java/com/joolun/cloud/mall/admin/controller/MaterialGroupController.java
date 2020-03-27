@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.mall.common.entity.MaterialGroup;
 import com.joolun.cloud.mall.admin.service.MaterialGroupService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class MaterialGroupController {
     * @param materialGroup 素材分组
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_material_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:index')")
     public R getMaterialGroupPage(Page page, MaterialGroup materialGroup) {
         return R.ok(materialGroupService.page(page,Wrappers.query(materialGroup)));
     }
@@ -53,8 +55,9 @@ public class MaterialGroupController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询素材分组")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_material_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:index')")
     public R getById(@PathVariable("id") String id){
         return R.ok(materialGroupService.getById(id));
     }
@@ -64,9 +67,10 @@ public class MaterialGroupController {
     * @param materialGroup 素材分组
     * @return R
     */
+	@ApiOperation(value = "新增素材分组")
     @SysLog("新增素材分组")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_material_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:add')")
     public R save(@RequestBody MaterialGroup materialGroup){
 		materialGroup.setCreateId(SecurityUtils.getUser().getId());
         return R.ok(materialGroupService.save(materialGroup));
@@ -77,9 +81,10 @@ public class MaterialGroupController {
     * @param materialGroup 素材分组
     * @return R
     */
+	@ApiOperation(value = "修改素材分组")
     @SysLog("修改素材分组")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_material_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:edit')")
     public R updateById(@RequestBody MaterialGroup materialGroup){
         return R.ok(materialGroupService.updateById(materialGroup));
     }
@@ -89,9 +94,10 @@ public class MaterialGroupController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除素材分组")
     @SysLog("删除素材分组")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_material_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:del')")
     public R removeById(@PathVariable String id){
         return R.ok(materialGroupService.removeById(id));
     }

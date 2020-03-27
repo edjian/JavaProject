@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.mall.common.entity.Material;
 import com.joolun.cloud.mall.admin.service.MaterialService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class MaterialController {
     * @param material 素材
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_material_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:index')")
     public R getMaterialPage(Page page, Material material) {
         return R.ok(materialService.page(page,Wrappers.query(material)));
     }
@@ -53,8 +55,9 @@ public class MaterialController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询素材")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_material_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(materialService.getById(id));
     }
@@ -64,9 +67,10 @@ public class MaterialController {
     * @param material 素材
     * @return R
     */
+	@ApiOperation(value = "新增素材")
     @SysLog("新增素材")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_material_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:add')")
     public R save(@RequestBody Material material){
 		material.setCreateId(SecurityUtils.getUser().getId());
         return R.ok(materialService.save(material));
@@ -77,9 +81,10 @@ public class MaterialController {
     * @param material 素材
     * @return R
     */
+	@ApiOperation(value = "修改素材")
     @SysLog("修改素材")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_material_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:edit')")
     public R updateById(@RequestBody Material material){
         return R.ok(materialService.updateById(material));
     }
@@ -89,9 +94,10 @@ public class MaterialController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除素材")
     @SysLog("删除素材")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_material_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:material:del')")
     public R removeById(@PathVariable String id){
         return R.ok(materialService.removeById(id));
     }

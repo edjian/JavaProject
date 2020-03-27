@@ -17,6 +17,7 @@ import com.joolun.cloud.mall.admin.service.BargainUserService;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.BargainUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,7 @@ public class BargainUserApi {
      * @param bargainUser 砍价记录
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
     public R getPage(HttpServletRequest request, Page page, BargainUser bargainUser) {
 		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
@@ -58,6 +60,7 @@ public class BargainUserApi {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价记录查询")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -72,6 +75,7 @@ public class BargainUserApi {
      * @param bargainUser 砍价记录
      * @return R
      */
+	@ApiOperation(value = "砍价记录新增，发起砍价")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody BargainUser bargainUser) {
 		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
@@ -89,6 +93,7 @@ public class BargainUserApi {
      * @param bargainUser 砍价记录
      * @return R
      */
+	@ApiOperation(value = "砍价记录修改")
     @PutMapping
     public R updateById(HttpServletRequest request, @RequestBody BargainUser bargainUser) {
 		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
@@ -103,6 +108,7 @@ public class BargainUserApi {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价记录删除")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
 import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class GoodsSpuSpecController {
     * @param goodsSpuSpec spu规格
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
     public R getGoodsSpuSpecPage(Page page, GoodsSpuSpec goodsSpuSpec) {
         return R.ok(goodsSpuSpecService.page(page,Wrappers.query(goodsSpuSpec)));
     }
@@ -52,8 +54,9 @@ public class GoodsSpuSpecController {
 	 * @param goodsSpuSpec
 	 * @return
 	 */
+	@ApiOperation(value = "获取商品规格")
 	@GetMapping("/tree")
-	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
 	public R getGoodsSpuSpecTree(GoodsSpuSpec goodsSpuSpec) {
 		return R.ok(goodsSpuSpecService.tree(goodsSpuSpec));
 	}
@@ -63,8 +66,9 @@ public class GoodsSpuSpecController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询spu规格")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(goodsSpuSpecService.getById(id));
     }
@@ -74,9 +78,10 @@ public class GoodsSpuSpecController {
     * @param goodsSpuSpec spu规格
     * @return R
     */
+	@ApiOperation(value = "新增spu规格")
     @SysLog("新增spu规格")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:add')")
     public R save(@RequestBody GoodsSpuSpec goodsSpuSpec){
         return R.ok(goodsSpuSpecService.save(goodsSpuSpec));
     }
@@ -86,9 +91,10 @@ public class GoodsSpuSpecController {
     * @param goodsSpuSpec spu规格
     * @return R
     */
+	@ApiOperation(value = "修改spu规格")
     @SysLog("修改spu规格")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:edit')")
     public R updateById(@RequestBody GoodsSpuSpec goodsSpuSpec){
         return R.ok(goodsSpuSpecService.updateById(goodsSpuSpec));
     }
@@ -98,9 +104,10 @@ public class GoodsSpuSpecController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除spu规格")
     @SysLog("删除spu规格")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:del')")
     public R removeById(@PathVariable String id){
         return R.ok(goodsSpuSpecService.removeById(id));
     }

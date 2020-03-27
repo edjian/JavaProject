@@ -12,6 +12,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.GoodsSpuSpecService;
 import com.joolun.cloud.mall.common.entity.GoodsSpuSpec;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,7 @@ public class GoodsSpuSpecApi {
 	 * @param goodsSpuSpec
 	 * @return
 	 */
+	@ApiOperation(value = "获取商品规格")
 	@GetMapping("/tree")
 	public R getGoodsSpuSpecTree(HttpServletRequest request, GoodsSpuSpec goodsSpuSpec) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

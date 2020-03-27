@@ -46,12 +46,6 @@ Page({
         this.setData({
           orderInfo: orderInfo
         })
-        if ((orderInfo.isPay == '0' && !orderInfo.status) || orderInfo.status == '2') {//订单取消、确认收货倒计时
-          this.setData({
-            outTime: 1000 * orderInfo.outTime
-          })
-          this.countDown()
-        }
         setTimeout(function () {
           that.setData({
             callPay: false
@@ -65,43 +59,6 @@ Page({
       data: e.currentTarget.dataset.data
     })
   },
-  countDown() { //倒计时函数
-    let outTime = this.data.outTime - 1000
-    // 对结束时间进行处理渲染到页面
-    let obj = null
-    // 如果活动未结束，对时间进行处理
-    if (outTime && outTime > 0) {
-      let time = outTime / 1000
-      // 获取天、时、分、秒
-      let day = parseInt(time / (60 * 60 * 24))
-      let hou = parseInt(time % (60 * 60 * 24) / 3600)
-      let min = parseInt(time % (60 * 60 * 24) % 3600 / 60)
-      let sec = parseInt(time % (60 * 60 * 24) % 3600 % 60)
-      obj = {
-        day: this.timeFormat(day),
-        hou: this.timeFormat(hou),
-        min: this.timeFormat(min),
-        sec: this.timeFormat(sec)
-      }
-      // 渲染，然后每隔一秒执行一次倒计时函数
-      this.setData({
-        outTime: outTime,
-        countDown: obj
-      })
-      this.setData({
-        setTimeoutNumber: setTimeout(this.countDown, 1000)
-      })
-    } else { //结束
-      clearTimeout(this.data.setTimeoutNumber)
-      let that = this
-      setTimeout(function () {
-        that.orderGet(that.data.id)
-      }, 2000)
-    }
-  },
-  timeFormat(param) { //小于10的格式化函数
-    return param < 10 ? '0' + param : param
-  },
   orderCancel(){
     let id = this.data.orderInfo.id
     this.orderGet(id)
@@ -111,5 +68,8 @@ Page({
   },
   unifiedOrder() {
     this.onShow()
+  },
+  countDownDone(){
+    this.orderGet(this.data.id)
   }
 })

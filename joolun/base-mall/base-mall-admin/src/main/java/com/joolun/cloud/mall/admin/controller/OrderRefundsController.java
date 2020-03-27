@@ -13,6 +13,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 import com.joolun.cloud.mall.admin.service.OrderRefundsService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +41,9 @@ public class OrderRefundsController {
      * @param orderRefunds 退款详情
      * @return
      */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderrefunds:index')")
     public R getOrderRefundsPage(Page page, OrderRefunds orderRefunds) {
         return R.ok(orderRefundsService.page1(page, orderRefunds));
     }
@@ -51,8 +53,9 @@ public class OrderRefundsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询退款详情")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderrefunds:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(orderRefundsService.getById(id));
     }
@@ -62,9 +65,10 @@ public class OrderRefundsController {
      * @param orderRefunds 退款详情
      * @return R
      */
+	@ApiOperation(value = "新增退款详情")
     @SysLog("新增退款详情")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderrefunds:add')")
     public R save(@RequestBody OrderRefunds orderRefunds) {
         return R.ok(orderRefundsService.save(orderRefunds));
     }
@@ -74,9 +78,10 @@ public class OrderRefundsController {
      * @param orderRefunds 退款详情
      * @return R
      */
+	@ApiOperation(value = "修改退款详情")
     @SysLog("修改退款详情")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderrefunds:edit')")
     public R updateById(@RequestBody OrderRefunds orderRefunds) {
         return R.ok(orderRefundsService.updateById(orderRefunds));
     }
@@ -86,9 +91,10 @@ public class OrderRefundsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id删除退款详情")
     @SysLog("删除退款详情")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_orderrefunds_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:orderrefunds:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(orderRefundsService.removeById(id));
     }
@@ -98,9 +104,10 @@ public class OrderRefundsController {
 	 * @param orderRefunds 退款详情
 	 * @return R
 	 */
+	@ApiOperation(value = "操作退款")
 	@SysLog("操作退款")
 	@PutMapping("/doOrderRefunds")
-	@PreAuthorize("@ato.hasAuthority('mall_orderinfo_edit')")
+	@PreAuthorize("@ato.hasAuthority('mall:orderinfo:edit')")
 	public R doOrderRefunds(@RequestBody OrderRefunds orderRefunds) {
 		return R.ok(orderRefundsService.doOrderRefunds(orderRefunds));
 	}

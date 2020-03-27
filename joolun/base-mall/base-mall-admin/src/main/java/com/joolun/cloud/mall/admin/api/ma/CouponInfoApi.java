@@ -15,6 +15,7 @@ import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.CouponUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class CouponInfoApi {
      * @param couponInfo 电子券
      * @return
      */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getPage(HttpServletRequest request, Page page, CouponInfo couponInfo, CouponGoods cuponGoods) {
 		CouponUser couponUser = new CouponUser();
@@ -56,6 +58,7 @@ public class CouponInfoApi {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询电子券")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

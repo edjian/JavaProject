@@ -36,7 +36,7 @@
           <el-button size="mini"
                      type="text"
                      icon="el-icon-suitcase"
-                     v-if="permissions.sys_role_perm"
+                     v-if="permissions['sys:role:perm']"
                      @click="handlePermission(scope.row,scope.index)">权限
           </el-button>
         </template>
@@ -109,10 +109,10 @@
       ...mapGetters(['elements', 'permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_role_add, false),
-          delBtn: this.vaildData(this.permissions.sys_role_del, false),
-          editBtn: this.vaildData(this.permissions.sys_role_edit, false),
-          viewBtn: this.vaildData(this.permissions.sys_role_get, false)
+          addBtn: this.permissions['sys:role:add'],
+          delBtn: this.permissions['sys:role:del'],
+          editBtn: this.permissions['sys:role:edit'],
+          viewBtn: this.permissions['sys:role:get']
         }
       }
     },
@@ -149,7 +149,7 @@
         })
       },
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       searchChange(param,done) {
         this.page.currentPage = 1

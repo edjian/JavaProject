@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.admin.service.WxMenuService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -43,8 +44,9 @@ public class WxMenuController {
 	 * @param menuRuleId
 	 * @return R
 	 */
+	@ApiOperation(value = "通过appId查询自定义菜单")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_get')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmenu:get')")
 	public R getWxMenuButton(String appId, String menuRuleId) {
 		return R.ok(wxMenuService.getWxMenuButton(appId, menuRuleId));
 	}
@@ -55,9 +57,10 @@ public class WxMenuController {
 	 * @param
 	 * @return R
 	 */
+	@ApiOperation(value = "保存并发布菜单")
 	@SysLog("保存并发布菜单")
 	@PostMapping("/release")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmenu:add')")
 	public R saveAndRelease(@RequestBody String data) {
 		JSONObject jSONObject = JSONUtil.parseObj(data);
 		String strWxMenu = jSONObject.getStr("strWxMenu");
@@ -77,9 +80,10 @@ public class WxMenuController {
 	 * @param ruleId
 	 * @return R
 	 */
+	@ApiOperation(value = "删除菜单")
 	@SysLog("删除微信菜单")
 	@DeleteMapping("/{ruleId}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxmenu_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxmenu:add')")
 	public R removeByRuleId(@PathVariable String ruleId) {
 		try {
 			wxMenuService.removeByRuleId(ruleId);

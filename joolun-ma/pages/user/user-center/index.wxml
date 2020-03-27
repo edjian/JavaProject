@@ -85,7 +85,19 @@
     </view>
   </view>
 </view>
-<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+<view class="cu-list menu card-menu margin-top-xl shadow-lg radius">
+  <navigator class="cu-item arrow" url="/pages/coupon/coupon-user-list/index" hover-class="none">
+    <view class="content">
+      <text class="cuIcon-ticket text-orange"></text>
+      <text class="text-grey">我的卡券</text>
+    </view>
+  </navigator>
+  <navigator class="cu-item arrow" url="/pages/groupon/groupon-user-list/index" hover-class="none">
+    <view class="content">
+      <text class="cuIcon-group text-blue"></text>
+      <text class="text-grey">我的拼团</text>
+    </view>
+  </navigator>
   <navigator class="cu-item arrow" url="/pages/bargain/bargain-user-list/index" hover-class="none">
     <view class="content">
       <text class="cuIcon-cardboardforbid text-orange"></text>
@@ -94,7 +106,7 @@
   </navigator>
   <navigator class="cu-item arrow" url="/pages/user/user-collect/index" hover-class="none">
     <view class="content">
-      <text class="cuIcon-like text-orange"></text>
+      <text class="cuIcon-like text-pink"></text>
       <text class="text-grey">我的收藏</text>
     </view>
   </navigator>
@@ -105,5 +117,7 @@
     </view>
   </navigator>
 </view>
-
+<view class="text-gray text-sm text-center margin-sm">
+  www.joolun.com提供技术支持
+</view>
 <ad unit-id="adunit-80d788ab8518b5b3"></ad>

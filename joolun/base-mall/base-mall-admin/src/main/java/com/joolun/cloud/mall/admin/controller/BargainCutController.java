@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.BargainCut;
 import com.joolun.cloud.mall.admin.service.BargainCutService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class BargainCutController {
      * @param bargainCut 砍价帮砍记录
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_bargainuser_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargainuser:index')")
     public R getPage(Page page, BargainCut bargainCut) {
         return R.ok(bargainCutService.page(page, Wrappers.query(bargainCut)));
     }
@@ -52,8 +54,9 @@ public class BargainCutController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价帮砍记录查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargaincut_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaincut:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(bargainCutService.getById(id));
     }
@@ -63,9 +66,10 @@ public class BargainCutController {
      * @param bargainCut 砍价帮砍记录
      * @return R
      */
+	@ApiOperation(value = "砍价帮砍记录新增")
     @SysLog("新增砍价帮砍记录")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargaincut_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaincut:add')")
     public R save(@RequestBody BargainCut bargainCut) {
         return R.ok(bargainCutService.save(bargainCut));
     }
@@ -75,9 +79,10 @@ public class BargainCutController {
      * @param bargainCut 砍价帮砍记录
      * @return R
      */
+	@ApiOperation(value = "砍价帮砍记录修改")
     @SysLog("修改砍价帮砍记录")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_bargaincut_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaincut:edit')")
     public R updateById(@RequestBody BargainCut bargainCut) {
         return R.ok(bargainCutService.updateById(bargainCut));
     }
@@ -87,9 +92,10 @@ public class BargainCutController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "砍价帮砍记录删除")
     @SysLog("删除砍价帮砍记录")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_bargaincut_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:bargaincut:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(bargainCutService.removeById(id));
     }

@@ -19,6 +19,7 @@ import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.*;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public class GoodsSpuApi {
 	* @param goodsSpu spu商品
 	* @return
 	*/
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu, String couponUserId) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -70,6 +72,7 @@ public class GoodsSpuApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询spu商品")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id){
 		UserCollect userCollect = new UserCollect();

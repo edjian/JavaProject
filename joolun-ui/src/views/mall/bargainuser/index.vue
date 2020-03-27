@@ -38,6 +38,9 @@
                         </el-col>
                     </el-row>
                 </template>
+                <template slot-scope="scope" slot="status">
+                    <el-tag size="mini" :type="scope.row.status == '0' ? 'warning' : scope.row.status == '1' ? 'success' : 'danger'" effect="dark">{{scope.row.$status}}</el-tag>
+                </template>
                 <template slot-scope="scope" slot="havBargainAmount">
                     <div @click="showCut(scope.row.id)">
                         <i style="color: red">{{scope.row.havBargainAmount}}</i>
@@ -119,10 +122,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_bargainuser_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_bargainuser_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_bargainuser_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_bargainuser_get, false)
+                    addBtn: this.permissions['mall:bargainuser:add'],
+                    delBtn: this.permissions['mall:bargainuser:del'],
+                    editBtn: this.permissions['mall:bargainuser:edit'],
+                    viewBtn: this.permissions['mall:bargainuser:get']
                 };
             }
         },
@@ -258,7 +261,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

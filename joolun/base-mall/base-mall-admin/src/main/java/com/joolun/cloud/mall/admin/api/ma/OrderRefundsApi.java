@@ -23,6 +23,7 @@ import com.joolun.cloud.mall.admin.service.OrderRefundsService;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,6 +62,7 @@ public class OrderRefundsApi {
      * @param orderRefunds 退款详情
      * @return
      */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getOrderRefundsPage(HttpServletRequest request, Page page, OrderRefunds orderRefunds) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -75,6 +77,7 @@ public class OrderRefundsApi {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询退款详情")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -89,6 +92,7 @@ public class OrderRefundsApi {
      * @param orderRefunds 退款详情
      * @return R
      */
+	@ApiOperation(value = "新增退款详情")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody OrderRefunds orderRefunds) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -103,6 +107,7 @@ public class OrderRefundsApi {
      * @param orderRefunds 退款详情
      * @return R
      */
+	@ApiOperation(value = "修改退款详情")
     @PutMapping
     public R updateById(HttpServletRequest request, @RequestBody OrderRefunds orderRefunds) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);
@@ -118,6 +123,7 @@ public class OrderRefundsApi {
 	 * @return
 	 * @throws WxPayException
 	 */
+	@ApiOperation(value = "退款回调")
 	@PostMapping("/notify-refunds")
 	public String notifyRefunds(@RequestBody String xmlData) {
 		log.info("退款回调:"+xmlData);

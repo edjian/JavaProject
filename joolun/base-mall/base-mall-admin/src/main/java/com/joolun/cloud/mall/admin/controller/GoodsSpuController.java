@@ -9,19 +9,18 @@
 package com.joolun.cloud.mall.admin.controller;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
-
 import java.util.List;
 
 /**
@@ -45,8 +44,9 @@ public class GoodsSpuController {
     * @param goodsSpu spu商品
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
     public R getGoodsSpuPage(Page page, GoodsSpu goodsSpu) {
 		return R.ok(goodsSpuService.page1(page, goodsSpu));
     }
@@ -56,8 +56,9 @@ public class GoodsSpuController {
 	 * @param goodsSpu
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
 	public List<GoodsSpu> getList(GoodsSpu goodsSpu) {
 		return goodsSpuService.list(Wrappers.query(goodsSpu).lambda()
 						.select(GoodsSpu::getId,
@@ -70,6 +71,7 @@ public class GoodsSpuController {
 	 * @param goodsSpu
 	 * @return
 	 */
+	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
 	public R getCount(GoodsSpu goodsSpu) {
 		return R.ok(goodsSpuService.count(Wrappers.query(goodsSpu)));
@@ -80,8 +82,9 @@ public class GoodsSpuController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询spu商品")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(goodsSpuService.getById1(id));
     }
@@ -91,9 +94,10 @@ public class GoodsSpuController {
     * @param goodsSpu spu商品
     * @return R
     */
+	@ApiOperation(value = "新增spu商品")
     @SysLog("新增spu商品")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:add')")
     public R save(@RequestBody GoodsSpu goodsSpu){
         return R.ok(goodsSpuService.save1(goodsSpu));
     }
@@ -103,9 +107,10 @@ public class GoodsSpuController {
     * @param goodsSpu spu商品
     * @return R
     */
+	@ApiOperation(value = "修改spu商品")
     @SysLog("修改spu商品")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:edit')")
     public R updateById(@RequestBody GoodsSpu goodsSpu){
         return R.ok(goodsSpuService.updateById1(goodsSpu));
     }
@@ -116,9 +121,10 @@ public class GoodsSpuController {
 	 * @param ids
 	 * @return R
 	 */
+	@ApiOperation(value = "商品上下架操作")
 	@SysLog("商品上下架操作")
 	@PutMapping("/shelf")
-	@PreAuthorize("@ato.hasAuthority('mall_goodsspu_edit')")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:edit')")
 	public R updateById(@RequestParam(value = "shelf") String shelf, @RequestParam(value = "ids") String ids){
 		GoodsSpu goodsSpu = new GoodsSpu();
 		goodsSpu.setShelf(shelf);
@@ -131,9 +137,10 @@ public class GoodsSpuController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除spu商品")
     @SysLog("删除spu商品")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:del')")
     public R removeById(@PathVariable String id){
         return R.ok(goodsSpuService.removeById(id));
     }

@@ -15,6 +15,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.mall.common.entity.UserInfo;
 import com.joolun.cloud.mall.admin.service.UserInfoService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,9 @@ public class UserInfoController {
      * @param userInfo 商城用户
      * @return
      */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_userinfo_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:userinfo:index')")
     public R getUserinfoPage(Page page, UserInfo userInfo) {
         return R.ok(userInfoService.page(page, Wrappers.query(userInfo)));
     }
@@ -53,6 +55,7 @@ public class UserInfoController {
 	 * @param userInfo
 	 * @return
 	 */
+	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
 	public R getCount(UserInfo userInfo) {
 		return R.ok(userInfoService.count(Wrappers.query(userInfo)));
@@ -63,8 +66,9 @@ public class UserInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id查询商城用户")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_userinfo_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:userinfo:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(userInfoService.getById(id));
     }
@@ -74,9 +78,10 @@ public class UserInfoController {
      * @param userInfo 商城用户
      * @return R
      */
+	@ApiOperation(value = "新增商城用户")
     @SysLog("新增商城用户")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_userinfo_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:userinfo:add')")
     public R save(@RequestBody UserInfo userInfo) {
         return R.ok(userInfoService.save(userInfo));
     }
@@ -86,9 +91,10 @@ public class UserInfoController {
      * @param userInfo 商城用户
      * @return R
      */
+	@ApiOperation(value = "修改商城用户")
     @SysLog("修改商城用户")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_userinfo_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:userinfo:edit')")
     public R updateById(@RequestBody UserInfo userInfo) {
         return R.ok(userInfoService.updateById(userInfo));
     }
@@ -98,9 +104,10 @@ public class UserInfoController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "通过id删除商城用户")
     @SysLog("删除商城用户")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_userinfo_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:userinfo:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(userInfoService.removeById(id));
     }
@@ -110,6 +117,7 @@ public class UserInfoController {
 	 * @param userInfo 商城用户
 	 * @return R
 	 */
+	@ApiOperation(value = "新增商城用户")
 	@Inside
 	@PostMapping("/inside")
 	public R saveInside(@RequestBody UserInfo userInfo) {

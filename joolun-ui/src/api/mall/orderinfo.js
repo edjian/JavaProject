@@ -53,3 +53,18 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function editPrice(obj) {
+  return request({
+    url: '/mall/orderinfo/editPrice',
+    method: 'put',
+    data: obj
+  })
+}
+
+export function orderCancel(id) {
+  return request({
+    url: '/mall/orderinfo/cancel/' + id,
+    method: 'put'
+  })
+}

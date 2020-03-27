@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.weixin.common.entity.WxMenuRule;
 import com.joolun.cloud.weixin.admin.service.WxMenuRuleService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class WxMenuRuleController {
      * @param wxMenuRule 微信自定义菜单分组
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmenurule_index')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmenurule:index')")
     public R getPage(Page page, WxMenuRule wxMenuRule) {
         return R.ok(wxMenuRuleService.page(page, Wrappers.query(wxMenuRule)));
     }
@@ -52,8 +54,9 @@ public class WxMenuRuleController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "微信自定义菜单分组查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmenurule_get')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmenurule:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(wxMenuRuleService.getById(id));
     }
@@ -63,9 +66,10 @@ public class WxMenuRuleController {
      * @param wxMenuRule 微信自定义菜单分组
      * @return R
      */
+	@ApiOperation(value = "微信自定义菜单分组新增")
     @SysLog("新增微信自定义菜单分组")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmenurule_add')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmenurule:add')")
     public R save(@RequestBody WxMenuRule wxMenuRule) {
         return R.ok(wxMenuRuleService.save(wxMenuRule));
     }
@@ -75,9 +79,10 @@ public class WxMenuRuleController {
      * @param wxMenuRule 微信自定义菜单分组
      * @return R
      */
+	@ApiOperation(value = "微信自定义菜单分组修改")
     @SysLog("修改微信自定义菜单分组")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmenurule_edit')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmenurule:edit')")
     public R updateById(@RequestBody WxMenuRule wxMenuRule) {
         return R.ok(wxMenuRuleService.updateById(wxMenuRule));
     }
@@ -87,9 +92,10 @@ public class WxMenuRuleController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "微信自定义菜单分组删除")
     @SysLog("删除微信自定义菜单分组")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmenurule_del')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmenurule:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(wxMenuRuleService.removeById(id));
     }

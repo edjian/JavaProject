@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class SysMenuController {
 	 *
 	 * @return 当前用户的树形菜单
 	 */
+	@ApiOperation(value = "返回当前用户的树形菜单集合")
 	@GetMapping
 	public R getUserMenu() {
 		// 获取符合条件的菜单
@@ -59,6 +61,7 @@ public class SysMenuController {
 	 *
 	 * @return 树形菜单
 	 */
+	@ApiOperation(value = "返回树形菜单集合")
 	@GetMapping(value = "/tree")
 	public R getTree() {
 		Set<MenuVO> all = new HashSet<>();
@@ -75,6 +78,7 @@ public class SysMenuController {
 	 * @param roleId 角色ID
 	 * @return 属性集合
 	 */
+	@ApiOperation(value = "返回角色的菜单集合")
 	@GetMapping("/tree/{roleId}")
 	public R getRoleTree(@PathVariable String roleId) {
 		return R.ok(sysMenuService.findMenuByRoleId(roleId)
@@ -89,8 +93,9 @@ public class SysMenuController {
 	 * @param id 菜单ID
 	 * @return 菜单详细信息
 	 */
+	@ApiOperation(value = "通过ID查询菜单的详细信息")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_menu_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:menu:get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysMenuService.getById(id));
 	}
@@ -101,9 +106,10 @@ public class SysMenuController {
 	 * @param sysMenu 菜单信息
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "新增菜单")
 	@SysLog("新增菜单")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_menu_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:menu:add')")
 	public R save(@Valid @RequestBody SysMenu sysMenu) {
 		sysMenuService.saveMenu(sysMenu);
 		return R.ok();
@@ -115,9 +121,10 @@ public class SysMenuController {
 	 * @param id 菜单ID
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "删除菜单")
 	@SysLog("删除菜单")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_menu_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:menu:del')")
 	public R removeById(@PathVariable String id) {
 		return sysMenuService.removeMenuById(id);
 	}
@@ -128,9 +135,10 @@ public class SysMenuController {
 	 * @param sysMenu
 	 * @return
 	 */
+	@ApiOperation(value = "更新菜单")
 	@SysLog("更新菜单")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_menu_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:menu:edit')")
 	public R update(@Valid @RequestBody SysMenu sysMenu) {
 		sysMenu.setUpdateTime(LocalDateTime.now());
 		return R.ok(sysMenuService.updateMenuById(sysMenu));
@@ -142,8 +150,9 @@ public class SysMenuController {
 	 * @param tenantId 租户ID
 	 * @return 属性集合
 	 */
+	@ApiOperation(value = "返回租户管理员角色的菜单集合")
 	@GetMapping("/tree/tenant/{tenantId}")
-	@PreAuthorize("@ato.hasAuthority('sys_tenant_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:tenant:edit')")
 	public R getRoleTreeTenant(@PathVariable String tenantId) {
 		TenantContextHolder.setTenantId(tenantId);
 		//找出指定租户的管理员角色

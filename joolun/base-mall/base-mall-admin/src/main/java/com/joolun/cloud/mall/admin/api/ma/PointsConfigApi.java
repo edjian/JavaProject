@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.PointsConfigService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class PointsConfigApi {
 	 * 查询积分设置
 	 * @return R
 	 */
+	@ApiOperation(value = "查询积分设置")
 	@GetMapping()
 	public R get(HttpServletRequest request) {
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

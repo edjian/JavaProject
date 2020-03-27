@@ -13,6 +13,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.security.annotation.Inside;
 import io.github.biezhi.ome.SendMailException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,6 +41,7 @@ public class EmailController {
 	 * @param to
 	 * @return
 	 */
+	@ApiOperation(value = "发送邮箱验证码")
 	@Inside(value = false)
 	@GetMapping("/{to}")
 	public R sendEmailCode(@PathVariable String to, @RequestParam("type") String type) throws SendMailException {
@@ -68,9 +70,10 @@ public class EmailController {
 	 * @param sysEmail
 	 * @return
 	 */
+	@ApiOperation(value = "发送邮件")
 	@SysLog("发送邮件")
 	@PostMapping("/send")
-	@PreAuthorize("@ato.hasAuthority('sys_email_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:email:add')")
 	public R sendEmail(@RequestBody SysEmail sysEmail) throws SendMailException {
 		emailUtils.sendEmail(sysEmail.getTo(), sysEmail.getTitle(), sysEmail.getContent());
 		return R.ok();

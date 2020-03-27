@@ -8,6 +8,11 @@
 -->
 <wxs module="numberUtil" src="../../../utils/numberUtil.wxs"></wxs>
 <view class="cu-card article">
+  <view class="cu-item" wx:if="{{bargainInfo.bargainUser.status == '0'}}">
+    <view class="content margin-top text-bold">
+      倒计时：<count-down class="text-red" outTime="{{outTime}}" bind:countDownDone="countDownDone"/>
+    </view>
+  </view>
   <view class="cu-item">
     <view class="cu-bar bg-white solid-bottom">
       <view class="action">
@@ -32,12 +37,14 @@
       </view>
     </view>
     <view class="padding-lr text-center margin-top-sm" wx:if="{{bargainInfo}}">
+      <!-- 没参与 -->
       <view wx:if="{{!bargainInfo.bargainUser}}">
         <button class="cu-btn round bg-red cuIcon-cardboardforbid lg" wx:if="{{bargainInfo.enable == '1' && bargainInfo.status == '1'}}" disabled="{{disabled}}" bindtap="bargainUserSave">发起砍价</button>
         <button class="cu-btn round bg-gray cuIcon-cardboardforbid lg" wx:if="{{bargainInfo.status == '0'}}">活动未开始</button>
         <button class="cu-btn round bg-gray cuIcon-close lg" wx:if="{{bargainInfo.status == '2'}}">活动已过期</button>
         <view class="text-gray text-sm margin-top">{{bargainInfo.validBeginTime}}至{{bargainInfo.validEndTime}}</view>
       </view>
+      <!-- 已经参与 -->
       <view wx:if="{{bargainInfo.bargainUser}}">
         <button class="cu-btn round bg-red cuIcon-friend lg" wx:if="{{bargainInfo.bargainUser.status == '0'}}" bindtap="shareShow">邀请好友帮砍</button>
         <button class="cu-btn round bg-orange cuIcon-check lg" wx:if="{{bargainInfo.bargainUser.status == '1'}}">已完成砍价</button>

@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.UserAddressService;
 import com.joolun.cloud.mall.common.entity.UserAddress;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,6 +48,7 @@ public class UserAddressApi {
     * @param userAddress 用户收货地址
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getUserAddressPage(HttpServletRequest request, Page page, UserAddress userAddress) {
 		R checkThirdSession = BaseApi.checkThirdSession(userAddress, request);
@@ -61,6 +63,7 @@ public class UserAddressApi {
     * @param userAddress 用户收货地址
     * @return R
     */
+	@ApiOperation(value = "新增、修改用户收货地址")
     @PostMapping
     public R save(HttpServletRequest request, @RequestBody UserAddress userAddress){
 		R checkThirdSession = BaseApi.checkThirdSession(userAddress, request);
@@ -75,6 +78,7 @@ public class UserAddressApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除用户收货地址")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

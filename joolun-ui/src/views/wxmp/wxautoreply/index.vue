@@ -7,7 +7,7 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <template>
-  <div class="execution">
+  <div class="execution wxautoreply">
     <basic-container>
       <el-row :span="24" :gutter="10">
         <el-col :xs="24"
@@ -52,18 +52,18 @@
                     <el-button type="primary"
                                @click="handleAdd"
                                size="mini"
-                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                               v-if="permissions['wxmp:wxautoreply:add']">新 增</el-button>
                   </div>
                 </template>
                 <template slot-scope="scope" slot="menu">
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_edit"
+                             v-if="permissions['wxmp:wxautoreply:edit']"
                              icon="el-icon-edit"
                              size="small"
                              plain
                              @click="handleEdit(scope.row)">编辑</el-button>
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_del"
+                             v-if="permissions['wxmp:wxautoreply:del']"
                              icon="el-icon-delete"
                              size="small"
                              plain
@@ -86,18 +86,18 @@
                     <el-button type="primary"
                                @click="handleAdd"
                                size="mini"
-                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                               v-if="permissions['wxmp:wxautoreply:add']">新 增</el-button>
                   </div>
                 </template>
                 <template slot-scope="scope" slot="menu">
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_edit"
+                             v-if="permissions['wxmp:wxautoreply:edit']"
                              icon="el-icon-edit"
                              size="small"
                              plain
                              @click="handleEdit(scope.row)">编辑</el-button>
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_del"
+                             v-if="permissions['wxmp:wxautoreply:del']"
                              icon="el-icon-delete"
                              size="small"
                              plain
@@ -121,18 +121,18 @@
                     <el-button type="primary"
                                @click="handleAdd"
                                size="mini"
-                               v-if="permissions.wxmp_wxautoreply_add">新 增</el-button>
+                               v-if="permissions['wxmp:wxautoreply:add']">新 增</el-button>
                   </div>
                 </template>
                 <template slot-scope="scope" slot="menu">
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_edit"
+                             v-if="permissions['wxmp:wxautoreply:edit']"
                              icon="el-icon-edit"
                              size="small"
                              plain
                              @click="handleEdit(scope.row)">编辑</el-button>
                   <el-button type="text"
-                             v-if="permissions.wxmp_wxautoreply_del"
+                             v-if="permissions['wxmp:wxautoreply:del']"
                              icon="el-icon-delete"
                              size="small"
                              plain
@@ -171,7 +171,7 @@
             <el-input placeholder="请输入内容" v-model="objData.reqKey" clearable> </el-input>
           </el-form-item>
           <el-form-item label="回复消息">
-            <WxReplySelect :appId="appId" :objData="objData" v-if="hackResetWxReplySelect"></WxReplySelect>
+            <WxReplySelect :appId="appId" :objData="objData" :oneNews="type != '1'" v-if="hackResetWxReplySelect"></WxReplySelect>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -243,10 +243,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.wxmp_wxautoreply_add, false),
-          delBtn: this.vaildData(this.permissions.wxmp_wxautoreply_del, false),
-          editBtn: this.vaildData(this.permissions.wxmp_wxautoreply_edit, false),
-          viewBtn: this.vaildData(this.permissions.wxmp_wxautoreply_get, false)
+          addBtn: this.permissions['wxmp:wxautoreply:add'],
+          delBtn: this.permissions['wxmp:wxautoreply:del'],
+          editBtn: this.permissions['wxmp:wxautoreply:edit'],
+          viewBtn: this.permissions['wxmp:wxautoreply:get']
         };
       }
     },
@@ -459,12 +459,14 @@
         this.objData={
             repType : 'text'
         }
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+  .wxautoreply .el-form-item__content{
+    line-height:unset!important;
+  }
 </style>

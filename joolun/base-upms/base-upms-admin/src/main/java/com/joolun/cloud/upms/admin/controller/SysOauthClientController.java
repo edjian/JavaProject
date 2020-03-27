@@ -7,6 +7,7 @@ import com.joolun.cloud.upms.common.entity.SysOauthClient;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,9 @@ public class SysOauthClientController {
 	 * @param id ID
 	 * @return SysOauthClient
 	 */
+	@ApiOperation(value = "通过ID查询")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_client_get')")
+	@PreAuthorize("@ato.hasAuthority('sys:client:get')")
 	public R getById(@PathVariable String id) {
 		return R.ok(sysOauthClientService.getById(id));
 	}
@@ -45,8 +47,9 @@ public class SysOauthClientController {
 	 * @param sysOauthClient 系统终端
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys_client_index')")
+	@PreAuthorize("@ato.hasAuthority('sys:client:index')")
 	public R getOauthClientDetailsPage(Page page, SysOauthClient sysOauthClient) {
 		return R.ok(sysOauthClientService.page(page, Wrappers.query(sysOauthClient)));
 	}
@@ -57,9 +60,10 @@ public class SysOauthClientController {
 	 * @param sysOauthClient 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "添加")
 	@SysLog("添加终端")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('sys_client_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:client:add')")
 	public R add(@Valid @RequestBody SysOauthClient sysOauthClient) {
 		return R.ok(sysOauthClientService.save(sysOauthClient));
 	}
@@ -70,9 +74,10 @@ public class SysOauthClientController {
 	 * @param id ID
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "删除")
 	@SysLog("删除终端")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('sys_client_del')")
+	@PreAuthorize("@ato.hasAuthority('sys:client:del')")
 	public R removeById(@PathVariable String id) {
 		return R.ok(sysOauthClientService.removeClientDetailsById(id));
 	}
@@ -83,9 +88,10 @@ public class SysOauthClientController {
 	 * @param sysOauthClient 实体
 	 * @return ok/false
 	 */
+	@ApiOperation(value = "编辑")
 	@SysLog("编辑终端")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('sys_client_edit')")
+	@PreAuthorize("@ato.hasAuthority('sys:client:edit')")
 	public R update(@Valid @RequestBody SysOauthClient sysOauthClient) {
 		return R.ok(sysOauthClientService.updateClientDetailsById(sysOauthClient));
 	}

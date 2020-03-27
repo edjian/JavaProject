@@ -11,8 +11,8 @@
   <view class="cu-item" wx:for="{{ bargainInfoList }}" wx:key="index">
     <view class="content">
       <image src="{{item.picUrl}}" mode="aspectFill" class="row-img margin-top-xs"></image>
-      <view class="desc row-info">
-        <view class="text-black margin-top-sm overflow-2">{{item.goodsSpu.name}}</view>
+      <view class="desc row-info solid-bottom padding-bottom">
+        <view class="text-black margin-top-sm overflow-2">{{item.name}}</view>
         <view class="flex justify-start margin-top-sm">
           <view class="text-price text-bold text-red">{{item.bargainPrice}}</view>
           <view class="text-price text-decorat text-sm text-gray margin-left-sm">{{item.goodsSku.salesPrice}}</view>

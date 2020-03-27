@@ -26,7 +26,7 @@
     <button class="cu-btn bg-white" wx:if="{{!couponInfo.couponUser}}" bindtap = "couponUserSave">立即领取</button>
     <view wx:if="{{couponInfo.couponUser}}">
       <view class="padding-xs" wx:if="{{!toUse}}">已领取</view>
-      <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse}}">前去使用</navigator>
+      <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse}}">已领取，去使用</navigator>
     </view>
   </view>
 </view>
@@ -50,7 +50,7 @@
     <button class="cu-btn bg-white" wx:if="{{!couponInfo.couponUser}}" bindtap = "couponUserSave">立即领取</button>
     <view wx:if="{{couponInfo.couponUser}}">
       <view class="padding-xs" wx:if="{{!toUse}}">已领取</view>
-      <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse}}">前去使用</navigator>
+      <navigator hover-class='none' url='/pages/goods/goods-list/index?couponId={{couponInfo.id}}' class="cu-btn bg-white sm" wx:if="{{toUse}}">已领取，去使用</navigator>
     </view>
   </view>
 </view>

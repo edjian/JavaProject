@@ -39,15 +39,7 @@
         mounted: function () {
         },
         computed: {
-            ...mapGetters(['permissions']),
-            permissionList() {
-                return {
-                    addBtn: this.vaildData(this.permissions.mall_pointsconfig_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_pointsconfig_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_pointsconfig_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_pointsconfig_get, false)
-                };
-            }
+            ...mapGetters(['permissions'])
         },
         methods: {
             handleGet: function () {

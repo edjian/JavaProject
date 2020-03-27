@@ -27,6 +27,7 @@ import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -65,8 +66,9 @@ public class WxMsgController {
     * @param wxMsgVO 微信消息
     * @return
     */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_index')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:index')")
     public R getWxMsgPage(Page page, WxMsgVO wxMsgVO) {
     	if(StringUtils.isNotBlank(wxMsgVO.getNotInRepType())){
 			return  R.ok(wxMsgService.listWxMsgMapGroup(page,wxMsgVO));
@@ -88,8 +90,9 @@ public class WxMsgController {
     * @param id id
     * @return R
     */
+	@ApiOperation(value = "通过id查询微信消息")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_get')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:get')")
     public R getById(@PathVariable("id") String id){
     	return R.ok(wxMsgService.getById(id));
     }
@@ -99,9 +102,10 @@ public class WxMsgController {
     * @param wxMsg 微信消息
     * @return R
     */
+	@ApiOperation(value = "新增微信消息")
     @SysLog("新增微信消息")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_add')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:add')")
     public R save(@RequestBody WxMsg wxMsg){
 		try {
 			WxApp wxApp = wxAppService.getById(wxMsg.getAppId());
@@ -197,9 +201,10 @@ public class WxMsgController {
     * @param wxMsg 微信消息
     * @return R
     */
+	@ApiOperation(value = "修改微信消息")
     @SysLog("修改微信消息")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_edit')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:edit')")
     public R updateById(@RequestBody WxMsg wxMsg){
     	return R.ok(wxMsgService.updateById(wxMsg));
     }
@@ -209,9 +214,10 @@ public class WxMsgController {
     * @param id id
     * @return R
     */
+	@ApiOperation(value = "删除微信消息")
     @SysLog("删除微信消息")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('wxmp_wxmsg_del')")
+    @PreAuthorize("@ato.hasAuthority('wxmp:wxmsg:del')")
     public R removeById(@PathVariable String id){
     	return R.ok(wxMsgService.removeById(id));
     }

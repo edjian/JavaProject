@@ -88,3 +88,22 @@
 8、后台增加数据监控模块
 9、maven增加jar复制方法，打包时可将jar复制到指定目录https://git.joolun.com/joolun-mp-ma/mp-ma/issues/87
 10、WXJava SDK升级到版本2.7.0
+
+一、2.7.2升级2.8.0
+1、本次升级一定要清掉redis中所有缓存
+2、统一下单接口中传微信的商户订单号由orderId换成orderNo（商城版特有）
+3、完善swagger文档
+4、后台增加订单取消功能（商城版特有）
+5、退款订单不能删除（商城版特有）
+6、hutool升级到5.2.2版本
+7、spring-boot升级到2.2.5.RELEASE版本
+8、spring-boot-admin升级到2.2.2版本
+9、spring-cloud升级到Hoxton.SR3版本
+10、spring-cloud-alibaba升级到2.2.0.RELEASE版本
+11、mybatis-plus升级到3.3.1版本
+12、增加订单改价功能（商城版特有）
+13、新增拼团功能（商城版特有）
+14、`base_mall`.`order_info`新增`market_id`字段记录营销id（砍价ID、拼团ID）（商城版特有）
+15、Avue升级到2.4.1版本
+16、购物车全选问题https://git.joolun.com/joolun-mp-ma/mp-ma/issues/126（商城版特有）
+17、小程序增加倒计时组件（商城版特有）

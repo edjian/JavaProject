@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
@@ -38,43 +39,53 @@ public class OrderLogistics extends Model<OrderLogistics> {
     /**
    * PK
    */
+	@ApiModelProperty(value = "PK")
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
     /**
    * 所属租户
    */
+	@ApiModelProperty(value = "所属租户")
     private String tenantId;
     /**
    * 逻辑删除标记（0：显示；1：隐藏）
    */
+	@ApiModelProperty(value = "逻辑删除标记")
     private String delFlag;
     /**
    * 创建时间
    */
+	@ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
     /**
    * 最后更新时间
    */
+	@ApiModelProperty(value = "最后更新时间")
     private LocalDateTime updateTime;
     /**
    * 邮编
    */
+	@ApiModelProperty(value = "邮编")
     private String postalCode;
     /**
    * 收货人名字
    */
+	@ApiModelProperty(value = "收货人名字")
     private String userName;
     /**
    * 电话号码
    */
+	@ApiModelProperty(value = "电话号码")
     private String telNum;
     /**
    * 详细地址
    */
+	@ApiModelProperty(value = "详细地址")
     private String address;
     /**
    * 物流商家
    */
+	@ApiModelProperty(value = "物流商家")
     private String logistics;
 	/**
 	 * 物流商家

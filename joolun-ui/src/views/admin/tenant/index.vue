@@ -18,7 +18,7 @@
           <el-button size="mini"
                      type="text"
                      icon="el-icon-suitcase"
-                     v-if="permissions.sys_role_perm"
+                     v-if="permissions['sys:role:perm']"
                      @click="handlePermission(scope.row,scope.index)">管理员角色权限
           </el-button>
         </template>
@@ -91,10 +91,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.sys_tenant_add, false),
-                    delBtn: this.vaildData(this.permissions.sys_tenant_del, false),
-                    editBtn: this.vaildData(this.permissions.sys_tenant_edit, false),
-                    viewBtn: this.vaildData(this.permissions.sys_tenant_get, false)
+                    addBtn: this.permissions['sys:tenant:add'],
+                    delBtn: this.permissions['sys:tenant:del'],
+                    editBtn: this.permissions['sys:tenant:edit'],
+                    viewBtn: this.permissions['sys:tenant:get']
                 }
             }
         },
@@ -184,7 +184,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-              this.getPage(page)
+              this.getPage(this.page)
             },
             handlePermission(row) {
                 this.tableLoading = true

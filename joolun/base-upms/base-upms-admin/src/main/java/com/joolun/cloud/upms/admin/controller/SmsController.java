@@ -6,6 +6,7 @@ import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.sms.util.SmsUtils;
 import com.joolun.cloud.upms.common.entity.SysSms;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,10 @@ public class SmsController {
 	 * @param sysSms
 	 * @return
 	 */
+	@ApiOperation(value = "发送短信")
 	@SysLog("发送短信")
 	@PostMapping("/send")
-	@PreAuthorize("@ato.hasAuthority('sys_sms_add')")
+	@PreAuthorize("@ato.hasAuthority('sys:sms:add')")
 	public R sendEmail(@RequestBody SysSms sysSms) throws ClientException {
 		smsUtils.sendSms(sysSms.getSignName(), sysSms.getPhoneNumbers(), sysSms.getTemplateCode(), sysSms.getTemplateParam());
 		return R.ok();

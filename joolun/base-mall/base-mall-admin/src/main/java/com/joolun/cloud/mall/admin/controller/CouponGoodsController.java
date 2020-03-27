@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.admin.service.CouponGoodsService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class CouponGoodsController {
      * @param couponGoods 电子券商品关联
      * @return
      */
+	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_coupongoods_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:coupongoods:index')")
     public R getCouponGoodsPage(Page page, CouponGoods couponGoods) {
         return R.ok(couponGoodsService.page(page, Wrappers.query(couponGoods)));
     }
@@ -52,8 +54,9 @@ public class CouponGoodsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "电子券商品关联查询")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_coupongoods_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:coupongoods:get')")
     public R getById(@PathVariable("id") String id) {
         return R.ok(couponGoodsService.getById(id));
     }
@@ -63,9 +66,10 @@ public class CouponGoodsController {
      * @param couponGoods 电子券商品关联
      * @return R
      */
+	@ApiOperation(value = "电子券商品关联新增")
     @SysLog("新增电子券商品关联")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_coupongoods_add')")
+    @PreAuthorize("@ato.hasAuthority('mall:coupongoods:add')")
     public R save(@RequestBody CouponGoods couponGoods) {
         return R.ok(couponGoodsService.save(couponGoods));
     }
@@ -75,9 +79,10 @@ public class CouponGoodsController {
      * @param couponGoods 电子券商品关联
      * @return R
      */
+	@ApiOperation(value = "电子券商品关联修改")
     @SysLog("修改电子券商品关联")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_coupongoods_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:coupongoods:edit')")
     public R updateById(@RequestBody CouponGoods couponGoods) {
         return R.ok(couponGoodsService.updateById(couponGoods));
     }
@@ -87,9 +92,10 @@ public class CouponGoodsController {
      * @param id
      * @return R
      */
+	@ApiOperation(value = "电子券商品关联删除")
     @SysLog("删除电子券商品关联")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_coupongoods_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:coupongoods:del')")
     public R removeById(@PathVariable String id) {
         return R.ok(couponGoodsService.removeById(id));
     }

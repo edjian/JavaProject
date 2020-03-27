@@ -29,6 +29,7 @@ import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.common.dto.WxAppTree;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -71,8 +72,9 @@ public class WxAppController {
 	 * @param wxApp 微信账号配置
 	 * @return
 	 */
+	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
 	public R getWxAppPage(Page page, WxApp wxApp) {
 		return R.ok(wxAppService.page(page, Wrappers.query(wxApp)));
 	}
@@ -82,6 +84,7 @@ public class WxAppController {
 	 * @param wxApp
 	 * @return
 	 */
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
 	public List<WxApp> list(WxApp wxApp) {
 		return wxAppService.list(Wrappers.query(wxApp).lambda().orderByDesc(WxApp::getCreateTime));
@@ -93,8 +96,9 @@ public class WxAppController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id查询微信账号配置")
 	@GetMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_get')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:get')")
 	public R getById(@PathVariable("id") String id) {
 		return R.ok(wxAppService.getById(id));
 	}
@@ -105,9 +109,10 @@ public class WxAppController {
 	 * @param wxApp 微信账号配置
 	 * @return R
 	 */
+	@ApiOperation(value = "新增微信账号配置")
 	@SysLog("新增微信账号配置")
 	@PostMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_add')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:add')")
 	public R save(@RequestBody WxApp wxApp) {
 		wxAppService.save(wxApp);
 		//公众号二维码获取
@@ -132,9 +137,10 @@ public class WxAppController {
 	 * @param wxApp 微信账号配置
 	 * @return R
 	 */
+	@ApiOperation(value = "修改微信账号配置")
 	@SysLog("修改微信账号配置")
 	@PutMapping
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_edit')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:edit')")
 	public R updateById(@RequestBody WxApp wxApp) {
 		wxAppService.updateById(wxApp);
 		WxMpConfiguration.removeWxMpService(wxApp.getId());
@@ -161,16 +167,18 @@ public class WxAppController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id删除微信账号配置")
 	@SysLog("删除微信账号配置")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_del')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:del')")
 	public R removeById(@PathVariable String id) {
 		return R.ok(wxAppService.removeById(id));
 	}
 
+	@ApiOperation(value = "生成公众号二维码")
 	@SysLog("生成公众号二维码")
 	@PostMapping("/qrCode")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
 	public R createQrCode(@RequestBody Map<String,String> param) {
 		try {
 			String id = param.get("id");
@@ -188,9 +196,10 @@ public class WxAppController {
 		}
 	}
 
+	@ApiOperation(value = "微信接口次数进行清零")
 	@SysLog("微信接口次数进行清零")
 	@PutMapping("/quota")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
 	public R clearQuota(@RequestBody WxApp wxApp) {
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(wxApp.getId());
@@ -208,8 +217,9 @@ public class WxAppController {
 	 * @param wxApp
 	 * @return
 	 */
+	@ApiOperation(value = "获取access-token")
 	@GetMapping("/access-token")
-	@PreAuthorize("@ato.hasAuthority('wxmp_wxapp_index')")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
 	public R getAccessToken(WxApp wxApp) {
 		try {
 			WxMpService wxMpService = WxMpConfiguration.getMpService(wxApp.getId());
@@ -227,6 +237,7 @@ public class WxAppController {
 	 * @param id
 	 * @return R
 	 */
+	@ApiOperation(value = "通过id查询微信账号配置")
 	@Inside
 	@GetMapping("/inside/{id}")
 	public R getByIdInside(@PathVariable("id") String id) {
@@ -239,6 +250,7 @@ public class WxAppController {
 	 * @param appId
 	 * @return
 	 */
+	@ApiOperation(value = "上传支付证书")
 	@PostMapping("/cert/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile mulFile,
 							 @RequestParam("appId") String appId) throws IOException {

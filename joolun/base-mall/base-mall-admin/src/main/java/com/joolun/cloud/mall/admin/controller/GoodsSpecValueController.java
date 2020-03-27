@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.common.entity.GoodsSpecValue;
 import com.joolun.cloud.mall.admin.service.GoodsSpecValueService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +42,16 @@ public class GoodsSpecValueController {
     * @param goodsSpecValue 规格值
     * @return
     */
+	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspec_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspec:index')")
     public R getGoodsSpecValuePage(Page page, GoodsSpecValue goodsSpecValue) {
         return R.ok(goodsSpecValueService.page(page,Wrappers.query(goodsSpecValue)));
     }
 
+	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall_goodsspec_index')")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspec:index')")
 	public R getGoodsSpecValueList(GoodsSpecValue goodsSpecValue) {
 		return R.ok(goodsSpecValueService.list(Wrappers.query(goodsSpecValue)));
 	}
@@ -58,8 +61,9 @@ public class GoodsSpecValueController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询规格值")
     @GetMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspec_get')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspec:get')")
     public R getById(@PathVariable("id") String id){
         return R.ok(goodsSpecValueService.getById(id));
     }
@@ -69,9 +73,10 @@ public class GoodsSpecValueController {
     * @param goodsSpecValue 规格值
     * @return R
     */
+	@ApiOperation(value = "新增规格值")
     @SysLog("新增规格值")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspu_index')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
     public R save(@RequestBody GoodsSpecValue goodsSpecValue){
 		goodsSpecValueService.save(goodsSpecValue);
         return R.ok(goodsSpecValue);
@@ -82,9 +87,10 @@ public class GoodsSpecValueController {
     * @param goodsSpecValue 规格值
     * @return R
     */
+	@ApiOperation(value = "修改规格值")
     @SysLog("修改规格值")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspec_edit')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspec:edit')")
     public R updateById(@RequestBody GoodsSpecValue goodsSpecValue){
         return R.ok(goodsSpecValueService.updateById(goodsSpecValue));
     }
@@ -94,9 +100,10 @@ public class GoodsSpecValueController {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id删除规格值")
     @SysLog("删除规格值")
     @DeleteMapping("/{id}")
-    @PreAuthorize("@ato.hasAuthority('mall_goodsspec_del')")
+    @PreAuthorize("@ato.hasAuthority('mall:goodsspec:del')")
     public R removeById(@PathVariable String id){
         return R.ok(goodsSpecValueService.removeById(id));
     }

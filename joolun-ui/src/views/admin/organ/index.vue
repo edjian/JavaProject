@@ -40,10 +40,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.vaildData(this.permissions.sys_organ_add, false),
-          delBtn: this.vaildData(this.permissions.sys_organ_del, false),
-          editBtn: this.vaildData(this.permissions.sys_organ_edit, false),
-          viewBtn: this.vaildData(this.permissions.sys_organ_get, false)
+          addBtn: this.permissions['sys:organ:add'],
+          delBtn: this.permissions['sys:organ:del'],
+          editBtn: this.permissions['sys:organ:edit'],
+          viewBtn: this.permissions['sys:organ:get']
         }
       }
     },
@@ -118,7 +118,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       },
       beforeOpen(done,type){
         window.openType = type

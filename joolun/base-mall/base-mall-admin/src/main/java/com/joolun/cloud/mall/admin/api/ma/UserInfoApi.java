@@ -17,6 +17,7 @@ import com.joolun.cloud.mall.common.entity.CouponUser;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;
 import com.joolun.cloud.mall.common.entity.UserInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,7 @@ public class UserInfoApi {
      * 查询商城用户
      * @return R
      */
+	@ApiOperation(value = "查询商城用户")
     @GetMapping
     public R getById(HttpServletRequest request) {
 		UserInfo userInfo = new UserInfo();

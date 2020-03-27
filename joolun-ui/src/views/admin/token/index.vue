@@ -43,7 +43,7 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          delBtn: this.vaildData(this.permissions.sys_token_del, false),
+          delBtn: this.permissions['sys:token:del'],
         };
       }
     },
@@ -98,7 +98,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

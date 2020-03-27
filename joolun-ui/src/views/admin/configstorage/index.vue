@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.sys_sysconfigstorage_add, false),
-                    delBtn: this.vaildData(this.permissions.sys_sysconfigstorage_del, false),
-                    editBtn: this.vaildData(this.permissions.sys_sysconfigstorage_edit, false),
-                    viewBtn: this.vaildData(this.permissions.sys_sysconfigstorage_get, false)
+                    addBtn: this.permissions['sys:sysconfigstorage:add'],
+                    delBtn: this.permissions['sys:sysconfigstorage:del'],
+                    editBtn: this.permissions['sys:sysconfigstorage:edit'],
+                    viewBtn: this.permissions['sys:sysconfigstorage:get']
                 };
             }
         },
@@ -172,7 +172,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

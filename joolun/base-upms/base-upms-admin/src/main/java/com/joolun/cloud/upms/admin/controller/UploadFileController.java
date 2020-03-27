@@ -11,6 +11,7 @@ import com.joolun.cloud.common.storage.util.UploadFileUtils;
 import com.joolun.cloud.upms.admin.service.SysConfigStorageService;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,7 @@ public class UploadFileController {
 	 * @param fileType 文件类型 image:图片
 	 * @return
 	 */
+	@ApiOperation(value = "上传文件")
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile mulFile,
 							 @RequestParam("dir") String dir,

@@ -30,12 +30,12 @@
                      @click="batchShelf('1')"
                      size="small"
                      icon="el-icon-document"
-                     v-if="permissions.mall_goodsspu_edit">批量上架</el-button>
+                     v-if="permissions['mall:goodsspu:edit']">批量上架</el-button>
           <el-button type="warning"
                      @click="batchShelf('0')"
                      size="small"
                      icon="el-icon-document"
-                     v-if="permissions.mall_goodsspu_edit">批量下架</el-button>
+                     v-if="permissions['mall:goodsspu:edit']">批量下架</el-button>
         </template>
         <template slot="picUrls" slot-scope="scope">
           <el-image
@@ -174,10 +174,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_goodsspu_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_goodsspu_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_goodsspu_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_goodsspu_get, false)
+                    addBtn: this.permissions['mall:goodsspu:add'],
+                    delBtn: this.permissions['mall:goodsspu:del'],
+                    editBtn: this.permissions['mall:goodsspu:edit'],
+                    viewBtn: this.permissions['mall:goodsspu:get']
                 };
             },
         },
@@ -409,7 +409,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-              this.getPage(page)
+              this.getPage(this.page)
             }
         }
     }

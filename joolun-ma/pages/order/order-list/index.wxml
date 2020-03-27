@@ -30,7 +30,7 @@
           <view class="content">
             <image src="{{item2.picUrl ? item2.picUrl : '/public/img/no_pic.png'}}" mode="aspectFill" class="row-img margin-top-xs"></image>
             <view class="desc row-info">
-              <view class="text-black margin-top-sm overflow-2"><text class="cu-tag bg-red sm" wx:if="{{item.orderType != '0'}}">{{item.orderType == '1' ? '砍价' : ''}}</text> {{item2.spuName}}</view>
+              <view class="text-black margin-top-sm overflow-2"><text class="cu-tag bg-red sm" wx:if="{{item.orderType != '0'}}">{{item.orderType == '1' ? '砍价' : item.orderType == '2' ? '拼团' : ''}}</text> {{item2.spuName}}</view>
               <view class="text-gray text-sm margin-top-sm overflow-2" wx:if="{{item2.specInfo}}">{{item2.specInfo}}</view>
               <view class="flex justify-between">
                 <view class="text-price text-bold text-red margin-top-sm padding-lr-sm">{{item2.paymentPrice}}</view>

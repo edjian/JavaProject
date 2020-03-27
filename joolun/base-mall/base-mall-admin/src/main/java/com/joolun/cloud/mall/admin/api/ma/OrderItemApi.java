@@ -11,6 +11,7 @@ package com.joolun.cloud.mall.admin.api.ma;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.OrderItemService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,7 @@ public class OrderItemApi {
     * @param id
     * @return R
     */
+	@ApiOperation(value = "通过id查询商城订单详情")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id){
 		R checkThirdSession = BaseApi.checkThirdSession(null, request);

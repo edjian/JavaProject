@@ -85,6 +85,22 @@ export const tableOption = {
             ]
         },
         {
+            label: '状态',
+            prop: 'status',
+            sortable: true,
+            slot: true,
+            dicData: [{
+                label: '砍价中',
+                value: '0'
+            },{
+                label: '完成砍价',
+                value: '1'
+            },{
+                label: '已过期',
+                value: '2'
+            }],
+        },
+        {
             label: '开始时间',
             prop: 'validBeginTime',
             sortable: true,
@@ -117,21 +133,6 @@ export const tableOption = {
             },{
                 label: '是',
                 value: '1'
-            }],
-        },
-        {
-            label: '状态',
-            prop: 'status',
-            sortable: true,
-            dicData: [{
-                label: '砍价中',
-                value: '0'
-            },{
-                label: '完成砍价',
-                value: '1'
-            },{
-                label: '已过期',
-                value: '2'
             }],
         },
         {

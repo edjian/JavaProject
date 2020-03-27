@@ -47,7 +47,7 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          delBtn: this.vaildData(this.permissions.sys_log_del, false),
+          delBtn: this.permissions['sys:log:del']
         };
       }
     },
@@ -113,7 +113,7 @@
        * 刷新回调
        */
       refreshChange(page) {
-        this.getPage(page)
+        this.getPage(this.page)
       }
     }
   }

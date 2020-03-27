@@ -99,7 +99,7 @@
                                 label="订单类型"
                                 width="200">
                             <template slot-scope="scope">
-                                <el-tag>{{scope.row.orderType == '0' ? '普通订单' : scope.row.orderType == '1' ? '砍价订单' : ''}}</el-tag>
+                                <el-tag>{{scope.row.orderType == '0' ? '普通订单' : scope.row.orderType == '1' ? '砍价订单' : scope.row.orderType == '2' ? '拼团订单' : ''}}</el-tag>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -368,7 +368,7 @@
                             <img :src="item.picUrl" width="100%"/>
                         </el-col>
                         <el-col :span="13" style="text-align: left">
-                            <div class="spu-name"><el-tag type="danger" v-if="scope.row.orderType != '0'">{{scope.row.orderType == '1' ? '砍价' : ''}}</el-tag> {{item.spuName}}</div>
+                            <div class="spu-name"><el-tag type="danger" v-if="scope.row.orderType != '0'">{{scope.row.orderType == '1' ? '砍价' : scope.row.orderType == '2' ? '拼团' : ''}}</el-tag> {{item.spuName}}</div>
                             <div class="spec-info">{{item.specInfo}}</div>
                         </el-col>
                         <el-col :span="8">
@@ -376,6 +376,9 @@
                             <div class="grid-content">×{{item.quantity}}件</div>
                             <div class="grid-content" v-if="item.status != '0'">
                                 <el-tag type="danger" @click="handleOrderItemStatus(item)">{{item.statusDesc}}</el-tag>
+                            </div>
+                            <div class="grid-content" v-if="item.status == '0' && scope.row.isPay == '0' && !scope.row.status">
+                                <el-tag type="danger" @click="handleEditPrice(item)">改价</el-tag>
                             </div>
                         </el-col>
                     </el-row>
@@ -400,14 +403,20 @@
                     <el-button icon="el-icon-edit"
                                size="small"
                                type="text"
-                               v-if="permissions.mall_orderinfo_get"
+                               v-if="permissions['mall:orderinfo:get']"
                                @click="openView(scope.row,scope.index)">订单详情
                     </el-button>
                     <el-button icon="el-icon-position"
                                size="small"
                                type="text"
-                               v-if="permissions.mall_orderinfo_edit && scope.row.status == '1'"
+                               v-if="permissions['mall:orderinfo:edit'] && scope.row.status == '1'"
                                @click="showDialogLogistics(scope.row,scope.index)">发货
+                    </el-button>
+                    <el-button icon="el-icon-delete"
+                               size="small"
+                               type="text"
+                               v-if="permissions['mall:orderinfo:edit'] && scope.row.isPay == '0' && !scope.row.status"
+                               @click="orderCancel(scope.row,scope.index)">取消
                     </el-button>
                 </template>
             </avue-crud>
@@ -505,7 +514,7 @@
 </template>
 
 <script>
-    import {getPage, getObj, addObj, putObj, delObj} from '@/api/mall/orderinfo'
+    import {getPage, getObj, addObj, putObj, delObj, editPrice, orderCancel} from '@/api/mall/orderinfo'
     import {getObj as getOrderItem} from '@/api/mall/orderitem'
     import {doOrderRefunds} from '@/api/mall/orderrefunds'
     import {getObj as getWxUser} from '@/api/wxmp/wxuser'
@@ -610,10 +619,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.vaildData(this.permissions.mall_orderinfo_add, false),
-                    delBtn: this.vaildData(this.permissions.mall_orderinfo_del, false),
-                    editBtn: this.vaildData(this.permissions.mall_orderinfo_edit, false),
-                    viewBtn: this.vaildData(this.permissions.mall_orderinfo_get, false)
+                    addBtn: this.permissions['mall:orderinfo:add'],
+                    delBtn: this.permissions['mall:orderinfo:del'],
+                    editBtn: this.permissions['mall:orderinfo:edit'],
+                    viewBtn: this.permissions['mall:orderinfo:get']
                 };
             }
         },
@@ -680,6 +689,28 @@
                     }
                 })
             },
+            //改价
+            handleEditPrice(obj){
+                this.$prompt('请输入价格', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputType: 'number',
+                    inputPattern: /\S/,
+                    inputErrorMessage: '请输入价格'
+                }).then(({ value }) => {
+                    editPrice({
+                        id: obj.id,
+                        paymentPrice: value
+                    }).then(data => {
+                        this.getPage(this.page)
+                    }).catch(() => {
+
+                    })
+                }).catch(() => {
+
+                })
+
+            },
             handleClickStatus(tab, event) {
                 this.status = tab.name
                 this.page.currentPage = 1
@@ -695,6 +726,25 @@
                     this.tableLoading = false
                 })
             },
+            //订单取消
+            orderCancel(row, index){
+                var _this = this
+                this.$confirm('是否确认取消此订单', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    return orderCancel(row.id).then(data => {
+                        _this.$message({
+                            showClose: true,
+                            message: '删除成功',
+                            type: 'success'
+                        })
+                        _this.getPage(_this.page)
+                    }).catch(function (err) {
+                    })
+                })
+            },
             showDialogLogistics(row, index, done) {
                 this.logisticsForm.row = row
                 this.logisticsForm.address = row.orderLogistics.address
@@ -705,8 +755,8 @@
             delivery(form, done) {
                 let row = this.logisticsForm.row
                 row.status = '2',
-                    row.logistics = form.logistics,
-                    row.logisticsNo = form.logisticsNo
+                row.logistics = form.logistics,
+                row.logisticsNo = form.logisticsNo
                 putObj(row).then(data => {
                     this.$message({
                         showClose: true,
@@ -836,7 +886,7 @@
              * 刷新回调
              */
             refreshChange(page) {
-                this.getPage(page)
+                this.getPage(this.page)
             }
         }
     }

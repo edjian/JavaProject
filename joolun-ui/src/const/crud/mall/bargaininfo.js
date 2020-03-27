@@ -20,6 +20,7 @@ export const tableOption = {
     viewBtn: true,
     labelWidth: 120,
     searchMenuSpan: 6,
+    enter: false,
     column: [
         {
             label: '创建时间',
@@ -108,7 +109,7 @@ export const tableOption = {
             editDisabled: true,
             rules: [{
                 required: true,
-                message: '请选择必须砍价底价',
+                message: '请输入砍价底价',
                 trigger: 'blur'
             }],
             tip: '砍价商品的最低价格，单位：元'
