@@ -128,4 +128,10 @@ public interface MallConstants {
 	String ORDER_TYPE_0 = "0";
 	String ORDER_TYPE_1 = "1";
 	String ORDER_TYPE_2 = "2";
+
+	/**
+	 * 配送方式1、普通快递；2、上门自提
+	 */
+	String DELIVERY_WAY_1 = "1";
+	String DELIVERY_WAY_2 = "2";
 }

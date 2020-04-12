@@ -3,6 +3,8 @@ package com.joolun.cloud.codegen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.codegen.entity.SysDatasource;
 
+import java.sql.SQLException;
+
 /**
  * 数据源表
  *
@@ -15,7 +17,7 @@ public interface SysDatasourceService extends IService<SysDatasource> {
 	 * @param sysDatasource
 	 * @return
 	 */
-	Boolean saveDsByEnc(SysDatasource sysDatasource);
+	Boolean saveSysDatasource(SysDatasource sysDatasource) throws SQLException;
 
 	/**
 	 * 更新数据源
@@ -23,5 +25,5 @@ public interface SysDatasourceService extends IService<SysDatasource> {
 	 * @param sysDatasource
 	 * @return
 	 */
-	Boolean updateDsByEnc(SysDatasource sysDatasource);
+	Boolean updateSysDatasource(SysDatasource sysDatasource) throws SQLException;
 }

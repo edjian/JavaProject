@@ -10,6 +10,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface BaseUserDetailsService extends UserDetailsService {
 
 	/**
+	 * 手机验证码登录
+	 *
+	 * @param code TYPE:CODE
+	 * @return UserDetails
+	 * @throws UsernameNotFoundException
+	 */
+	UserDetails loadUserByPhone(String code) throws UsernameNotFoundException;
+
+	/**
 	 * 根据社交登录code 登录
 	 *
 	 * @param code TYPE@CODE

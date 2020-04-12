@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 参考DruidDataSourceWrapper
+ *
  */
 @Data
 @Component

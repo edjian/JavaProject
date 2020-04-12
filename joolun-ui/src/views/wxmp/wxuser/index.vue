@@ -179,10 +179,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxuser:add'],
-          delBtn: this.permissions['wxmp:wxuser:del'],
-          editBtn: this.permissions['wxmp:wxuser:edit'],
-          viewBtn: this.permissions['wxmp:wxuser:get'],
+          addBtn: this.permissions['wxmp:wxuser:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxuser:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxuser:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxuser:get'] ? true : false,
         }
       }
     },

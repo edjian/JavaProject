@@ -7,6 +7,8 @@ let iconfontUrl = `//at.alicdn.com/t/font_$key.css`
 let qqMapKey = 'PFFBZ-RBM3V-IEEPP-UH6KE-6QUQE-C4BVJ'
 // 演示模式开关
 let switchDemon = true
+//前端密码密钥，必须16位，和nacos配置文件base-gateway-dev.yml中的security.encode.key对应
+let securityKey = '1234567891234567'
 
 if (env.NODE_ENV == 'development') {
 
@@ -20,5 +22,6 @@ export {
   qqMapKey,
   iconfontUrl,
   iconfontVersion,
-  env
+  env,
+  securityKey
 }

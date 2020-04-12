@@ -2,7 +2,7 @@ package com.joolun.cloud.codegen.controller;
 
 import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.joolun.cloud.codegen.entity.GenConfig;
+import com.joolun.cloud.codegen.entity.GenTable;
 import com.joolun.cloud.codegen.service.SysGeneratorService;
 import com.joolun.cloud.common.core.util.R;
 import io.swagger.annotations.Api;
@@ -31,13 +31,13 @@ public class SysGeneratorController {
 	 * 列表
 	 *
 	 * @param tableName 参数集
-	 * @param id        数据源编号
+	 * @param sysDatasourceId        数据源ID
 	 * @return 数据库表
 	 */
 	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	public R getPage(Page page, String tableName, String id) {
-		return R.ok(sysGeneratorService.getPage(page, tableName, id));
+	public R getPage(Page page, String tableName, String sysDatasourceId) {
+		return R.ok(sysGeneratorService.getPage(page, tableName, sysDatasourceId));
 	}
 
 	/**
@@ -46,14 +46,24 @@ public class SysGeneratorController {
 	@ApiOperation(value = "生成代码")
 	@SneakyThrows
 	@PostMapping("/code")
-	public void generatorCode(@RequestBody GenConfig genConfig, HttpServletResponse response) {
-		byte[] data = sysGeneratorService.generatorCode(genConfig);
+	public void generatorCode(@RequestBody GenTable genTable, HttpServletResponse response) {
+		byte[] data = sysGeneratorService.generatorCode(genTable);
 
 		response.reset();
-		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genConfig.getTableName()));
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s.zip", genTable.getTableName()));
 		response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));
 		response.setContentType("application/octet-stream; charset=UTF-8");
 
 		IoUtil.write(response.getOutputStream(), Boolean.TRUE, data);
+	}
+
+	/**
+	 * 生成代码预览
+	 */
+	@ApiOperation(value = "生成代码预览")
+	@SneakyThrows
+	@PostMapping("/view")
+	public R generatorView(@RequestBody GenTable genTable) {
+		return R.ok(sysGeneratorService.generatorView(genTable));
 	}
 }

@@ -4,7 +4,7 @@
       <el-row :gutter="18">
         <el-col :span="4">
           <div class="grid-content bg-purple" style="margin-bottom: 10px">
-            <el-select v-model="q.id" placeholder="请选择数据源" @change="searchChange">
+            <el-select v-model="q.sysDatasourceId" placeholder="请选择数据源" @change="searchChange">
               <el-option
                 v-for="item in dataSourceList"
                 :key="item.id"
@@ -41,10 +41,22 @@
         <template slot-scope="scope"
                   slot="menu">
           <el-button type="text"
-                     icon="el-icon-check"
+                     icon="el-icon-view"
                      size="mini"
                      plain
-                     @click="handleDown(scope.row,scope.index)">生成
+                     @click="handleCodeView(scope.row,scope.index)">预览
+          </el-button>
+          <el-button type="text"
+                     icon="el-icon-edit"
+                     size="mini"
+                     plain
+                     @click="handleConfig(scope.row,scope.index)">配置
+          </el-button>
+          <el-button type="text"
+                     icon="el-icon-download"
+                     size="mini"
+                     plain
+                     @click="generatorCode(scope.row,scope.index)">生成代码
           </el-button>
         </template>
       </avue-crud>
@@ -57,7 +69,7 @@
           <avue-form :option="formOption"
                      ref="formData"
                      v-model="formData"
-                     @submit="gen">
+                     @submit="putGenTable">
           </avue-form>
         </div>
       </el-dialog>
@@ -78,12 +90,27 @@
                    @on-load="getDsList">
         </avue-crud>
       </el-dialog>
+
+      <!-- 预览界面 -->
+      <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh">
+        <el-tabs v-model="preview.activeName">
+          <el-tab-pane
+                  v-for="(value, key) in preview.data"
+                  :label="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
+                  :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
+                  :key="key"
+          >
+            <pre>{{ value }}</pre>
+          </el-tab-pane>
+        </el-tabs>
+      </el-dialog>
     </basic-container>
   </div>
 </template>
 
 <script>
-  import {addObj, delObj, fetchDsList, getPage, fetchSelectDsList, handleDown, putObj} from '@/api/gen/gen'
+  import {addObj, delObj, fetchDsList, getPage, fetchSelectDsList, generatorView, generatorCode, putObj} from '@/api/gen/gen'
+  import {getObj as getGenTable, putObj as putGenTable} from '@/api/gen/gentable'
   import {formOption, tableDsOption, tableOption} from '@/const/crud/gen/gen'
 
   export default {
@@ -111,11 +138,18 @@
         tableLoading: false,
         tableOption: tableOption,
         tableDsOption: tableDsOption,
-        formOption: formOption
+        formOption: formOption,
+        // 预览参数
+        preview: {
+          open: false,
+          title: "代码预览",
+          data: {},
+          activeName: "Entity.java"
+        }
       }
     },
     created() {
-      this.getdataSourceList();
+      this.getdataSourceList()
     },
     methods: {
       sortChange(val){
@@ -157,6 +191,7 @@
         }).then(() => {
           this.$message.success('删除成功')
           this.getDsList(this.page)
+          this.getdataSourceList()
         }).catch(function () {
         })
       },
@@ -169,6 +204,7 @@
           this.$message.success('修改成功')
           done()
           this.getDsList(this.page)
+          this.getdataSourceList()
         }).catch(() => {
           loading()
         })
@@ -178,6 +214,7 @@
           this.$message.success('添加成功')
           done()
           this.getDsList(this.page)
+          this.getdataSourceList()
         }).catch(() => {
           loading()
         })
@@ -191,22 +228,77 @@
           this.dsPage.total = response.data.data.total
         })
       },
-      handleDown: function (row) {
-        this.formData.tableName = row.tableName
-        this.box = true
+      //生成代码预览
+      handleCodeView(row){
+        getGenTable(row.tableName).then(response => {
+          let data = response.data.data
+          if(data == null){
+            data = {
+              sysDatasourceId: this.q.sysDatasourceId,
+              tableName: row.tableName,
+              tableComment: '',
+              packageName: '',
+              moduleName: '',
+              author: '',
+              tablePrefix: ''
+            }
+          }
+          generatorView(data).then(response => {
+            this.preview.data = response.data.data
+            this.preview.open = true
+          })
+        })
+      },
+      //生成代码
+      generatorCode(row) {
+        getGenTable(row.tableName).then(response => {
+          let data = response.data.data
+          if(data == null){
+            data = {
+              sysDatasourceId: this.q.sysDatasourceId,
+              tableName: row.tableName,
+              tableComment: '',
+              packageName: '',
+              moduleName: '',
+              author: '',
+              tablePrefix: ''
+            }
+          }
+          generatorCode(data).then(() => {
+
+          })
+        })
+      },
+      //生成配置
+      handleConfig(row){
+        getGenTable(row.tableName).then(response => {
+          let data = response.data.data
+          this.formData = data
+          if(this.formData == null){
+            this.formData = {
+              tableName: row.tableName,
+              tableComment: '',
+              packageName: '',
+              moduleName: '',
+              author: '',
+              tablePrefix: ''
+            }
+          }
+          this.box = true
+        })
+      },
+      //提交生成配置
+      putGenTable(form,done){
+        putGenTable(this.formData).then(() => {
+          this.box = false
+          done()
+        })
       },
       refreshChange(page) {
         this.getPage(this.page)
       },
       refreshDsChange() {
         this.getDsList(this.page)
-      },
-      gen(form,done) {
-        this.formData.id = this.q.id
-        handleDown(this.formData).then(() => {
-          this.box = true
-          done()
-        })
       },
       setting() {
         this.dsBox = true

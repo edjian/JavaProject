@@ -5,13 +5,21 @@ package com.joolun.cloud.common.core.constant;
  */
 public interface SecurityConstants {
 	/**
+	 * 密码登录
+	 */
+	String PASSWORD = "password";
+	/**
+	 * 短信登录验证码
+	 */
+	String SMS_LOGIN = "sms_login";
+	/**
 	 * 刷新
 	 */
 	String REFRESH_TOKEN = "refresh_token";
 	/**
-	 * 验证码有效期
+	 * 验证码有效期（5分钟）
 	 */
-	int CODE_TIME = 60;
+	int CODE_TIME = 300;
 	/**
 	 * 验证码长度
 	 */
@@ -52,16 +60,16 @@ public interface SecurityConstants {
 	/**
 	 * 手机号登录URL
 	 */
-	String SMS_TOKEN_URL = "/mobile/token/sms";
+	String SMS_TOKEN_URL = "/phone/token/sms";
 
 	/**
 	 * 社交登录URL
 	 */
-	String THIRDPARTY_TOKEN_URL = "/mobile/token/thirdparty";
+	String THIRDPARTY_TOKEN_URL = "/phone/token/thirdparty";
 	/**
 	 * 自定义登录URL
 	 */
-	String MOBILE_TOKEN_URL = "/mobile/token/*";
+	String PHONE_TOKEN_URL = "/phone/token/*";
 
 	/**
 	 * 微信获取OPENID

@@ -37,7 +37,7 @@ public class SysMenuController {
 	private final SysRoleService sysRoleService;
 
 	/**
-	 * 返回当前用户的树形菜单集合
+	 * 获取当前用户的菜单
 	 *
 	 * @return 当前用户的树形菜单
 	 */
@@ -57,7 +57,7 @@ public class SysMenuController {
 	}
 
 	/**
-	 * 返回树形菜单集合（当前用户拥有的）
+	 * 获取当前用户的菜单和权限
 	 *
 	 * @return 树形菜单
 	 */
@@ -65,7 +65,8 @@ public class SysMenuController {
 	@GetMapping(value = "/tree")
 	public R getTree() {
 		Set<MenuVO> all = new HashSet<>();
-		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
+		SecurityUtils.getRoles()
+				.forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
 		List<MenuTree> menuTreeList = all.stream()
 				.map(MenuTree::new)
 				.collect(Collectors.toList());

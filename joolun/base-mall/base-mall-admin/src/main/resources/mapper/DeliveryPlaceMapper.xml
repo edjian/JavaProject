@@ -19,8 +19,8 @@
         <result property="updateTime" column="update_time"/>
         <result property="createId" column="create_id"/>
         <result property="place" column="place"/>
+		<result property="address" column="address"/>
+		<result property="telNum" column="tel_num"/>
     </resultMap>
 
-    <sql id="deliveryPlaceSql">
-        delivery_place.`id`,        delivery_place.`tenant_id`,        delivery_place.`del_flag`,        delivery_place.`create_time`,        delivery_place.`update_time`,        delivery_place.`create_id`,        delivery_place.`place`    </sql>
-</mapper>
+ </mapper>

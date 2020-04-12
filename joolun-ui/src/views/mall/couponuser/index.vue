@@ -87,10 +87,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:couponuser:add'],
-                    delBtn: this.permissions['mall:couponuser:del'],
-                    editBtn: this.permissions['mall:couponuser:edit'],
-                    viewBtn: this.permissions['mall:couponuser:get']
+                    addBtn: this.permissions['mall:couponuser:add'] ? true : false,
+                    delBtn: this.permissions['mall:couponuser:del'] ? true : false,
+                    editBtn: this.permissions['mall:couponuser:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:couponuser:get'] ? true : false
                 };
             }
         },

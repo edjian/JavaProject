@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:deliveryplace:add'],
-                    delBtn: this.permissions['mall:deliveryplace:del'],
-                    editBtn: this.permissions['mall:deliveryplace:edit'],
-                    viewBtn: this.permissions['mall:deliveryplace:get']
+                    addBtn: this.permissions['mall:deliveryplace:add'] ? true : false,
+                    delBtn: this.permissions['mall:deliveryplace:del'] ? true : false,
+                    editBtn: this.permissions['mall:deliveryplace:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:deliveryplace:get'] ? true : false
                 };
             }
         },

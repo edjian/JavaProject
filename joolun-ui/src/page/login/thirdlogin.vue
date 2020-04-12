@@ -10,7 +10,7 @@
       <p class="title">微信</p>
     </div>
     <div class="box"
-         @click="handleClick('tencent')">
+         @click="handleClick('qq')">
       <span class="container"
             :style="{backgroundColor:'#8dc349'}">
         <i icon-class="qq"
@@ -18,24 +18,6 @@
       </span>
       <p class="title">QQ</p>
     </div>
-    <!--<div class="box"
-         @click="handleClick('gitee')">
-      <span class="container"
-            :style="{backgroundColor:'#bf3030'}">
-        <i icon-class="qq"
-           class="iconfont icon-logo_gitee_icon"></i>
-      </span>
-      <p class="title">Gitee</p>
-    </div>
-    <div class="box"
-         @click="handleClick('osc')">
-      <span class="container"
-            :style="{backgroundColor:'#007B25'}">
-        <i icon-class="qq"
-           class="iconfont icon-OSChina_logo_"></i>
-      </span>
-      <p class="title">开源中国</p>
-    </div>-->
   </div>
 </template>
 
@@ -46,16 +28,7 @@
     name: 'thirdparty-signin',
     methods: {
       handleClick(thirdpart) {
-        let appid, client_id, redirect_uri, url
-        redirect_uri = encodeURIComponent(window.location.origin + '/#/authredirect')
-        if (thirdpart === 'wechat') {
-          appid = 'xxxx'
-          url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + appid + '&redirect_uri=' + redirect_uri + '&state=WX-LOGIN&response_type=code&scope=snsapi_login#wechat_redirect'
-        } else if (thirdpart === 'tencent') {
-          client_id = 'xxxx'
-          url = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&state=QQ-LOGIN&client_id=' + client_id + '&redirect_uri=' + redirect_uri
-        }
-        openWindow(url, thirdpart, 540, 540)
+
       }
     }
   }

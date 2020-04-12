@@ -85,7 +85,11 @@
 <import src="/public/wxParse/wxParse.wxml"/>
 
 <view class="cu-bar bg-white tabbar border shop foot">
-  <button open-type="contact" bindcontact="handleContact" class="action bg-white">
+  <button open-type="contact" bindcontact="handleContact" class="action bg-white"
+          send-message-title="{{grouponInfo.name}}--咨询"
+          send-message-img="{{grouponInfo.picUrl}}"
+          show-message-card="true" 
+          send-message-path="/pages/groupon/groupon-detail/index?id={{grouponInfo.id}}">
     <view class="cuIcon-servicefill"></view> 
     客服
   </button>

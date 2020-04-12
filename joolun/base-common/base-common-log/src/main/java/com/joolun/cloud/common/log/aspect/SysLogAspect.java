@@ -1,5 +1,6 @@
 package com.joolun.cloud.common.log.aspect;
 
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.log.event.SysLogEvent;
 import com.joolun.cloud.common.log.util.SysLogUtils;
@@ -30,6 +31,7 @@ public class SysLogAspect {
 		log.debug("[类名]:{},[方法]:{}", strClassName, strMethodName);
 
 		com.joolun.cloud.upms.common.entity.SysLog logVo = SysLogUtils.getSysLog();
+		logVo.setType(CommonConstants.LOG_TYPE_0);
 		logVo.setTitle(sysLog.value());
 		// 发送异步日志事件
 		Long startTime = System.currentTimeMillis();

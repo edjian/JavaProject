@@ -98,9 +98,9 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:dict:add'],
-          delBtn: this.permissions['sys:dict:del'],
-          editBtn: this.permissions['sys:dict:edit']
+          addBtn: this.permissions['sys:dict:add'] ? true : false,
+          delBtn: this.permissions['sys:dict:del'] ? true : false,
+          editBtn: this.permissions['sys:dict:edit'] ? true : false
         };
       }
     },

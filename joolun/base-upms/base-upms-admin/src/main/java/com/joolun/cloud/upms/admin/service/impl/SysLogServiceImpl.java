@@ -33,7 +33,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
 		List<SysLog> sysLogs = preLogVOList.stream()
 			.map(pre -> {
 				SysLog log = new SysLog();
-				log.setType(CommonConstants.STATUS_LOCK);
+				log.setType(CommonConstants.LOG_TYPE_9);
 				log.setTitle(pre.getInfo());
 				log.setException(pre.getStack());
 				log.setParams(pre.getMessage());

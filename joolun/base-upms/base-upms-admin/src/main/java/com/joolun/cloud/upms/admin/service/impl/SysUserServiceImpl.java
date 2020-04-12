@@ -3,10 +3,14 @@ package com.joolun.cloud.upms.admin.service.impl;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
+import com.joolun.cloud.common.core.exception.ValidateCodeException;
 import com.joolun.cloud.upms.admin.mapper.SysUserMapper;
 import com.joolun.cloud.upms.admin.service.SysOrganRelationService;
 import com.joolun.cloud.upms.admin.service.SysOrganService;
@@ -33,9 +37,13 @@ import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.antcontrib.logic.Throw;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,6 +68,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	private final SysUserRoleService sysUserRoleService;
 	private final SysOrganRelationService sysOrganRelationService;
 	private final SysRoleMenuService sysRoleMenuService;
+	private final CacheManager cacheManager;
 
 	/**
 	 * 保存用户信息
@@ -152,23 +161,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	@Override
 	@CacheEvict(value = CacheConstants.USER_CACHE, key = "#userDto.username")
-	public R<Boolean> updateUserInfo(UserDTO userDto) {
-		UserVO userVO = baseMapper.getUserVoByUsername(userDto.getUsername());
+	public Boolean updateUserInfo(UserDTO userDto) {
+		UserVO userVO = baseMapper.getUserVoById(userDto.getId());
 		SysUser sysUser = new SysUser();
 		if (StrUtil.isNotBlank(userDto.getPassword())
-				&& StrUtil.isNotBlank(userDto.getNewpassword1())) {
+				&& StrUtil.isNotBlank(userDto.getNewpassword1())) {//修改密码
 			if (ENCODER.matches(userDto.getPassword(), userVO.getPassword())) {
 				sysUser.setPassword(ENCODER.encode(userDto.getNewpassword1()));
 			} else {
 				log.warn("原密码错误，修改密码失败:{}", userDto.getUsername());
-				return R.ok(Boolean.FALSE, "原密码错误，修改失败");
+				throw new RuntimeException("原密码错误，修改失败");
 			}
 		}
-		sysUser.setPhone(userDto.getPhone());
 		sysUser.setId(userVO.getId());
 		sysUser.setAvatar(userDto.getAvatar());
 		sysUser.setEmail(userDto.getEmail());
-		return R.ok(this.updateById(sysUser));
+		baseMapper.updateById(sysUser);
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -211,22 +220,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		String parentId = sysOrgan.getParentId();
 		return this.list(Wrappers.<SysUser>query().lambda()
 				.eq(SysUser::getOrganId, parentId));
-	}
-
-	/**
-	 * 获取当前用户的子机构信息
-	 *
-	 * @return 子机构列表
-	 */
-	private List<String> getChildOrgans() {
-		String organId = SecurityUtils.getUser().getOrganId();
-		//获取当前机构的子机构
-		return sysOrganRelationService
-				.list(Wrappers.<SysOrganRelation>query().lambda()
-						.eq(SysOrganRelation::getAncestor, organId))
-				.stream()
-				.map(SysOrganRelation::getDescendant)
-				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -278,6 +271,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@Override
 	public SysUser getByNoTenant(SysUser sysUser) {
 		return baseMapper.getByNoTenant(sysUser);
+	}
+
+	@Override
+	public void bindPhone(UserDTO userDto) {
+		SysUser sysUser = baseMapper.selectById(userDto.getId());
+		LambdaUpdateWrapper<SysUser> userUpdateWrapper = new UpdateWrapper<SysUser>().lambda();
+		userUpdateWrapper.eq(SysUser::getId,userDto.getId());
+		if("2".equals(userDto.getDoType())){//绑定手机
+			if(StrUtil.isNotBlank(sysUser.getPhone())){
+				throw new RuntimeException("该账号已有手机号绑定，请先解绑");
+			}
+			userUpdateWrapper.set(SysUser::getPhone, userDto.getPhone());
+		}else if("3".equals(userDto.getDoType())){//解绑
+			userUpdateWrapper.set(SysUser::getPhone, null);
+		}
+		this.update(userUpdateWrapper);
+		//更新緩存
+		cacheManager.getCache(CacheConstants.USER_CACHE).evict(sysUser.getUsername());
 	}
 
 }

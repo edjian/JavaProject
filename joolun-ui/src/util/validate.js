@@ -172,7 +172,7 @@ export function cardid (code) {
 /**
  * 判断手机号码是否正确
  */
-export function isvalidatemobile (phone) {
+export function validatePhone (phone) {
   let list = []
   let result = true
   let msg = ''

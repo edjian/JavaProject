@@ -119,10 +119,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:freighttemplat:add'],
-                    delBtn: this.permissions['mall:freighttemplat:del'],
-                    editBtn: this.permissions['mall:freighttemplat:edit'],
-                    viewBtn: this.permissions['mall:freighttemplat:get']
+                    addBtn: this.permissions['mall:freighttemplat:add'] ? true : false,
+                    delBtn: this.permissions['mall:freighttemplat:del'] ? true : false,
+                    editBtn: this.permissions['mall:freighttemplat:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:freighttemplat:get'] ? true : false
                 };
             }
         },

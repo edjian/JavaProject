@@ -14,9 +14,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-    #if(${hasBigDecimal})
-    import java.math.BigDecimal;
-    #end
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;

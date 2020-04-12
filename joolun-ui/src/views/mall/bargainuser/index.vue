@@ -122,10 +122,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:bargainuser:add'],
-                    delBtn: this.permissions['mall:bargainuser:del'],
-                    editBtn: this.permissions['mall:bargainuser:edit'],
-                    viewBtn: this.permissions['mall:bargainuser:get']
+                    addBtn: this.permissions['mall:bargainuser:add'] ? true : false,
+                    delBtn: this.permissions['mall:bargainuser:del'] ? true : false,
+                    editBtn: this.permissions['mall:bargainuser:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:bargainuser:get'] ? true : false
                 };
             }
         },

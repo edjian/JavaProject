@@ -26,11 +26,11 @@
                 <template slot-scope="scope" slot="status">
                     <el-tag type="warning" @click="handleOrderItemStatus(scope.row)">{{scope.row.statusDesc}}</el-tag>
                 </template>
-                <template slot-scope="scope" slot="isRefund">
+                <template slot-scope="scope" slot="isRefund" v-if="scope.row.orderItem">
                     <el-tag type="success" v-if="scope.row.orderItem.isRefund == '1'">是</el-tag>
                     <el-tag type="danger" v-if="scope.row.orderItem.isRefund == '0'">否</el-tag>
                 </template>
-                <template slot-scope="scope" slot="orderId">
+                <template slot-scope="scope" slot="orderId" v-if="scope.row.orderInfo">
                     <div style="text-align: left">
                         <div class="grid-content">订单编号：{{scope.row.orderInfo.orderNo}}</div>
                         <div class="grid-content">销售金额：￥{{scope.row.orderInfo.salesPrice}}</div>
@@ -39,7 +39,7 @@
                         <div class="grid-content">支付积分：{{scope.row.orderInfo.paymentPoints}}</div>
                     </div>
                 </template>
-                <template slot-scope="scope" slot="orderItemId">
+                <template slot-scope="scope" slot="orderItemId" v-if="scope.row.orderItem">
                     <el-card>
                         <img :src="scope.row.orderItem.picUrl" class="image">
                         <div style="margin-top: 10px; text-align: left;">
@@ -181,10 +181,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:orderrefunds:add'],
-                    delBtn: this.permissions['mall:orderrefunds:del'],
-                    editBtn: this.permissions['mall:orderrefunds:edit'],
-                    viewBtn: this.permissions['mall:orderrefunds:get']
+                    addBtn: this.permissions['mall:orderrefunds:add'] ? true : false,
+                    delBtn: this.permissions['mall:orderrefunds:del'] ? true : false,
+                    editBtn: this.permissions['mall:orderrefunds:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:orderrefunds:get'] ? true : false
                 };
             }
         },

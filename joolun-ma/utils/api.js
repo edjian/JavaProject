@@ -71,10 +71,7 @@ const request = (url, method, data, showLoading) => {
         reject(error)
       },
       complete(res) {
-        // 加载完成
-        if (showLoading) {
-          wx.hideLoading()
-        }
+        wx.hideLoading()
       }
     })
   })

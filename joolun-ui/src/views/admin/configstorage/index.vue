@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['sys:sysconfigstorage:add'],
-                    delBtn: this.permissions['sys:sysconfigstorage:del'],
-                    editBtn: this.permissions['sys:sysconfigstorage:edit'],
-                    viewBtn: this.permissions['sys:sysconfigstorage:get']
+                    addBtn: this.permissions['sys:sysconfigstorage:add'] ? true : false,
+                    delBtn: this.permissions['sys:sysconfigstorage:del'] ? true : false,
+                    editBtn: this.permissions['sys:sysconfigstorage:edit'] ? true : false,
+                    viewBtn: this.permissions['sys:sysconfigstorage:get'] ? true : false
                 };
             }
         },

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.joolun.cloud.common.datasource.DataSourceAutoConfiguration
+  com.joolun.cloud.common.datasource.util.DynamicDataSourceUtils

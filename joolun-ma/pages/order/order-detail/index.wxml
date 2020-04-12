@@ -19,7 +19,7 @@
     </view>
   </view>
   <view class="cu-list cu-card menu-avatar">
-    <navigator class="cu-item" url='/pages/order/order-logistics/index?id={{orderInfo.orderLogistics.id}}' wx:if="{{orderInfo.status == '2' || orderInfo.status == '3' || orderInfo.status == '4'}}">
+    <navigator class="cu-item" url='/pages/order/order-logistics/index?id={{orderInfo.orderLogistics.id}}' wx:if="{{orderInfo.deliveryWay == '1' && (orderInfo.status == '2' || orderInfo.status == '3' || orderInfo.status == '4')}}">
       <view class="cu-avatar round cuIcon-deliver bg-red"></view>
       <view class="content loc-content">
         <view class="flex">
@@ -34,7 +34,7 @@
         <text class="cuIcon-right"></text>
       </view>
     </navigator>
-    <view class="cu-item">
+    <view class="cu-item" wx:if="{{orderInfo.deliveryWay == '1' && orderInfo.orderLogistics}}">
       <view class="cu-avatar round cuIcon-location bg-orange"></view>
       <view class="content loc-content">
         <view class="flex">
@@ -43,6 +43,18 @@
         </view>
         <view class="text-black text-sm overflow-2 loc-info">
 					{{orderInfo.orderLogistics.address}}
+        </view>
+      </view>
+    </view>
+    <view class="cu-item" wx:if="{{orderInfo.deliveryWay == '2'}}">
+      <view class="cu-avatar round cuIcon-location bg-orange"></view>
+      <view class="content loc-content">
+        <view class="flex">
+          <view class="cu-tag line-red sm">上门自提</view>
+          <view class="text-gray text-sm margin-left-sm">{{orderInfo.deliveryPlace.telNum}}</view>
+        </view>
+        <view class="text-black text-sm overflow-2 loc-info">
+					{{orderInfo.deliveryPlace.address}}
         </view>
       </view>
     </view>
@@ -135,6 +147,12 @@
         </view>
       </view>
       <view class="margin flex">
+        <text class="flex-sub">配送方式</text>
+        <view class="flex-twice">
+          {{orderInfo.deliveryWay == '1' ? '普通快递' : orderInfo.deliveryWay == '2' ? '上门自提' : ''}}
+        </view>
+      </view>
+      <view class="margin flex">
         <text class="flex-sub">订单编号</text>
         <view class="flex-twice">
           {{orderInfo.orderNo}}
@@ -157,13 +175,13 @@
       <textarea readonly value="{{orderInfo.userMessage}}"></textarea>
     </view>
 	</view>
-  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
 </view>
 <view class="cu-bar bg-white border foot">
   <order-operate
     class="response"
     orderInfo="{{orderInfo}}"
     callPay="{{callPay}}"
+    contact="true"
     bind:orderCancel="orderCancel"
     bind:orderReceive="orderCancel"
     bind:orderDel="orderDel"

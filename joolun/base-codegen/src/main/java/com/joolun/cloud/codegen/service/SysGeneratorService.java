@@ -2,7 +2,7 @@ package com.joolun.cloud.codegen.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.joolun.cloud.codegen.entity.GenConfig;
+import com.joolun.cloud.codegen.entity.GenTable;
 
 import java.util.List;
 import java.util.Map;
@@ -12,19 +12,25 @@ import java.util.Map;
  */
 public interface SysGeneratorService {
 	/**
-	 * 生成代码
-	 *
-	 * @param tableNames 表名称
+	 * 生成代码预览
+	 * @param genTable
 	 * @return
 	 */
-	byte[] generatorCode(GenConfig tableNames);
+	Map<String, String> generatorView(GenTable genTable);
+	/**
+	 * 生成代码
+	 *
+	 * @param genTable 生成表配置
+	 * @return
+	 */
+	byte[] generatorCode(GenTable genTable);
 
 	/**
 	 * 分页查询表
 	 *
 	 * @param tableName 表名
-	 * @param id        数据源ID
+	 * @param sysDatasourceId        数据源ID
 	 * @return
 	 */
-	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String id);
+	IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String sysDatasourceId);
 }

@@ -55,10 +55,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['admin:notice:add'],
-          delBtn: this.permissions['admin:notice:del'],
-          editBtn: this.permissions['admin:notice:edit'],
-          viewBtn: this.permissions['admin:notice:get']
+          addBtn: this.permissions['admin:notice:add'] ? true : false,
+          delBtn: this.permissions['admin:notice:del'] ? true : false,
+          editBtn: this.permissions['admin:notice:edit'] ? true : false,
+          viewBtn: this.permissions['admin:notice:get'] ? true : false
         };
       }
     },

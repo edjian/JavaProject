@@ -17,8 +17,8 @@ import com.joolun.cloud.mall.common.constant.MallConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-        import java.math.BigDecimal;
-    import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
 

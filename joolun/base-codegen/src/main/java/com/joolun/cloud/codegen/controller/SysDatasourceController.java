@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 
 /**
  * 数据源管理
@@ -70,8 +72,8 @@ public class SysDatasourceController {
 	@ApiOperation(value = "新增数据源表")
 	@SysLog("新增数据源表")
 	@PostMapping
-	public R save(@RequestBody SysDatasource sysDatasource) {
-		return R.ok(sysDatasourceService.saveDsByEnc(sysDatasource));
+	public R save(@RequestBody SysDatasource sysDatasource) throws SQLException {
+		return R.ok(sysDatasourceService.saveSysDatasource(sysDatasource));
 	}
 
 	/**
@@ -83,8 +85,8 @@ public class SysDatasourceController {
 	@ApiOperation(value = "修改数据源表")
 	@SysLog("修改数据源表")
 	@PutMapping
-	public R updateById(@RequestBody SysDatasource sysDatasource) {
-		return R.ok(sysDatasourceService.updateDsByEnc(sysDatasource));
+	public R updateById(@RequestBody SysDatasource sysDatasource) throws SQLException {
+		return R.ok(sysDatasourceService.updateSysDatasource(sysDatasource));
 	}
 
 	/**

@@ -174,10 +174,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:goodsspu:add'],
-                    delBtn: this.permissions['mall:goodsspu:del'],
-                    editBtn: this.permissions['mall:goodsspu:edit'],
-                    viewBtn: this.permissions['mall:goodsspu:get']
+                    addBtn: this.permissions['mall:goodsspu:add'] ? true : false,
+                    delBtn: this.permissions['mall:goodsspu:del'] ? true : false,
+                    editBtn: this.permissions['mall:goodsspu:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:goodsspu:get'] ? true : false
                 };
             },
         },

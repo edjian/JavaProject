@@ -16,11 +16,13 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.admin.service.UserInfoService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.common.entity.OrderItem;
 import com.joolun.cloud.mall.common.entity.OrderLogistics;
+import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxAppService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -161,6 +164,27 @@ public class OrderInfoController {
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
 		}
 		orderInfoService.orderCancel(orderInfo);
+		return R.ok();
+	}
+
+	/**
+	 * 商城订单自提
+	 * @param id 商城订单ID
+	 * @return R
+	 */
+	@ApiOperation(value = "商城订单自提")
+	@PutMapping("/takegoods/{id}")
+	@PreAuthorize("@ato.hasAuthority('mall:orderinfo:edit')")
+	public R takeGoods(@PathVariable String id){
+		OrderInfo orderInfo = orderInfoService.getById(id);
+		if(orderInfo == null){
+			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
+		}
+		if(!MallConstants.DELIVERY_WAY_2.equals(orderInfo.getDeliveryWay())
+				&& !OrderInfoEnum.STATUS_1.getValue().equals(orderInfo.getStatus())){//只有待自提订单能确认收货
+			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
+		}
+		orderInfoService.orderReceive(orderInfo);
 		return R.ok();
 	}
 }

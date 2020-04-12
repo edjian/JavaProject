@@ -47,7 +47,7 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          delBtn: this.permissions['sys:log:del']
+          delBtn: this.permissions['sys:log:del'] ? true : false
         };
       }
     },

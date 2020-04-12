@@ -8,6 +8,6 @@
  */
 export default {
   //服务器地址，即后台访问地址
-  basePath: 'http://192.168.31.203:8082'
+  basePath: 'http://test.joolun.com'
   // basePath: 'https://demo.joolun.com'
 }

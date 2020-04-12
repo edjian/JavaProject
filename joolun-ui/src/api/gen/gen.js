@@ -53,8 +53,15 @@ export function putObj(obj) {
   })
 }
 
+export function generatorView(table) {
+  return request({
+    url: '/gen/generator/view',
+    method: 'post',
+    data: table
+  })
+}
 
-export function handleDown(table) {
+export function generatorCode(table) {
   return request({
     url: '/gen/generator/code',
     method: 'post',

@@ -184,10 +184,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:couponinfo:add'],
-                    delBtn: this.permissions['mall:couponinfo:del'],
-                    editBtn: this.permissions['mall:couponinfo:edit'],
-                    viewBtn: this.permissions['mall:couponinfo:get']
+                    addBtn: this.permissions['mall:couponinfo:add'] ? true : false,
+                    delBtn: this.permissions['mall:couponinfo:del'] ? true : false,
+                    editBtn: this.permissions['mall:couponinfo:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:couponinfo:get'] ? true : false
                 };
             }
         },

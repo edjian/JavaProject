@@ -28,27 +28,27 @@ export const refreshToken = (refresh_token) => {
   })
 }
 
-export const loginByMobile = (mobile, code) => {
-  const grant_type = 'mobile'
+export const loginByPhone = (phone, code) => {
+  const grant_type = 'sms_login'
   return request({
-    url: '/auth/mobile/token/sms',
+    url: '/auth/phone/token/sms',
     headers: {
       'Authorization': 'Basic YWRtaW46YWRtaW4='
     },
     method: 'post',
-    params: { mobile: 'SMS@' + mobile, code: code, grant_type }
+    params: { phone: phone, code: code, grant_type }
   })
 }
 
 export const loginByThirdParty = (state, code) => {
-  const grant_type = 'mobile'
+  const grant_type = 'phone'
   return request({
-    url: '/auth/mobile/token/thirdparty',
+    url: '/auth/phone/token/thirdparty',
     headers: {
       'Authorization': 'Basic YWRtaW46YWRtaW4='
     },
     method: 'post',
-    params: { mobile: state + '@' + code, grant_type }
+    params: { phone: state + '@' + code, grant_type }
   })
 }
 

@@ -40,10 +40,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:organ:add'],
-          delBtn: this.permissions['sys:organ:del'],
-          editBtn: this.permissions['sys:organ:edit'],
-          viewBtn: this.permissions['sys:organ:get']
+          addBtn: this.permissions['sys:organ:add'] ? true : false,
+          delBtn: this.permissions['sys:organ:del'] ? true : false,
+          editBtn: this.permissions['sys:organ:edit'] ? true : false,
+          viewBtn: this.permissions['sys:organ:get'] ? true : false
         }
       }
     },

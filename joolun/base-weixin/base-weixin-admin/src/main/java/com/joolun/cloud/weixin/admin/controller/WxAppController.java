@@ -115,19 +115,6 @@ public class WxAppController {
 	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:add')")
 	public R save(@RequestBody WxApp wxApp) {
 		wxAppService.save(wxApp);
-		//公众号二维码获取
-		if(ConfigConstant.WX_APP_TYPE_2.equals(wxApp.getAppType())){
-			WxMpConfiguration.removeWxMpService(wxApp.getId());
-			try {
-				WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
-				String sceneStr = "1";
-				WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
-				wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
-			} catch (WxErrorException e) {
-				e.printStackTrace();
-				log.error("新增微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
-			}
-		}
 		return R.ok();
 	}
 
@@ -146,18 +133,6 @@ public class WxAppController {
 		WxMpConfiguration.removeWxMpService(wxApp.getId());
 		WxPayConfiguration.removeWxPayService(wxApp.getId());
 		WxMaConfiguration.removeWxMaService(wxApp.getId());
-		//公众号二维码获取
-		if(ConfigConstant.WX_APP_TYPE_2.equals(wxApp.getAppType())){
-			try {
-				WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(wxApp.getId()).getQrcodeService();
-				String sceneStr = "1";
-				WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
-				wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
-			} catch (WxErrorException e) {
-				e.printStackTrace();
-				log.error("修改微信账号配置失败appID:" + wxApp.getId() + ":" + e.getMessage());
-			}
-		}
 		return R.ok();
 	}
 
@@ -177,23 +152,28 @@ public class WxAppController {
 
 	@ApiOperation(value = "生成公众号二维码")
 	@SysLog("生成公众号二维码")
+	@GetMapping("/qrCode")
+	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
+	public R getQrCode(String id, String sceneStr) throws WxErrorException {
+		WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(id).getQrcodeService();
+		WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
+		return R.ok(wxMpQrCodeTicket.getUrl());
+	}
+
+	@ApiOperation(value = "生成并保存公众号二维码")
+	@SysLog("生成并保存公众号二维码")
 	@PostMapping("/qrCode")
 	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:index')")
-	public R createQrCode(@RequestBody Map<String,String> param) {
-		try {
-			String id = param.get("id");
-			String sceneStr = param.get("sceneStr");
-			WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(id).getQrcodeService();
-			WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
-			WxApp wxApp = new WxApp();
-			wxApp.setId(id);
-			wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
-			return R.ok(wxAppService.updateById(wxApp));
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-			log.error("生成公众号二维码失败appID:" + param.get("id") + ":" + e.getMessage());
-			return WxReturnCode.wxErrorExceptionHandler(e);
-		}
+	public R createQrCode(@RequestBody Map<String,String> param) throws WxErrorException {
+		String id = param.get("id");
+		String sceneStr = param.get("sceneStr");
+		WxMpQrcodeService wxMpQrcodeService = WxMpConfiguration.getMpService(id).getQrcodeService();
+		WxMpQrCodeTicket wxMpQrCodeTicket = wxMpQrcodeService.qrCodeCreateLastTicket(sceneStr);
+		WxApp wxApp = new WxApp();
+		wxApp.setId(id);
+		wxApp.setQrCode(wxMpQrCodeTicket.getUrl());
+		return R.ok(wxAppService.updateById(wxApp));
+
 	}
 
 	@ApiOperation(value = "微信接口次数进行清零")

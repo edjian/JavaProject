@@ -9,7 +9,13 @@
 <wxs module="numberUtil" src="../../../utils/numberUtil.wxs"></wxs>
 <view class="margin-bottom-bar">
   <view class="cu-list cu-card menu-avatar">
-    <navigator class="cu-item" url='/pages/user/user-address/list/index?select=true'>
+    <view class="cu-item padding-left delivery-way">
+      <radio-group bindchange="deliveryWayChange">
+        <radio class="red margin-right-xs" checked value="1"></radio>普通快递
+        <radio class="red margin-left-sm margin-right-xs" value="2"></radio>上门自提
+      </radio-group>
+    </view>
+    <navigator class="cu-item" url='/pages/user/user-address/list/index?select=true' wx:if="{{orderSubParm.deliveryWay == '1'}}">
       <view class="cu-avatar round cuIcon-location bg-orange"></view>
       <view class="content loc-content" wx:if="{{userAddress}}">
         <view class="flex">
@@ -94,13 +100,13 @@
         <view class="flex-sub text-df">
           <view class="text-gray margin-left-sm">优惠券</view>
         </view>
-        <view class="flex-treble text-df">
+        <view class="flex-sub text-df">
           <text class="text-black" wx:if="{{!couponUser}}">{{couponUserList.length > 0 ? '有可用优惠券' : '无可用优惠券'}}</text>
           <text class="text-black" wx:if="{{couponUser}}">{{couponUser.name}}</text>
         </view>
-        <view class="flex-sub text-df text-orange text-right margin-right-sm">
+        <view class="flex-sub text-sm text-orange text-right margin-right-sm">
           <view wx:if="{{couponUserList.length > 0}}" bindtap="showModalCoupon">
-            选择券<text class="cuIcon-right margin-right-sm"></text>
+            {{totalCouponDeductPrice > 0 ? '优惠￥' + totalCouponDeductPrice :'选择券'}}<text class="cuIcon-right margin-right-sm"></text>
           </view>
         </view>
       </view>
@@ -130,7 +136,6 @@
       <input bindinput="userMessageInput" placeholder="给卖家留言"></input>
     </view>
 	</view>
-  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
 </view>
 <view class="cu-bar bg-white border foot">
   <view class="flex response">

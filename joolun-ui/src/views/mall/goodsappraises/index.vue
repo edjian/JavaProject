@@ -26,7 +26,7 @@
           <el-avatar icon="el-icon-user-solid" :src="scope.row.headimgUrl"></el-avatar>
           <div>{{scope.row.nickName ? scope.row.nickName : '匿名'}}</div>
         </template>
-        <template slot="specInfo" slot-scope="scope">
+        <template slot="specInfo" slot-scope="scope" v-if="scope.row.orderItem">
             <el-card>
               <img :src="scope.row.orderItem.picUrl" class="image">
               <div>
@@ -37,7 +37,7 @@
               </div>
             </el-card>
         </template>
-        <template slot="orderItem" slot-scope="scope">
+        <template slot="orderItem" slot-scope="scope" v-if="scope.row.orderItem">
           <div>订单号：{{scope.row.orderInfo.orderNo}}</div>
           <div>购买价格：￥{{scope.row.orderItem.salesPrice}}</div>
           <div>购买数量：{{scope.row.orderItem.quantity}}</div>
@@ -115,10 +115,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['mall:goodsappraises:add'],
-          delBtn: this.permissions['mall:goodsappraises:del'],
-          editBtn: this.permissions['mall:goodsappraises:edit'],
-          viewBtn: this.permissions['mall:goodsappraises:get']
+          addBtn: this.permissions['mall:goodsappraises:add'] ? true : false,
+          delBtn: this.permissions['mall:goodsappraises:del'] ? true : false,
+          editBtn: this.permissions['mall:goodsappraises:edit'] ? true : false,
+          viewBtn: this.permissions['mall:goodsappraises:get'] ? true : false
         };
       }
     },

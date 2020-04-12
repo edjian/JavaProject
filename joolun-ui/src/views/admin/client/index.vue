@@ -45,10 +45,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:client:add'],
-          delBtn: this.permissions['sys:client:del'],
-          editBtn: this.permissions['sys:client:edit'],
-          viewBtn: this.permissions['sys:client:get']
+          addBtn: this.permissions['sys:client:add'] ? true : false,
+          delBtn: this.permissions['sys:client:del'] ? true : false,
+          editBtn: this.permissions['sys:client:edit'] ? true : false,
+          viewBtn: this.permissions['sys:client:get'] ? true : false
         };
       }
     },

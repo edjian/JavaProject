@@ -138,10 +138,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:noticeitem:add'],
-                    delBtn: this.permissions['mall:noticeitem:del'],
-                    editBtn: this.permissions['mall:noticeitem:edit'],
-                    viewBtn: this.permissions['mall:noticeitem:get']
+                    addBtn: this.permissions['mall:noticeitem:add'] ? true : false,
+                    delBtn: this.permissions['mall:noticeitem:del'] ? true : false,
+                    editBtn: this.permissions['mall:noticeitem:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:noticeitem:get'] ? true : false
                 };
             }
         },

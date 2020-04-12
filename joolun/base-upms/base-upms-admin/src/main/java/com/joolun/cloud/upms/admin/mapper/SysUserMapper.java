@@ -26,13 +26,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 */
 	@SqlParser(filter=true)
 	SysUser getByNoTenant(SysUser sysUser);
-	/**
-	 * 通过用户名查询用户信息（含有角色信息）
-	 *
-	 * @param username 用户名
-	 * @return userVo
-	 */
-	UserVO getUserVoByUsername(String username);
 
 	/**
 	 * 分页查询用户信息（含角色）

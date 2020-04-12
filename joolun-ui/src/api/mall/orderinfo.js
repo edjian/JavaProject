@@ -68,3 +68,10 @@ export function orderCancel(id) {
     method: 'put'
   })
 }
+
+export function takeGoods(id) {
+  return request({
+    url: '/mall/orderinfo/takegoods/' + id,
+    method: 'put'
+  })
+}

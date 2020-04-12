@@ -211,10 +211,10 @@
       }),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxapp:add'],
-          delBtn: this.permissions['wxmp:wxapp:del'],
-          editBtn: this.permissions['wxmp:wxapp:edit'],
-          viewBtn: this.permissions['wxmp:wxapp:get']
+          addBtn: this.permissions['wxmp:wxapp:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxapp:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxapp:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxapp:get'] ? true : false
         }
       }
     },

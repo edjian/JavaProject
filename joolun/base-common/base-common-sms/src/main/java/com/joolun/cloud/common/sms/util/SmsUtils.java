@@ -1,5 +1,7 @@
 package com.joolun.cloud.common.sms.util;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.joolun.cloud.common.sms.config.SmsConfigProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,11 @@ public class SmsUtils {
 		request.putQueryParameter("TemplateCode", templateCode);
 		request.putQueryParameter("TemplateParam", templateParam);
 		CommonResponse response = client.getCommonResponse(request);
-		System.out.println(response.getData());
+		String data = response.getData();
+		JSONObject dataJson = JSONUtil.parseObj(data);
+		if(!"OK".equals(dataJson.get("Code"))){
+			log.error("发送短信失败：",data);
+			throw new RuntimeException("发送短信失败：" + dataJson.get("Message"));
+		}
 	}
 }

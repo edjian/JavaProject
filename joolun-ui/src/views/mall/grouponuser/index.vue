@@ -85,10 +85,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:grouponuser:add'],
-                    delBtn: this.permissions['mall:grouponuser:del'],
-                    editBtn: this.permissions['mall:grouponuser:edit'],
-                    viewBtn: this.permissions['mall:grouponuser:get']
+                    addBtn: this.permissions['mall:grouponuser:add'] ? true : false,
+                    delBtn: this.permissions['mall:grouponuser:del'] ? true : false,
+                    editBtn: this.permissions['mall:grouponuser:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:grouponuser:get'] ? true : false
                 };
             }
         },

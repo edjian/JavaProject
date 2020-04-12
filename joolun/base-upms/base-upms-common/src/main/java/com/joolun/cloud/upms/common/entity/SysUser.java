@@ -72,9 +72,9 @@ public class SysUser extends Model<SysUser> {
 	private String lockFlag;
 
 	/**
-	 * 简介
+	 * 手机号
 	 */
-	@ApiModelProperty(value = "简介")
+	@ApiModelProperty(value = "手机号")
 	private String phone;
 	/**
 	 * 头像
@@ -104,13 +104,4 @@ public class SysUser extends Model<SysUser> {
 	 */
 	private String qqOpenid;
 
-	/**
-	 * 码云唯一标识
-	 */
-	private String giteeLogin;
-
-	/**
-	 * 开源中国唯一标识
-	 */
-	private String oscId;
 }

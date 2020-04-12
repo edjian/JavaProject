@@ -65,7 +65,7 @@
             </template>
             <template slot-scope="props" slot="expand">
               <el-row>
-                <el-col :span="4" style="text-align: center" v-if="props.row.isComponent == '0'">
+                <el-col :span="6" style="text-align: center" v-if="props.row.isComponent == '0'">
                   <vue-qr v-if="props.row.qrCode" :text="props.row.qrCode" :size="160" :dotScale = 1></vue-qr><p/>
                   <el-button type="success"
                              size="small"
@@ -106,6 +106,12 @@
                                      plain
                                      class="mag_left"
                                      @click="clearQuota(props.row.id)">api次数清零</el-button>
+                          <el-button type="warning"
+                                     icon="el-icon-s-grid"
+                                     size="small"
+                                     plain
+                                     class="mag_left"
+                                     @click="getQrCode(props.row.id)">场景二维码</el-button>
                         </el-form-item>
                         <el-form-item label="主体名称">
                           ：{{props.row.principalName}}
@@ -153,12 +159,32 @@
           <el-checkbox label="40" disabled>小程序插件管理权限集</el-checkbox>
         </el-checkbox-group>
       </el-dialog>
+      <el-dialog
+              :title="'场景值'+scene"
+              :visible.sync="qrCodeSceneDialog"
+              center
+              width="50%">
+        <el-row>
+          <el-col :span="8">
+            <vue-qr :text="qrCodeScene" :size="160" :dotScale = 1></vue-qr>
+            <p>160x160</p>
+          </el-col>
+          <el-col :span="8">
+            <vue-qr :text="qrCodeScene" :size="200" :dotScale = 1></vue-qr>
+            <p>200x200</p>
+          </el-col>
+          <el-col :span="8">
+            <vue-qr :text="qrCodeScene" :size="320" :dotScale = 1></vue-qr>
+            <p>320x320</p>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </basic-container>
   </div>
 </template>
 
 <script>
-  import { getPage, getObj, addObj, putObj, delObj, createQrCode, clearQuota, getAccessToken, getAuthorizerInfo } from '@/api/wxmp/wxapp'
+  import { getPage, getObj, addObj, putObj, delObj, createQrCode, clearQuota, getAccessToken, getAuthorizerInfo, getQrCode } from '@/api/wxmp/wxapp'
   import { tableOption } from '@/const/crud/wxmp/wxapp'
   import {fetchTree} from "@/api/admin/organ"
   import { mapGetters, mapState } from 'vuex'
@@ -196,6 +222,9 @@
           label: 'name',
           value: 'id',
         },
+        qrCodeSceneDialog: false,
+        scene: null,
+        qrCodeScene: null
       }
     },
     created() {
@@ -209,10 +238,10 @@
       }),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxapp:add'],
-          delBtn: this.permissions['wxmp:wxapp:del'],
-          editBtn: this.permissions['wxmp:wxapp:edit'],
-          viewBtn: this.permissions['wxmp:wxapp:get']
+          addBtn: this.permissions['wxmp:wxapp:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxapp:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxapp:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxapp:get'] ? true : false
         }
       }
     },
@@ -281,6 +310,22 @@
             }
           }).catch(() => {
             _this.tableLoading = false
+          })
+        })
+      },
+      getQrCode(val){
+        let that = this
+        this.$prompt('请输入场景值', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(({ value }) => {
+          getQrCode({
+            id: val,
+            sceneStr: value
+          }).then(response => {
+            that.scene = value
+            that.qrCodeSceneDialog = true
+            that.qrCodeScene = response.data.data
           })
         })
       },

@@ -53,21 +53,11 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 				return chain.filter(exchange);
 			}
 
-			// 终端设置不校验， 直接向下执行
 			try {
+				// 终端设置不校验， 直接向下执行
 				String[] clientInfos = WebUtils.getClientId(request);
 				if (filterIgnorePropertiesConfig.getClients().contains(clientInfos[0])) {
 					return chain.filter(exchange);
-				}
-
-				// 如果是社交登录，判断是否包含SMS
-				if (StrUtil.containsAnyIgnoreCase(request.getURI().getPath(), SecurityConstants.THIRDPARTY_TOKEN_URL)) {
-					String mobile = request.getQueryParams().getFirst("mobile");
-					if (StrUtil.containsAny(mobile, LoginTypeEnum.SMS.getType())) {
-						throw new ValidateCodeException("验证码不合法");
-					} else {
-						return chain.filter(exchange);
-					}
 				}
 
 				//校验验证码
@@ -102,9 +92,9 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 		}
 
 		String randomStr = request.getQueryParams().getFirst("randomStr");
-		String mobile = request.getQueryParams().getFirst("mobile");
-		if (StrUtil.isNotBlank(mobile)) {
-			randomStr = mobile;
+		String grantType = request.getQueryParams().getFirst("grant_type");
+		if (StrUtil.equals(SecurityConstants.SMS_LOGIN, grantType)) {
+			randomStr = SecurityConstants.SMS_LOGIN + ":" + request.getQueryParams().getFirst("phone");
 		}
 
 		String key = CacheConstants.VER_CODE_DEFAULT + randomStr;
@@ -127,7 +117,6 @@ public class ValidateCodeGatewayFilter extends AbstractGatewayFilterFactory {
 		}
 
 		if (!StrUtil.equals(saveCode, code)) {
-			redisTemplate.delete(key);
 			throw new ValidateCodeException("验证码不合法");
 		}
 

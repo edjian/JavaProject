@@ -91,10 +91,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['sys:tenant:add'],
-                    delBtn: this.permissions['sys:tenant:del'],
-                    editBtn: this.permissions['sys:tenant:edit'],
-                    viewBtn: this.permissions['sys:tenant:get']
+                    addBtn: this.permissions['sys:tenant:add'] ? true : false,
+                    delBtn: this.permissions['sys:tenant:del'] ? true : false,
+                    editBtn: this.permissions['sys:tenant:edit'] ? true : false,
+                    viewBtn: this.permissions['sys:tenant:get'] ? true : false
                 }
             }
         },
@@ -238,7 +238,7 @@
                 }).then(() => {
                     this.dialogLoading = false
                     this.dialogPermissionVisible = false
-                    fetchMenuTree()
+                  fetchMenuTree()
                         .then(response => {
                             this.form = response.data.data
                             return fetchRoleTreeTenant(this.checkedDysRole.tenantId)

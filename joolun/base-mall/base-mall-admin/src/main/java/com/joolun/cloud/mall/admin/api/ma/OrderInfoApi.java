@@ -24,13 +24,11 @@ import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
-import com.joolun.cloud.mall.admin.service.GrouponInfoService;
-import com.joolun.cloud.mall.admin.service.GrouponUserService;
-import com.joolun.cloud.mall.admin.service.OrderInfoService;
-import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
+import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
+import com.joolun.cloud.mall.common.entity.BargainUser;
 import com.joolun.cloud.mall.common.entity.GrouponInfo;
 import com.joolun.cloud.mall.common.entity.GrouponUser;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
@@ -68,6 +66,7 @@ public class OrderInfoApi {
 	private final OrderLogisticsService orderLogisticsService;
 	private final GrouponInfoService grouponInfoService;
 	private final GrouponUserService grouponUserService;
+	private final BargainUserService bargainUserService;
 
 	/**
 	* 分页查询
@@ -225,6 +224,12 @@ public class OrderInfoApi {
 			orderInfoService.notifyOrder(orderInfo);
 			return R.ok();
 		}
+		if(MallConstants.ORDER_TYPE_1.equals(orderInfo.getOrderType())) {//砍价订单
+			BargainUser bargainUser = bargainUserService.getById(orderInfo.getRelationId());
+			if(CommonConstants.YES.equals(bargainUser.getIsBuy())){
+				return R.failed(MyReturnCode.ERR_80006.getCode(), MyReturnCode.ERR_80006.getMsg());
+			}
+		}
 		if(MallConstants.ORDER_TYPE_2.equals(orderInfo.getOrderType())){//拼团订单
 			GrouponInfo grouponInfo = grouponInfoService.getOne(Wrappers.<GrouponInfo>lambdaQuery()
 					.eq(GrouponInfo::getId,orderInfo.getMarketId())
@@ -253,7 +258,7 @@ public class OrderInfoApi {
 		String appId = BaseApi.getAppId(request);
 		WxPayUnifiedOrderRequest wxPayUnifiedOrderRequest = new WxPayUnifiedOrderRequest();
 		wxPayUnifiedOrderRequest.setAppid(appId);
-		wxPayUnifiedOrderRequest.setBody("Joolun商城商品");
+		wxPayUnifiedOrderRequest.setBody(orderInfo.getName());
 		wxPayUnifiedOrderRequest.setOutTradeNo(orderInfo.getOrderNo());
 		wxPayUnifiedOrderRequest.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
 		wxPayUnifiedOrderRequest.setTradeType("JSAPI");

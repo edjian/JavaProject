@@ -36,12 +36,9 @@ Page({
       .then(res => {
         let orderInfo = res.data
         if (!orderInfo){
-          wx.showToast({
-            title: '无效订单',
-            icon: 'none',
-            duration: 5000
+          wx.redirectTo({
+            url: '/pages/order/order-list/index'
           })
-          return
         }
         this.setData({
           orderInfo: orderInfo

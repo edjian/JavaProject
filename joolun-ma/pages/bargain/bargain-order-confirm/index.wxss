@@ -27,3 +27,6 @@
 .cu-list.menu>.cu-item {
   min-height: unset !important
 }
+.delivery-way{
+  justify-content: unset !important
+}

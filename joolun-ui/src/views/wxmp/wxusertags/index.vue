@@ -104,10 +104,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxusertags:add'],
-          delBtn: this.permissions['wxmp:wxusertags:del'],
-          editBtn: this.permissions['wxmp:wxusertags:edit'],
-          viewBtn: this.permissions['wxmp:wxusertags:get']
+          addBtn: this.permissions['wxmp:wxusertags:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxusertags:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxusertags:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxusertags:get'] ? true : false
         }
       }
     },

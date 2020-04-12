@@ -62,10 +62,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:goodscategory:add'],
-                    delBtn: this.permissions['mall:goodscategory:del'],
-                    editBtn: this.permissions['mall:goodscategory:edit'],
-                    viewBtn: this.permissions['mall:goodscategory:get']
+                    addBtn: this.permissions['mall:goodscategory:add'] ? true : false,
+                    delBtn: this.permissions['mall:goodscategory:del'] ? true : false,
+                    editBtn: this.permissions['mall:goodscategory:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:goodscategory:get'] ? true : false
                 };
             }
         },

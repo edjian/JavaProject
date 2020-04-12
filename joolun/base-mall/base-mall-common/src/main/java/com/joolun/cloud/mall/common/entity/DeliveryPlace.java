@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-    import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
 
@@ -68,5 +68,15 @@ public class DeliveryPlace extends Model<DeliveryPlace> {
      */
 	@ApiModelProperty(value = "地方")
     private String place;
+	/**
+	 * 详细地址
+	 */
+	@ApiModelProperty(value = "详细地址")
+	private String address;
+	/**
+	 * 电话号码
+	 */
+	@ApiModelProperty(value = "电话号码")
+	private String telNum;
 
 }

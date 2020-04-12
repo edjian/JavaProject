@@ -47,7 +47,7 @@ public interface SysUserService extends IService<SysUser> {
 	 * @param userDto 用户信息
 	 * @return Boolean
 	 */
-	R<Boolean> updateUserInfo(UserDTO userDto);
+	Boolean updateUserInfo(UserDTO userDto);
 
 	/**
 	 * 更新指定用户信息
@@ -89,4 +89,10 @@ public interface SysUserService extends IService<SysUser> {
 	 * @return SysUser
 	 */
 	SysUser getByNoTenant(SysUser sysUser);
+
+	/**
+	 * 绑定/解绑手机号
+	 * @param userDto
+	 */
+	void bindPhone(UserDTO userDto);
 }

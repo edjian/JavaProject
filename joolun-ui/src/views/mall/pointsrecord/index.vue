@@ -73,10 +73,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:pointsrecord:add'],
-                    delBtn: this.permissions['mall:pointsrecord:del'],
-                    editBtn: this.permissions['mall:pointsrecord:edit'],
-                    viewBtn: this.permissions['mall:pointsrecord:get']
+                    addBtn: this.permissions['mall:pointsrecord:add'] ? true : false,
+                    delBtn: this.permissions['mall:pointsrecord:del'] ? true : false,
+                    editBtn: this.permissions['mall:pointsrecord:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:pointsrecord:get'] ? true : false
                 };
             }
         },

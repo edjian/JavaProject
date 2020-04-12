@@ -6,14 +6,13 @@
   - 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
-<ad unit-id="adunit-80d788ab8518b5b3"></ad>
 <view class="cu-card article no-card">
   <view class="cu-item" wx:for="{{ grouponInfoList }}" wx:key="index">
     <view class="content">
       <image src="{{item.picUrl}}" mode="aspectFill" class="row-img margin-top-xs"></image>
       <view class="desc row-info solid-bottom padding-bottom">
         <view class="text-black margin-top-sm overflow-2">
-          <text class="cu-tag bg-red radius margin-right-xs">{{item.grouponNum}}人团</text>{{item.name}}
+          <text class="cu-tag line-orange radius margin-right-xs">{{item.grouponNum}}人团</text>{{item.name}}
         </view>
         <view class="flex justify-start margin-top-sm">
           <view class="text-price text-bold text-red">{{item.grouponPrice}}</view>

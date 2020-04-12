@@ -16,7 +16,8 @@ Page({
     freightPrice: 0,
     userAddress: null,
     orderSubParm: {
-      paymentType: '1'
+      paymentType: '1',
+      deliveryWay: '1'
     },
     loading: false
   },
@@ -25,6 +26,15 @@ Page({
   },
   onLoad: function () {
     this.userAddressPage()
+    this.orderConfirmDo()
+  },
+  deliveryWayChange(e) {
+    this.setData({
+      [`orderSubParm.deliveryWay`]: e.detail.value
+    })
+    this.orderConfirmDo()
+  },
+  orderConfirmDo() {
     // 本地获取参数信息
     let that = this
     wx.getStorage({
@@ -58,6 +68,9 @@ Page({
           }
           freightPrice = (Number(freightPrice) + Number(orderConfirm.freightPrice)).toFixed(2)
         })
+        if (that.data.orderSubParm.deliveryWay == '2') {//自提不算运费
+          freightPrice = 0
+        }
         that.setData({
           orderConfirmData: orderConfirmData,
           salesPrice: salesPrice,

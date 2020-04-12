@@ -38,7 +38,7 @@ export const tableOption = {
 }
 
 export const formOption = {
-  submitText: '生成',
+  emptyBtn: false,
   column: [
     {
       label: '表名称',
@@ -59,10 +59,10 @@ export const formOption = {
     }, {
       label: '表前缀',
       prop: 'tablePrefix',
-      placeholder: '可为空，加载系统默认配置'
+      placeholder: '可为空，生成的类将自动去掉指定前缀'
     }, {
       label: '注释',
-      prop: 'comments',
+      prop: 'tableComment',
       placeholder: '可为空，加载表备注'
     }
   ]
@@ -85,23 +85,6 @@ export const tableDsOption = {
       editDisplay: false
     },
     {
-      label: '名称',
-      prop: 'name'
-    },
-    {
-      label: 'jdbcUrl',
-      prop: 'url',
-      overHidden: true
-    },
-    {
-      label: '用户名',
-      prop: 'username'
-    },
-    {
-      label: '密码',
-      prop: 'password'
-    },
-    {
       label: '创建时间',
       prop: 'createTime',
       addDisplay: false,
@@ -114,6 +97,24 @@ export const tableDsOption = {
       overHidden: true,
       addDisplay: false,
       editDisplay: false
-    }
+    },
+    {
+      label: '用户名',
+      prop: 'username'
+    },
+    {
+      label: '密码',
+      prop: 'password'
+    },
+    {
+      label: '名称',
+      prop: 'name'
+    },
+    {
+      label: 'jdbcUrl',
+      prop: 'url',
+      type: 'textarea',
+      overHidden: true
+    },
   ]
 }

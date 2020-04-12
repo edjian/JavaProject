@@ -118,7 +118,7 @@ public class WxMaConfiguration {
 		String appId = getAppId(request);
 		WxApp wxApp = wxAppService.findByAppId(appId);
 		if(wxApp==null) {
-			throw new Exception("系统内无此小程序：" + appId);
+			throw new Exception("系统内无此小程序：" + appId + "；请在后台添加");
 		}
 		TenantContextHolder.setTenantId(wxApp.getTenantId());//指定租户ID
 		return wxApp;

@@ -23,4 +23,12 @@ public class UserDTO extends SysUser {
 	 * 新密码
 	 */
 	private String newpassword1;
+	/**
+	 * 验证码
+	 */
+	private String code;
+	/**
+	 * 操作类型
+	 */
+	private String doType;
 }

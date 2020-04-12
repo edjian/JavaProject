@@ -106,6 +106,10 @@ Page({
             specInfo = specInfo + ';'
           }
         })
+        if (!this.data.bargainInfo) {
+          //html转wxml
+          WxParse.wxParse('description', 'html', bargainInfo.goodsSpu.description, this, 0)
+        }
         this.setData({
           bargainInfo: bargainInfo,
           specInfo: specInfo
@@ -129,8 +133,6 @@ Page({
           })
           this.bargainCutPage()
         }
-        //html转wxml
-        WxParse.wxParse('description', 'html', bargainInfo.goodsSpu.description, this, 0)
       })
   },
   //帮砍记录列表

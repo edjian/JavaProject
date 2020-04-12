@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['${moduleName}:${pathName}:add'],
-                    delBtn: this.permissions['${moduleName}:${pathName}:del'],
-                    editBtn: this.permissions['${moduleName}:${pathName}:edit'],
-                    viewBtn: this.permissions['${moduleName}:${pathName}:get']
+                    addBtn: this.permissions['${moduleName}:${pathName}:add'] ? true : false,
+                    delBtn: this.permissions['${moduleName}:${pathName}:del'] ? true : false,
+                    editBtn: this.permissions['${moduleName}:${pathName}:edit'] ? true : false,
+                    viewBtn: this.permissions['${moduleName}:${pathName}:get'] ? true : false
                 };
             }
         },

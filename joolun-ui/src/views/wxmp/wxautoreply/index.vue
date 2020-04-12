@@ -243,10 +243,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxautoreply:add'],
-          delBtn: this.permissions['wxmp:wxautoreply:del'],
-          editBtn: this.permissions['wxmp:wxautoreply:edit'],
-          viewBtn: this.permissions['wxmp:wxautoreply:get']
+          addBtn: this.permissions['wxmp:wxautoreply:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxautoreply:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxautoreply:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxautoreply:get'] ? true : false
         };
       }
     },

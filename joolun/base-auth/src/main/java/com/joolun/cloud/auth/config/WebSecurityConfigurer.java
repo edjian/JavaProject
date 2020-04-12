@@ -1,8 +1,8 @@
 package com.joolun.cloud.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.joolun.cloud.common.security.handler.MobileLoginSuccessHandler;
-import com.joolun.cloud.common.security.mobile.MobileSecurityConfigurer;
+import com.joolun.cloud.common.security.handler.PhoneLoginSuccessHandler;
+import com.joolun.cloud.common.security.phone.PhoneSecurityConfigurer;
 import com.joolun.cloud.common.security.service.BaseUserDetailsService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +51,10 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 				"/token/**",
 				"/actuator/**",
-				"/mobile/**").permitAll()
+				"/phone/**").permitAll()
 			.anyRequest().authenticated()
 			.and().csrf().disable()
-			.apply(mobileSecurityConfigurer());
+			.apply(phoneSecurityConfigurer());
 	}
 
 	/**
@@ -75,8 +75,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler mobileLoginSuccessHandler() {
-		return MobileLoginSuccessHandler.builder()
+	public AuthenticationSuccessHandler phoneLoginSuccessHandler() {
+		return PhoneLoginSuccessHandler.builder()
 			.objectMapper(objectMapper)
 			.clientDetailsService(clientDetailsService)
 			.passwordEncoder(passwordEncoder())
@@ -84,11 +84,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public MobileSecurityConfigurer mobileSecurityConfigurer() {
-		MobileSecurityConfigurer mobileSecurityConfigurer = new MobileSecurityConfigurer();
-		mobileSecurityConfigurer.setMobileLoginSuccessHandler(mobileLoginSuccessHandler());
-		mobileSecurityConfigurer.setUserDetailsService(userDetailsService);
-		return mobileSecurityConfigurer;
+	public PhoneSecurityConfigurer phoneSecurityConfigurer() {
+		PhoneSecurityConfigurer phoneSecurityConfigurer = new PhoneSecurityConfigurer();
+		phoneSecurityConfigurer.setMobileLoginSuccessHandler(phoneLoginSuccessHandler());
+		phoneSecurityConfigurer.setUserDetailsService(userDetailsService);
+		return phoneSecurityConfigurer;
 	}
 
 

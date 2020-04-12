@@ -53,7 +53,7 @@ export const tableOption = {
                 }]
         },
         {
-            label: '订单号',
+            label: '订单编号',
             prop: 'orderNo',
             search: true,
             hide: true,
@@ -62,17 +62,32 @@ export const tableOption = {
         {
             label: '商品信息',
             prop: 'goodsInfo',
-            width: 700,
+            width: 500,
             slot: true,
             display: false
         },
         {
-            label: '时间/订单号',
+            label: '时间/订单编号',
             prop: 'createTime',
             sortable: true,
             width: 250,
             slot: true,
             display: false
+        },
+        {
+            label: '配送方式',
+            prop: 'deliveryWay',
+            search: true,
+            type: 'radio',
+            sortable: true,
+            display: false,
+            dicData: [{
+                label: '普通快递',
+                value: '1'
+            },{
+                label: '上门自提',
+                value: '2'
+            }]
         },
         {
             label: '付款方式',
@@ -157,8 +172,8 @@ export const tableOption = {
                     span: 24
                 }]
         }, {
-            icon: 'el-icon-order',
-            label: '订单明细',
+            icon: 'el-icon-user',
+            label: '用户详情',
             prop: 'group2',
             column: [{
                 prop: 'userId',

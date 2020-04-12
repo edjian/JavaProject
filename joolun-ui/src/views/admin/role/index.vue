@@ -109,10 +109,10 @@
       ...mapGetters(['elements', 'permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:role:add'],
-          delBtn: this.permissions['sys:role:del'],
-          editBtn: this.permissions['sys:role:edit'],
-          viewBtn: this.permissions['sys:role:get']
+          addBtn: this.permissions['sys:role:add'] ? true : false,
+          delBtn: this.permissions['sys:role:del'] ? true : false,
+          editBtn: this.permissions['sys:role:edit'] ? true : false,
+          viewBtn: this.permissions['sys:role:get'] ? true : false
         }
       }
     },

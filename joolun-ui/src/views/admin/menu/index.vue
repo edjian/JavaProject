@@ -74,10 +74,10 @@
       ...mapGetters(["elements", "permissions"]),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:menu:add'],
-          delBtn: this.permissions['sys:menu:del'],
-          editBtn: this.permissions['sys:menu:edit'],
-          viewBtn: this.permissions['sys:menu:get']
+          addBtn: this.permissions['sys:menu:add'] ? true : false,
+          delBtn: this.permissions['sys:menu:del'] ? true : false,
+          editBtn: this.permissions['sys:menu:edit'] ? true : false,
+          viewBtn: this.permissions['sys:menu:get'] ? true : false
         }
       }
     },

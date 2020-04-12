@@ -17,6 +17,10 @@ Component({
     callPay: {
       type: Boolean,
       value: false
+    },
+    contact: {
+      type: Boolean,
+      value: false
     }
   },
   data: {

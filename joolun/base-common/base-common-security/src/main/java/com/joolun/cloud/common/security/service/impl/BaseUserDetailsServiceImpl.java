@@ -63,6 +63,18 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 		return userDetails;
 	}
 
+	/**
+	 * 手机验证码登录
+	 *
+	 * @param phone
+	 * @return UserDetails
+	 * @throws UsernameNotFoundException
+	 */
+	@Override
+	@SneakyThrows
+	public UserDetails loadUserByPhone(String phone) {
+		return getUserDetails(feignUserService.infoByPhone(phone, SecurityConstants.FROM_IN));
+	}
 
 	/**
 	 * 根据社交登录code 登录
@@ -74,7 +86,7 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserBySysThirdParty(String inStr) {
-		return getUserDetails(feignUserService.sysThirdParty(inStr, SecurityConstants.FROM_IN));
+		return null;
 	}
 
 	/**

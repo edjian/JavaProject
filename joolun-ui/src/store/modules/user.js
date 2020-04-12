@@ -1,9 +1,10 @@
 import {getStore, setStore} from '@/util/store'
 import {isURL} from '@/util/validate'
-import {getUserInfo, loginByMobile, loginByThirdParty, loginByUsername, logout, refreshToken} from '@/api/login'
+import {getUserInfo, loginByPhone, loginByThirdParty, loginByUsername, logout, refreshToken} from '@/api/login'
 import {deepClone, encryption} from '@/util/util'
 import webiste from '@/const/website'
 import {GetMenu} from '@/api/admin/menu'
+import { securityKey } from '@/config/env'
 
 function addPath(ele, first) {
   const propsConfig = webiste.menu.props
@@ -52,7 +53,7 @@ const user = {
     LoginByUsername({commit}, userInfo) {
       const user = encryption({
         data: userInfo,
-        key: '1234567891234567',
+        key: securityKey,
         param: ['password']
       })
       return new Promise((resolve, reject) => {
@@ -71,7 +72,7 @@ const user = {
     // 根据手机号登录
     LoginByPhone({commit}, userInfo) {
       return new Promise((resolve, reject) => {
-        loginByMobile(userInfo.mobile, userInfo.code).then(response => {
+        loginByPhone(userInfo.phone, userInfo.code).then(response => {
           const data = response.data
           commit('SET_ACCESS_TOKEN', data.access_token)
           commit('SET_REFRESH_TOKEN', data.refresh_token)

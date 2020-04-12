@@ -31,4 +31,3 @@
 </view>
 <view class="cu-load bg-gray {{loadmore?'loading':''}}"></view>
 <view class="cu-load bg-gray" wx:if="{{ userAddress.length <= 0 && !loadmore}}">无收货地址，请添加</view>
-<ad unit-id="adunit-80d788ab8518b5b3"></ad>

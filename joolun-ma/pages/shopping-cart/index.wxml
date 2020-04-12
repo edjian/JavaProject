@@ -109,15 +109,13 @@
       <button class="cu-btn bg-red margin-top">去逛逛</button>
     </navigator>
   </view>
-
-  <ad unit-id="adunit-80d788ab8518b5b3" class="margin-top-sm"></ad>
-
   <view class="cu-bar justify-center bg-gray margin-top-sm">
     <view class='action text-orange text-bold'>
       <text class='cuIcon-move'></text> <text class='cuIcon-appreciate'></text>为您推荐 <text class='cuIcon-move'></text>
     </view>
   </view>
-  <goods-card goodsList="{{goodsListRecom}}" class="bg-white"/>
+  <goods-card goodsList="{{goodsListRecom}}"/>
+  <ad unit-id="adunit-80d788ab8518b5b3" class="margin-top-sm"></ad>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
   <view class="flex align-center">

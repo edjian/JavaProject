@@ -147,17 +147,10 @@
 			<if test="email != null and email != ''">
 				and sys_user.email = #{email}
 			</if>
+			<if test="phone != null and phone != ''">
+				and sys_user.phone = #{phone}
+			</if>
 		</where>
-	</select>
-
-	<select id="getUserVoByUsername" resultMap="userVoResultMap">
-		SELECT
-		<include refid="userRoleSql"/>
-		FROM
-		sys_user
-		LEFT JOIN sys_user_role AS ur ON ur.user_id = sys_user.id
-		LEFT JOIN sys_role AS r ON r.id = ur.role_id
-		WHERE sys_user.username = #{username}
 	</select>
 
 	<select id="getUserVoById" resultMap="userVoResultMap">

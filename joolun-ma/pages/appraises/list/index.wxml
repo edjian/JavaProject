@@ -7,7 +7,7 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <view class="cu-list menu-avatar comment">
-  <view class="cu-item" wx:for="{{goodsAppraises}}" wx:key="index">
+  <view class="cu-item solid-top" wx:for="{{goodsAppraises}}" wx:key="index">
     <view class="cu-avatar round" style="background-image:url({{item.headimgUrl}})">{{!item.headimgUrl ? '头' : ''}}</view>
     <view class="content">
       <view class="text-black flex">

@@ -40,6 +40,12 @@
                          size="small"
                          plain
                          @click="editPassword(scope.row,scope.index)">修改密码</el-button>
+              <el-button type="text"
+                         v-if="permissions['sys:loglogin:index']"
+                         icon="el-icon-info"
+                         size="small"
+                         plain
+                         @click="showLoglogin(scope.row,scope.index)">登录日志</el-button>
             </template>
           </avue-crud>
         </el-col>
@@ -51,6 +57,20 @@
                    @submit="subPassword">
         </avue-form>
       </el-dialog>
+      <el-dialog :title="'登录日志【'+selectRow.username+'】'" :visible.sync="dialogVisible2" width="60%">
+        <avue-crud ref="crud"
+                   :page="page2"
+                   :data="tableData2"
+                   :table-loading="tableLoading2"
+                   :option="tableOption2"
+                   :permission="permissionList2"
+                   @on-load="getPage2"
+                   @search-change="searchChange2"
+                   @refresh-change="refreshChange2"
+                   @sort-change="sortChange2"
+                   @row-del="handleDel2">
+        </avue-crud>
+      </el-dialog>
     </basic-container>
   </div>
 
@@ -60,6 +80,8 @@
   import {addObj, delObj, getPage, getObj, putObj, editPassword} from "@/api/admin/user"
   import {fetchTree} from "@/api/admin/organ"
   import {tableOption} from '@/const/crud/admin/user'
+  import {tableOption as tableOption2} from '@/const/crud/admin/loglogin'
+  import {getPage as getPage2, delObj as delObj2} from '@/api/admin/loglogin'
   import {mapGetters} from "vuex"
 
   export default {
@@ -103,18 +125,38 @@
         list: [],
         listLoading: true,
         role: [],
-        form: {}
+        form: {},
+
+        dialogVisible2: false,
+        tableData2: [],
+        page2: {
+          total: 0, // 总页数
+          currentPage: 1, // 当前页数
+          pageSize: 20, // 每页显示多少条
+          ascs:[],
+          descs: 'create_time'
+        },
+        tableLoading2: false,
+        tableOption2: tableOption2,
       };
     },
     computed: {
       ...mapGetters(["permissions"]),
       permissionList() {
         return {
-          addBtn: this.permissions['sys:user:add'],
-          delBtn: this.permissions['sys:user:del'],
-          editBtn: this.permissions['sys:user:edit'],
-          viewBtn: this.permissions['sys:user:get']
+          addBtn: this.permissions['sys:user:add'] ? true : false,
+          delBtn: this.permissions['sys:user:del'] ? true : false,
+          editBtn: this.permissions['sys:user:edit'] ? true : false,
+          viewBtn: this.permissions['sys:user:get'] ? true : false
         }
+      },
+      permissionList2() {
+        return {
+          addBtn: this.permissions['sys:loglogin:add'] ? true : false,
+          delBtn: this.permissions['sys:loglogin:del'] ? true : false,
+          editBtn: this.permissions['sys:loglogin:edit'] ? true : false,
+          viewBtn: this.permissions['sys:loglogin:get'] ? true : false
+        };
       }
     },
     watch: {
@@ -254,6 +296,82 @@
         window.openType = type
         done()
       },
+
+      showLoglogin(row,index){
+        this.selectRow = row
+        this.tableData2 = []
+        this.page2.currentPage = 1
+        this.dialogVisible2 = true
+        this.getPage2(this.page2)
+      },
+      searchChange2(params,done) {
+        params = this.filterForm(params)
+        this.page2.currentPage = 1
+        this.getPage2(this.page2, params)
+        done()
+      },
+      sortChange2(val) {
+        let prop = val.prop ? val.prop.replace(/([A-Z])/g, "_$1").toLowerCase() : ''
+        if (val.order == 'ascending') {
+          this.page2.descs = []
+          this.page2.ascs = prop
+        } else if (val.order == 'descending') {
+          this.page2.ascs = []
+          this.page2.descs = prop
+        } else {
+          this.page2.ascs = []
+          this.page2.descs = []
+        }
+        this.getPage2(this.page2)
+      },
+      getPage2(page, params) {
+        this.tableLoading2 = true
+        getPage2(Object.assign({
+          current: page.currentPage,
+          size: page.pageSize,
+          descs: this.page2.descs,
+          ascs: this.page2.ascs,
+          createId: this.selectRow.id
+        }, params)).then(response => {
+          this.tableData2 = response.data.data.records
+          this.page2.total = response.data.data.total
+          this.page2.currentPage = page.currentPage
+          this.page2.pageSize = page.pageSize
+          this.tableLoading2 = false
+        }).catch(() => {
+          this.tableLoading2 = false
+        })
+      },
+      /**
+       * @title 数据删除
+       * @param row 为当前的数据
+       * @param index 为当前删除数据的行数
+       *
+       **/
+      handleDel2: function (row, index) {
+        let _this = this
+        this.$confirm('是否确认删除此数据', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(function () {
+          return delObj2(row.id)
+        }).then(data => {
+          _this.$message({
+            showClose: true,
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getPage2(this.page2)
+        }).catch(function (err) {
+        })
+      },
+      /**
+       * 刷新回调
+       */
+      refreshChange2(page) {
+        this.getPage2(this.page2)
+      }
     }
   };
 </script>

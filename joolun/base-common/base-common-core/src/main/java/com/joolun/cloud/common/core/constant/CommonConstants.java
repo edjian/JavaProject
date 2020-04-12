@@ -41,7 +41,14 @@ public interface CommonConstants {
 	 * 锁定
 	 */
 	String STATUS_LOCK = "9";
-
+	/**
+	 * 日志类型：正常操作日志
+	 */
+	String LOG_TYPE_0 = "0";
+	/**
+	 * 日志类型：异常操作日志
+	 */
+	String LOG_TYPE_9 = "9";
 	/**
 	 * 菜单
 	 */
@@ -70,11 +77,6 @@ public interface CommonConstants {
 	 * 邮箱
 	 */
 	String EMAIL = "email";
-
-	/**
-	 * 短信
-	 */
-	String SMS = "sms";
 
 	/**
 	 * 成功标记
@@ -131,4 +133,11 @@ public interface CommonConstants {
 	 * 文件类型：image：图片
 	 */
 	String FILE_TYPE_IMG = "image";
+
+	/**
+	 * 手机验证码类型（1、登录；2、绑定手机号；3、解绑手机）
+	 */
+	String PHONE_CODE_1 = "1";
+	String PHONE_CODE_2 = "2";
+	String PHONE_CODE_3 = "3";
 }

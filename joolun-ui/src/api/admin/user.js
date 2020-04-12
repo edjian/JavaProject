@@ -52,3 +52,19 @@ export function getByUserName(username) {
     method: 'get'
   })
 }
+
+export function editObj(obj) {
+  return request({
+    url: '/admin/user/edit',
+    method: 'put',
+    data: obj
+  })
+}
+
+export function bindPhone(obj) {
+  return request({
+    url: '/admin/user/phone',
+    method: 'put',
+    data: obj
+  })
+}

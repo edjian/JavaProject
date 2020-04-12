@@ -144,6 +144,17 @@
                         </el-table-column>
                         <el-table-column
                                 align="center"
+                                prop="deliveryWay"
+                                label="配送方式">
+                            <template slot-scope="scope">
+                                <div>
+                                    <el-tag size="mini"> {{ scope.row.deliveryWay == '1' ? '普通快递' : scope.row.deliveryWay == '2' ? '上门自提' : ''}}
+                                    </el-tag>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
                                 prop="paymentType"
                                 label="支付方式">
                             <template slot-scope="scope">
@@ -321,7 +332,7 @@
                         </el-table-column>
                     </el-table>
                 </template>
-                <template slot-scope="scope" slot="orderLogisticsForm">
+                <template slot-scope="scope" slot="orderLogisticsForm" v-if="scope.row.deliveryWay == '1'">
                     <div>
                         <el-table
                                 :data="[scope.row.orderLogistics]"
@@ -409,8 +420,14 @@
                     <el-button icon="el-icon-position"
                                size="small"
                                type="text"
-                               v-if="permissions['mall:orderinfo:edit'] && scope.row.status == '1'"
+                               v-if="permissions['mall:orderinfo:edit'] && scope.row.deliveryWay == '1' && scope.row.status == '1'"
                                @click="showDialogLogistics(scope.row,scope.index)">发货
+                    </el-button>
+                    <el-button icon="el-icon-position"
+                               size="small"
+                               type="text"
+                               v-if="permissions['mall:orderinfo:edit'] && scope.row.deliveryWay == '2' && scope.row.status == '1'"
+                               @click="takeGoods(scope.row,scope.index)">提货
                     </el-button>
                     <el-button icon="el-icon-delete"
                                size="small"
@@ -514,7 +531,7 @@
 </template>
 
 <script>
-    import {getPage, getObj, addObj, putObj, delObj, editPrice, orderCancel} from '@/api/mall/orderinfo'
+    import {getPage, getObj, addObj, putObj, delObj, editPrice, orderCancel, takeGoods} from '@/api/mall/orderinfo'
     import {getObj as getOrderItem} from '@/api/mall/orderitem'
     import {doOrderRefunds} from '@/api/mall/orderrefunds'
     import {getObj as getWxUser} from '@/api/wxmp/wxuser'
@@ -619,10 +636,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['mall:orderinfo:add'],
-                    delBtn: this.permissions['mall:orderinfo:del'],
-                    editBtn: this.permissions['mall:orderinfo:edit'],
-                    viewBtn: this.permissions['mall:orderinfo:get']
+                    addBtn: this.permissions['mall:orderinfo:add'] ? true : false,
+                    delBtn: this.permissions['mall:orderinfo:del'] ? true : false,
+                    editBtn: this.permissions['mall:orderinfo:edit'] ? true : false,
+                    viewBtn: this.permissions['mall:orderinfo:get'] ? true : false
                 };
             }
         },
@@ -709,7 +726,6 @@
                 }).catch(() => {
 
                 })
-
             },
             handleClickStatus(tab, event) {
                 this.status = tab.name
@@ -751,6 +767,25 @@
                 this.logisticsForm.userName = row.orderLogistics.userName
                 this.logisticsForm.telNum = row.orderLogistics.telNum
                 this.dialogLogistics = true
+            },
+            //提货
+            takeGoods(row, index, done){
+                var _this = this
+                this.$confirm('是否确认提货此订单', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    return takeGoods(row.id).then(data => {
+                        _this.$message({
+                            showClose: true,
+                            message: '提货成功',
+                            type: 'success'
+                        })
+                        _this.getPage(_this.page)
+                    }).catch(function (err) {
+                    })
+                })
             },
             delivery(form, done) {
                 let row = this.logisticsForm.row

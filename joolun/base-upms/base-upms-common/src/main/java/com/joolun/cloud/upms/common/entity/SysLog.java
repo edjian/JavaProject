@@ -105,6 +105,12 @@ public class SysLog implements Serializable {
 	private String serviceId;
 
 	/**
+	 * 租户ID
+	 */
+	@ApiModelProperty(value = "租户ID")
+	private String tenantId;
+
+	/**
 	 * 删除标记
 	 */
 	@ApiModelProperty(value = "删除标记")

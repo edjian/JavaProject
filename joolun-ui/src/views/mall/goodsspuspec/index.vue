@@ -55,10 +55,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['mall:goodsspuspec:add'],
-          delBtn: this.permissions['mall:goodsspuspec:del'],
-          editBtn: this.permissions['mall:goodsspuspec:edit'],
-          viewBtn: this.permissions['mall:goodsspuspec:get']
+          addBtn: this.permissions['mall:goodsspuspec:add'] ? true : false,
+          delBtn: this.permissions['mall:goodsspuspec:del'] ? true : false,
+          editBtn: this.permissions['mall:goodsspuspec:edit'] ? true : false,
+          viewBtn: this.permissions['mall:goodsspuspec:get'] ? true : false
         };
       }
     },

@@ -41,6 +41,11 @@ public class PlaceOrderDTO extends Model<ShoppingCart> {
 	@ApiModelProperty(value = "支付方式1、货到付款；2、在线支付")
 	private String paymentWay;
 	/**
+	 * 配送方式1、普通快递；2、上门自提
+	 */
+	@ApiModelProperty(value = "配送方式")
+	private String deliveryWay;
+	/**
 	 * 付款方式1、微信支付
 	 */
 	@ApiModelProperty(value = "付款方式")

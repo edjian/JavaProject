@@ -1,5 +1,6 @@
 package com.joolun.cloud.common.security.component;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,13 +20,13 @@ import java.util.Collection;
 @Component("ato")
 public class AuthorityService {
 	/**
-	 * 判断接口是否有ato:xxx权限
+	 * 判断接口是否有ato:xxxxx,xxxxx权限
 	 *
-	 * @param authority 权限
+	 * @param permissions 权限标识
 	 * @return {boolean}
 	 */
-	public boolean hasAuthority(String authority) {
-		if (StrUtil.isBlank(authority)) {
+	public boolean hasAuthority(String... permissions) {
+		if (ArrayUtil.isEmpty(permissions)) {
 			return false;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,6 +37,6 @@ public class AuthorityService {
 		return authorities.stream()
 			.map(GrantedAuthority::getAuthority)
 			.filter(StringUtils::hasText)
-			.anyMatch(x -> PatternMatchUtils.simpleMatch(authority, x));
+			.anyMatch(x -> PatternMatchUtils.simpleMatch(permissions, x));
 	}
 }

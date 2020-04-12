@@ -24,6 +24,7 @@
 		<result property="salesPrice" column="sales_price"/>
 		<result property="freightPrice" column="freight_price"/>
 		<result property="paymentWay" column="payment_way"/>
+		<result property="deliveryWay" column="delivery_way"/>
 		<result property="paymentType" column="payment_type"/>
 		<result property="paymentPrice" column="payment_price"/>
 		<result property="paymentPoints" column="payment_points"/>
@@ -37,6 +38,7 @@
 		<result property="transactionId" column="transaction_id"/>
 		<result property="remark" column="remark"/>
 		<result property="isPay" column="is_pay"/>
+		<result property="name" column="name"/>
 		<result property="status" column="status"/>
 		<result property="appraisesStatus" column="appraises_status"/>
 		<result property="userMessage" column="user_message"/>
@@ -54,6 +56,10 @@
 					select="com.joolun.cloud.mall.admin.mapper.OrderLogisticsMapper.selectById"
 					column="{id=logistics_id}">
 		</collection>
+		<collection property="deliveryPlace" ofType="com.joolun.cloud.mall.common.entity.DeliveryPlace"
+					select="com.joolun.cloud.mall.admin.mapper.DeliveryPlaceMapper.selectById"
+					column="{id=logistics_id}">
+		</collection>
 	</resultMap>
 
 	<sql id="orderInfoSql">
@@ -69,6 +75,7 @@
 		order_info.`sales_price`,
 		order_info.`freight_price`,
 		order_info.`payment_way`,
+		order_info.`delivery_way`,
 		order_info.`payment_type`,
 		order_info.`payment_price`,
 		order_info.`payment_points`,
@@ -79,6 +86,7 @@
 		order_info.`receiver_time`,
 		order_info.`closing_time`,
 		order_info.`is_pay`,
+		order_info.`name`,
 		order_info.`status`,
 		order_info.`appraises_status`,
 		order_info.`user_message`,
@@ -113,6 +121,9 @@
 			</if>
 			<if test="query.isPay != null">
 				AND order_info.`is_pay` = #{query.isPay}
+			</if>
+			<if test="query.deliveryWay != null">
+				AND order_info.`delivery_way` = #{query.deliveryWay}
 			</if>
 			<if test="query.orderNo != null">
 				AND order_info.`order_no` = #{query.orderNo}

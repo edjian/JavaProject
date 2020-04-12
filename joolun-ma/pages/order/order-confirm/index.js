@@ -16,7 +16,8 @@ Page({
     freightPrice: 0,
     userAddress: null,
     orderSubParm: {
-      paymentType: '1'
+      paymentType: '1',
+      deliveryWay: '1'
     },
     loading: false,
     userInfo: null,
@@ -28,7 +29,9 @@ Page({
     spuIds: [],
     couponUserList: [],
     couponUser: null,
-    totalCouponDeductPrice: 0
+    totalCouponDeductPrice: 0,
+    pointsCheckedValue: null,
+    couponCheckedValue: null
   },
   onShow() {
     
@@ -37,6 +40,16 @@ Page({
     this.userAddressPage()
     this.pointsConfigGet()
     this.userInfoGet()
+    this.orderConfirmDo()
+    this.couponUserPage()
+  },
+  deliveryWayChange(e){
+    this.setData({
+      [`orderSubParm.deliveryWay`]: e.detail.value
+    })
+    this.orderConfirmDo()
+  },
+  orderConfirmDo(){
     // 本地获取参数信息
     let that = this
     wx.getStorage({
@@ -49,16 +62,16 @@ Page({
         let freightPrice = 0 //运费
         let spuIds = null
         orderConfirmData.forEach((orderConfirm, index) => {
-          if (spuIds){
+          if (spuIds) {
             spuIds = spuIds + ',' + orderConfirm.spuId
-          }else{
+          } else {
             spuIds = orderConfirm.spuId
           }
           salesPrice = (Number(salesPrice) + orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2)
           orderConfirm.paymentPrice = (orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2)
           //计算运费
           let freightTemplat = orderConfirm.freightTemplat
-          if (freightTemplat){
+          if (freightTemplat) {
             if (freightTemplat.type == '1') {//模板类型1、买家承担运费
               let quantity = orderConfirm.quantity
               if (freightTemplat.chargeType == '1') {//1、按件数；
@@ -73,23 +86,26 @@ Page({
             } else {
               orderConfirm.freightPrice = 0
             }
-          }else{
+          } else {
             orderConfirm.freightPrice = 0
           }
           freightPrice = (Number(freightPrice) + Number(orderConfirm.freightPrice)).toFixed(2)
           //计算积分抵扣
-          if (orderConfirm.pointsDeductSwitch == '1'){
+          if (orderConfirm.pointsDeductSwitch == '1') {
             let pointsDeductPrice = Math.floor(orderConfirm.salesPrice * orderConfirm.pointsDeductScale / 100 * orderConfirm.quantity)
             let pointsDeduct = pointsDeductPrice / orderConfirm.pointsDeductAmount
             orderConfirm.paymentPointsPrice2 = pointsDeductPrice
             orderConfirm.paymentPrice2 = (orderConfirm.salesPrice * orderConfirm.quantity).toFixed(2) - pointsDeductPrice
-            if (pointsDeductPrice >= 1){
+            if (pointsDeductPrice >= 1) {
               orderConfirm.paymentPoints2 = pointsDeduct
               totalPointsDeductPriceTemp = Number(totalPointsDeductPriceTemp) + Number(pointsDeductPrice)
               totalPointsDeduct = Number(totalPointsDeduct) + Number(pointsDeduct)
             }
           }
         })
+        if (that.data.orderSubParm.deliveryWay == '2') {//自提不算运费
+          freightPrice = 0
+        }
         that.setData({
           orderConfirmData: orderConfirmData,
           salesPrice: salesPrice,
@@ -99,7 +115,20 @@ Page({
           totalPointsDeductPriceTemp: totalPointsDeductPriceTemp,
           spuIds: spuIds
         })
-        that.couponUserPage()
+        if (that.data.pointsCheckedValue){
+          that.pointsCheckedChange({
+            detail: {
+              value: that.data.pointsCheckedValue
+            }
+          })
+        }
+        if (that.data.couponCheckedValue) {
+          that.couponUserChange({
+            detail: {
+              value: that.data.couponCheckedValue
+            }
+          })
+        }
       }
     })
   },
@@ -190,7 +219,7 @@ Page({
       })
   },
   //选择使用积分
-  pointsCheckedChange: function (e) {
+  pointsCheckedChange(e) {
     if (e.detail.value == 'true'){
       let orderConfirmData = this.data.orderConfirmData
       let that = this
@@ -202,6 +231,7 @@ Page({
         }
       })
       this.setData({
+        pointsCheckedValue: e.detail.value,
         totalPointsDeductPrice: this.data.totalPointsDeductPriceTemp,
         paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPriceTemp)).toFixed(2),
         orderConfirmData: orderConfirmData
@@ -217,6 +247,7 @@ Page({
         }
       })
       this.setData({
+        pointsCheckedValue: e.detail.value,
         totalPointsDeductPrice: 0,
         paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice)).toFixed(2),
         orderConfirmData: orderConfirmData
@@ -279,6 +310,7 @@ Page({
       })
     }
     this.setData({
+      couponCheckedValue: e.detail.value,
       couponUser: couponUser,
       paymentPrice: (Number(this.data.salesPrice) - Number(this.data.totalCouponDeductPrice) - Number(this.data.totalPointsDeductPrice)).toFixed(2)
     })

@@ -9,7 +9,13 @@
 <wxs module="numberUtil" src="../../../utils/numberUtil.wxs"></wxs>
 <view class="margin-bottom-bar">
   <view class="cu-list cu-card menu-avatar">
-    <navigator class="cu-item" url='/pages/user/user-address/list/index?select=true'>
+    <view class="cu-item padding-left delivery-way">
+      <radio-group bindchange="deliveryWayChange">
+        <radio class="red margin-right-xs" checked value="1"></radio>普通快递
+        <radio class="red margin-left-sm margin-right-xs" value="2"></radio>上门自提
+      </radio-group>
+    </view>
+    <navigator class="cu-item" url='/pages/user/user-address/list/index?select=true' wx:if="{{orderSubParm.deliveryWay == '1'}}">
       <view class="cu-avatar round cuIcon-location bg-orange"></view>
       <view class="content loc-content" wx:if="{{userAddress}}">
         <view class="flex">

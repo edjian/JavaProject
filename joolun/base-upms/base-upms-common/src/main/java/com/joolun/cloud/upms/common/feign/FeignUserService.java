@@ -29,14 +29,14 @@ public interface FeignUserService {
 			, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
-	 * 通过社交账号或手机号查询用户、角色信息
+	 * 手机号查询用户、角色信息
 	 *
-	 * @param inStr appid@code
+	 * @param phone
 	 * @param from  调用标志
 	 * @return
 	 */
-	@GetMapping("/thirdparty/info/{inStr}")
-	R<UserInfo> sysThirdParty(@PathVariable("inStr") String inStr
+	@GetMapping("/phone/info/{phone}")
+	R<UserInfo> infoByPhone(@PathVariable("phone") String phone
 			, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**

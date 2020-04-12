@@ -5,7 +5,7 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import com.joolun.cloud.codegen.entity.ColumnEntity;
-import com.joolun.cloud.codegen.entity.GenConfig;
+import com.joolun.cloud.codegen.entity.GenTable;
 import com.joolun.cloud.codegen.entity.TableEntity;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.exception.CheckedException;
@@ -66,9 +66,9 @@ public class GenUtils {
 	}
 
 	/**
-	 * 生成代码
+	 * 生成代码预览
 	 */
-	public void generatorCode(GenConfig genConfig, Map<String, String> table,
+	public Map<String, String> generatorCode(GenTable genTable, Map<String, String> table,
 							  List<Map<String, String>> columns, ZipOutputStream zip) {
 		//配置信息
 		Configuration config = getConfig();
@@ -77,15 +77,15 @@ public class GenUtils {
 		TableEntity tableEntity = new TableEntity();
 		tableEntity.setTableName(table.get("tableName"));
 
-		if (StrUtil.isNotBlank(genConfig.getComments())) {
-			tableEntity.setComments(genConfig.getComments());
+		if (StrUtil.isNotBlank(genTable.getTableComment())) {
+			tableEntity.setComments(genTable.getTableComment());
 		} else {
 			tableEntity.setComments(table.get("tableComment"));
 		}
 
 		String tablePrefix;
-		if (StrUtil.isNotBlank(genConfig.getTablePrefix())) {
-			tablePrefix = genConfig.getTablePrefix();
+		if (StrUtil.isNotBlank(genTable.getTablePrefix())) {
+			tablePrefix = genTable.getTablePrefix();
 		} else {
 			tablePrefix = config.getString("tablePrefix");
 		}
@@ -144,33 +144,34 @@ public class GenUtils {
 		map.put("hasBigDecimal", hasBigDecimal);
 		map.put("datetime", DateUtil.now());
 
-		if (StrUtil.isNotBlank(genConfig.getComments())) {
-			map.put("comments", genConfig.getComments());
+		if (StrUtil.isNotBlank(genTable.getTableComment())) {
+			map.put("comments", genTable.getTableComment());
 		} else {
 			map.put("comments", tableEntity.getComments());
 		}
 
-		if (StrUtil.isNotBlank(genConfig.getAuthor())) {
-			map.put("author", genConfig.getAuthor());
+		if (StrUtil.isNotBlank(genTable.getAuthor())) {
+			map.put("author", genTable.getAuthor());
 		} else {
 			map.put("author", config.getString("author"));
 		}
 
-		if (StrUtil.isNotBlank(genConfig.getModuleName())) {
-			map.put("moduleName", genConfig.getModuleName());
+		if (StrUtil.isNotBlank(genTable.getModuleName())) {
+			map.put("moduleName", genTable.getModuleName());
 		} else {
 			map.put("moduleName", config.getString("moduleName"));
 		}
 
-		if (StrUtil.isNotBlank(genConfig.getPackageName())) {
-			map.put("package", genConfig.getPackageName());
-			map.put("mainPath", genConfig.getPackageName());
+		if (StrUtil.isNotBlank(genTable.getPackageName())) {
+			map.put("package", genTable.getPackageName());
+			map.put("mainPath", genTable.getPackageName());
 		} else {
 			map.put("package", config.getString("package"));
 			map.put("mainPath", config.getString("mainPath"));
 		}
 		VelocityContext context = new VelocityContext(map);
 
+		Map<String, String> dataMap = new LinkedHashMap<>();
 		//获取模板列表
 		List<String> templates = getTemplates();
 		for (String template : templates) {
@@ -178,21 +179,24 @@ public class GenUtils {
 			StringWriter sw = new StringWriter();
 			Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
 			tpl.merge(context, sw);
+			dataMap.put(template, sw.toString());
 
-			try {
-				//添加到zip
-				zip.putNextEntry(new ZipEntry(Objects
-						.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
-								, map.get("package").toString(), map.get("moduleName").toString()))));
-				IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
-				IoUtil.close(sw);
-				zip.closeEntry();
-			} catch (IOException e) {
-				throw new CheckedException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
+			if(zip != null){
+				try {
+					//添加到zip
+					zip.putNextEntry(new ZipEntry(Objects
+							.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
+									, map.get("package").toString(), map.get("moduleName").toString()))));
+					IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+					IoUtil.close(sw);
+					zip.closeEntry();
+				} catch (IOException e) {
+					throw new CheckedException("渲染模板失败，表名：" + tableEntity.getTableName(), e);
+				}
 			}
 		}
+		return dataMap;
 	}
-
 
 	/**
 	 * 列名转换成Java属性名

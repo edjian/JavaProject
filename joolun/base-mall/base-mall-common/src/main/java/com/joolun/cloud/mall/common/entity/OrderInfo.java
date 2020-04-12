@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -102,9 +103,14 @@ public class OrderInfo extends Model<OrderInfo> {
 	@ApiModelProperty(value = "支付方式")
 	private String paymentWay;
 	/**
+	 * 配送方式1、普通快递；2、上门自提
+	 */
+	@ApiModelProperty(value = "配送方式")
+	private String deliveryWay;
+	/**
 	 * 付款方式1、微信支付
 	 */
-	@ApiModelProperty(value = "付款方式1")
+	@ApiModelProperty(value = "付款方式")
 	private String paymentType;
 	/**
 	 * 支付金额（销售金额+运费金额-积分抵扣金额-电子券抵扣金额）
@@ -157,6 +163,11 @@ public class OrderInfo extends Model<OrderInfo> {
 	@ApiModelProperty(value = "是否支付0、未支付 1、已支付")
 	private String isPay;
 	/**
+	 * 订单名
+	 */
+	@ApiModelProperty(value = "订单名")
+	private String name;
+	/**
 	 * 状态0、待付款 1、待发货 2、待收货 3、已完成 4、已关闭
 	 */
 	@ApiModelProperty(value = "状态0、待付款 1、待发货 2、待收货 3、已完成 4、已关闭")
@@ -207,6 +218,11 @@ public class OrderInfo extends Model<OrderInfo> {
 	@TableField(exist = false)
 	private OrderLogistics orderLogistics;
 	/**
+	 * 自提地址
+	 */
+	@TableField(exist = false)
+	private DeliveryPlace deliveryPlace;
+	/**
 	 * 物流商家
 	 */
 	@TableField(exist = false)
@@ -251,6 +267,9 @@ public class OrderInfo extends Model<OrderInfo> {
 		}
 		if (this.status == null) {
 			return null;
+		}
+		if (MallConstants.DELIVERY_WAY_2.equals(this.deliveryWay) && OrderInfoEnum.STATUS_1.getValue().equals(this.status)){
+			return "待自提";
 		}
 		return OrderInfoEnum.valueOf(OrderInfoEnum.STATUS_PREFIX + "_" + this.status).getDesc();
 	}

@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['sys:configeditor:add'],
-                    delBtn: this.permissions['sys:configeditor:del'],
-                    editBtn: this.permissions['sys:configeditor:edit'],
-                    viewBtn: this.permissions['sys:configeditor:get']
+                    addBtn: this.permissions['sys:configeditor:add'] ? true : false,
+                    delBtn: this.permissions['sys:configeditor:del'] ? true : false,
+                    editBtn: this.permissions['sys:configeditor:edit'] ? true : false,
+                    viewBtn: this.permissions['sys:configeditor:get'] ? true : false
                 };
             }
         },

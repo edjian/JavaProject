@@ -23,7 +23,7 @@
      class="text-red text-bold">{{goodsSpu.priceUp}}</text>
   </view>
   <button class="cu-btn icon margin-right" bindtap="shareShow">
-    <text class="cuIcon-share text-red"></text>
+    <text class="cuIcon-share text-green"></text>
   </button>
 </view>
 
@@ -32,6 +32,9 @@
     <view class="flex-treble">
       <view class="cu-tag text-orange bg-orange.light radius">
         {{couponInfoList[0].name}}
+      </view>
+      <view class="cu-tag text-orange bg-orange.light radius" wx:if="{{couponInfoList.length > 1}}">
+        {{couponInfoList[1].name}}
       </view>
     </view>
     <view class="flex-sub text-orange text-right margin-right-sm" bindtap="showModalCoupon">
@@ -150,7 +153,7 @@
   </view>
 </view>
 
-<view class="cu-bar bg-white margin-top-sm">
+<view class="cu-bar bg-white margin-top-sm solid-bottom">
   <view class="flex response">
       <view class="flex-sub text-df">
         <view class="text-black margin-left-sm">宝贝评价（{{goodsAppraises.total}}）</view>
@@ -164,9 +167,12 @@
 <view class="cu-list menu-avatar comment">
   <navigator url='/pages/appraises/list/index?spuId={{goodsSpu.id}}' hover-class='none' class="cu-item" wx:for="{{goodsAppraises.records}}" wx:key="index">
     <view class="cu-avatar round" style="background-image:url({{item.headimgUrl}})">{{!item.headimgUrl ? '头' : ''}}</view>
-    <view class="content">
+    <view class="content padding-bottom-xs solid-bottom">
       <view class="text-black">
         {{item.nickName ? item.nickName : '匿名'}}<view class="text-gray margin-left text-sm">{{item.createTime}}</view>
+      </view>
+      <view class="text-gray text-sm" wx:if="{{item.specInfo}}">
+        规格：{{item.specInfo}}
       </view>
       <base-rade
           value='{{item.goodsScore}}'
@@ -189,7 +195,11 @@
 <view class="cu-load bg-gray to-down">已经到底啦...</view>
 
 <view class="cu-bar bg-white tabbar border shop foot">
-  <button open-type="contact" bindcontact="handleContact" class="action bg-white">
+  <button open-type="contact" bindcontact="handleContact" class="action bg-white"
+          send-message-title="{{goodsSpu.name}}--咨询"
+          send-message-img="{{goodsSpu.picUrls[0] ? goodsSpu.picUrls[0] : '/public/img/no_pic.png'}}"
+          show-message-card="true" 
+          send-message-path="/pages/goods/goods-detail/index?id={{goodsSpu.id}}">
     <view class="cuIcon-servicefill"></view> 
     客服
   </button>

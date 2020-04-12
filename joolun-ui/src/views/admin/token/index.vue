@@ -43,7 +43,7 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          delBtn: this.permissions['sys:token:del'],
+          delBtn: this.permissions['sys:token:del'] ? true : false,
         };
       }
     },

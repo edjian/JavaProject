@@ -96,10 +96,23 @@
           <el-dropdown-item>
             <router-link to="/info/index">个人信息</router-link>
           </el-dropdown-item>
+          <el-dropdown-item>
+            <div @click="showMenuTree">我的权限</div>
+          </el-dropdown-item>
           <el-dropdown-item @click.native="logout"
                             divided>退出系统
           </el-dropdown-item>
         </el-dropdown-menu>
+        <el-dialog title="我的权限"
+                   :visible.sync="dialogMenuTree">
+          <el-tree class="filter-tree"
+                   :data="menuTree"
+                   node-key="id"
+                   highlight-current
+                   :props="defaultProps"
+                   ref="menuTree">
+          </el-tree>
+        </el-dialog>
       </el-dropdown>
       <div class="top-bar__item">
         <top-setting ref="seting"></top-setting>
@@ -120,6 +133,8 @@
   import topSetting from "./top-setting";
   import topMsg from "./top-msg";
   import WxMsg from '@/components/wx-msg/main.vue'
+  import {fetchMenuTree} from "@/api/admin/menu"
+
   export default {
     components: { topLock, topMenu, topSearch, topBreadcrumb, topColor, topTheme, topLogs, topSetting, topMsg, WxMsg },
     name: "top",
@@ -127,7 +142,13 @@
       return {
         dialogMsgVisible: false,
         appId: '',
-        wxUserId: ''
+        wxUserId: '',
+        dialogMenuTree: false,
+        menuTree: [],
+        defaultProps: {
+          label: "name",
+          value: 'id'
+        },
       };
     },
     filters: {},
@@ -160,6 +181,14 @@
       ]),
     },
     methods: {
+      showMenuTree(){
+        this.dialogMenuTree = true
+        fetchMenuTree()
+          .then(response => {
+            let menuTree  = response.data.data
+            this.menuTree = menuTree
+          })
+      },
       showMsg(row){
         this.dialogMsgVisible = true
         this.wxUserId = row.wxUserId

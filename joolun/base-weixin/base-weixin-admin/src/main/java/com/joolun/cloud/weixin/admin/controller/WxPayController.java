@@ -60,7 +60,7 @@ public class WxPayController {
 			return R.ok(wxPayService.createOrder(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getErrCodeDes());
+			return R.failed(e.getCustomErrorMsg());
 		}
 	}
 

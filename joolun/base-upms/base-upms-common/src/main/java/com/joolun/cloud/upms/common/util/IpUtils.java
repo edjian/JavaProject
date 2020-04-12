@@ -1,20 +1,22 @@
 package com.joolun.cloud.upms.common.util;
 
-import cn.hutool.core.util.StrUtil;
-
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 获取IP方法
- * 
+ *
  * @author ruoyi
  */
-public class IpUtils
-{
-    public static String getIpAddr(HttpServletRequest request)
-    {
+public class IpUtils {
+    public static String getIpAddr(HttpServletRequest request) {
         if (request == null)
         {
             return "unknown";
@@ -45,14 +47,12 @@ public class IpUtils
         return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
     }
 
-    public static boolean internalIp(String ip)
-    {
+    public static boolean internalIp(String ip) {
         byte[] addr = textToNumericFormatV4(ip);
         return internalIp(addr) || "127.0.0.1".equals(ip);
     }
 
-    private static boolean internalIp(byte[] addr)
-    {
+    private static boolean internalIp(byte[] addr) {
         if (addr == null || addr.length < 2)
         {
             return true;
@@ -90,12 +90,11 @@ public class IpUtils
 
     /**
      * 将IPv4地址转换成字节
-     * 
+     *
      * @param text IPv4地址
      * @return byte 字节
      */
-    public static byte[] textToNumericFormatV4(String text)
-    {
+    public static byte[] textToNumericFormatV4(String text) {
         if (text.length() == 0)
         {
             return null;
@@ -164,8 +163,7 @@ public class IpUtils
         return bytes;
     }
 
-    public static String getHostIp()
-    {
+    public static String getHostIp() {
         try
         {
             return InetAddress.getLocalHost().getHostAddress();
@@ -176,15 +174,42 @@ public class IpUtils
         return "127.0.0.1";
     }
 
-    public static String getHostName()
-    {
-        try
-        {
+    public static String getHostName() {
+        try {
             return InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
         }
         return "未知";
     }
+
+	/**
+	 * 通过IP获取地址信息
+	 * @param ip
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String getAddresses(String ip) {
+		try {
+			// 这里调用pconline的接口
+			String url = "http://ip.taobao.com/service/getIpInfo.php";
+			Map<String, Object> paramMap = new HashMap<>();
+			paramMap.put("ip", ip);
+			// 带参GET请求
+			String returnStr = HttpUtil.get(url, paramMap);
+//			System.out.println(returnStr);
+			if (returnStr != null) {
+				JSONObject rs = JSONUtil.parseObj(returnStr);
+				int code = rs.getInt("code");
+				if(code == 0){
+					JSONObject jSONObject = rs.getJSONObject("data");
+					String region = jSONObject.getStr("country")+jSONObject.getStr("region")+jSONObject.getStr("city");
+					return region;
+				}
+			}
+		}catch (Exception e){
+			return null;
+		}
+		return null;
+	}
+
 }

@@ -248,10 +248,10 @@
       ...mapGetters(['permissions']),
       permissionList() {
         return {
-          addBtn: this.permissions['wxmp:wxmassmsg:add'],
-          delBtn: this.permissions['wxmp:wxmassmsg:del'],
-          editBtn: this.permissions['wxmp:wxmassmsg:edit'],
-          viewBtn: this.permissions['wxmp:wxmassmsg:get']
+          addBtn: this.permissions['wxmp:wxmassmsg:add'] ? true : false,
+          delBtn: this.permissions['wxmp:wxmassmsg:del'] ? true : false,
+          editBtn: this.permissions['wxmp:wxmassmsg:edit'] ? true : false,
+          viewBtn: this.permissions['wxmp:wxmassmsg:get'] ? true : false
         };
       }
     },

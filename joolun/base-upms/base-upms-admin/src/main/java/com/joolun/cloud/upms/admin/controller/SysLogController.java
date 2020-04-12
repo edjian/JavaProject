@@ -40,7 +40,7 @@ public class SysLogController {
 	 */
 	@ApiOperation(value = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@ato.hasAuthority('sys:log:index')")
+//	@PreAuthorize("@ato.hasAuthority('sys:log:index')")
 	public R getLogPage(Page page, SysLog sysLog) {
 		return R.ok(sysLogService.page(page, Wrappers.query(sysLog)));
 	}

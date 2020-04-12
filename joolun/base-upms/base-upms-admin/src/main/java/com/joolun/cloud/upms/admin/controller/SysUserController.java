@@ -1,9 +1,12 @@
 package com.joolun.cloud.upms.admin.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.joolun.cloud.upms.admin.mapper.SysUserMapper;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.upms.admin.service.*;
 import com.joolun.cloud.upms.common.dto.UserDTO;
 import com.joolun.cloud.upms.common.dto.UserInfo;
@@ -25,6 +28,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,7 +49,6 @@ public class SysUserController {
 	private final SysRoleService sysRoleService;
 	private final SysUserRoleService sysUserRoleService;
 	private final RedisTemplate redisTemplate;
-	private final SysUserMapper sysUserMapper;
 	private final SysTenantService sysTenantService;
 	private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
@@ -77,7 +80,7 @@ public class SysUserController {
 	public R info(@PathVariable String username) {
 		SysUser sysUser = new SysUser();
 		sysUser.setUsername(username);
-		sysUser = sysUserMapper.getByNoTenant(sysUser);
+		sysUser = sysUserService.getByNoTenant(sysUser);
 		if (sysUser == null) {
 			return R.failed(null, String.format("用户信息为空 %s", username));
 		}
@@ -236,7 +239,43 @@ public class SysUserController {
 	@SysLog("修改个人信息")
 	@PutMapping("/edit")
 	public R updateUserInfo(@Valid @RequestBody UserDTO userDto) {
-		return sysUserService.updateUserInfo(userDto);
+		return R.ok(sysUserService.updateUserInfo(userDto));
+	}
+
+	/**
+	 * 绑定/解绑手机号
+	 *
+	 * @param userDto userDto
+	 * @return
+	 */
+	@ApiOperation(value = "绑定/解绑手机号")
+	@SysLog("绑定/解绑手机号")
+	@PutMapping("/phone")
+	public R bindPhone(@RequestBody UserDTO userDto) {
+		//校验验证码
+		if(StrUtil.isBlank(userDto.getCode())){
+			return R.failed("验证码不能为空");
+		}
+		String key = CacheConstants.VER_CODE_DEFAULT + SecurityConstants.SMS_LOGIN + ":" + userDto.getPhone();
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+
+		if (!redisTemplate.hasKey(key)) {
+			return R.failed("验证码错误");
+		}
+		Object codeObj = redisTemplate.opsForValue().get(key);
+		if (codeObj == null) {
+			return R.failed("验证码不合法");
+		}
+		String saveCode = codeObj.toString();
+		if (StrUtil.isBlank(saveCode)) {
+			redisTemplate.delete(key);
+			return R.failed("验证码不合法");
+		}
+		if (!StrUtil.equals(saveCode, userDto.getCode())) {
+			return R.failed("验证码不合法");
+		}
+		sysUserService.bindPhone(userDto);
+		return R.ok();
 	}
 
 	/**

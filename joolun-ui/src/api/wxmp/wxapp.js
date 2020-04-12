@@ -84,3 +84,11 @@ export function getAuthorizerInfo(id) {
     method: 'get'
   })
 }
+
+export function getQrCode(query) {
+  return request({
+    url: '/weixin/wxapp/qrCode',
+    method: 'get',
+    params: query
+  })
+}
