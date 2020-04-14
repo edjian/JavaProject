@@ -28,8 +28,7 @@ Page({
     bargainCutList: [],
     shareShow: '',
     wxUser: null,
-    modalRule: '',
-    outTime: null
+    modalRule: ''
   },
   onLoad(options) {
     let id
@@ -115,10 +114,6 @@ Page({
           specInfo: specInfo
         })
         if (bargainInfo.bargainUser){
-          let outTime = null
-          if (bargainInfo.bargainUser.status == '0') {
-            outTime = new Date(bargainInfo.bargainUser.validEndTime).getTime() - new Date().getTime()
-          }
           let canCutPrice = bargainInfo.goodsSku.salesPrice - bargainInfo.bargainPrice//可砍
           let havCutPrice = bargainInfo.bargainUser.havBargainAmount//已砍
           let cutPercent = Number((havCutPrice / canCutPrice) * 100).toFixed(2)+'%'
@@ -128,8 +123,7 @@ Page({
             cutPercent: cutPercent,
             canCutPrice: canCutPrice,
             havCutPrice: havCutPrice,
-            bargainCutList: [],
-            outTime: outTime
+            bargainCutList: []
           })
           this.bargainCutPage()
         }

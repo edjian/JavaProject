@@ -189,7 +189,7 @@ Page({
   //提交订单
   orderSub(){
     let userAddress = this.data.userAddress
-    if (userAddress == null){
+    if (this.data.orderSubParm.deliveryWay == '1' && userAddress == null){
       wx.showToast({
         title: '请选择收货地址',
         icon: 'none',
@@ -205,7 +205,7 @@ Page({
     orderSubParm.skus = this.data.orderConfirmData
     app.api.orderSub(Object.assign(
       {},
-      { userAddressId: userAddress.id},
+      { userAddressId: that.data.orderSubParm.deliveryWay == '1' ? userAddress.id : null},
       orderSubParm
     ))
       .then(res => {

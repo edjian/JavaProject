@@ -7,10 +7,11 @@
   - 一经发现盗用、分享等行为，将追究法律责任，后果自负
 -->
 <wxs module="numberUtil" src="../../../utils/numberUtil.wxs"></wxs>
+<wxs module="dateUtil" src="../../../utils/dateUtil.wxs"></wxs>
 <view class="cu-card article">
   <view class="cu-item" wx:if="{{bargainInfo.bargainUser.status == '0'}}">
     <view class="content margin-top text-bold">
-      倒计时：<count-down class="text-red" outTime="{{outTime}}" bind:countDownDone="countDownDone"/>
+      倒计时：<count-down class="text-red" outTime="{{dateUtil.getOutTime(bargainInfo.bargainUser.validEndTime)}}" bind:countDownDone="countDownDone"/>
     </view>
   </view>
   <view class="cu-item">
