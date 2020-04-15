@@ -234,7 +234,6 @@
           let data = response.data.data
           if(data == null){
             data = {
-              sysDatasourceId: this.q.sysDatasourceId,
               tableName: row.tableName,
               tableComment: '',
               packageName: '',
@@ -243,6 +242,7 @@
               tablePrefix: ''
             }
           }
+          data.sysDatasourceId = this.q.sysDatasourceId
           generatorView(data).then(response => {
             this.preview.data = response.data.data
             this.preview.open = true
@@ -255,7 +255,6 @@
           let data = response.data.data
           if(data == null){
             data = {
-              sysDatasourceId: this.q.sysDatasourceId,
               tableName: row.tableName,
               tableComment: '',
               packageName: '',
@@ -264,6 +263,7 @@
               tablePrefix: ''
             }
           }
+          data.sysDatasourceId = this.q.sysDatasourceId
           generatorCode(data).then(() => {
 
           })
