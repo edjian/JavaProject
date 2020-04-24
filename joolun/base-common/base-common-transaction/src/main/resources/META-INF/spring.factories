@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.joolun.cloud.common.transaction.config.DataSourceProxyConfig

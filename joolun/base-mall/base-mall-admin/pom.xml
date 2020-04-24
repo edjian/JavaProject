@@ -84,11 +84,11 @@
 			<groupId>com.joolun</groupId>
 			<artifactId>base-weixin-common</artifactId>
 		</dependency>
-		<!--分布式事务
+		<!--分布式事务-->
 		<dependency>
 			<groupId>com.joolun</groupId>
 			<artifactId>base-common-transaction</artifactId>
-		</dependency>-->
+		</dependency>
 	</dependencies>
 
 	<build>

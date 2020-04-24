@@ -32,6 +32,7 @@ import com.joolun.cloud.weixin.common.entity.ThirdSession;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.feign.FeignMallUserInfoService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -218,7 +219,7 @@ public class WxUserServiceImpl extends ServiceImpl<WxUserMapper, WxUser> impleme
 	 * @throws WxErrorException
 	 */
 	@Override
-//	@GlobalTransactional
+	@GlobalTransactional
 	@Transactional(rollbackFor = Exception.class)
 	public WxUser loginMa(WxApp wxApp, String jsCode) throws WxErrorException {
 		WxMaJscode2SessionResult jscode2session = WxMaConfiguration.getMaService(wxApp.getId()).jsCode2SessionInfo(jsCode);
