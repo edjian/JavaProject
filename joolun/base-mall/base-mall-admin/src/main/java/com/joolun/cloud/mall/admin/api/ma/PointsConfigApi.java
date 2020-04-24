@@ -40,11 +40,7 @@ public class PointsConfigApi {
 	 */
 	@ApiOperation(value = "查询积分设置")
 	@GetMapping()
-	public R get(HttpServletRequest request) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R get() {
 		return R.ok(pointsConfigService.getOne(Wrappers.emptyWrapper()));
 	}
 }

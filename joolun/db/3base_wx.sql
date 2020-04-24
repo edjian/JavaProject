@@ -32,7 +32,7 @@ CREATE TABLE `undo_log` (
   `ext` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 /*Data for the table `undo_log` */
 
@@ -1060,6 +1060,39 @@ insert  into `wx_msg`(`id`,`create_id`,`create_time`,`update_id`,`update_time`,`
 ('feea9ac5f4bacd64aaf4629e6467d405',NULL,'2019-08-22 22:47:11',NULL,'2019-09-21 18:56:08',NULL,'0','1','wx1c254bf1dea2184d','微信测试号3',NULL,'cad3b1fa0b077cda9e636d78ec2ecf14','undefined?','http://thirdwx.qlogo.cn/mmopen/BxvOs19TgF9EtwicLP8dd4sPuxbnibVO7NIY4yXnlrmpAibKrLSibXLoibexy6trJeibNSnZOp2hp24FNhQ03CkIZWjUQ6JPAUFHnr/132','1','event','CLICK',NULL,NULL,'文字',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1'),
 ('ff594d9d1de17b1ebe2db2bbb3d418da',NULL,'2019-06-08 10:40:53',NULL,'2019-09-21 19:05:34',NULL,'0','1','wx1c254bf1dea2184d','微信测试号3',NULL,'1e51ed447b048e64e00585c76ba7ac3e','undefined?','http://thirdwx.qlogo.cn/mmopen/BxvOs19TgF9EtwicLP8dd4sPuxbnibVO7NIY4yXnlrmpAibKrLSibXLoibexy6trJeibNSnZOp2hp24FNhQ03CkIZWjUQ6JPAUFHnr/132','2','video',NULL,NULL,'m3tplYKmnk78rFzuRgJPpsERmQmEJwHWcsk4VEO2ct0','发生在宏观经济下行而剩余流动性改善的宏观环境之下。','此前东吴证券就曾指出，回顾本轮市场反弹，发生在宏观经济下行而剩余流动性改善的宏观环境之下。','http://203.205.158.81/vweixinp.tc.qq.com/1007_ad8a0f1b40ec407594f14cab1819b3a0.f10.mp4?vkey=D087B7F7C493C8C157C351ACC477481C5FB89E0DB07826744A4AC627044E3A625E3C1517DFD57AC2CD81F70FDFED4DCEE4ADE674FFE5BDF40849C58348D01316AD1161F0E14D97BECE029C0393E939A0AD8F7BC2A183B313&sha=0&save=1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1');
 
+/*Table structure for table `wx_template_msg` */
+
+DROP TABLE IF EXISTS `wx_template_msg`;
+
+CREATE TABLE `wx_template_msg` (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '主键',
+  `create_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建者',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
+  `del_flag` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '0' COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `enable` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '（1：开启；0：关闭）',
+  `tenant_id` varchar(32) NOT NULL COMMENT '所属租户',
+  `app_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '公众号配置ID、小程序AppID',
+  `pri_tmpl_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '模板ID',
+  `title` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '模版标题',
+  `content` mediumtext COMMENT '模版内容',
+  `example` mediumtext COMMENT '模板内容示例',
+  `type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '模版类型，2 为一次性订阅，3 为长期订阅',
+  `use_type` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用途，2：订单支付成功；3、订单发货提醒',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_use_app` (`tenant_id`,`app_id`,`use_type`),
+  KEY `ids_app_id` (`app_id`),
+  KEY `ids_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='微信模板/订阅消息';
+
+/*Data for the table `wx_template_msg` */
+
+insert  into `wx_template_msg`(`id`,`create_id`,`create_time`,`update_id`,`update_time`,`remark`,`del_flag`,`enable`,`tenant_id`,`app_id`,`pri_tmpl_id`,`title`,`content`,`example`,`type`,`use_type`) values 
+('1250735574097854466',NULL,'2020-04-16 18:39:33',NULL,'2020-04-17 14:31:03',NULL,'0','1','1','wxd5b98bbec200013b','qvDpTSHsMJSRvCP2DlqVFKxeyVS5im3IC8Avdxd-SGA','订单支付成功通知','订单编号{{character_string1.DATA}}\n订单金额{{amount2.DATA}}\n商品名称{{thing3.DATA}}\n下单时间{{time4.DATA}}\n支付金额{{amount5.DATA}}',NULL,NULL,'2'),
+('1251882030074818562',NULL,'2020-04-19 22:35:09',NULL,'2020-04-19 22:44:00',NULL,'0','1','1','wxd5b98bbec200013b','1uvnMRmQwyic7i45wfZpYeCwr_R3iTGfP36Mjhebbik','订单发货提醒','订单编号{{character_string1.DATA}}\n商品详情{{thing2.DATA}}\n快递单号{{character_string4.DATA}}\n收货人{{name5.DATA}}\n发货时间{{date10.DATA}}',NULL,NULL,'3');
+
 /*Table structure for table `wx_user` */
 
 DROP TABLE IF EXISTS `wx_user`;
@@ -1106,7 +1139,7 @@ CREATE TABLE `wx_user` (
 /*Data for the table `wx_user` */
 
 insert  into `wx_user`(`id`,`create_id`,`create_time`,`update_id`,`update_time`,`remark`,`del_flag`,`tenant_id`,`app_id`,`app_type`,`subscribe`,`subscribe_scene`,`subscribe_time`,`subscribe_num`,`cancel_subscribe_time`,`open_id`,`nick_name`,`sex`,`city`,`country`,`province`,`phone`,`language`,`headimg_url`,`union_id`,`group_id`,`tagid_list`,`qr_scene_str`,`latitude`,`longitude`,`precision`,`session_key`,`mall_user_id`) values 
-('1234102578905571330',NULL,'2020-03-01 21:05:57',NULL,'2020-03-02 17:01:47',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75E1FfjuGnArqNwyTOUDEM9w','JL','1','深圳','中国','广东',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJjjQuibXQqVVhEdrm7WbCHbcERL7m4LYLY1DgPAHsmc3NIiajXzacRP9GMmfcBIHDmbWjyIde3Unew/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'L3o/FytgD1HgMAcpyQoYkA==','1234102578637127681'),
+('1234102578905571330',NULL,'2020-03-01 21:05:57',NULL,'2020-03-02 17:01:47',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75E1FfjuGnArqNwyTOUDEM9w','JL','1','深圳','中国','广东',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJjjQuibXQqVVhEdrm7WbCHbcERL7m4LYLY1DgPAHsmc3NIiajXzacRP9GMmfcBIHDmbWjyIde3Unew/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'n8iyC1I1aaTZ9p8o9Leszw==','1234102578637127681'),
 ('1234115884152209409',NULL,'2020-03-01 21:58:50',NULL,'2020-03-19 18:32:09','','0','1','wxfd19ebed74478150','2','1','ADD_SCENE_QR_CODE','2020-03-22 20:17:48',4,'2020-03-22 20:17:43','o3QwG1UuAz7VYM24e9rmihxyKJvg','JL','1','深圳','中国','广东',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/dMKNvxZfIaEco8NogUXngnPhXrEEzLoY69XP5ymS2RWFIyXpOGE8trxiaqydnIibicluloYMWO06qmmibuvZR6GEbYR1HmVCq41R/132',NULL,'{}','[]','1',NULL,NULL,NULL,NULL,NULL),
 ('1234118410742218754',NULL,'2020-03-01 22:08:52',NULL,NULL,'','0','1','wx1c254bf1dea2184d','2','1','ADD_SCENE_QR_CODE','2020-02-20 11:58:39',1,NULL,'o1hcC1MoTzW90y-MTpJvIXVPwCBo','JL','1','深圳','中国','广东',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/BxvOs19TgF9EtwicLP8dd4sPuxbnibVO7NIY4yXnlrmpAibKrLSibXLoibexy6trJeibNSnZOp2hp24FNhQ03CkIZWjUQ6JPAUFHnr/132',NULL,'{}','[]','1',NULL,NULL,NULL,NULL,NULL),
 ('1240586856073981953',NULL,'2020-03-19 18:32:10',NULL,NULL,'','0','1','wxfd19ebed74478150','2','1','ADD_SCENE_QR_CODE','2020-01-06 14:14:44',1,NULL,'o3QwG1QnY-BOe4M724t0dvVQaUUo','魂散','0','','','',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/PiajxSqBRaEK4NgUCJLPziclZYMfTnaYFXvz1GajlxariavaOkbKsXzXMoVHO6E5LKUWaaxxQccLVaicYR2Zqv5ZnA/132',NULL,'{}','[]','1',NULL,NULL,NULL,NULL,NULL),
@@ -1116,8 +1149,8 @@ insert  into `wx_user`(`id`,`create_id`,`create_time`,`update_id`,`update_time`,
 ('1240586856145285123',NULL,'2020-03-19 18:32:10',NULL,NULL,'','0','1','wxfd19ebed74478150','2','1','ADD_SCENE_QR_CODE','2019-06-04 22:22:21',1,NULL,'o3QwG1aKxN5AMEaNSbDV-vHJHtvM','安安晨晨','2','益阳','中国','湖南',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/zt0qYfial6Pib7YWpYFP1aujXAvcfsJABFqneUzUvNuJnB5dAukUH0NkSFjMw2JURGh9Hu5K4FkKib4lCxPiacCJoYYsFviaYMo6y/132',NULL,'{}','[]','1',NULL,NULL,NULL,NULL,NULL),
 ('1240586856145285124',NULL,'2020-03-19 18:32:10',NULL,NULL,'','0','1','wxfd19ebed74478150','2','1','ADD_SCENE_QR_CODE','2020-01-10 16:58:56',1,NULL,'o3QwG1R-OMe-0AFAt9DRMO_veh6c','宋晋成','1','南京','中国','江苏',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/lV0d907m3OWiaahSPqX4mhQdKRqXBNZaphDJs45IJIJI0thRNnF0hsEw6lCWtYkSeU8LuZFQicibLOysVeibJDzfky3BaOpibibogE/132',NULL,'{}','[2]','1',NULL,NULL,NULL,NULL,NULL),
 ('1240586856153673730',NULL,'2020-03-19 18:32:10',NULL,NULL,'','0','1','wxfd19ebed74478150','2','1','ADD_SCENE_QR_CODE','2020-02-27 10:36:15',1,NULL,'o3QwG1bS0Gtr3YJvOf-pVLFP7Voo','吴胜光?','1','郑州','中国','河南',NULL,'zh_CN','http://thirdwx.qlogo.cn/mmopen/hMANLTH7ZbLb4JOKN8WJCnBv2FEQ8B1YroulES4glVyZhTF5qteeWdiaLm5mU1lwfwfasV9c50k4mYm1zEE2KnL8CXesQ1xqia/132',NULL,'{}','[]','1',NULL,NULL,NULL,NULL,NULL),
-('1240826737039699969',NULL,'2020-03-20 10:25:22',NULL,'2020-03-20 10:25:30',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75Ps6n3oyLXkDxRdigqBkplY','JooLun','1','长沙','中国','湖南',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLWNvwtdDIKNiahOicVFYJzQCY3ppdfvCDL6d9C0dRMYybEJDDJQuj1ibqLNp1ic5XVaPwW9IeZq1L44A/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'e/+MvLtJKbyZEX+zambufw==','1240826736922284033'),
-('1240923176159866882',NULL,'2020-03-20 16:48:35',NULL,'2020-03-20 16:49:07',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75E5-L2er5G7ctfmK3dJ1jEY','安安晨晨','2','益阳','中国','湖南',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/AwUmcUqcSemYAA1x0yAmvjtBIEh4GgxcrgwTGAQDAqRS7nmcia9OtOK8Q4onSubDYkqiazz8aUVuXcB16DTna7oQ/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'QUNkG4/tjzlsJ+Mz+5bPgg==','1240923176084389889'),
+('1240826737039699969',NULL,'2020-03-20 10:25:22',NULL,'2020-03-20 10:25:30',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75Ps6n3oyLXkDxRdigqBkplY','JooLun','1','长沙','中国','湖南',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLWNvwtdDIKNiahOicVFYJzQCY3ppdfvCDL6d9C0dRMYybEJDDJQuj1ibqLNp1ic5XVaPwW9IeZq1L44A/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'C22cyOMLGYSTeNvd6hg2Lw==','1240826736922284033'),
+('1240923176159866882',NULL,'2020-03-20 16:48:35',NULL,'2020-03-20 16:49:07',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75E5-L2er5G7ctfmK3dJ1jEY','安安晨晨','2','益阳','中国','湖南',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/AwUmcUqcSemYAA1x0yAmvjtBIEh4GgxcrgwTGAQDAqRS7nmcia9OtOK8Q4onSubDYkqiazz8aUVuXcB16DTna7oQ/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'UfAKrDeSYwk6ePrXVJEEKw==','1240923176084389889'),
 ('1247865792326799361',NULL,'2020-04-08 20:36:03',NULL,'2020-04-08 20:36:41',NULL,'0','1','wxd5b98bbec200013b','1',NULL,NULL,NULL,NULL,NULL,'oKqs75IeZkE_lPyxHxHo09ZXS8Q0','liufeng','2','益阳','中国','湖南',NULL,'zh_CN','https://wx.qlogo.cn/mmopen/vi_32/icbS7icm2jxy0PDYMjOUfKiaMn5UVxYrNcTcv3ey0vxRTia24BTFQxfZbM4Kia0TwJbVyWBd9tvic8HmXXCickux7L6ibg/132',NULL,NULL,'[]',NULL,NULL,NULL,NULL,'mbRRdHDSuM6UMvjBBUSJlA==','1247865792188411905');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

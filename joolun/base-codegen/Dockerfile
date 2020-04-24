@@ -12,4 +12,4 @@ EXPOSE 7001
 
 ADD ./base-codegen/target/base-codegen.jar ./
 
-CMD sleep 60;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-codegen.jar
+CMD sleep 5;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-codegen.jar

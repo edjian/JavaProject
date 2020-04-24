@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.NoticeService;
 import com.joolun.cloud.mall.common.entity.Notice;
+import com.joolun.cloud.weixin.common.util.WxMaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -43,11 +44,7 @@ public class NoticeApi {
 	@ApiOperation(value = "查询商城通知")
 	@GetMapping
 	public R getOne(HttpServletRequest request, Notice notice){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-		notice.setAppId(BaseApi.getAppId(request));
+		notice.setAppId(WxMaUtil.getAppId(request));
 		notice = noticeService.getOne(Wrappers.query(notice));
 		return R.ok(notice);
 	}

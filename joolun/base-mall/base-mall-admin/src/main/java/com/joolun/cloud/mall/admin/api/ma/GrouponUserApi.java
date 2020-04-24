@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.GrouponInfoService;
 import com.joolun.cloud.mall.admin.service.GrouponUserService;
 import com.joolun.cloud.mall.common.entity.GrouponUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -45,11 +46,7 @@ public class GrouponUserApi {
 	 */
 	@ApiOperation(value = "拼团中分页列表")
 	@GetMapping("/page/grouponing")
-	public R getPageGrouponing(HttpServletRequest request, Page page, GrouponUser grouponUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R getPageGrouponing(Page page, GrouponUser grouponUser) {
 		return R.ok(grouponUserService.getPageGrouponing(page, grouponUser));
 	}
 
@@ -61,12 +58,8 @@ public class GrouponUserApi {
      */
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, GrouponUser grouponUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(grouponUserService.page2(page, grouponUser));
+    public R getPage(Page page, GrouponUser grouponUser) {
+		return R.ok(grouponUserService.page2(page, grouponUser));
     }
 
 	/**
@@ -76,12 +69,9 @@ public class GrouponUserApi {
 	 */
 	@ApiOperation(value = "拼团记录查询")
 	@GetMapping("/{id}")
-	public R getById(HttpServletRequest request, @PathVariable("id") String id) {
+	public R getById(@PathVariable("id") String id) {
 		GrouponUser grouponUser = new GrouponUser();
-		R checkThirdSession = BaseApi.checkThirdSession(grouponUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		grouponUser.setUserId(ThirdSessionHolder.getMallUserId());
 		String userId = grouponUser.getUserId();
 		grouponUser = grouponUserService.getById(id);
 		grouponUser.setGrouponInfo(grouponInfoService.getById2((grouponUser.getGrouponId())));

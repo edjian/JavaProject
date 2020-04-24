@@ -42,12 +42,8 @@ public class GrouponInfoApi {
      */
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, GrouponInfo grouponInfo) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(grouponInfoService.page2(page, grouponInfo));
+    public R getPage(Page page, GrouponInfo grouponInfo) {
+		return R.ok(grouponInfoService.page2(page, grouponInfo));
     }
 
     /**
@@ -58,11 +54,7 @@ public class GrouponInfoApi {
     @ApiOperation(value = "拼团查询")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(grouponInfoService.getById2(id));
+		return R.ok(grouponInfoService.getById2(id));
     }
 
 }

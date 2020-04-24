@@ -8,11 +8,12 @@
  */
 package com.joolun.cloud.gateway.init;
 
+import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.NacosFactory;
+import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
-import com.joolun.cloud.common.core.constant.ServiceNameConstants;
 import com.joolun.cloud.gateway.entity.GatewayRouteList;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.yaml.snakeyaml.Yaml;
 import reactor.core.publisher.Mono;
 import javax.annotation.PostConstruct;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
@@ -33,12 +35,17 @@ import java.util.concurrent.Executor;
 @AllArgsConstructor
 public class DynamicRouteInit {
 	private RouteDefinitionWriter routeDefinitionWriter;
-	private static final String DATA_ID = "dynamic_routes";
+	public static final String DATA_ID = "dynamic_routes";
+	private NacosConfigProperties nacosProperties;
 
 	@PostConstruct
 	public void initRoute() {
 		try {
-			ConfigService configService = NacosFactory.createConfigService(ServiceNameConstants.NACOS_SERVICE);
+			Properties properties = new Properties();
+			properties.put(PropertyKeyConst.SERVER_ADDR, nacosProperties.getServerAddr());
+			properties.put(PropertyKeyConst.USERNAME, nacosProperties.getUsername());
+			properties.put(PropertyKeyConst.PASSWORD, nacosProperties.getPassword());
+			ConfigService configService = NacosFactory.createConfigService(properties);
 			String content = configService.getConfig(DATA_ID, "DEFAULT_GROUP", 5000);
 			log.info("初始化网关路由开始");
 			updateRoute(content);

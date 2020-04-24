@@ -14,6 +14,7 @@ import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import com.joolun.cloud.weixin.common.dto.MaQrCodeDTO;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.util.WxMaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class WxQrCodeApi {
 	@PostMapping("/unlimited")
 	public R getUnlimited(HttpServletRequest request, @RequestBody MaQrCodeDTO maQrCodeDTO){
 		try {
-			String wxAppId = WxMaConfiguration.getAppId(request);
+			String wxAppId = WxMaUtil.getAppId(request);
 			File fileImg = WxMaConfiguration.getMaService(wxAppId).getQrcodeService()
 					.createWxaCodeUnlimit(maQrCodeDTO.getScene(), maQrCodeDTO.getPage(),100, true, null, false);
 			FileInputStream inputFile = new FileInputStream(fileImg);

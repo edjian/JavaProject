@@ -18,6 +18,7 @@ import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.*;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 商品api
@@ -54,11 +53,7 @@ public class GoodsSpuApi {
 	*/
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getGoodsSpuPage(HttpServletRequest request, Page page, GoodsSpu goodsSpu, String couponUserId) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getGoodsSpuPage(Page page, GoodsSpu goodsSpu, String couponUserId) {
 		goodsSpu.setShelf(CommonConstants.YES);
 		CouponUser couponUser = null;
 		if(StrUtil.isNotBlank(couponUserId)){
@@ -74,12 +69,9 @@ public class GoodsSpuApi {
     */
 	@ApiOperation(value = "通过id查询spu商品")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id){
+    public R getById(@PathVariable("id") String id){
 		UserCollect userCollect = new UserCollect();
-		R checkThirdSession = BaseApi.checkThirdSession(userCollect, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		userCollect.setUserId(ThirdSessionHolder.getMallUserId());
 		GoodsSpu goodsSpu = goodsSpuService.getById2(id);
 		if(goodsSpu == null){
 			return R.failed(MyReturnCode.ERR_80004.getCode(), MyReturnCode.ERR_80004.getMsg());

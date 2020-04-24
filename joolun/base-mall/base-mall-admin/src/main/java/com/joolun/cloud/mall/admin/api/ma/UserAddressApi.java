@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.UserAddressService;
 import com.joolun.cloud.mall.common.entity.UserAddress;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -50,11 +51,8 @@ public class UserAddressApi {
     */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getUserAddressPage(HttpServletRequest request, Page page, UserAddress userAddress) {
-		R checkThirdSession = BaseApi.checkThirdSession(userAddress, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getUserAddressPage(Page page, UserAddress userAddress) {
+		userAddress.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(userAddressService.page(page,Wrappers.query(userAddress)));
     }
 
@@ -65,11 +63,8 @@ public class UserAddressApi {
     */
 	@ApiOperation(value = "新增、修改用户收货地址")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody UserAddress userAddress){
-		R checkThirdSession = BaseApi.checkThirdSession(userAddress, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R save(@RequestBody UserAddress userAddress){
+		userAddress.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(userAddressService.saveOrUpdate(userAddress));
     }
 
@@ -80,12 +75,8 @@ public class UserAddressApi {
     */
 	@ApiOperation(value = "通过id删除用户收货地址")
     @DeleteMapping("/{id}")
-    public R removeById(HttpServletRequest request, @PathVariable String id){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(userAddressService.removeById(id));
+    public R removeById(@PathVariable String id){
+		return R.ok(userAddressService.removeById(id));
     }
 
 }

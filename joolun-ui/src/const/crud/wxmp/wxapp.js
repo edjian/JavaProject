@@ -106,7 +106,8 @@ export const tableOption = {
         required: true,
         message: "请输入微信原始ID",
         trigger: "blur"
-      }]
+      }],
+      tip: '在微信公众平台（mp.weixin.qq.com）的菜单【设置】-【公众号设置】-【帐号详情】中能找到原始ID'
     },
 	  {
       label: 'AppID',
@@ -118,12 +119,14 @@ export const tableOption = {
         required: true,
         message: "请输入AppID",
         trigger: "blur"
-      }]
+      }],
+      tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【基本配置】中能找到AppID'
     },
     {
       label: 'AppSecret',
       prop: 'secret',
-      hide:true
+      hide: true,
+      tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【基本配置】中能找到AppSecret'
     },
 	  {
       label: '创建时间',

@@ -47,9 +47,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		if (CollUtil.isNotEmpty(menuList)) {
 			return R.failed("菜单含有下级不能删除");
 		}
-
-		sysRoleMenuMapper
-				.delete(Wrappers.<SysRoleMenu>query()
+		//删除角色菜单关联
+		sysRoleMenuMapper.delete(Wrappers.<SysRoleMenu>query()
 						.lambda().eq(SysRoleMenu::getMenuId, id));
 
 		//删除当前菜单及其子菜单

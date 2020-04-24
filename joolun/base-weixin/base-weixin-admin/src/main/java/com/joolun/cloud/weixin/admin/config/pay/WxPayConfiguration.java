@@ -63,7 +63,9 @@ public class WxPayConfiguration {
 					wxPayService.setConfig(payConfig);
 					payServices.put(appId, wxPayService);
 				}
-        	}
+        	}else{
+        		throw new RuntimeException("无此小程序：" + appId);
+			}
         }
 		return wxPayService;
     }

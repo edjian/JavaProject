@@ -28,6 +28,30 @@ Page({
     this.userAddressPage()
     this.orderConfirmDo()
   },
+  //获取订阅消息列表
+  wxTemplateMsgList(id) {
+    app.api.wxTemplateMsgList({
+      enable: '1',
+      useTypeList: ['2', '3']
+    })
+      .then(res => {
+        let tmplIds = []
+        res.data.forEach(item => {
+          tmplIds.push(item.priTmplId)
+        })
+        wx.requestSubscribeMessage({
+          tmplIds: tmplIds,
+          success(res) {
+            console.log(res)
+          },
+          complete() {
+            wx.redirectTo({
+              url: '/pages/order/order-detail/index?callPay=true&id=' + id
+            })
+          }
+        })
+      })
+  },
   deliveryWayChange(e) {
     this.setData({
       [`orderSubParm.deliveryWay`]: e.detail.value
@@ -118,8 +142,9 @@ Page({
   },
   //提交订单
   orderSub() {
-    let userAddress = this.data.userAddress
-    if (this.data.orderSubParm.deliveryWay == '1' && userAddress == null) {
+    let that = this
+    let userAddress = that.data.userAddress
+    if (that.data.orderSubParm.deliveryWay == '1' && userAddress == null) {
       wx.showToast({
         title: '请选择收货地址',
         icon: 'none',
@@ -127,12 +152,11 @@ Page({
       })
       return
     }
-    let that = this
-    this.setData({
+    that.setData({
       loading: true
     })
-    let orderSubParm = this.data.orderSubParm
-    let orderConfirmData = this.data.orderConfirmData
+    let orderSubParm = that.data.orderSubParm
+    let orderConfirmData = that.data.orderConfirmData
     orderSubParm.skus = orderConfirmData
     orderSubParm.orderType = orderConfirmData[0].orderType
     orderSubParm.marketId = orderConfirmData[0].marketId
@@ -143,11 +167,9 @@ Page({
       orderSubParm
     ))
       .then(res => {
-        wx.redirectTo({
-          url: '/pages/order/order-detail/index?callPay=true&id=' + res.data.id
-        })
+        that.wxTemplateMsgList(res.data.id)
       }).catch(() => {
-        this.setData({
+        that.setData({
           loading: false
         })
       })

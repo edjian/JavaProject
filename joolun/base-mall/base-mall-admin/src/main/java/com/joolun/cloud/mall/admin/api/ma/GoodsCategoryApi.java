@@ -41,11 +41,7 @@ public class GoodsCategoryApi {
     */
 	@ApiOperation(value = "返回树形集合")
     @GetMapping("/tree")
-    public R goodsCategoryTree(HttpServletRequest request) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R goodsCategoryTree() {
 		return R.ok(goodsCategoryService.selectTree(null));
     }
 }

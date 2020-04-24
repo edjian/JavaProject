@@ -43,11 +43,7 @@ public class EnsureGoodsApi {
      */
 	@ApiOperation(value = "通过spuID，查询商品保障")
     @GetMapping("/listEnsureBySpuId")
-    public R listEnsureBySpuId(HttpServletRequest request, EnsureGoods ensureGoods) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R listEnsureBySpuId(EnsureGoods ensureGoods) {
 		List<Ensure> listEnsure = ensureGoodsService.listEnsureBySpuId(ensureGoods.getSpuId());
         return R.ok(listEnsure);
     }

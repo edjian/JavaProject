@@ -14,6 +14,7 @@ import com.joolun.cloud.mall.admin.service.CouponInfoService;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.CouponUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -44,12 +45,9 @@ public class CouponInfoApi {
      */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, CouponInfo couponInfo, CouponGoods cuponGoods) {
+    public R getPage(Page page, CouponInfo couponInfo, CouponGoods cuponGoods) {
 		CouponUser couponUser = new CouponUser();
-		R checkThirdSession = BaseApi.checkThirdSession(couponUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		couponUser.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(couponInfoService.page2(page, couponInfo, cuponGoods, couponUser));
     }
 
@@ -60,11 +58,7 @@ public class CouponInfoApi {
      */
 	@ApiOperation(value = "通过id查询电子券")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getById(@PathVariable("id") String id) {
         return R.ok(couponInfoService.getById2(id));
     }
 

@@ -105,7 +105,8 @@ export const tableOption = {
             required: true,
             message: "请输入微信原始ID",
             trigger: "blur"
-          }]
+          }],
+          tip: '在微信公众平台（mp.weixin.qq.com）的菜单【设置】中能找到原始ID'
         },
         {
           label: 'AppID',
@@ -115,7 +116,8 @@ export const tableOption = {
             required: true,
             message: "请输入AppID",
             trigger: "blur"
-          }]
+          }],
+          tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【开发设置】中能找到AppID'
         },
         {
           label: 'AppSecret',
@@ -124,7 +126,8 @@ export const tableOption = {
             required: true,
             message: "请输入AppID",
             trigger: "blur"
-          }]
+          }],
+          tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【开发设置】中能找到AppSecret'
         },
         {
           label: '主体名称',
@@ -138,7 +141,7 @@ export const tableOption = {
     },
     {
       icon: 'el-icon-s-order',
-      label: '支付配置',
+      label: '收款配置',
       prop: 'group2',
       column: [
         {

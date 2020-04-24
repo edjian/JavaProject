@@ -36,7 +36,10 @@ import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
+import com.joolun.cloud.mall.common.feign.FeignWxTemplateMsgService;
 import com.joolun.cloud.mall.common.util.Kuaidi100Utils;
+import com.joolun.cloud.weixin.common.constant.ConfigConstant;
+import com.joolun.cloud.weixin.common.dto.WxTemplateMsgSendDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -80,6 +84,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	private final BargainUserMapper bargainUserMapper;
 	private final GrouponInfoMapper grouponInfoMapper;
 	private final GrouponUserMapper grouponUserMapper;
+	private final FeignWxTemplateMsgService feignWxTemplateMsgService;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -126,6 +131,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 				//加入redis，7天后自动确认收货
 				String keyRedis = String.valueOf(StrUtil.format("{}{}:{}",MallConstants.REDIS_ORDER_KEY_STATUS_2, TenantContextHolder.getTenantId(),entity.getId()));
 				redisTemplate.opsForValue().set(keyRedis, entity.getOrderNo() , MallConstants.ORDER_TIME_OUT_2, TimeUnit.DAYS);//设置过期时间
+			}
+			//发送订阅消息
+			try {
+				OrderInfo orderInfo = baseMapper.selectById(entity.getId());
+				WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
+				wxTemplateMsgSendDTO.setMallUserId(orderInfo.getUserId());
+				wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_3);
+				wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id="+orderInfo.getId());
+				HashMap<String, HashMap<String, String>> data = new HashMap<>();
+				data.put("character_string1", (HashMap)JSONUtil.toBean("{\"value\": \""+orderInfo.getOrderNo()+"\"}",Map.class));
+				String thing2 = orderInfo.getName();
+				thing2 = thing2.length() > 20 ? thing2.substring(0,19) : thing2;
+				data.put("thing2", (HashMap)JSONUtil.toBean("{\"value\": \""+thing2+"\"}",Map.class));
+				data.put("character_string4", (HashMap)JSONUtil.toBean("{\"value\": \""+entity.getLogisticsNo()+"\"}",Map.class));
+				data.put("name5", (HashMap)JSONUtil.toBean("{\"value\": \""+orderLogistics.getUserName()+"\"}",Map.class));
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
+				data.put("date10", (HashMap)JSONUtil.toBean("{\"value\": \""+entity.getDeliveryTime().format(dtf)+"\"}",Map.class));
+				wxTemplateMsgSendDTO.setData(data);
+				feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
+			}catch (Exception e){
+				log.error("发送订阅消息发送出错："+e.getMessage(), e);
 			}
 		}
 		return super.updateById(entity);
@@ -248,6 +274,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 		orderInfo.setPaymentPoints(0);
 		orderInfo.setPaymentCouponPrice(BigDecimal.ZERO);
 		orderInfo.setPaymentPointsPrice(BigDecimal.ZERO);
+		orderInfo.setCreateTime(LocalDateTime.now());
 		List<OrderItem> listOrderItem = new ArrayList<>();
 		List<GoodsSku> listGoodsSku = new ArrayList<>();
 		List<CouponUser> listCouponUser = new ArrayList<>();
@@ -391,147 +418,169 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void notifyOrder(OrderInfo orderInfo) {
-		orderInfo.setIsPay(CommonConstants.YES);
-		orderInfo.setStatus(OrderInfoEnum.STATUS_1.getValue());
-		List<OrderItem> listOrderItem = orderItemService.list(Wrappers.<OrderItem>lambdaQuery()
-				.eq(OrderItem::getOrderId,orderInfo.getId()));
-		Map<String, List<OrderItem>> resultList = listOrderItem.stream().collect(Collectors.groupingBy(OrderItem::getSpuId));
-		AtomicReference<Integer> pointsGiveAmount = new AtomicReference<>(0);
-		List<PointsRecord> listPointsRecord = new ArrayList<>();
-		List<GoodsSpu> listGoodsSpu = goodsSpuService.listByIds(resultList.keySet());
-		listGoodsSpu.forEach(goodsSpu -> {
-			resultList.get(goodsSpu.getId()).forEach(orderItem -> {
-				//更新销量
-				goodsSpu.setSaleNum(goodsSpu.getSaleNum()+orderItem.getQuantity());
-				//处理积分赠送
-				if(CommonConstants.YES.equals(goodsSpu.getPointsGiveSwitch())){
-					PointsRecord pointsRecord = new PointsRecord();
-					pointsRecord.setUserId(orderInfo.getUserId());
-					pointsRecord.setDescription("【赠送】购买商品【" + goodsSpu.getName() + "】 * " +orderItem.getQuantity());
-					pointsRecord.setSpuId(goodsSpu.getId());
-					pointsRecord.setOrderItemId(orderItem.getId());
-					pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
-					pointsRecord.setAmount(orderItem.getQuantity() * goodsSpu.getPointsGiveNum());
-					listPointsRecord.add(pointsRecord);
-					pointsGiveAmount.updateAndGet(v -> v + orderItem.getQuantity() * goodsSpu.getPointsGiveNum());
-				}
+		if(CommonConstants.NO.equals(orderInfo.getIsPay())){//只有未支付订单能操作
+			orderInfo.setIsPay(CommonConstants.YES);
+			orderInfo.setStatus(OrderInfoEnum.STATUS_1.getValue());
+			List<OrderItem> listOrderItem = orderItemService.list(Wrappers.<OrderItem>lambdaQuery()
+					.eq(OrderItem::getOrderId,orderInfo.getId()));
+			Map<String, List<OrderItem>> resultList = listOrderItem.stream().collect(Collectors.groupingBy(OrderItem::getSpuId));
+			AtomicReference<Integer> pointsGiveAmount = new AtomicReference<>(0);
+			List<PointsRecord> listPointsRecord = new ArrayList<>();
+			List<GoodsSpu> listGoodsSpu = goodsSpuService.listByIds(resultList.keySet());
+			listGoodsSpu.forEach(goodsSpu -> {
+				resultList.get(goodsSpu.getId()).forEach(orderItem -> {
+					//更新销量
+					goodsSpu.setSaleNum(goodsSpu.getSaleNum()+orderItem.getQuantity());
+					//处理积分赠送
+					if(CommonConstants.YES.equals(goodsSpu.getPointsGiveSwitch())){
+						PointsRecord pointsRecord = new PointsRecord();
+						pointsRecord.setUserId(orderInfo.getUserId());
+						pointsRecord.setDescription("【赠送】购买商品【" + goodsSpu.getName() + "】 * " +orderItem.getQuantity());
+						pointsRecord.setSpuId(goodsSpu.getId());
+						pointsRecord.setOrderItemId(orderItem.getId());
+						pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
+						pointsRecord.setAmount(orderItem.getQuantity() * goodsSpu.getPointsGiveNum());
+						listPointsRecord.add(pointsRecord);
+						pointsGiveAmount.updateAndGet(v -> v + orderItem.getQuantity() * goodsSpu.getPointsGiveNum());
+					}
+				});
+				goodsSpuService.updateById(goodsSpu);
 			});
-			goodsSpuService.updateById(goodsSpu);
-		});
-		//新增积分记录
-		pointsRecordService.saveBatch(listPointsRecord);
-		//更新用户积分
-		UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
-		userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsGiveAmount.get());
-		userInfoService.updateById(userInfo);
-		//处理砍价订单，更新砍价记录
-		if(MallConstants.ORDER_TYPE_1.equals(orderInfo.getOrderType())){
-			BargainUser bargainUser = bargainUserMapper.selectById(orderInfo.getRelationId());
-			bargainUser.setIsBuy(CommonConstants.YES);
-			bargainUser.setOrderId(orderInfo.getId());
-			bargainUserMapper.updateById(bargainUser);
-		}
-		//处理拼团订单
-		if(MallConstants.ORDER_TYPE_2.equals(orderInfo.getOrderType())){
-			GrouponInfo grouponInfo = grouponInfoMapper.selectById(orderInfo.getMarketId());
-			//新增拼团记录
-			GrouponUser grouponUser = new GrouponUser();
-			grouponUser.setGrouponId(grouponInfo.getId());
-			grouponUser.setGroupId(orderInfo.getMarketId());
-			grouponUser.setUserId(orderInfo.getUserId());
-			grouponUser.setNickName(userInfo.getNickName());
-			grouponUser.setHeadimgUrl(userInfo.getHeadimgUrl());
-			grouponUser.setSpuId(grouponInfo.getSpuId());
-			grouponUser.setSkuId(grouponInfo.getSkuId());
-			grouponUser.setGrouponNum(grouponInfo.getGrouponNum());
-			grouponUser.setGrouponPrice(grouponInfo.getGrouponPrice());
-			grouponUser.setStatus(MallConstants.GROUPON_USER_STATUS_0);
-			grouponUserMapper.insert(grouponUser);
-			if(StrUtil.isBlank(orderInfo.getRelationId())){//新团，当前用户为团长
-				grouponUser.setValidBeginTime(orderInfo.getPaymentTime());
-				grouponUser.setValidEndTime(orderInfo.getPaymentTime().plusHours(grouponInfo.getDuration()));
-				grouponUser.setIsLeader(CommonConstants.YES);
-				grouponUser.setGroupId(grouponUser.getId());
-				orderInfo.setRelationId(grouponUser.getId());
-				orderInfo.setStatus(OrderInfoEnum.STATUS_10.getValue());
-			}else{
-				grouponUser.setGroupId(orderInfo.getRelationId());
-				grouponUser.setIsLeader(CommonConstants.NO);
-				//查出团长拼团记录
-				GrouponUser grouponUser2 = grouponUserMapper.selectById(orderInfo.getRelationId());
-				grouponUser.setValidBeginTime(grouponUser2.getValidBeginTime());
-				grouponUser.setValidEndTime(grouponUser2.getValidEndTime());
-				Integer count = grouponUserMapper.selectCountGrouponing(orderInfo.getRelationId()) + 1;
-				if(count == grouponUser2.getGrouponNum()){//已满成团
-					GrouponUser grouponUser3 = new GrouponUser();
-					grouponUser.setStatus(MallConstants.GROUPON_USER_STATUS_1);
-					grouponUser3.setStatus(MallConstants.GROUPON_USER_STATUS_1);
-					grouponUserMapper.update(grouponUser3, Wrappers.<GrouponUser>lambdaQuery()
-							.eq(GrouponUser::getGroupId, grouponUser2.getId()));
-					//更新团里所有订单状态
-					OrderInfo orderInfo1 = new OrderInfo();
-					orderInfo1.setStatus(OrderInfoEnum.STATUS_1.getValue());
-					baseMapper.update(orderInfo1, Wrappers.<OrderInfo>lambdaQuery()
-							.eq(OrderInfo::getRelationId, grouponUser2.getId())
-							.eq(OrderInfo::getStatus, OrderInfoEnum.STATUS_10.getValue()));
-				}else if(count > grouponUser2.getGrouponNum()){//满团开新团
+			//新增积分记录
+			pointsRecordService.saveBatch(listPointsRecord);
+			//更新用户积分
+			UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
+			userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsGiveAmount.get());
+			userInfoService.updateById(userInfo);
+			//处理砍价订单，更新砍价记录
+			if(MallConstants.ORDER_TYPE_1.equals(orderInfo.getOrderType())){
+				BargainUser bargainUser = bargainUserMapper.selectById(orderInfo.getRelationId());
+				bargainUser.setIsBuy(CommonConstants.YES);
+				bargainUser.setOrderId(orderInfo.getId());
+				bargainUserMapper.updateById(bargainUser);
+			}
+			//处理拼团订单
+			if(MallConstants.ORDER_TYPE_2.equals(orderInfo.getOrderType())){
+				GrouponInfo grouponInfo = grouponInfoMapper.selectById(orderInfo.getMarketId());
+				//新增拼团记录
+				GrouponUser grouponUser = new GrouponUser();
+				grouponUser.setGrouponId(grouponInfo.getId());
+				grouponUser.setGroupId(orderInfo.getMarketId());
+				grouponUser.setUserId(orderInfo.getUserId());
+				grouponUser.setNickName(userInfo.getNickName());
+				grouponUser.setHeadimgUrl(userInfo.getHeadimgUrl());
+				grouponUser.setSpuId(grouponInfo.getSpuId());
+				grouponUser.setSkuId(grouponInfo.getSkuId());
+				grouponUser.setGrouponNum(grouponInfo.getGrouponNum());
+				grouponUser.setGrouponPrice(grouponInfo.getGrouponPrice());
+				grouponUser.setStatus(MallConstants.GROUPON_USER_STATUS_0);
+				grouponUserMapper.insert(grouponUser);
+				if(StrUtil.isBlank(orderInfo.getRelationId())){//新团，当前用户为团长
 					grouponUser.setValidBeginTime(orderInfo.getPaymentTime());
 					grouponUser.setValidEndTime(orderInfo.getPaymentTime().plusHours(grouponInfo.getDuration()));
 					grouponUser.setIsLeader(CommonConstants.YES);
 					grouponUser.setGroupId(grouponUser.getId());
 					orderInfo.setRelationId(grouponUser.getId());
 					orderInfo.setStatus(OrderInfoEnum.STATUS_10.getValue());
-				}else{//未满入团
-					orderInfo.setStatus(OrderInfoEnum.STATUS_10.getValue());
+				}else{
+					grouponUser.setGroupId(orderInfo.getRelationId());
+					grouponUser.setIsLeader(CommonConstants.NO);
+					//查出团长拼团记录
+					GrouponUser grouponUser2 = grouponUserMapper.selectById(orderInfo.getRelationId());
+					grouponUser.setValidBeginTime(grouponUser2.getValidBeginTime());
+					grouponUser.setValidEndTime(grouponUser2.getValidEndTime());
+					Integer count = grouponUserMapper.selectCountGrouponing(orderInfo.getRelationId()) + 1;
+					if(count == grouponUser2.getGrouponNum()){//已满成团
+						GrouponUser grouponUser3 = new GrouponUser();
+						grouponUser.setStatus(MallConstants.GROUPON_USER_STATUS_1);
+						grouponUser3.setStatus(MallConstants.GROUPON_USER_STATUS_1);
+						grouponUserMapper.update(grouponUser3, Wrappers.<GrouponUser>lambdaQuery()
+								.eq(GrouponUser::getGroupId, grouponUser2.getId()));
+						//更新团里所有订单状态
+						OrderInfo orderInfo1 = new OrderInfo();
+						orderInfo1.setStatus(OrderInfoEnum.STATUS_1.getValue());
+						baseMapper.update(orderInfo1, Wrappers.<OrderInfo>lambdaQuery()
+								.eq(OrderInfo::getRelationId, grouponUser2.getId())
+								.eq(OrderInfo::getStatus, OrderInfoEnum.STATUS_10.getValue()));
+					}else if(count > grouponUser2.getGrouponNum()){//满团开新团
+						grouponUser.setValidBeginTime(orderInfo.getPaymentTime());
+						grouponUser.setValidEndTime(orderInfo.getPaymentTime().plusHours(grouponInfo.getDuration()));
+						grouponUser.setIsLeader(CommonConstants.YES);
+						grouponUser.setGroupId(grouponUser.getId());
+						orderInfo.setRelationId(grouponUser.getId());
+						orderInfo.setStatus(OrderInfoEnum.STATUS_10.getValue());
+					}else{//未满入团
+						orderInfo.setStatus(OrderInfoEnum.STATUS_10.getValue());
+					}
 				}
+				grouponUser.setOrderId(orderInfo.getId());
+				grouponUserMapper.updateById(grouponUser);
 			}
-			grouponUser.setOrderId(orderInfo.getId());
-			grouponUserMapper.updateById(grouponUser);
-		}
 
-		Map<String, List<GoodsSpu>> resultGoodsSpu = listGoodsSpu.stream().collect(Collectors.groupingBy(GoodsSpu::getDeliveryPlaceId));
-		if(resultGoodsSpu.size() <= 1){//只有一个发货地址
-			if(MallConstants.DELIVERY_WAY_2.equals(orderInfo.getDeliveryWay())){//配送方式2、上门自提，设置自提地址
-				orderInfo.setLogisticsId(listGoodsSpu.get(0).getDeliveryPlaceId());
-			}
-			baseMapper.updateById(orderInfo);//更新订单
-		}else{//处理订单是否需要拆分（通过不同发货地进行订单拆分）,有多个发货地，要拆分订单
-			resultGoodsSpu.forEach((key, value) -> {
-				List<OrderItem> listOrderItem1 = new ArrayList<>();
-				value.forEach(item ->{
-					listOrderItem1.addAll(resultList.get(item.getId()));
-				});
-				OrderInfo orderInfo1 = new OrderInfo();
-				BeanUtil.copyProperties(orderInfo,orderInfo1);
-				orderInfo1.setOrderNo(IdUtil.getSnowflake(0,0).nextIdStr());
-				orderInfo1.setTenantId(null);
-				orderInfo1.setId(null);
-				orderInfo1.setSalesPrice(BigDecimal.ZERO);
-				orderInfo1.setPaymentPrice(BigDecimal.ZERO);
-				orderInfo1.setFreightPrice(BigDecimal.ZERO);
-				orderInfo1.setPaymentPoints(0);
-				orderInfo1.setPaymentCouponPrice(BigDecimal.ZERO);
-				orderInfo1.setPaymentPointsPrice(BigDecimal.ZERO);
-				listOrderItem1.forEach(item -> {
-					GoodsSku goodsSku = goodsSkuService.getById(item.getSkuId());
-					orderInfo1.setSalesPrice(orderInfo1.getSalesPrice().add(goodsSku.getSalesPrice().multiply(new BigDecimal(item.getQuantity()))));
-					orderInfo1.setFreightPrice(orderInfo1.getFreightPrice().add(item.getFreightPrice()));
-					orderInfo1.setPaymentPrice(orderInfo1.getPaymentPrice().add(item.getPaymentPrice().add(item.getFreightPrice())));
-					orderInfo1.setPaymentPoints(orderInfo1.getPaymentPoints() + (item.getPaymentPoints() != null ? item.getPaymentPoints() : 0));
-					orderInfo1.setPaymentCouponPrice(orderInfo1.getPaymentCouponPrice().add((item.getPaymentCouponPrice() != null ? item.getPaymentCouponPrice() : BigDecimal.ZERO)));
-					orderInfo1.setPaymentPointsPrice(orderInfo1.getPaymentPointsPrice().add((item.getPaymentPointsPrice() != null ? item.getPaymentPointsPrice() : BigDecimal.ZERO)));
-				});
-				if(MallConstants.DELIVERY_WAY_2.equals(orderInfo1.getDeliveryWay())){//配送方式2、上门自提，设置自提地址
-					orderInfo1.setLogisticsId(key);
+			Map<String, List<GoodsSpu>> resultGoodsSpu = listGoodsSpu.stream().collect(Collectors.groupingBy(GoodsSpu::getDeliveryPlaceId));
+			if(resultGoodsSpu.size() <= 1){//只有一个发货地址
+				if(MallConstants.DELIVERY_WAY_2.equals(orderInfo.getDeliveryWay())){//配送方式2、上门自提，设置自提地址
+					orderInfo.setLogisticsId(listGoodsSpu.get(0).getDeliveryPlaceId());
 				}
-				//新建订单
-				baseMapper.insert(orderInfo1);
-				//更新订单详情
-				listOrderItem1.forEach(item -> item.setOrderId(orderInfo1.getId()));
-				orderItemService.updateBatchById(listOrderItem1);
-			});
-			//删除旧订单
-			baseMapper.deleteById(orderInfo.getId());
+				baseMapper.updateById(orderInfo);//更新订单
+			}else{//处理订单是否需要拆分（通过不同发货地进行订单拆分）,有多个发货地，要拆分订单
+				resultGoodsSpu.forEach((key, value) -> {
+					List<OrderItem> listOrderItem1 = new ArrayList<>();
+					value.forEach(item ->{
+						listOrderItem1.addAll(resultList.get(item.getId()));
+					});
+					OrderInfo orderInfo1 = new OrderInfo();
+					BeanUtil.copyProperties(orderInfo,orderInfo1);
+					orderInfo1.setOrderNo(IdUtil.getSnowflake(0,0).nextIdStr());
+					orderInfo1.setTenantId(null);
+					orderInfo1.setId(null);
+					orderInfo1.setSalesPrice(BigDecimal.ZERO);
+					orderInfo1.setPaymentPrice(BigDecimal.ZERO);
+					orderInfo1.setFreightPrice(BigDecimal.ZERO);
+					orderInfo1.setPaymentPoints(0);
+					orderInfo1.setPaymentCouponPrice(BigDecimal.ZERO);
+					orderInfo1.setPaymentPointsPrice(BigDecimal.ZERO);
+					listOrderItem1.forEach(item -> {
+						GoodsSku goodsSku = goodsSkuService.getById(item.getSkuId());
+						orderInfo1.setSalesPrice(orderInfo1.getSalesPrice().add(goodsSku.getSalesPrice().multiply(new BigDecimal(item.getQuantity()))));
+						orderInfo1.setFreightPrice(orderInfo1.getFreightPrice().add(item.getFreightPrice()));
+						orderInfo1.setPaymentPrice(orderInfo1.getPaymentPrice().add(item.getPaymentPrice().add(item.getFreightPrice())));
+						orderInfo1.setPaymentPoints(orderInfo1.getPaymentPoints() + (item.getPaymentPoints() != null ? item.getPaymentPoints() : 0));
+						orderInfo1.setPaymentCouponPrice(orderInfo1.getPaymentCouponPrice().add((item.getPaymentCouponPrice() != null ? item.getPaymentCouponPrice() : BigDecimal.ZERO)));
+						orderInfo1.setPaymentPointsPrice(orderInfo1.getPaymentPointsPrice().add((item.getPaymentPointsPrice() != null ? item.getPaymentPointsPrice() : BigDecimal.ZERO)));
+					});
+					if(MallConstants.DELIVERY_WAY_2.equals(orderInfo1.getDeliveryWay())){//配送方式2、上门自提，设置自提地址
+						orderInfo1.setLogisticsId(key);
+					}
+					//新建订单
+					baseMapper.insert(orderInfo1);
+					//更新订单详情
+					listOrderItem1.forEach(item -> item.setOrderId(orderInfo1.getId()));
+					orderItemService.updateBatchById(listOrderItem1);
+				});
+				//删除旧订单
+				baseMapper.deleteById(orderInfo.getId());
+			}
+			//发送订阅消息
+			try {
+				WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
+				wxTemplateMsgSendDTO.setMallUserId(orderInfo.getUserId());
+				wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_2);
+				wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id="+orderInfo.getId());
+				HashMap<String, HashMap<String, String>> data = new HashMap<>();
+				data.put("character_string1", (HashMap)JSONUtil.toBean("{\"value\": \""+orderInfo.getOrderNo()+"\"}",Map.class));
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
+				data.put("time4", (HashMap)JSONUtil.toBean("{\"value\": \""+orderInfo.getCreateTime().format(dtf)+"\"}",Map.class));
+				String thing3 = orderInfo.getName();
+				thing3 = thing3.length() > 20 ? thing3.substring(0,19) : thing3;
+				data.put("thing3", (HashMap)JSONUtil.toBean("{\"value\": \""+thing3+"\"}",Map.class));
+				data.put("amount2", (HashMap)JSONUtil.toBean("{\"value\": \""+orderInfo.getPaymentPrice()+"\"}",Map.class));
+				data.put("amount5", (HashMap)JSONUtil.toBean("{\"value\": \""+orderInfo.getPaymentPrice()+"\"}",Map.class));
+				wxTemplateMsgSendDTO.setData(data);
+				feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
+			}catch (Exception e){
+				log.error("发送订阅消息发送出错："+e.getMessage(), e);
+			}
 		}
 	}
 

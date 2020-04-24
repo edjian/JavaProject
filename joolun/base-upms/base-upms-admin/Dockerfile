@@ -12,4 +12,4 @@ EXPOSE 5999
 
 ADD ./base-upms/base-upms-admin/target/base-upms-admin.jar ./
 
-CMD sleep 60;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-upms-admin.jar
+CMD sleep 5;java -Xms128m -Xmx256m -Djava.security.egd=file:/dev/./urandom -jar base-upms-admin.jar

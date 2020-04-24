@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.PointsRecordService;
 import com.joolun.cloud.mall.common.entity.PointsRecord;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -44,11 +45,8 @@ public class PointsRecordApi {
      */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getPointsRecordPage(HttpServletRequest request, Page page, PointsRecord pointsRecord) {
-		R checkThirdSession = BaseApi.checkThirdSession(pointsRecord, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getPointsRecordPage(Page page, PointsRecord pointsRecord) {
+		pointsRecord.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(pointsRecordService.page(page, Wrappers.query(pointsRecord)));
     }
 

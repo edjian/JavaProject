@@ -14,7 +14,14 @@ package com.joolun.cloud.weixin.common.constant;
  * 2019年1月21日
  */
 public interface ConfigConstant {
-	
+	/**
+	 * header中的third-session
+	 */
+	String HEADER_THIRDSESSION = "third-session";
+	/**
+	 * header中的app-id
+	 */
+	String HEADER_APP_ID = "app-id";
 	//订阅状态（0：已订阅；1：未订阅；2：网页授权用户）
 	/**
 	 * 0：未订阅，取消订阅
@@ -78,4 +85,10 @@ public interface ConfigConstant {
 	 */
 	String WX_MENU_TYPE_1 = "1";
 	String WX_MENU_TYPE_2 = "2";
+
+	/**
+	 * 订阅消息用途，2：订单支付成功；3、订单发货提醒
+	 */
+	String WX_TMP_USE_TYPE_2 = "2";
+	String WX_TMP_USE_TYPE_3 = "3";
 }

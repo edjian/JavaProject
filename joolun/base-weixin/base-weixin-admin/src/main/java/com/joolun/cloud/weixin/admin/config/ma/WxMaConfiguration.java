@@ -2,33 +2,19 @@ package com.joolun.cloud.weixin.admin.config.ma;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.message.WxMaMessageRouter;
-import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.google.common.collect.Maps;
 import com.joolun.cloud.common.core.constant.CommonConstants;
-import com.joolun.cloud.common.core.constant.SecurityConstants;
-import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
-import com.joolun.cloud.weixin.admin.service.WxUserService;
-import com.joolun.cloud.weixin.common.constant.MyReturnCode;
-import com.joolun.cloud.weixin.common.constant.WxMaConstants;
-import com.joolun.cloud.weixin.common.dto.MallUserInfoDTO;
-import com.joolun.cloud.weixin.common.entity.ThirdSession;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
-import com.joolun.cloud.weixin.common.entity.WxUser;
-import com.joolun.cloud.weixin.common.feign.FeignMallUserInfoService;
-import me.chanjar.weixin.common.error.WxErrorException;
+import com.joolun.cloud.weixin.common.util.WxMaUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 小程序Configuration
@@ -98,24 +84,13 @@ public class WxMaConfiguration {
 	}
 
 	/**
-	 * 通过request获取appId
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	public static String getAppId(HttpServletRequest request) {
-		String appId = request.getHeader("app-id");
-		return appId;
-	}
-
-	/**
 	 * 通过request获取WxApp
 	 * @param request
 	 * @return
 	 * @throws Exception
 	 */
 	public static WxApp getApp(HttpServletRequest request) throws Exception {
-		String appId = getAppId(request);
+		String appId = WxMaUtil.getAppId(request);
 		WxApp wxApp = wxAppService.findByAppId(appId);
 		if(wxApp==null) {
 			throw new Exception("系统内无此小程序：" + appId + "；请在后台添加");

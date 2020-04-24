@@ -13,12 +13,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.BargainCutService;
 import com.joolun.cloud.mall.common.entity.BargainCut;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -44,11 +44,7 @@ public class BargainCutApi {
      */
 	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, BargainCut bargainCut) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getPage(Page page, BargainCut bargainCut) {
         return R.ok(bargainCutService.page(page, Wrappers.query(bargainCut)));
     }
 
@@ -59,14 +55,9 @@ public class BargainCutApi {
      */
 	@ApiOperation(value = "砍价帮砍记录新增")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody BargainCut bargainCut) {
-		R checkThirdSession = BaseApi.checkThirdSession(bargainCut, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R save(@RequestBody BargainCut bargainCut) {
+		bargainCut.setUserId(ThirdSessionHolder.getMallUserId());
 		bargainCutService.save2(bargainCut);
         return R.ok(bargainCut);
     }
-
-
 }

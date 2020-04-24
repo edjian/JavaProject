@@ -14,6 +14,7 @@ import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import com.joolun.cloud.mall.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -40,19 +41,13 @@ public class WxUserApi {
 
 	/**
 	 * 获取用户信息
-	 * @param request
+	 * @param
 	 * @return
 	 */
 	@ApiOperation(value = "获取用户信息")
 	@GetMapping
-	public R getById(HttpServletRequest request){
-		WxUser wxUser = new WxUser();
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(wxUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-		return feignWxUserService.getById(wxUser.getId(), SecurityConstants.FROM_IN);
+	public R get(){
+		return feignWxUserService.getById(ThirdSessionHolder.getThirdSession().getWxUserId(), SecurityConstants.FROM_IN);
 	}
 
 	/**
@@ -63,15 +58,9 @@ public class WxUserApi {
 	@ApiOperation(value = "保存用户信息")
 	@PostMapping
 	public R save(HttpServletRequest request, @RequestBody WxOpenDataDTO wxOpenDataDTO){
-		WxUser wxUser = new WxUser();
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(wxUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-		wxOpenDataDTO.setAppId(wxUser.getAppId());
-		wxOpenDataDTO.setUserId(wxUser.getId());
-		wxOpenDataDTO.setSessionKey(wxUser.getSessionKey());
+		wxOpenDataDTO.setAppId(ThirdSessionHolder.getThirdSession().getAppId());
+		wxOpenDataDTO.setUserId(ThirdSessionHolder.getThirdSession().getWxUserId());
+		wxOpenDataDTO.setSessionKey(ThirdSessionHolder.getThirdSession().getSessionKey());
 		return userInfoService.saveByWxUser(wxOpenDataDTO);
 	}
 }

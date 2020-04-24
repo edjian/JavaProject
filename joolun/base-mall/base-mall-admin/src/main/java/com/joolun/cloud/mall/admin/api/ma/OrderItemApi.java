@@ -43,11 +43,7 @@ public class OrderItemApi {
     */
 	@ApiOperation(value = "通过id查询商城订单详情")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getById(@PathVariable("id") String id){
         return R.ok(orderItemService.getById2(id));
     }
 

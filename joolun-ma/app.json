@@ -29,7 +29,8 @@
     "pages/groupon/groupon-detail/index",
     "pages/groupon/groupon-user-list/index",
     "pages/groupon/groupon-user-detail/index",
-    "pages/groupon/groupon-order-confirm/index"
+    "pages/groupon/groupon-order-confirm/index",
+    "pages/live/room-list/index"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -71,5 +72,11 @@
   },
   "usingComponents": {
     
+  },
+  "plugins": {
+    "live-player-plugin": {
+      "version": "1.0.7",
+      "provider": "wx2b03c6e691cd7370"
+    }
   }
 }

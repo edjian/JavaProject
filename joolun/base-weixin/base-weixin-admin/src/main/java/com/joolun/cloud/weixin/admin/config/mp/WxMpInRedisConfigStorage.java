@@ -22,11 +22,11 @@ import me.chanjar.weixin.mp.enums.TicketType;
 @SuppressWarnings("serial")
 public class WxMpInRedisConfigStorage extends WxMpDefaultConfigImpl {
 
-	public static final String ACCESS_TOKEN_KEY = "wx:admin:access_token:";
+	public static final String ACCESS_TOKEN_KEY = "wx:mp:access_token:";
 
-	public final static String JSAPI_TICKET_KEY = "wx:admin:jsapi_ticket:";
+	public final static String JSAPI_TICKET_KEY = "wx:mp:jsapi_ticket:";
 
-	public final static String CARDAPI_TICKET_KEY = "wx:admin:cardapi_ticket:";
+	public final static String CARDAPI_TICKET_KEY = "wx:mp:cardapi_ticket:";
 
 	private final RedisTemplate<String, String> redisTemplate;
 
@@ -57,7 +57,7 @@ public class WxMpInRedisConfigStorage extends WxMpDefaultConfigImpl {
 	 * @return
 	 */
 	private String getTicketRedisKey(TicketType type) {
-		return String.format("wx:admin:ticket:key:%s:%s", this.appId, type.getCode());
+		return String.format("wx:mp:ticket:key:%s:%s", this.appId, type.getCode());
 	}
 
 	/**

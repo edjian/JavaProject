@@ -20,6 +20,7 @@ import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -62,11 +63,8 @@ public class GoodsAppraisesApi {
     */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getGoodsAppraisesPage(HttpServletRequest request, Page page, GoodsAppraises goodsAppraises) {
-		R checkThirdSession = BaseApi.checkThirdSession(goodsAppraises, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getGoodsAppraisesPage(Page page, GoodsAppraises goodsAppraises) {
+		goodsAppraises.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(goodsAppraisesService.page(page,Wrappers.query(goodsAppraises)));
     }
 
@@ -77,11 +75,7 @@ public class GoodsAppraisesApi {
     */
 	@ApiOperation(value = "通过id查询商品评价")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getById(@PathVariable("id") String id){
         return R.ok(goodsAppraisesService.getById(id));
     }
 
@@ -92,12 +86,13 @@ public class GoodsAppraisesApi {
     */
 	@ApiOperation(value = "新增商品评价")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody List<GoodsAppraises> listGoodsAppraises){
+    public R save(@RequestBody List<GoodsAppraises> listGoodsAppraises){
     	WxUser wxUser = new WxUser();
-		R checkThirdSession = BaseApi.checkThirdSession(wxUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		wxUser.setAppId(ThirdSessionHolder.getThirdSession().getAppId());
+		wxUser.setId(ThirdSessionHolder.getThirdSession().getWxUserId());
+		wxUser.setSessionKey(ThirdSessionHolder.getThirdSession().getSessionKey());
+		wxUser.setOpenId(ThirdSessionHolder.getThirdSession().getOpenId());
+		wxUser.setMallUserId(ThirdSessionHolder.getThirdSession().getMallUserId());
 		OrderInfo orderInfo = orderInfoService.getById(listGoodsAppraises.get(0).getOrderId());
 		if(!OrderInfoEnum.STATUS_3.getValue().equals(orderInfo.getStatus())){
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
@@ -120,11 +115,8 @@ public class GoodsAppraisesApi {
     */
 	@ApiOperation(value = "修改商品评价")
     @PutMapping
-    public R updateById(HttpServletRequest request, @RequestBody GoodsAppraises goodsAppraises){
-		R checkThirdSession = BaseApi.checkThirdSession(goodsAppraises, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R updateById(@RequestBody GoodsAppraises goodsAppraises){
+		goodsAppraises.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(goodsAppraisesService.updateById(goodsAppraises));
     }
 
@@ -135,12 +127,8 @@ public class GoodsAppraisesApi {
     */
 	@ApiOperation(value = "通过id删除商品评价")
     @DeleteMapping("/{id}")
-    public R removeById(HttpServletRequest request, @PathVariable String id){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(goodsAppraisesService.removeById(id));
+    public R removeById(@PathVariable String id){
+		return R.ok(goodsAppraisesService.removeById(id));
     }
 
 }

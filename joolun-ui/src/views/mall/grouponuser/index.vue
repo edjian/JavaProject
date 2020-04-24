@@ -70,7 +70,7 @@
                     currentPage: 1, // 当前页数
                     pageSize: 20, // 每页显示多少条
                     ascs: [],//升序字段
-                    descs: []//降序字段
+                    descs: 'create_time'//降序字段
                 },
                 paramsSearch: {},
                 tableLoading: false,

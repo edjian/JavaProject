@@ -16,6 +16,7 @@ import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.entity.CouponUser;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;
 import com.joolun.cloud.mall.common.entity.UserInfo;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -49,10 +50,7 @@ public class UserInfoApi {
     @GetMapping
     public R getById(HttpServletRequest request) {
 		UserInfo userInfo = new UserInfo();
-		R checkThirdSession = BaseApi.checkThirdSession(userInfo, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		userInfo.setId(ThirdSessionHolder.getMallUserId());
 		int couponNum = couponUserService.count(Wrappers.<CouponUser>lambdaQuery()
 				.eq(CouponUser :: getUserId, userInfo.getId())
 				.eq(CouponUser :: getStatus, CommonConstants.NO)

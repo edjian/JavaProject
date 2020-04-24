@@ -5,6 +5,13 @@
 
 version: '2'
 services:
+  base-redis:
+    image: redis:5.0.4
+    restart: always
+    container_name: base-redis
+    ports:
+      - 6379:6379
+
   base-mysql:
     build:
       context: ./
@@ -16,50 +23,48 @@ services:
     image: base-mysql
     ports:
       - 3306:3306
+    privileged: true
     volumes:
       - ./base-mysql:/var/lib/mysql
     command: --lower_case_table_names=1
-
-  base-redis:
-    image: redis:5.0.4
-    restart: always
-    container_name: base-redis
-    ports:
-      - 6379:6379
+    depends_on:
+      - base-redis
 
   # 参考https://nacos.io/zh-cn/docs/quick-start-docker.html
   base-nacos:
-    image: nacos/nacos-server:1.1.4
+    image: nacos/nacos-server:1.2.1
     restart: always
     container_name: base-nacos
     environment:
       - MODE=standalone
       - SPRING_DATASOURCE_PLATFORM=mysql
-      - MYSQL_MASTER_SERVICE_HOST=base-mysql
-      - MYSQL_MASTER_SERVICE_PORT=3306
-      - MYSQL_MASTER_SERVICE_DB_NAME=base_config
-      - MYSQL_MASTER_SERVICE_USER=root
-      - MYSQL_MASTER_SERVICE_PASSWORD=root
-      - MYSQL_SLAVE_SERVICE_HOST=base-mysql
-      - MYSQL_SLAVE_SERVICE_PORT=3306
+      - MYSQL_SERVICE_HOST=base-mysql
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_DB_NAME=base_config
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=root
+    privileged: true
+    volumes:
+      # nacos使用mysql8 需要使用插件目录，该目录存放mysql-connect-java8的驱动，将解压包内example/plugins复制到上级目录
+      - ./server/nacos-server/plugins/mysql/:/home/nacos/plugins/mysql/
     ports:
       - 8848:8848
     depends_on:
       - base-mysql
-
-  # 参考https://seata.io/zh-cn/docs/ops/deploy-by-docker.html
-  base-seata:
-    image: seataio/seata-server
-    restart: always
-    hostname: base-seata
-    environment:
-      - SEATA_CONFIG_NAME=file:/root/seata-config/registry
-    volumes:
-      - /mnt/install/joolun/server/seata-server/conf:/root/seata-config
-    ports:
-        - 8091:8091
-    depends_on:
-      - base-nacos
+#
+#  # 参考https://seata.io/zh-cn/docs/ops/deploy-by-docker.html
+#  base-seata:
+#    image: seataio/seata-server:1.2.0
+#    restart: always
+#    hostname: base-seata
+#    environment:
+#      - SEATA_CONFIG_NAME=file:/root/seata-config/registry
+#    volumes:
+#      - /mnt/install/joolun/server/seata-server/conf:/root/seata-config
+#    ports:
+#        - 8091:8091
+#    depends_on:
+#      - base-nacos
 
   base-gateway:
     build:
@@ -70,6 +75,8 @@ services:
     image: base-gateway
     ports:
       - 9999:9999
+    depends_on:
+      - base-nacos
 
   base-auth:
     build:
@@ -78,6 +85,8 @@ services:
     restart: always
     container_name: base-auth
     image: base-auth
+    depends_on:
+      - base-nacos
 
   base-upms:
     build:
@@ -86,6 +95,8 @@ services:
     restart: always
     container_name: base-upms
     image: base-upms
+    depends_on:
+      - base-nacos
 
   base-weixin:
     build:
@@ -94,6 +105,8 @@ services:
     restart: always
     container_name: base-weixin
     image: base-weixin
+    depends_on:
+      - base-nacos
 
   base-mall:
     build:
@@ -102,6 +115,8 @@ services:
     restart: always
     container_name: base-mall
     image: base-mall
+    depends_on:
+      - base-nacos
 
   base-codegen:
     build:
@@ -110,3 +125,5 @@ services:
     restart: always
     image: base-codegen
     container_name: base-codegen
+    depends_on:
+      - base-nacos

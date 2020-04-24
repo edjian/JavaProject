@@ -18,6 +18,7 @@ import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.CouponInfo;
 import com.joolun.cloud.mall.common.entity.CouponUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -50,11 +51,8 @@ public class CouponUserApi {
      */
 	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getCouponUserPage(HttpServletRequest request, Page page, CouponUser couponUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(couponUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getCouponUserPage(Page page, CouponUser couponUser) {
+		couponUser.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(couponUserService.page2(page, couponUser));
     }
 
@@ -65,12 +63,8 @@ public class CouponUserApi {
      */
 	@ApiOperation(value = "电子券用户记录查询")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(couponUserService.getById(id));
+    public R getById(@PathVariable("id") String id) {
+		return R.ok(couponUserService.getById(id));
     }
 
     /**
@@ -80,11 +74,8 @@ public class CouponUserApi {
      */
 	@ApiOperation(value = "电子券用户记录新增")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody CouponUser couponUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(couponUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R save(@RequestBody CouponUser couponUser) {
+		couponUser.setUserId(ThirdSessionHolder.getMallUserId());
 		//核验用户是否领取过该券，并未使用
 		int couponNum = couponUserService.count(Wrappers.<CouponUser>lambdaQuery()
 				.eq(CouponUser :: getUserId, couponUser.getUserId())

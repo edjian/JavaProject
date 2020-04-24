@@ -16,6 +16,7 @@ import com.joolun.cloud.mall.admin.service.BargainInfoService;
 import com.joolun.cloud.mall.common.entity.BargainCut;
 import com.joolun.cloud.mall.common.entity.BargainInfo;
 import com.joolun.cloud.mall.common.entity.BargainUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -48,11 +49,7 @@ public class BargainInfoApi {
      */
 	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, BargainInfo bargainInfo) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getPage(Page page, BargainInfo bargainInfo) {
         return R.ok(bargainInfoService.page2(page, bargainInfo));
     }
 
@@ -63,11 +60,8 @@ public class BargainInfoApi {
      */
 	@ApiOperation(value = "砍价查询")
     @GetMapping
-    public R get(HttpServletRequest request, BargainUser bargainUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R get(BargainUser bargainUser) {
+		bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
 		BargainInfo bargainInfo = bargainInfoService.getOne2(bargainUser);
 		if(bargainInfo.getBargainUser() != null){
 			//获取已砍金额

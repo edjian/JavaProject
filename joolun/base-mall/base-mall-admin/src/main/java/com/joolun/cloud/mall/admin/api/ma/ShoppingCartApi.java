@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.ShoppingCartService;
 import com.joolun.cloud.mall.common.entity.ShoppingCart;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -44,79 +45,55 @@ public class ShoppingCartApi{
 	 */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getShoppingCartPage(HttpServletRequest request, Page page, ShoppingCart shoppingCart) {
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(shoppingCart, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getShoppingCartPage(Page page, ShoppingCart shoppingCart) {
+		shoppingCart.setUserId(ThirdSessionHolder.getMallUserId());
 		return R.ok(shoppingCartService.page2(page, shoppingCart));
     }
 
 	/**
 	 * 数量
-	 * @param request
+	 * @param shoppingCart
 	 * @return
 	 */
 	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
-	public R getShoppingCartCount(HttpServletRequest request,ShoppingCart shoppingCart) {
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(shoppingCart, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R getShoppingCartCount(ShoppingCart shoppingCart) {
+		shoppingCart.setUserId(ThirdSessionHolder.getMallUserId());
 		return R.ok(shoppingCartService.count(Wrappers.query(shoppingCart)));
 	}
 
 	/**
 	 * 加入购物车
-	 * @param request
 	 * @param shoppingCart
 	 * @return
 	 */
 	@ApiOperation(value = "加入购物车")
 	@PostMapping
-	public R save(HttpServletRequest request, @RequestBody ShoppingCart shoppingCart){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(shoppingCart, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R save(@RequestBody ShoppingCart shoppingCart){
+		shoppingCart.setUserId(ThirdSessionHolder.getMallUserId());
 		return R.ok(shoppingCartService.save(shoppingCart));
 	}
 
 	/**
 	 * 修改购物车商品
-	 * @param request
 	 * @param shoppingCart
 	 * @return
 	 */
 	@ApiOperation(value = "修改购物车商品")
 	@PutMapping
-	public R edit(HttpServletRequest request, @RequestBody ShoppingCart shoppingCart){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(shoppingCart, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R edit(@RequestBody ShoppingCart shoppingCart){
+		shoppingCart.setUserId(ThirdSessionHolder.getMallUserId());
 		return R.ok(shoppingCartService.updateById(shoppingCart));
 	}
 
 	/**
 	 * 删除购物车商品数量
-	 * @param request
 	 * @param ids
 	 * @return
 	 */
 	@ApiOperation(value = "删除购物车商品数量")
 	@PostMapping("/del")
-	public R del(HttpServletRequest request, @RequestBody List<String> ids){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R del(@RequestBody List<String> ids){
 		return R.ok(shoppingCartService.removeByIds(ids));
 	}
 }

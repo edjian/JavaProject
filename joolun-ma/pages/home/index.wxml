@@ -36,6 +36,12 @@
 
   <view class="cu-list grid col-5 no-border">
     <view class="cu-item">
+      <navigator url="/pages/live/room-list/index" hover-class="none">
+        <view class="lg text-red cuIcon-video"></view>
+        <text class="text-black">观看直播</text>
+      </navigator>
+    </view>
+    <view class="cu-item">
       <navigator url="/pages/groupon/groupon-list/index" hover-class="none">
         <view class="lg text-blue cuIcon-group"></view>
         <text class="text-black">拼团活动</text>
@@ -57,12 +63,6 @@
       <navigator url="/pages/user/user-points-record/index" hover-class="none">
         <view class="lg text-pink cuIcon-medal"></view>
         <text class="text-black">我的积分</text>
-      </navigator>
-    </view>
-    <view class="cu-item">
-      <navigator url="/pages/user/user-collect/index" hover-class="none">
-        <view class="lg text-red cuIcon-like"></view>
-        <text class="text-black">我的收藏</text>
       </navigator>
     </view>
   </view>

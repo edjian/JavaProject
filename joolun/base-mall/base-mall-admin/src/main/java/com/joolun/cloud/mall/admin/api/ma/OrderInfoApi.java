@@ -35,6 +35,8 @@ import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import com.joolun.cloud.weixin.common.entity.WxUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
+import com.joolun.cloud.weixin.common.util.WxMaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -76,12 +78,8 @@ public class OrderInfoApi {
 	*/
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getOrderInfoPage(HttpServletRequest request, Page page, OrderInfo orderInfo) {
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(orderInfo, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getOrderInfoPage(Page page, OrderInfo orderInfo) {
+		orderInfo.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(orderInfoService.page2(page,orderInfo));
     }
 
@@ -93,12 +91,7 @@ public class OrderInfoApi {
 	@ApiOperation(value = "通过id查询商城订单")
     @GetMapping("/{id}")
     public R getById(HttpServletRequest request, @PathVariable("id") String id){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(orderInfoService.getById2(id));
+		return R.ok(orderInfoService.getById2(id));
     }
 
     /**
@@ -108,12 +101,9 @@ public class OrderInfoApi {
     */
 	@ApiOperation(value = "新增商城订单")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody PlaceOrderDTO placeOrderDTO){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(placeOrderDTO, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R save(@RequestBody PlaceOrderDTO placeOrderDTO){
+		placeOrderDTO.setUserId(ThirdSessionHolder.getMallUserId());
+		placeOrderDTO.setAppId(ThirdSessionHolder.getThirdSession().getAppId());
 		if(StrUtil.isBlank(placeOrderDTO.getPaymentType())){
 			R.failed(MyReturnCode.ERR_70002.getCode(), MyReturnCode.ERR_70002.getMsg());
 		}
@@ -133,12 +123,7 @@ public class OrderInfoApi {
     */
 	@ApiOperation(value = "通过id删除商城订单")
     @DeleteMapping("/{id}")
-    public R removeById(HttpServletRequest request, @PathVariable String id){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R removeById(@PathVariable String id){
 		OrderInfo orderInfo = orderInfoService.getById(id);
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
@@ -156,12 +141,7 @@ public class OrderInfoApi {
 	 */
 	@ApiOperation(value = "取消商城订单")
 	@PutMapping("/cancel/{id}")
-	public R orderCancel(HttpServletRequest request, @PathVariable String id){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R orderCancel(@PathVariable String id){
 		OrderInfo orderInfo = orderInfoService.getById(id);
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
@@ -180,12 +160,7 @@ public class OrderInfoApi {
 	 */
 	@ApiOperation(value = "商城订单确认收货")
 	@PutMapping("/receive/{id}")
-	public R orderReceive(HttpServletRequest request, @PathVariable String id){
-		//检验用户session登录
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R orderReceive(@PathVariable String id){
 		OrderInfo orderInfo = orderInfoService.getById(id);
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
@@ -200,7 +175,7 @@ public class OrderInfoApi {
 	/**
 	 * 调用统一下单接口，并组装生成支付所需参数对象.
 	 *
-	 * @param request 统一下单请求参数
+	 * @param orderInfo 统一下单请求参数
 	 * @return 返回 {@link com.github.binarywang.wxpay.bean.order}包下的类对象
 	 */
 	@ApiOperation(value = "调用统一下单接口")
@@ -208,10 +183,11 @@ public class OrderInfoApi {
 	public R unifiedOrder(HttpServletRequest request, @RequestBody OrderInfo orderInfo){
 		//检验用户session登录
 		WxUser wxUser = new WxUser();
-		R checkThirdSession = BaseApi.checkThirdSession(wxUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		wxUser.setAppId(ThirdSessionHolder.getThirdSession().getAppId());
+		wxUser.setId(ThirdSessionHolder.getThirdSession().getWxUserId());
+		wxUser.setSessionKey(ThirdSessionHolder.getThirdSession().getSessionKey());
+		wxUser.setOpenId(ThirdSessionHolder.getThirdSession().getOpenId());
+		wxUser.setMallUserId(ThirdSessionHolder.getThirdSession().getMallUserId());
 		orderInfo = orderInfoService.getById(orderInfo.getId());
 		if(orderInfo == null){
 			return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
@@ -255,10 +231,12 @@ public class OrderInfoApi {
 				}
 			}
 		}
-		String appId = BaseApi.getAppId(request);
+		String appId = WxMaUtil.getAppId(request);
 		WxPayUnifiedOrderRequest wxPayUnifiedOrderRequest = new WxPayUnifiedOrderRequest();
 		wxPayUnifiedOrderRequest.setAppid(appId);
-		wxPayUnifiedOrderRequest.setBody(orderInfo.getName());
+		String body = orderInfo.getName();
+		body = body.length() > 40 ? body.substring(0,39) : body;
+		wxPayUnifiedOrderRequest.setBody(body);
 		wxPayUnifiedOrderRequest.setOutTradeNo(orderInfo.getOrderNo());
 		wxPayUnifiedOrderRequest.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
 		wxPayUnifiedOrderRequest.setTradeType("JSAPI");
@@ -348,11 +326,7 @@ public class OrderInfoApi {
 	 */
 	@ApiOperation(value = "通过物流id查询订单物流")
 	@GetMapping("/orderlogistics/{logisticsId}")
-	public R getOrderLogistics(HttpServletRequest request, @PathVariable("logisticsId") String logisticsId){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R getOrderLogistics(@PathVariable("logisticsId") String logisticsId){
 		return R.ok(orderLogisticsService.getById(logisticsId));
 	}
 
@@ -363,11 +337,8 @@ public class OrderInfoApi {
 	 */
 	@ApiOperation(value = "统计各个状态订单计数")
 	@GetMapping("/countAll")
-	public R count(HttpServletRequest request,OrderInfo orderInfo){
-		R checkThirdSession = BaseApi.checkThirdSession(orderInfo, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R count(OrderInfo orderInfo){
+		orderInfo.setUserId(ThirdSessionHolder.getMallUserId());
 		Map<String, Integer> countAll = new HashMap<>();
 		countAll.put(OrderInfoEnum.STATUS_0.getValue(),orderInfoService.count(Wrappers.query(orderInfo).lambda()
 				.isNull(OrderInfo::getStatus)

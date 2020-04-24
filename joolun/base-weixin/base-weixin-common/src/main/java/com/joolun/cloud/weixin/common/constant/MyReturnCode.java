@@ -10,6 +10,7 @@ public enum MyReturnCode {
 
 	ERR_60000(60000, "系统错误，请稍候再试"){},//其它错误
 	ERR_60001(60001, "登录超时，请重新登录"){},
+	ERR_60002(60002, "session不能为空"){},
 	;
 
 	MyReturnCode(int code, String msg) {

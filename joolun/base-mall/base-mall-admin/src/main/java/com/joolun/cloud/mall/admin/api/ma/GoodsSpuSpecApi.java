@@ -44,11 +44,7 @@ public class GoodsSpuSpecApi {
 	 */
 	@ApiOperation(value = "获取商品规格")
 	@GetMapping("/tree")
-	public R getGoodsSpuSpecTree(HttpServletRequest request, GoodsSpuSpec goodsSpuSpec) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+	public R getGoodsSpuSpecTree(GoodsSpuSpec goodsSpuSpec) {
 		return R.ok(goodsSpuSpecService.tree(goodsSpuSpec));
 	}
 

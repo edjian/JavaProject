@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 /**
  * @author
  * 客户端异常处理
- * 1. 可以根据 AuthenticationException 不同细化异常处理
+ * 根据 AuthenticationException不同细化异常处理
  */
 @Slf4j
 @Component
@@ -32,7 +32,7 @@ public class ResourceAuthExceptionEntryPoint implements AuthenticationEntryPoint
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 						 AuthenticationException authException) {
 		response.setCharacterEncoding(CommonConstants.UTF8);
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		R<String> result = new R<>();
 		result.setCode(CommonConstants.FAIL);
 		if (authException != null) {

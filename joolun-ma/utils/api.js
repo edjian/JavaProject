@@ -22,7 +22,7 @@ const request = (url, method, data, showLoading) => {
       data: data,
       header: {
         'app-id': wx.getAccountInfoSync().miniProgram.appId,
-        'thirdSession': getApp().globalData.thirdSession
+        'third-session': getApp().globalData.thirdSession != null ? getApp().globalData.thirdSession : ''
       },
       success(res) {
         if (res.statusCode == 200) {
@@ -51,7 +51,7 @@ const request = (url, method, data, showLoading) => {
           console.log(res)
           wx.showModal({
             title: '提示',
-            content: res.errMsg + '',
+            content: res.errMsg + ':' + res.data.message + res.data.msg,
             success(res) {
 
             }
@@ -257,5 +257,11 @@ module.exports = {
   },
   grouponUserGet: (id) => {//拼团记录详情
     return request('/mall/api/ma/grouponuser/' + id, 'get', null, false)
+  },
+  wxTemplateMsgList: (data) => {//订阅消息列表
+    return request('/weixin/api/ma/wxtemplatemsg/list', 'post', data, false)
+  },
+  liveRoomInfoList: (data) => {//获取直播房间列表
+    return request('/weixin/api/ma/wxmalive/roominfo/list', 'get', data, true)
   },
 }

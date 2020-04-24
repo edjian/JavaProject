@@ -14,6 +14,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.UserCollectService;
 import com.joolun.cloud.mall.common.dto.UserCollectAddDTO;
 import com.joolun.cloud.mall.common.entity.UserCollect;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -46,11 +47,8 @@ public class UserCollectApi {
     */
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
-    public R getUserCollectPage(HttpServletRequest request, Page page, UserCollect userCollect) {
-		R checkThirdSession = BaseApi.checkThirdSession(userCollect, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getUserCollectPage(Page page, UserCollect userCollect) {
+		userCollect.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(userCollectService.page2(page,Wrappers.query(userCollect)));
     }
 
@@ -61,12 +59,9 @@ public class UserCollectApi {
     */
 	@ApiOperation(value = "新增用户收藏")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody UserCollectAddDTO userCollectAddDTO){
+    public R save(@RequestBody UserCollectAddDTO userCollectAddDTO){
 		UserCollect userCollect = new UserCollect();
-		R checkThirdSession = BaseApi.checkThirdSession(userCollect, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+		userCollect.setUserId(ThirdSessionHolder.getMallUserId());
 		List<UserCollect> listUserCollect = new ArrayList<>();
 		userCollectAddDTO.getRelationIds().forEach(relationId ->{
 			UserCollect userCollect2 = new UserCollect();
@@ -89,12 +84,8 @@ public class UserCollectApi {
     */
 	@ApiOperation(value = "通过id删除用户收藏")
     @DeleteMapping("/{id}")
-    public R removeById(HttpServletRequest request, @PathVariable String id){
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(userCollectService.removeById(id));
+    public R removeById(@PathVariable String id){
+		return R.ok(userCollectService.removeById(id));
     }
 
 }

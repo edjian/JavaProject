@@ -756,7 +756,7 @@
       },
       beforeVoiceUpload(file){
         this.tableLoading = true
-        const isType = file.type === 'audio/mp3' || file.type === 'audio/wma' || file.type === 'audio/wav' || file.type === 'audio/amr';
+        const isType = file.type === 'audio/mp3' || file.type === 'audio/wma' || file.type === 'audio/wav' || file.type === 'audio/amr' || file.type === 'audio/mpeg';
         const isLt = file.size / 1024 / 1024 < 2
         if (!isType) {
           this.$message.error('上传语音格式不对!')

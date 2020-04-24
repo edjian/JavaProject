@@ -9,19 +9,17 @@
 package com.joolun.cloud.mall.admin.api.ma;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
-import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.admin.service.BargainUserService;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.BargainUser;
+import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -47,11 +45,8 @@ public class BargainUserApi {
      */
 	@ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    public R getPage(HttpServletRequest request, Page page, BargainUser bargainUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R getPage(Page page, BargainUser bargainUser) {
+		bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(bargainUserService.page2(page, bargainUser));
     }
 
@@ -62,12 +57,8 @@ public class BargainUserApi {
      */
 	@ApiOperation(value = "砍价记录查询")
     @GetMapping("/{id}")
-    public R getById(HttpServletRequest request, @PathVariable("id") String id) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(bargainUserService.getById(id));
+    public R getById(@PathVariable("id") String id) {
+		return R.ok(bargainUserService.getById(id));
     }
 
     /**
@@ -77,11 +68,8 @@ public class BargainUserApi {
      */
 	@ApiOperation(value = "砍价记录新增，发起砍价")
     @PostMapping
-    public R save(HttpServletRequest request, @RequestBody BargainUser bargainUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R save(@RequestBody BargainUser bargainUser) {
+		bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
 		if(StrUtil.isBlank(bargainUser.getBargainId())){
 			R.failed(MyReturnCode.ERR_80005.getCode(), MyReturnCode.ERR_80005.getMsg());
 		}
@@ -95,11 +83,8 @@ public class BargainUserApi {
      */
 	@ApiOperation(value = "砍价记录修改")
     @PutMapping
-    public R updateById(HttpServletRequest request, @RequestBody BargainUser bargainUser) {
-		R checkThirdSession = BaseApi.checkThirdSession(bargainUser, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
+    public R updateById(@RequestBody BargainUser bargainUser) {
+		bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(bargainUserService.updateById(bargainUser));
     }
 
@@ -111,11 +96,7 @@ public class BargainUserApi {
 	@ApiOperation(value = "砍价记录删除")
     @DeleteMapping("/{id}")
     public R removeById(HttpServletRequest request, @PathVariable String id) {
-		R checkThirdSession = BaseApi.checkThirdSession(null, request);
-		if(!checkThirdSession.isOk()) {//检验失败，直接返回失败信息
-			return checkThirdSession;
-		}
-        return R.ok(bargainUserService.removeById(id));
+		return R.ok(bargainUserService.removeById(id));
     }
 
 }

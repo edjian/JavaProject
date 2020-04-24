@@ -66,7 +66,7 @@ public class GenUtils {
 	}
 
 	/**
-	 * 生成代码预览
+	 * 生成代码
 	 */
 	public Map<String, String> generatorCode(GenTable genTable, Map<String, String> table,
 							  List<Map<String, String>> columns, ZipOutputStream zip) {
