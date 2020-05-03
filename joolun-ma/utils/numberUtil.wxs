@@ -1,15 +1,15 @@
 //数字工具
 var numberUtil = {
   numberFormat: function (value,num) {//小数点精确到指定位数
-    return value.toFixed(num)
+    return parseFloat(value.toFixed(num))
   },
   numberSubtract: function (value1, value2) {//减法运算value1-value2
     var v = parseFloat(value1) - parseFloat(value2)
-    return v.toFixed(2)
+    return parseFloat(v.toFixed(2))
   },
   numberAddition: function (value1, value2) {//加法运算value1+value2
     var v = parseFloat(value1) + parseFloat(value2)
-    return v.toFixed(2)
+    return parseFloat(v.toFixed(2))
   },
   getAreaDistance: function (lat1, lng1, lat2, lng2) {//计算经纬距离
     lat1 = lat1 || 0;

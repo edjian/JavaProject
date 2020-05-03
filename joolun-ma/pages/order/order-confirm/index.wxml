@@ -162,8 +162,8 @@
             couponUserInfo="{{item}}"
             toUse="{{false}}"
           />
-          <radio class="radio red basis-xs text-center vertical-center" value="{{index}}" disabled="{{totalCouponDeductPrice == 0 && item.premiseAmount > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}"></radio>
-          <text class="text-red text-sm response text-center cuIcon-warn margin-xs" wx:if="{{totalCouponDeductPrice == 0 && item.premiseAmount > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}">订单金额未满¥{{item.premiseAmount}}，无法使用</text>
+          <radio class="radio red basis-xs text-center vertical-center" value="{{index}}" disabled="{{numberUtil.numberSubtract(item.premiseAmount,totalCouponDeductPrice) > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}"></radio>
+          <text class="text-red text-sm response text-center cuIcon-warn margin-xs" wx:if="{{numberUtil.numberSubtract(item.premiseAmount,totalCouponDeductPrice) > numberUtil.numberAddition(paymentPrice,totalPointsDeductPrice)}}">订单金额未满¥{{item.premiseAmount}}，无法使用</text>
         </view>
       </radio-group>
       <view class="margin">
