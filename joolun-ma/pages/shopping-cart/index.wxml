@@ -34,12 +34,14 @@
               <view class="desc row-info">
                 <view class="text-black margin-top-sm overflow-2">{{item.goodsSpu.name}}</view>
                 <view class="text-gray text-sm margin-top-xs cu-tag round" catchtap bindtap="changeSpecs" data-spuid="{{item.goodsSpu.id}}" data-index="{{index}}" wx:if="{{item.goodsSpu.specType == '1'}}">
-                  <view wx:if="{{item.goodsSku}}" wx:for="{{item.specs}}" wx:for-item="item2" 
-                    wx:for-index="index2" wx:key="index">{{item2.specValueName}}<view class="display-ib" wx:if="{{item.specs.length != (index2+1)}}">;</view>
-                  </view>
-                  <view wx:if="{{!item.goodsSku}}">
-                    {{item.specInfo}}
-                  </view>
+                  <text class="overflow-1">
+                    <text wx:if="{{item.goodsSku}}" wx:for="{{item.specs}}" wx:for-item="item2" 
+                      wx:for-index="index2" wx:key="index">{{item2.specValueName}}<text wx:if="{{item.specs.length != (index2+1)}}">;</text>
+                    </text>
+                    <text wx:if="{{!item.goodsSku}}">
+                      {{item.specInfo}}
+                    </text>
+                  </text>
                   <text class="cuIcon-unfold"></text>
                 </view>
                 <view wx:if="{{item.goodsSku}}" class="text-{{item.quantity > item.goodsSku.stock ? 'red' : 'gray'}} margin-top-sm text-right">库存{{item.goodsSku.stock}}</view>
@@ -115,7 +117,6 @@
     </view>
   </view>
   <goods-card goodsList="{{goodsListRecom}}"/>
-  <ad unit-id="adunit-80d788ab8518b5b3" class="margin-top-sm"></ad>
 </view>
 <view class="cu-bar bg-white tabbar border shop foot">
   <view class="flex align-center">

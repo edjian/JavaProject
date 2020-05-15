@@ -8,6 +8,7 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
@@ -22,6 +23,7 @@ import com.joolun.cloud.mall.common.entity.UserInfo;
 import com.joolun.cloud.mall.admin.mapper.UserInfoMapper;
 import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
+import com.joolun.cloud.weixin.common.entity.WxUser;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,20 +48,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 	@Transactional(rollbackFor = Exception.class)
 	public R saveByWxUser(WxOpenDataDTO wxOpenDataDTO) {
 		//修改微信用户信息
-		R r = feignWxUserService.save(wxOpenDataDTO, SecurityConstants.FROM_IN);
+		R<WxUser> r = feignWxUserService.save(wxOpenDataDTO, SecurityConstants.FROM_IN);
 		if(!r.isOk()){
 			throw new RuntimeException(r.getMsg());
 		}
 		//修改商城用户信息
-		Map map = (Map<String, Object>) r.getData();
-		if(map.get("mallUserId") != null){
-			UserInfo userInfo = baseMapper.selectById(String.valueOf(map.get("mallUserId")));
-			userInfo.setNickName(String.valueOf(map.get("nickName")));
-			userInfo.setHeadimgUrl(String.valueOf(map.get("headimgUrl")));
-			userInfo.setSex(String.valueOf(map.get("sex")));
-			userInfo.setCity(String.valueOf(map.get("city")));
-			userInfo.setCountry(String.valueOf(map.get("country")));
-			userInfo.setProvince(String.valueOf(map.get("province")));
+		WxUser wxUser = r.getData();
+		if(wxUser != null && StrUtil.isNotBlank(wxUser.getMallUserId())){
+			UserInfo userInfo = baseMapper.selectById(wxUser.getMallUserId());
+			userInfo.setNickName(wxUser.getNickName());
+			userInfo.setHeadimgUrl(wxUser.getHeadimgUrl());
+			userInfo.setSex(wxUser.getSex());
+			userInfo.setCity(wxUser.getCity());
+			userInfo.setCountry(wxUser.getCountry());
+			userInfo.setProvince(wxUser.getProvince());
 			if(MallConstants.USER_GRADE_0.equals(userInfo.getUserGrade())){
 				userInfo.setUserGrade(MallConstants.USER_GRADE_1);//1：普通会员
 				//获取会员初始积分

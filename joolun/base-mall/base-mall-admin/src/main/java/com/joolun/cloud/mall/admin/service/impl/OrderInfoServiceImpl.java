@@ -199,9 +199,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			request.setAppid(orderInfo.getAppId());
 			request.setTransactionId(orderInfo.getTransactionId());
 			request.setOutTradeNo(orderInfo.getOrderNo());
-			R r = feignWxPayService.queryOrder(request, SecurityConstants.FROM_IN);
+			R<WxPayOrderQueryResult> r = feignWxPayService.queryOrder(request, SecurityConstants.FROM_IN);
 			if(r.isOk()){
-				WxPayOrderQueryResult wxPayOrderQueryResult = BeanUtil.mapToBean((Map<Object, Object>) r.getData(), WxPayOrderQueryResult.class,true);
+				WxPayOrderQueryResult wxPayOrderQueryResult = r.getData();
 				if(!WxPayConstants.WxpayTradeStatus.NOTPAY.equals(wxPayOrderQueryResult.getTradeState())){//只有未支付的订单能取消
 					throw new RuntimeException("只有未支付的订单能取消");
 				}

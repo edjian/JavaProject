@@ -232,41 +232,43 @@
       handleCodeView(row){
         getGenTable(row.tableName).then(response => {
           let data = response.data.data
-          if(data == null){
-            data = {
-              tableName: row.tableName,
-              tableComment: '',
-              packageName: '',
-              moduleName: '',
-              author: '',
-              tablePrefix: ''
-            }
+          if(data){
+            data.sysDatasourceId = this.q.sysDatasourceId
+            generatorView(data).then(response => {
+              this.preview.data = response.data.data
+              this.preview.open = true
+            })
+          }else{
+            let that = this
+            this.$confirm('请先配置生成参数', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(function () {
+              that.handleConfig(row)
+            })
           }
-          data.sysDatasourceId = this.q.sysDatasourceId
-          generatorView(data).then(response => {
-            this.preview.data = response.data.data
-            this.preview.open = true
-          })
         })
       },
       //生成代码
       generatorCode(row) {
         getGenTable(row.tableName).then(response => {
           let data = response.data.data
-          if(data == null){
-            data = {
-              tableName: row.tableName,
-              tableComment: '',
-              packageName: '',
-              moduleName: '',
-              author: '',
-              tablePrefix: ''
-            }
-          }
-          data.sysDatasourceId = this.q.sysDatasourceId
-          generatorCode(data).then(() => {
+          if(data){
+            data.sysDatasourceId = this.q.sysDatasourceId
+            generatorCode(data).then(() => {
 
-          })
+            })
+          }else{
+            let that = this
+            this.$confirm('请先配置生成参数', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(function () {
+              that.handleConfig(row)
+            })
+          }
         })
       },
       //生成配置

@@ -69,14 +69,14 @@ public class GenUtils {
 	 * 生成代码
 	 */
 	public Map<String, String> generatorCode(GenTable genTable, Map<String, String> table,
-							  List<Map<String, String>> columns, ZipOutputStream zip) {
+							  List<Map<String, Object>> columns, ZipOutputStream zip) {
 		//配置信息
 		Configuration config = getConfig();
 		boolean hasBigDecimal = false;
 		//表信息
 		TableEntity tableEntity = new TableEntity();
 		tableEntity.setTableName(table.get("tableName"));
-
+		tableEntity.setGenKey(genTable.getGenKey());
 		if (StrUtil.isNotBlank(genTable.getTableComment())) {
 			tableEntity.setComments(genTable.getTableComment());
 		} else {
@@ -97,12 +97,14 @@ public class GenUtils {
 
 		//列信息
 		List<ColumnEntity> columnList = new ArrayList<>();
-		for (Map<String, String> column : columns) {
+		for (Map<String, Object> column : columns) {
 			ColumnEntity columnEntity = new ColumnEntity();
-			columnEntity.setColumnName(column.get("columnName"));
-			columnEntity.setDataType(column.get("dataType"));
-			columnEntity.setComments(column.get("columnComment"));
-			columnEntity.setExtra(column.get("extra"));
+			columnEntity.setColumnName(String.valueOf(column.get("columnName")));
+			columnEntity.setDataType(String.valueOf(column.get("dataType")));
+			columnEntity.setComments(String.valueOf(column.get("columnComment")));
+			columnEntity.setExtra(String.valueOf(column.get("extra")));
+			columnEntity.setIsNullable(String.valueOf(column.get("IS_NULLABLE")));
+			columnEntity.setCharacterMaximumLength((Long)column.get("CHARACTER_MAXIMUM_LENGTH"));
 
 			//列名转换成Java属性名
 			String attrName = columnToJava(columnEntity.getColumnName());
@@ -116,7 +118,7 @@ public class GenUtils {
 				hasBigDecimal = true;
 			}
 			//是否主键
-			if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
+			if ("PRI".equalsIgnoreCase(String.valueOf(column.get("columnKey"))) && tableEntity.getPk() == null) {
 				tableEntity.setPk(columnEntity);
 			}
 
@@ -139,6 +141,7 @@ public class GenUtils {
 		map.put("pk", tableEntity.getPk());
 		map.put("className", tableEntity.getCaseClassName());
 		map.put("classname", tableEntity.getLowerClassName());
+		map.put("genKey", tableEntity.getGenKey());
 		map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
 		map.put("columns", tableEntity.getColumns());
 		map.put("hasBigDecimal", hasBigDecimal);
@@ -186,7 +189,8 @@ public class GenUtils {
 					//添加到zip
 					zip.putNextEntry(new ZipEntry(Objects
 							.requireNonNull(getFileName(template, tableEntity.getCaseClassName()
-									, map.get("package").toString(), map.get("moduleName").toString()))));
+									, map.get("package").toString(), map.get("moduleName").toString()
+									, map.get("genKey").toString()))));
 					IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
 					IoUtil.close(sw);
 					zip.closeEntry();
@@ -229,7 +233,7 @@ public class GenUtils {
 	/**
 	 * 获取文件名
 	 */
-	private String getFileName(String template, String className, String packageName, String moduleName) {
+	private String getFileName(String template, String className, String packageName, String moduleName, String genKey) {
 		String packagePath = CommonConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
 		if (StringUtils.isNotBlank(packageName)) {
 			packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
@@ -265,17 +269,17 @@ public class GenUtils {
 
 		if (template.contains(INDEX_VUE_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" +
-					File.separator + moduleName + File.separator + className.toLowerCase() + File.separator + "index.vue";
+					File.separator + genKey + File.separator + className.toLowerCase() + File.separator + "index.vue";
 		}
 
 		if (template.contains(API_JS_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" +
-					File.separator + moduleName + File.separator + className.toLowerCase() + ".js";
+					File.separator + genKey + File.separator + className.toLowerCase() + ".js";
 		}
 
 		if (template.contains(CRUD_JS_VM)) {
 			return CommonConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "const" + File.separator + "crud" +
-					File.separator + moduleName + File.separator + className.toLowerCase() + ".js";
+					File.separator + genKey + File.separator + className.toLowerCase() + ".js";
 		}
 
 		return null;

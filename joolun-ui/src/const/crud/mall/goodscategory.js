@@ -36,6 +36,14 @@ export const tableOption = {
       label: '名称',
       prop: 'name',
       align: 'left',
+      rules: [{
+        required: true,
+        message: '请输入名称',
+        trigger: 'blur'
+      },{
+        max: 16,
+        message: '长度在不能超过16个字符'
+      }]
     },
     {
       label: '图片',
@@ -64,7 +72,11 @@ export const tableOption = {
     {
       label: '描述',
       prop: 'description',
-      hide: true
+      hide: true,
+      rules: [{
+        max: 255,
+        message: '长度在不能超过255个字符'
+      }]
     },
 	  {
       label: '创建时间',

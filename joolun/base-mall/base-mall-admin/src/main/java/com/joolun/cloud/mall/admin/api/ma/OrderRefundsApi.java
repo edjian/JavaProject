@@ -111,10 +111,10 @@ public class OrderRefundsApi {
 	@PostMapping("/notify-refunds")
 	public String notifyRefunds(@RequestBody String xmlData) {
 		log.info("退款回调:"+xmlData);
-		R r = feignWxPayService.notifyRefunds(xmlData, SecurityConstants.FROM_IN);
+		R<WxPayRefundNotifyResult> r = feignWxPayService.notifyRefunds(xmlData, SecurityConstants.FROM_IN);
 		if(r.isOk()){
 			TenantContextHolder.setTenantId(r.getMsg());
-			WxPayRefundNotifyResult notifyResult = BeanUtil.mapToBean((Map<Object, Object>) r.getData(),WxPayRefundNotifyResult.class,true);
+			WxPayRefundNotifyResult notifyResult = r.getData();
 			OrderRefunds orderRefunds = orderRefundsService.getById(notifyResult.getReqInfo().getOutRefundNo());
 			if(orderRefunds != null){
 				orderRefundsService.notifyRefunds(orderRefunds);

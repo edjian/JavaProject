@@ -3,7 +3,7 @@ import {isURL} from '@/util/validate'
 import {getUserInfo, loginByPhone, loginByThirdParty, loginByUsername, logout, refreshToken} from '@/api/login'
 import {deepClone, encryption} from '@/util/util'
 import webiste from '@/const/website'
-import {GetMenu} from '@/api/admin/menu'
+import {GetMenu} from '@/api/upms/menu'
 import { securityKey } from '@/config/env'
 
 function addPath(ele, first) {

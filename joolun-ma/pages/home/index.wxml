@@ -115,8 +115,6 @@
     </view>
   </view>
 
-  <ad unit-id="adunit-80d788ab8518b5b3"></ad>
-
   <view class="cu-bar justify-center bg-white margin-top-sm">
     <view class='action border-title'>
       <text class='text-orange cuIcon-like'></text> 猜你喜欢

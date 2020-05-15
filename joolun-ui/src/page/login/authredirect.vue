@@ -39,7 +39,7 @@
           let state = params.state.split("-")[0]
           let code = params.code
           request({
-            url: '/admin/thirdparty/bind',
+            url: '/upms/thirdparty/bind',
             method: 'post',
             params: {state, code}
           }).then(() => {
@@ -65,7 +65,7 @@
         let end = url.indexOf("#")
         let code = url.substring(start, end)
         request({
-          url: '/admin/thirdparty/bind',
+          url: '/upms/thirdparty/bind',
           method: 'post',
           params: {state, code}
         }).then(() => {

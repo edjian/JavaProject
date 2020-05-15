@@ -27,10 +27,10 @@
   disabled="{{loading}}" type="" wx:if="{{orderInfo.isPay == '0' && !orderInfo.status}}">
     付款
   </button>
-  <button class="cu-btn round line-red margin-right" bindtap="urgeOrder" loading="{{loading}}" 
+  <!-- <button class="cu-btn round line-red margin-right" bindtap="urgeOrder" loading="{{loading}}" 
   disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '1'}}">
     提醒卖家发货
-  </button>
+  </button> -->
   <button class="cu-btn round line-red margin-right" bindtap="orderReceive" loading="{{loading}}" 
   disabled="{{loading}}" type="" wx:if="{{orderInfo.status == '2'}}">
     确认收货

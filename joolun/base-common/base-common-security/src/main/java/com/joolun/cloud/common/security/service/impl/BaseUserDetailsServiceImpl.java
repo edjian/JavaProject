@@ -16,13 +16,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,14 +48,16 @@ public class BaseUserDetailsServiceImpl implements BaseUserDetailsService {
 	@Override
 	@SneakyThrows
 	public UserDetails loadUserByUsername(String username) {
+		//查询缓存中是否有此用户信息，有则直接返回
 		Cache cache = cacheManager.getCache(CacheConstants.USER_CACHE);
 		if (cache != null && cache.get(username) != null) {
 			return (BaseUser) cache.get(username).get();
 		}
-
+		//缓存中无此用户信息，feign查询
 		R<UserInfo> result = feignUserService.info(username, SecurityConstants.FROM_IN);
 		UserDetails userDetails = getUserDetails(result);
 		if(userDetails.isAccountNonLocked()){
+			//合法用户，放入缓存
 			cache.put(username, userDetails);
 		}
 		return userDetails;

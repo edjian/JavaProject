@@ -65,7 +65,7 @@
   import 'froala-editor/js/plugins/image_manager.min.js'
   import 'froala-editor/css/plugins/image_manager.min.css'
   import store from "@/store"
-  import {getObj2} from '@/api/admin/configeditor'
+  import {getObj2} from '@/api/upms/configeditor'
 
   export default {
     props: {

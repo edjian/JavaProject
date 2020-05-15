@@ -29,6 +29,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入名称',
                 trigger: 'blur'
+            },{
+              max: 100,
+              message: '长度在不能超过100个字符'
             }]
         },
         {

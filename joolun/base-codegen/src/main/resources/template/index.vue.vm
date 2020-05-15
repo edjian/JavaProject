@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import {getPage, getObj, addObj, putObj, delObj} from '@/api/${moduleName}/${pathName}'
-    import {tableOption} from '@/const/crud/${moduleName}/${pathName}'
+    import {getPage, getObj, addObj, putObj, delObj} from '@/api/${genKey}/${pathName}'
+    import {tableOption} from '@/const/crud/${genKey}/${pathName}'
     import {mapGetters} from 'vuex'
 
     export default {
@@ -59,10 +59,10 @@
             ...mapGetters(['permissions']),
             permissionList() {
                 return {
-                    addBtn: this.permissions['${moduleName}:${pathName}:add'] ? true : false,
-                    delBtn: this.permissions['${moduleName}:${pathName}:del'] ? true : false,
-                    editBtn: this.permissions['${moduleName}:${pathName}:edit'] ? true : false,
-                    viewBtn: this.permissions['${moduleName}:${pathName}:get'] ? true : false
+                    addBtn: this.permissions['${genKey}:${pathName}:add'] ? true : false,
+                    delBtn: this.permissions['${genKey}:${pathName}:del'] ? true : false,
+                    editBtn: this.permissions['${genKey}:${pathName}:edit'] ? true : false,
+                    viewBtn: this.permissions['${genKey}:${pathName}:get'] ? true : false
                 };
             }
         },

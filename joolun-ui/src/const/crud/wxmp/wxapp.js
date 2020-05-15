@@ -6,6 +6,42 @@
  * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
+import {getList} from '@/api/wxmp/wxapp'
+
+const validateAppID = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      id: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('AppId已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
+const validateWeixinSign = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      weixinSign: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('weixinSign已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
 export const tableOption = {
   dialogType: 'drawer',
   dialogWidth: '80%',
@@ -51,7 +87,7 @@ export const tableOption = {
         value: 'id'
       },
       defaultExpandAll: true,
-      dicUrl: '/admin/organ/tree'
+      dicUrl: '/upms/organ/tree'
     },
     {
       label: '公众号名称',
@@ -71,7 +107,7 @@ export const tableOption = {
       prop: 'weixinType',
       type: 'select',
       align:'left',
-      dicUrl: '/admin/dict/type/weixin_type',
+      dicUrl: '/upms/dict/type/weixin_type',
       sortable: true,
       search: true,
       slot: true,
@@ -87,7 +123,7 @@ export const tableOption = {
       prop: 'verifyType',
       type: 'select',
       align:'left',
-      dicUrl: '/admin/dict/type/wx_verify_type',
+      dicUrl: '/upms/dict/type/wx_verify_type',
       sortable:true,
       search:true,
       slot:true,
@@ -102,10 +138,14 @@ export const tableOption = {
       prop: 'weixinSign',
       search:true,
       hide:true,
+      editDisabled: true,
       rules: [{
         required: true,
         message: "请输入微信原始ID",
         trigger: "blur"
+      },{
+        validator: validateWeixinSign,
+        trigger: 'blur'
       }],
       tip: '在微信公众平台（mp.weixin.qq.com）的菜单【设置】-【公众号设置】-【帐号详情】中能找到原始ID'
     },
@@ -119,12 +159,21 @@ export const tableOption = {
         required: true,
         message: "请输入AppID",
         trigger: "blur"
+      },{
+        validator: validateAppID,
+        trigger: 'blur'
       }],
       tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【基本配置】中能找到AppID'
     },
     {
       label: 'AppSecret',
       prop: 'secret',
+      type:'password',
+      rules: [{
+        required: true,
+        message: "请输入AppSecret",
+        trigger: "blur"
+      }],
       hide: true,
       tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【基本配置】中能找到AppSecret'
     },

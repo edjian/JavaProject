@@ -22,7 +22,15 @@ export const tableOption = {
         {
             label: '名称',
             prop: 'name',
-            sortable: true
+            sortable: true,
+            rules: [{
+              required: true,
+              message: '请输入名称',
+              trigger: 'blur'
+            },{
+              max: 50,
+              message: '长度在不能超过50个字符'
+            }]
         },
         {
             label: '创建时间',

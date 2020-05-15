@@ -37,9 +37,10 @@ export const tableOption = {
     {
       label: '头像',
       prop: 'headimgUrl',
-      type:'upload',
       imgWidth:50,
-      listType:'picture-img',
+      dataType: 'string',
+      type: 'upload',
+      listType: 'picture-img',
       editDisplay:false
     },
     {
@@ -59,7 +60,7 @@ export const tableOption = {
       search:true,
       editDisplay:false,
       slot:true,
-      dicUrl: '/admin/dict/type/wx_sex'
+      dicUrl: '/upms/dict/type/wx_sex'
     },
     {
       label: '所在国家',

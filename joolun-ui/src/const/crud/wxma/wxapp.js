@@ -6,6 +6,42 @@
  * 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
+import {getList} from '@/api/wxma/wxapp'
+
+const validateAppID = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      id: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('AppId已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
+const validateWeixinSign = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getList({
+      weixinSign: value
+    }).then(response => {
+      let data = response.data
+      if (data.length > 0) {
+        callback(new Error('weixinSign已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
 export const tableOption = {
   dialogType: 'drawer',
   dialogWidth: '80%',
@@ -64,7 +100,7 @@ export const tableOption = {
           type:'upload',
           span: 24,
           listType: 'picture-img',
-          action: '/admin/file/upload?fileType=image&dir=wx/',
+          action: '/upms/file/upload?fileType=image&dir=wx/',
           propsHttp: {
             url: 'link'
           },
@@ -86,7 +122,7 @@ export const tableOption = {
             value: 'id'
           },
           defaultExpandAll: true,
-          dicUrl: '/admin/organ/tree'
+          dicUrl: '/upms/organ/tree'
         },
         {
           label: '小程序名称',
@@ -101,10 +137,14 @@ export const tableOption = {
         {
           label: '微信原始ID',
           prop: 'weixinSign',
+          editDisabled: true,
           rules: [{
             required: true,
             message: "请输入微信原始ID",
             trigger: "blur"
+          },{
+            validator: validateWeixinSign,
+            trigger: 'blur'
           }],
           tip: '在微信公众平台（mp.weixin.qq.com）的菜单【设置】中能找到原始ID'
         },
@@ -116,15 +156,19 @@ export const tableOption = {
             required: true,
             message: "请输入AppID",
             trigger: "blur"
+          },{
+            validator: validateAppID,
+            trigger: 'blur'
           }],
           tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【开发设置】中能找到AppID'
         },
         {
           label: 'AppSecret',
           prop: 'secret',
+          type:'password',
           rules: [{
             required: true,
-            message: "请输入AppID",
+            message: "请输入AppSecret",
             trigger: "blur"
           }],
           tip: '在微信公众平台（mp.weixin.qq.com）的菜单【开发】-【开发设置】中能找到AppSecret'

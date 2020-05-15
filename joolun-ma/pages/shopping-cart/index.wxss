@@ -7,11 +7,16 @@
   width: 200rpx
 }
 .row-img{
-  width: 200rpx!important;
-  height: 200rpx!important;
+  width: 30%!important;
   border-radius: 10rpx
 }
 .row-info{
   display: block!important;
   width: 60%;
+}
+.row-specs{
+  width: 200px;
+}
+.cu-tag {
+  white-space: unset!important
 }

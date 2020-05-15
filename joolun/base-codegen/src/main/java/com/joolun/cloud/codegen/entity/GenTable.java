@@ -88,6 +88,11 @@ public class GenTable extends Model<GenTable> {
      */
     @ApiModelProperty(value = "表前缀")
     private String tablePrefix;
+	/**
+	 * 服务的路由key
+	 */
+	@ApiModelProperty(value = "服务的路由key")
+	private String genKey;
 
 	@TableField(exist = false)
     private String sysDatasourceId;

@@ -49,7 +49,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { validatePhone } from "@/util/validate"
-  import { sendCode } from "@/api/admin/phone"
+  import { sendCode } from "@/api/upms/phone"
   const MSGINIT = "发送验证码",
           MSGSCUCCESS = "${time}秒后可重发",
           MSGTIME = 60;

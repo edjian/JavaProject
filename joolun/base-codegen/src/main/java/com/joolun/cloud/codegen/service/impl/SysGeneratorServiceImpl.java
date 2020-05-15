@@ -52,7 +52,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 		//查询表信息
 		Map<String, String> table = queryTable(genTable.getTableName());
 		//查询列信息
-		List<Map<String, String>> columns = queryColumns(genTable.getTableName());
+		List<Map<String, Object>> columns = queryColumns(genTable.getTableName());
 		return GenUtils.generatorCode(genTable, table, columns, null);
 	}
 
@@ -73,7 +73,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 		//查询表信息
 		Map<String, String> table = queryTable(genTable.getTableName());
 		//查询列信息
-		List<Map<String, String>> columns = queryColumns(genTable.getTableName());
+		List<Map<String, Object>> columns = queryColumns(genTable.getTableName());
 		//生成代码
 		GenUtils.generatorCode(genTable, table, columns, zip);
 		IoUtil.close(zip);
@@ -84,7 +84,7 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 		return sysGeneratorMapper.queryTable(tableName);
 	}
 
-	private List<Map<String, String>> queryColumns(String tableName) {
+	private List<Map<String, Object>> queryColumns(String tableName) {
 		return sysGeneratorMapper.queryColumns(tableName);
 	}
 }

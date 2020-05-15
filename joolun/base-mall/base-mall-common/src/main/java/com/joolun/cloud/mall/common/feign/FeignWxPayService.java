@@ -1,8 +1,12 @@
 package com.joolun.cloud.mall.common.feign;
 
+import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
+import com.github.binarywang.wxpay.bean.notify.WxPayRefundNotifyResult;
 import com.github.binarywang.wxpay.bean.request.WxPayOrderQueryRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryResult;
+import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.constant.ServiceNameConstants;
@@ -33,7 +37,7 @@ public interface FeignWxPayService {
 	 * @return
 	 */
 	@PostMapping("/wxpay/notifyOrder")
-	R notifyOrder(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxPayOrderNotifyResult> notifyOrder(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 * <pre>
@@ -47,7 +51,7 @@ public interface FeignWxPayService {
 	 * @throws WxPayException the wx pay exception
 	 */
 	@PostMapping("/wxpay/refundOrder")
-	R refundOrder(@RequestBody WxPayRefundRequest request, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxPayRefundResult> refundOrder(@RequestBody WxPayRefundRequest request, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 * 退款回调
@@ -56,7 +60,7 @@ public interface FeignWxPayService {
 	 * @return
 	 */
 	@PostMapping("/wxpay/notifyRefunds")
-	R notifyRefunds(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxPayRefundNotifyResult> notifyRefunds(@RequestBody String xmlData, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 * <pre>
@@ -76,5 +80,5 @@ public interface FeignWxPayService {
 	 * @throws WxPayException the wx pay exception
 	 */
 	@PostMapping("/wxpay/queryOrder")
-	R queryOrder(@RequestBody WxPayOrderQueryRequest request, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxPayOrderQueryResult> queryOrder(@RequestBody WxPayOrderQueryRequest request, @RequestHeader(SecurityConstants.FROM) String from);
 }

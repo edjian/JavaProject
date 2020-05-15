@@ -46,6 +46,14 @@ export function putObj(obj) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/weixin/wxapp/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function createQrCode(obj) {
   return request({
     url: '/weixin/wxapp/qrCode',

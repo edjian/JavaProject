@@ -44,7 +44,7 @@ public class ${className}Controller {
      */
     @ApiOperation(value = "分页列表")
     @GetMapping("/page")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}:${pathName}:index')")
+    @PreAuthorize("@ato.hasAuthority('${genKey}:${pathName}:index')")
     public R getPage(Page page, ${className} ${classname}) {
         return R.ok(${classname}Service.page(page, Wrappers.query(${classname})));
     }
@@ -56,7 +56,7 @@ public class ${className}Controller {
      */
     @ApiOperation(value = "${comments}查询")
     @GetMapping("/{${pk.lowerAttrName}}")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}:${pathName}:get')")
+    @PreAuthorize("@ato.hasAuthority('${genKey}:${pathName}:get')")
     public R getById(@PathVariable("${pk.lowerAttrName}") ${pk.attrType} ${pk.lowerAttrName}) {
         return R.ok(${classname}Service.getById(${pk.lowerAttrName}));
     }
@@ -69,7 +69,7 @@ public class ${className}Controller {
     @ApiOperation(value = "${comments}新增")
     @SysLog("新增${comments}")
     @PostMapping
-    @PreAuthorize("@ato.hasAuthority('${moduleName}:${pathName}:add')")
+    @PreAuthorize("@ato.hasAuthority('${genKey}:${pathName}:add')")
     public R save(@RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.save(${classname}));
     }
@@ -82,7 +82,7 @@ public class ${className}Controller {
     @ApiOperation(value = "${comments}修改")
     @SysLog("修改${comments}")
     @PutMapping
-    @PreAuthorize("@ato.hasAuthority('${moduleName}:${pathName}:edit')")
+    @PreAuthorize("@ato.hasAuthority('${genKey}:${pathName}:edit')")
     public R updateById(@RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.updateById(${classname}));
     }
@@ -95,7 +95,7 @@ public class ${className}Controller {
     @ApiOperation(value = "${comments}删除")
     @SysLog("删除${comments}")
     @DeleteMapping("/{${pk.lowerAttrName}}")
-    @PreAuthorize("@ato.hasAuthority('${moduleName}:${pathName}:del')")
+    @PreAuthorize("@ato.hasAuthority('${genKey}:${pathName}:del')")
     public R removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {
         return R.ok(${classname}Service.removeById(${pk.lowerAttrName}));
     }

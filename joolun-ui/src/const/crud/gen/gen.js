@@ -45,25 +45,37 @@ export const formOption = {
       prop: 'tableName',
       disabled: true
     }, {
+      label: '服务名',
+      prop: 'genKey',
+      type: 'select',
+      sortable:true,
+      align: 'center',
+      rules: [{
+        required: true,
+        message: '请输入服务路由key',
+        trigger: 'blur'
+      }],
+      dicUrl: '/gen/generator/genkey/list',
+    }, {
       label: '包名',
       prop: 'packageName',
-      placeholder: '可为空，默认com.joolun.cloud'
-    }, {
-      label: '作者',
-      prop: 'author',
-      placeholder: '可为空，加载系统默认配置'
+      placeholder: '默认com.joolun.cloud'
     }, {
       label: '模块',
       prop: 'moduleName',
-      placeholder: '可为空，加载系统默认配置'
+      placeholder: '默认gen'
+    }, {
+      label: '作者',
+      prop: 'author',
+      placeholder: '默认JooLun'
     }, {
       label: '表前缀',
       prop: 'tablePrefix',
-      placeholder: '可为空，生成的类将自动去掉指定前缀'
+      placeholder: '生成的类将自动去掉指定前缀'
     }, {
       label: '注释',
       prop: 'tableComment',
-      placeholder: '可为空，加载表备注'
+      placeholder: '加载表备注'
     }
   ]
 }

@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 
+import java.util.List;
+
 /**
  * 微信应用
  *
@@ -26,7 +28,7 @@ public interface WxAppMapper extends BaseMapper<WxApp> {
 	 * @return
 	 */
 	@SqlParser(filter=true)
-	WxApp findByWeixinSign(String weixinSign);
+	List<WxApp> findByWeixinSign(String weixinSign);
 
 	/**
 	 * 通过appId获取WxApp，无租户条件
@@ -34,5 +36,5 @@ public interface WxAppMapper extends BaseMapper<WxApp> {
 	 * @return
 	 */
 	@SqlParser(filter=true)
-	WxApp findByAppId(String appId);
+	List<WxApp> findByAppId(String appId);
 }

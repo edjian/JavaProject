@@ -31,7 +31,8 @@ Page({
     couponUser: null,
     totalCouponDeductPrice: 0,
     pointsCheckedValue: null,
-    couponCheckedValue: null
+    couponCheckedValue: null,
+    freightMap: null//各运费模块计数
   },
   onShow() {
     
@@ -69,7 +70,8 @@ Page({
   },
   deliveryWayChange(e){
     this.setData({
-      [`orderSubParm.deliveryWay`]: e.detail.value
+      [`orderSubParm.deliveryWay`]: e.detail.value,
+      freightMap: null
     })
     this.orderConfirmDo()
   },
@@ -102,10 +104,10 @@ Page({
                 that.countFreight(orderConfirm, freightTemplat, quantity)
               } else if (freightTemplat.chargeType == '2') {//2、按重量
                 let weight = orderConfirm.weight
-                that.countFreight(orderConfirm, freightTemplat, (weight * quantity).toFixed(2))
+                that.countFreight(orderConfirm, freightTemplat, (weight * quantity))
               } else if (freightTemplat.chargeType == '3') {//3、按体积
                 let volume = orderConfirm.volume
-                that.countFreight(orderConfirm, freightTemplat, (volume * quantity).toFixed(2))
+                that.countFreight(orderConfirm, freightTemplat, (volume * quantity))
               }
             } else {
               orderConfirm.freightPrice = 0
@@ -158,15 +160,36 @@ Page({
   },
   //计算运费
   countFreight(orderConfirm, freightTemplat, quantity){
+    let freightMap = new Map(this.data.freightMap)
+    let freightMapValue = 0
+    if(freightMap.has(freightTemplat.id)){
+      freightMapValue = freightMap.get(freightTemplat.id)
+    }
+    quantity = quantity + freightMapValue
+    freightMap.set(freightTemplat.id,quantity)
+    this.setData({
+      freightMap: freightMap
+    })
     let firstNum = freightTemplat.firstNum
     let firstFreight = freightTemplat.firstFreight
     let continueNum = freightTemplat.continueNum
     let continueFreight = freightTemplat.continueFreight
     if (quantity <= firstNum) {//首件之内数量
       orderConfirm.freightPrice = firstFreight
+      if(freightMapValue > 0){//同一运费模板已有商品算了运算，并在首件之内，当前商品不算运费
+        orderConfirm.freightPrice = 0
+      }
     } else {//首件之外数量
       let num = quantity - firstNum
       orderConfirm.freightPrice = (Number(firstFreight) + Math.ceil(num / continueNum) * continueFreight).toFixed(2)
+      if(freightMapValue > 0){//同一运费模板已有商品算了运算，并超过了首件数量，当前商品只算超出运费
+        if(freightMapValue >= firstNum){
+					num = quantity - freightMapValue - (freightMapValue - firstNum) % continueNum
+				}else{
+					num = quantity - freightMapValue - (firstNum - freightMapValue)
+				}
+        orderConfirm.freightPrice = (Math.ceil(num / continueNum) * continueFreight).toFixed(2)
+      }
     }
   },
   //获取默认收货地址

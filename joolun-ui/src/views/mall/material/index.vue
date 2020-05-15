@@ -42,7 +42,7 @@
               </el-col>
               <el-col :span="12" style="text-align: right;">
                 <el-upload
-                        action="/admin/file/upload?fileType=image&dir=material/"
+                        action="/upms/file/upload?fileType=image&dir=material/"
                         :headers="headers"
                         :file-list="[]"
                         :on-progress="handleProgress"

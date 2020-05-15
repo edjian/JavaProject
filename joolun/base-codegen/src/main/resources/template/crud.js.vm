@@ -20,10 +20,25 @@ export const tableOption = {
     viewBtn: true,
     column: [
         #foreach ($column in $columns)
-        {
+    {
             label: '$column.comments',
             prop: '$column.lowerAttrName',
-            sortable: true
+            sortable: true,
+            rules: [
+                #if($column.isNullable.equals('NO'))
+    {
+                        required: true,
+                        message: '请输入$column.lowerAttrName',
+                        trigger: 'blur'
+                    },
+                #end
+                #if($column.characterMaximumLength)
+    {
+                        max: $column.characterMaximumLength,
+                        message: '长度在不能超过$column.characterMaximumLength个字符'
+                    },
+                #end
+]
         },
         #end
     ]

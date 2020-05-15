@@ -38,7 +38,7 @@ export const tableOption = {
       label: '是否全部用户',
       prop: 'isToAll',
       type: 'select',
-      dicUrl: '/admin/dict/type/yes_no',
+      dicUrl: '/upms/dict/type/yes_no',
       search:true,
       sortable:true
     },
@@ -46,7 +46,7 @@ export const tableOption = {
       label: '消息类型',
       prop: 'repType',
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_rep_type',
+      dicUrl: '/upms/dict/type/wx_rep_type',
       search:true,
       sortable:true
     },
@@ -116,7 +116,7 @@ export const tableOption = {
       label: '消息发送状态',
       prop: 'msgStatus',
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_mass_msg_status',
+      dicUrl: '/upms/dict/type/wx_mass_msg_status',
       search:true,
       sortable:true
     },

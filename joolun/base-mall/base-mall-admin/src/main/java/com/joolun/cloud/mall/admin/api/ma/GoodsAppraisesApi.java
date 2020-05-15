@@ -97,12 +97,12 @@ public class GoodsAppraisesApi {
 		if(!OrderInfoEnum.STATUS_3.getValue().equals(orderInfo.getStatus())){
 			return R.failed(MyReturnCode.ERR_70001.getCode(), MyReturnCode.ERR_70001.getMsg());
 		}
-		R r = feignWxUserService.getById(wxUser.getId(), SecurityConstants.FROM_IN);
-		Map map = (Map<Object, Object>)r.getData();
+		R<WxUser> r = feignWxUserService.getById(wxUser.getId(), SecurityConstants.FROM_IN);
+		WxUser wxUser1 = r.getData();
 		listGoodsAppraises.forEach(goodsAppraises -> {
 			goodsAppraises.setUserId(wxUser.getId());
-			goodsAppraises.setHeadimgUrl(map.get("headimgUrl")!=null ? String.valueOf(map.get("headimgUrl")) : null);
-			goodsAppraises.setNickName(map.get("nickName")!=null ? String.valueOf(map.get("nickName")) : null);
+			goodsAppraises.setHeadimgUrl(wxUser1.getHeadimgUrl());
+			goodsAppraises.setNickName(wxUser1.getNickName());
 		});
 		goodsAppraisesService.doAppraises(listGoodsAppraises);
         return R.ok();

@@ -88,7 +88,6 @@ export const tableOption = {
             type: 'datetimerange',
             hide: true,
             editDisabled: true,
-            valueFormat: 'yyyy-MM-dd HH:mm:ss',
             rules: [{
                 type: 'array',
                 required: true,
@@ -136,6 +135,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入拼团名称',
                 trigger: 'blur'
+            },{
+              max: 100,
+              message: '长度在不能超过100个字符'
             }]
         },
         {
@@ -159,6 +161,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入分享标题',
                 trigger: 'blur'
+            },{
+              max: 30,
+              message: '长度在不能超过30个字符'
             }],
         },
         {

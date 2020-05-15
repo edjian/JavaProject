@@ -14,6 +14,7 @@ import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.gateway.entity.GatewayRouteList;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,6 @@ import java.util.concurrent.Executor;
 @AllArgsConstructor
 public class DynamicRouteInit {
 	private RouteDefinitionWriter routeDefinitionWriter;
-	public static final String DATA_ID = "dynamic_routes";
 	private NacosConfigProperties nacosProperties;
 
 	@PostConstruct
@@ -46,13 +46,12 @@ public class DynamicRouteInit {
 			properties.put(PropertyKeyConst.USERNAME, nacosProperties.getUsername());
 			properties.put(PropertyKeyConst.PASSWORD, nacosProperties.getPassword());
 			ConfigService configService = NacosFactory.createConfigService(properties);
-			String content = configService.getConfig(DATA_ID, "DEFAULT_GROUP", 5000);
+			String content = configService.getConfig(CommonConstants.CONFIG_DATA_ID, CommonConstants.CONFIG_GROUP, CommonConstants.CONFIG_TIMEOUT_MS);
 			log.info("初始化网关路由开始");
 			updateRoute(content);
 			log.info("初始化网关路由完成");
-
 			//开户监听，实现动态
-			configService.addListener(DATA_ID, "DEFAULT_GROUP", new Listener() {
+			configService.addListener(CommonConstants.CONFIG_DATA_ID, CommonConstants.CONFIG_GROUP, new Listener() {
 				@Override
 				public void receiveConfigInfo(String configInfo) {
 					log.info("更新网关路由开始");

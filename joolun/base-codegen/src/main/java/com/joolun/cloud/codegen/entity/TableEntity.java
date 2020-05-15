@@ -44,4 +44,9 @@ public class TableEntity {
 	 */
 	@ApiModelProperty(value = "普通类型")
 	private String lowerClassName;
+	/**
+	 * 服务的路由key
+	 */
+	@ApiModelProperty(value = "服务的路由key")
+	private String genKey;
 }

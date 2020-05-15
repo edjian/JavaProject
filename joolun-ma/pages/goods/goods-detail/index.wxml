@@ -187,7 +187,6 @@
 <view class="cu-bar bg-white margin-top-sm">
   <view class="content">商品信息</view>
 </view>
-<ad unit-id="adunit-80d788ab8518b5b3"></ad>
 <view class="bg-white">
   <template is="wxParse" data="{{wxParseData:description.nodes}}"/>
 </view>

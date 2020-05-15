@@ -4,6 +4,7 @@ import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.constant.ServiceNameConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.common.dto.WxOpenDataDTO;
+import com.joolun.cloud.weixin.common.entity.WxUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public interface FeignWxUserService {
 	 * @return
 	 */
 	@GetMapping("/wxuser/inside/{id}")
-	R getById(@PathVariable("id") String id, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxUser> getById(@PathVariable("id") String id, @RequestHeader(SecurityConstants.FROM) String from);
 
 	@PostMapping("/wxuser/inside")
-	R save(@RequestBody WxOpenDataDTO wxOpenDataDTO, @RequestHeader(SecurityConstants.FROM) String from);
+	R<WxUser> save(@RequestBody WxOpenDataDTO wxOpenDataDTO, @RequestHeader(SecurityConstants.FROM) String from);
 }

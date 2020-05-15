@@ -30,7 +30,7 @@ export const tableOption = {
       label: '消息类型',
       prop: 'repType',
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_req_type',
+      dicUrl: '/upms/dict/type/wx_req_type',
       search:true,
       sortable:true,
       width: 120
@@ -60,7 +60,7 @@ export const tableOption = {
       label: '是否已读',
       prop: 'readFlag',
       type: 'select',
-      dicUrl: '/admin/dict/type/yes_no',
+      dicUrl: '/upms/dict/type/yes_no',
       search:true,
       sortable:true,
       slot:true,

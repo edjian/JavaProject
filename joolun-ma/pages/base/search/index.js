@@ -11,28 +11,18 @@ const app = getApp()
 Page({
   data: {
     searchHistory: [],
-    hotHistory: [
-      {
-        name: '华为p20'
-      },
-      {
-        name: 'p30'
-      },
-      {
-        name: '小米8'
-      },
-      {
-        name: '小米9'
-      },
-      {
-        name: '洗衣机'
-      }
-    ]
+    goodsList: []
   },
   onShow() {
     this.setData({
       searchHistory: wx.getStorageSync('searchHistory') ? wx.getStorageSync('searchHistory') : []
     })
+  },
+  onLoad(options) {
+    app.initPage()
+      .then(res => {
+        this.goodsPage()
+      })
   },
   searchHandle(e) {
     let value
@@ -75,5 +65,20 @@ Page({
         }
       }
     })
-  }
+  },
+  goodsPage() {
+    app.api.goodsPage({
+      searchCount: false,
+      current: 1,
+      size: 10,
+      ascs: '',//升序字段
+      descs: 'sale_num'
+    })
+      .then(res => {
+        let goodsList = res.data.records
+        this.setData({
+          goodsList: goodsList
+        })
+      })
+  },
 })

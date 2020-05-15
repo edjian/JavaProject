@@ -133,7 +133,7 @@
   import topSetting from "./top-setting";
   import topMsg from "./top-msg";
   import WxMsg from '@/components/wx-msg/main.vue'
-  import {fetchMenuTree} from "@/api/admin/menu"
+  import {fetchMenuTree} from "@/api/upms/menu"
 
   export default {
     components: { topLock, topMenu, topSearch, topBreadcrumb, topColor, topTheme, topLogs, topSetting, topMsg, WxMsg },

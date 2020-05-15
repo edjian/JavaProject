@@ -35,6 +35,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入电子全名称',
                 trigger: 'blur'
+            },{
+              max: 30,
+              message: '长度在不能超过30个字符'
             }]
         },
         {
@@ -164,7 +167,6 @@ export const tableOption = {
             type: 'datetimerange',
             display: false,
             hide: true,
-            valueFormat: 'yyyy-MM-dd HH:mm:ss',
             rules: [{
                 type: 'array',
                 required: true,

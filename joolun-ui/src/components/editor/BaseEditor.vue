@@ -65,7 +65,7 @@
   import 'froala-editor/js/plugins/image_manager.min.js'
   import 'froala-editor/css/plugins/image_manager.min.css'
   import store from "@/store"
-  import {getObj2} from '@/api/admin/configeditor'
+  import {getObj2} from '@/api/upms/configeditor'
 
   export default {
     props: {
@@ -94,7 +94,7 @@
           requestHeaders: {
             Authorization: 'Bearer ' + store.getters.access_token
           },
-          imageUploadURL: '/admin/file/upload',
+          imageUploadURL: '/upms/file/upload',
           imageUploadParams: {
             dir: 'editor/',
             fileType: 'image'
@@ -164,7 +164,7 @@
             }
           }
         },
-        serverUrl: "/admin/file/upload?fileType=image&dir=editor/", // 这里写你要上传的图片服务器地址
+        serverUrl: "/upms/file/upload?fileType=image&dir=editor/", // 这里写你要上传的图片服务器地址
         header: {
           Authorization: 'Bearer ' + store.getters.access_token
         } // 有的图片服务器要求请求头需要有token

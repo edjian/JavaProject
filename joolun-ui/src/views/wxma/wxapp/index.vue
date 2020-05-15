@@ -33,6 +33,7 @@
                  :table-loading="tableLoading"
                  :option="tableOption"
                  :permission="permissionList"
+                 :before-open="beforeOpen"
                  @on-load="getPage"
                  @refresh-change="refreshChange"
                  @row-update="handleUpdate"
@@ -157,7 +158,7 @@
 <script>
   import { getPage, getObj, addObj, putObj, delObj, createQrCode, clearQuota, getAccessToken, getAuthorizerInfo } from '@/api/wxma/wxapp'
   import { tableOption } from '@/const/crud/wxma/wxapp'
-  import {fetchTree} from "@/api/admin/organ"
+  import {fetchTree} from "@/api/upms/organ"
   import { mapGetters, mapState } from 'vuex'
   import store from "@/store"
 
@@ -342,6 +343,10 @@
         }).catch(() => {
           this.tableLoading = false
         })
+      },
+      beforeOpen(done,type){
+        window.openType = type
+        done()
       },
       handleDel: function(row, index) {
         var _this = this

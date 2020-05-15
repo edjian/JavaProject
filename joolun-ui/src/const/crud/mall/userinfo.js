@@ -53,15 +53,15 @@ export const tableOption = {
       label: '头像',
       prop: 'headimgUrl',
       type: 'upload',
+      listType: 'picture-img',
       imgWidth:50,
-      listType:'picture-img',
-      span: 24,
-      action: '/admin/file/upload?fileType=image&dir=mall/user/',
+      action: '/upms/file/upload?fileType=image&dir=mall/user/',
       propsHttp: {
         url: 'link'
       },
       loadText: '图上上传中，请稍等',
-      tip: '只能上传jpg/png文件，且不超过100kb'
+      tip: '只能上传jpg/png文件，且不超过100kb',
+      slot:true
     },
     {
       label: '所在国家',
@@ -88,7 +88,7 @@ export const tableOption = {
       prop: 'sex',
       sortable: true,
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_sex'
+      dicUrl: '/upms/dict/type/wx_sex'
     },
     {
       label: '当前积分',

@@ -40,11 +40,11 @@ module.exports = {
           '^/auth': '/auth'
         }
       },
-      '/admin': {
+      '/upms': {
         target: url,
         ws: true,
         pathRewrite: {
-          '^/admin': '/admin'
+          '^/upms': '/upms'
         }
       },
       '/code': {

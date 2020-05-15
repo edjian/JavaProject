@@ -17,7 +17,7 @@ export default [{
         path: 'index',
         name: '个人信息',
         component: () =>
-            import ( /* webpackChunkName: "page" */ '@/views/admin/user/info'),
+            import ( /* webpackChunkName: "page" */ '@/views/upms/user/info'),
     }]
 }
 ]

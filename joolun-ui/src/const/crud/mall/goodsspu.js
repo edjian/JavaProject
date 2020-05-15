@@ -157,6 +157,9 @@ export const tableOption = {
                         required: true,
                         message: '商品名称不能为空',
                         trigger: 'blur'
+                    },{
+                      max: 100,
+                      message: '长度在不能超过100个字符'
                     }]
                 },
                 {
@@ -205,7 +208,11 @@ export const tableOption = {
                 },
                 {
                     label: '商品编码',
-                    prop: 'spuCode'
+                    prop: 'spuCode',
+                    rules: [{
+                      max: 32,
+                      message: '长度在不能超过32个字符'
+                    }]
                 },
                 {
                     label: '虚拟销量',
@@ -217,6 +224,10 @@ export const tableOption = {
                     label: '卖点',
                     prop: 'sellPoint',
                     span: 24,
+                    rules: [{
+                      max: 500,
+                      message: '长度在不能超过500个字符'
+                    }]
                 },
                 {
                     label: '运费模板',

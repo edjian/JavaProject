@@ -109,7 +109,7 @@
           return
         }
         request({
-          url: '/admin/email/' + this.registerForm.email+'?type=register',
+          url: '/upms/email/' + this.registerForm.email+'?type=register',
           method: 'get'
         }).then(response => {
           if (response.data.code == '0') {

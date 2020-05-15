@@ -54,7 +54,7 @@ export const loginByThirdParty = (state, code) => {
 
 export const getUserInfo = () => {
   return request({
-    url: '/admin/user/info',
+    url: '/upms/user/info',
     method: 'get'
   })
 }
@@ -68,7 +68,7 @@ export const logout = () => {
 
 export function register(obj) {
   return request({
-    url: '/admin/user/register',
+    url: '/upms/user/register',
     method: 'post',
     data: obj
   })

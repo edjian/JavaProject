@@ -31,8 +31,17 @@ const request = (url, method, data, showLoading) => {
             wx.showModal({
               title: '提示',
               content: res.data.msg + '',
-              success(res) {
+              success() {
                 
+              },
+              complete(){
+                if(res.data.code == 60001){
+                  //session过期，则清除过期session，并重新加载当前页
+                  getApp().globalData.thirdSession = null
+                  wx.reLaunch({
+                    url: getApp().getCurrentPageUrlWithArgs()
+                  })
+                }
               }
             })
             reject(res.data.msg)
@@ -51,7 +60,7 @@ const request = (url, method, data, showLoading) => {
           console.log(res)
           wx.showModal({
             title: '提示',
-            content: res.errMsg + ':' + res.data.message + res.data.msg,
+            content: res.errMsg + ':' + res.data.message + ':' + res.data.msg,
             success(res) {
 
             }

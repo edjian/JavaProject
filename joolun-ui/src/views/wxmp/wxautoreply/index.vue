@@ -186,7 +186,7 @@
 <script>
   import { getPage, getObj, addObj, putObj, delObj } from '@/api/wxmp/wxautoreply'
   import { getList as getWxAppList } from '@/api/wxmp/wxapp'
-  import { remote } from '@/api/admin/dict.js'
+  import { remote } from '@/api/upms/dict.js'
   import { tableOption1, tableOption2, tableOption3 } from '@/const/crud/wxmp/wxautoreply'
   import { mapGetters } from 'vuex'
   import WxReplySelect from '@/components/wx-reply/main.vue'

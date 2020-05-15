@@ -38,5 +38,5 @@ public interface SysGeneratorMapper {
 	 * @param tableName 表名称
 	 * @return
 	 */
-	List<Map<String, String>> queryColumns(String tableName);
+	List<Map<String, Object>> queryColumns(String tableName);
 }

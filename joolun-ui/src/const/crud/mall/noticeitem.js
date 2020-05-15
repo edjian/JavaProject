@@ -85,6 +85,9 @@ export const tableOption2 = {
                 required: true,
                 message: '请输入标签',
                 trigger: 'blur'
+            },{
+              max: 5,
+              message: '长度在不能超过5个字符'
             }]
         },
         {

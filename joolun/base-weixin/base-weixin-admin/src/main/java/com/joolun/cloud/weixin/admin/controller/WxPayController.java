@@ -60,7 +60,7 @@ public class WxPayController {
 			return R.ok(wxPayService.createOrder(request));
 		} catch (WxPayException e) {
 			e.printStackTrace();
-			return R.failed(e.getCustomErrorMsg());
+			return R.failed(e.getReturnMsg() + "" + e.getCustomErrorMsg());
 		}
 	}
 
@@ -138,7 +138,7 @@ public class WxPayController {
 	@ApiOperation(value = "查询订单")
 	@Inside
 	@PostMapping("/queryOrder")
-	public R refundOrder(@RequestBody WxPayOrderQueryRequest request) {
+	public R queryOrder(@RequestBody WxPayOrderQueryRequest request) {
 		WxPayService wxPayService = WxPayConfiguration.getPayService(request.getAppid());
 		try {
 			return R.ok(wxPayService.queryOrder(request));

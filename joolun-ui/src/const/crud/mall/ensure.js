@@ -27,12 +27,19 @@ export const tableOption = {
                 required: true,
                 message: '请输入保障名',
                 trigger: 'blur'
+            },{
+              max: 50,
+              message: '长度在不能超过50个字符'
             }],
         },
         {
             label: '保障详情',
             prop: 'detail',
-            type: 'text'
+            type: 'text',
+            rules: [{
+              max: 200,
+              message: '长度在不能超过200个字符'
+            }],
         },
     ]
 }

@@ -22,6 +22,14 @@
                        @row-del="handleDel"
                        @sort-change="sortChange"
                        @search-change="searchChange">
+                <template slot-scope="scope" slot="headimgUrl">
+                  <el-image
+                    v-if="scope.row.headimgUrl"
+                    style="width: 50px;height: 50px"
+                    :src="scope.row.headimgUrl"
+                    fit="contain"
+                    :preview-src-list="[scope.row.headimgUrl]"></el-image>
+                </template>
                 <template slot-scope="scope" slot="pointsCurrent">
                     <div @click="showPointsRecord(scope.row.id)">
                         <i class="el-icon-medal" style="color: red">{{scope.row.pointsCurrent}}</i>

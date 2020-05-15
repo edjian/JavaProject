@@ -314,7 +314,7 @@ export const openWindow = (url, title, w, h) => {
  */
 export function handleImg(fileName, id) {
   return validatenull(fileName) ? null : request({
-    url: '/admin/file/' + fileName,
+    url: '/upms/file/' + fileName,
     method: 'get',
     responseType: 'blob'
   }).then((response) => { // 处理返回的文件流

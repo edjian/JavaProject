@@ -47,4 +47,14 @@ public class ColumnEntity {
 	 */
 	@ApiModelProperty(value = "其他信息")
 	private String extra;
+	/**
+	 * 字符最大长度
+	 */
+	@ApiModelProperty(value = "字符最大长度")
+	private Long characterMaximumLength;
+	/**
+	 * 是否可为空
+	 */
+	@ApiModelProperty(value = "是否可为空")
+	private String isNullable;
 }

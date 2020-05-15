@@ -33,9 +33,10 @@ export const tableOption = {
     {
       label: '头像',
       prop: 'headimgUrl',
-      type:'upload',
       imgWidth:50,
-      listType:'picture-img',
+      dataType: 'string',
+      type: 'upload',
+      listType: 'picture-img',
       editDisplay:false
     },
     {
@@ -55,7 +56,7 @@ export const tableOption = {
       search:true,
       editDisplay:false,
       slot:true,
-      dicUrl: '/admin/dict/type/wx_subscribe'
+      dicUrl: '/upms/dict/type/wx_subscribe'
     },
     {
       label: 'openId',
@@ -69,7 +70,7 @@ export const tableOption = {
       sortable:true,
       search:true,
       editDisplay:false,
-      dicUrl: '/admin/dict/type/wx_subscribe_scene'
+      dicUrl: '/upms/dict/type/wx_subscribe_scene'
     },
     {
       label: '关注时间',
@@ -88,7 +89,7 @@ export const tableOption = {
       search:true,
       editDisplay:false,
       slot:true,
-      dicUrl: '/admin/dict/type/wx_sex'
+      dicUrl: '/upms/dict/type/wx_sex'
     },
     {
       label: '国家',
@@ -140,7 +141,7 @@ export const tableOption = {
       label: '二维码扫码场景',
       prop: 'qrSceneStr',
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_qr_scene_str',
+      dicUrl: '/upms/dict/type/wx_qr_scene_str',
       sortable: true,
       search: true,
       editDisplay: false
@@ -244,7 +245,7 @@ export const tableOption2 = {
       sortable:true,
       search:true,
       editDisplay:false,
-      dicUrl: '/admin/dict/type/wx_subscribe_scene'
+      dicUrl: '/upms/dict/type/wx_subscribe_scene'
     },
     {
       label: '关注时间',
@@ -263,7 +264,7 @@ export const tableOption2 = {
       search:true,
       editDisplay:false,
       slot:true,
-      dicUrl: '/admin/dict/type/wx_sex'
+      dicUrl: '/upms/dict/type/wx_sex'
     },
     {
       label: '国家',
@@ -296,7 +297,7 @@ export const tableOption2 = {
       label: '二维码扫码场景',
       prop: 'qrSceneStr',
       type: 'select',
-      dicUrl: '/admin/dict/type/wx_qr_scene_str',
+      dicUrl: '/upms/dict/type/wx_qr_scene_str',
       sortable:true,
       search:true,
       editDisplay:false

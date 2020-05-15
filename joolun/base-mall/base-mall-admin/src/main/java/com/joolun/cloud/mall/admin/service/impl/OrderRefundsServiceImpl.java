@@ -109,9 +109,9 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 					request.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
 					request.setRefundFee(orderRefunds.getRefundAmount().multiply(new BigDecimal(100)).intValue());
 					request.setNotifyUrl(mallConfigProperties.getNotifyHost()+"/mall/api/ma/orderrefunds/notify-refunds");
-					R r = feignWxPayService.refundOrder(request, SecurityConstants.FROM_IN);
+					R<WxPayRefundResult> r = feignWxPayService.refundOrder(request, SecurityConstants.FROM_IN);
 					if(r.isOk()){
-						WxPayRefundResult wxPayRefundResult = BeanUtil.mapToBean((Map<Object, Object>) r.getData(),WxPayRefundResult.class,true);
+						WxPayRefundResult wxPayRefundResult = r.getData();
 						entity.setRefundTradeNo(wxPayRefundResult.getRefundId());
 					}else{
 						throw new RuntimeException(r.getMsg());

@@ -27,6 +27,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入发货地',
                 trigger: 'blur'
+            },{
+              max: 50,
+              message: '长度在不能超过50个字符'
             }],
         },{
             label: '电话号码',
@@ -35,6 +38,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入电话号码',
                 trigger: 'blur'
+            },{
+              max: 30,
+              message: '长度在不能超过30个字符'
             }],
         },{
             label: '详细地址',
@@ -44,6 +50,9 @@ export const tableOption = {
                 required: true,
                 message: '请输入详细地址',
                 trigger: 'blur'
+            },{
+              max: 255,
+              message: '长度在不能超过255个字符'
             }],
         },
     ]

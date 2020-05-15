@@ -46,4 +46,14 @@ public interface CacheConstants {
 	 * 注册验证码前缀
 	 */
 	String VER_CODE_REGISTER = "ver_code_register:";
+
+	/**
+	 * wxapp缓存
+	 */
+	String WXAPP_WEIXIN_SIGN_CACHE = "wx:weixin_Sign";
+
+	/**
+	 * wxapp缓存
+	 */
+	String WXAPP_APP_ID_CACHE = "wx:app_id";
 }

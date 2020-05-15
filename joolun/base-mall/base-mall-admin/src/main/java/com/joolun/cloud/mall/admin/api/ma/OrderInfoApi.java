@@ -256,10 +256,10 @@ public class OrderInfoApi {
 	@PostMapping("/notify-order")
 	public String notifyOrder(@RequestBody String xmlData) {
 		log.info("支付回调:"+xmlData);
-		R r = feignWxPayService.notifyOrder(xmlData, SecurityConstants.FROM_IN);
+		R<WxPayOrderNotifyResult> r = feignWxPayService.notifyOrder(xmlData, SecurityConstants.FROM_IN);
 		if(r.isOk()){
 			TenantContextHolder.setTenantId(r.getMsg());
-			WxPayOrderNotifyResult notifyResult = BeanUtil.mapToBean((Map<Object, Object>) r.getData(),WxPayOrderNotifyResult.class,true);
+			WxPayOrderNotifyResult notifyResult = r.getData();
 			OrderInfo orderInfo = orderInfoService.getOne(Wrappers.<OrderInfo>lambdaQuery()
 					.eq(OrderInfo::getOrderNo,notifyResult.getOutTradeNo()));
 			if(orderInfo != null){

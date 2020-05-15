@@ -88,16 +88,6 @@ public interface CommonConstants {
 	Integer FAIL = 1;
 
 	/**
-	 * 默认存储bucket
-	 */
-	String BUCKET_NAME = "joolun";
-
-	/**
-	 * 微信存储bucket
-	 */
-	String BUCKET_NAME_WX = "joolun-wx";
-
-	/**
 	 * 邮箱发送类型
 	 */
 	String EMAIL_SEND_TYPE_REGISTER = "register";
@@ -140,4 +130,8 @@ public interface CommonConstants {
 	String PHONE_CODE_1 = "1";
 	String PHONE_CODE_2 = "2";
 	String PHONE_CODE_3 = "3";
+
+	String CONFIG_DATA_ID = "dynamic_routes";
+	String CONFIG_GROUP = "DEFAULT_GROUP";
+	long CONFIG_TIMEOUT_MS = 5000;
 }
