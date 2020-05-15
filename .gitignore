@@ -1,2 +1,3 @@
 /joolun/server/nacos-server/logs
 /joolun/server/nacos-server/data
+/joolun/*.versionsBackup
