@@ -157,6 +157,7 @@
         done()
       },
       handleOpenBefore(show, type) {
+      	window.openType = type
         fetchTree().then(response => {
           this.dsScopeData = response.data.data;
           if (this.form.dsScope) {
