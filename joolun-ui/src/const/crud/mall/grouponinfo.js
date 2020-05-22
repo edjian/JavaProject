@@ -86,6 +86,7 @@ export const tableOption = {
             label: '时间范围',
             prop: 'validTime',
             type: 'datetimerange',
+			valueFormat: 'yyyy-MM-dd HH:mm:ss',
             hide: true,
             editDisabled: true,
             rules: [{
