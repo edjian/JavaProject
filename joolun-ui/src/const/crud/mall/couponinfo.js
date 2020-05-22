@@ -165,7 +165,7 @@ export const tableOption = {
             prop: 'validTime',
             sortable: true,
             type: 'datetimerange',
-			valueFormat: 'yyyy-MM-dd HH:mm:ss',
+            valueFormat: 'yyyy-MM-dd HH:mm:ss',
             display: false,
             hide: true,
             rules: [{
