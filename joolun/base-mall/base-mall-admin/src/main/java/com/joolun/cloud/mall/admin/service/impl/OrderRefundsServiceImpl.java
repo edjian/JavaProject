@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -33,7 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +61,7 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 		if(StrUtil.isNotBlank(entity.getStatus())
 				&& orderItem != null
 				&& CommonConstants.NO.equals(orderItem.getIsRefund())
-		 		&& OrderItemEnum.STATUS_0.getValue().equals(orderItem.getStatus())){//只有未退款的订单才能发起退款
+				&& OrderItemEnum.STATUS_0.getValue().equals(orderItem.getStatus())){//只有未退款的订单才能发起退款
 			//修改订单详情状态为退款中
 			orderItem.setStatus(entity.getStatus());
 			orderItem.setIsRefund(CommonConstants.NO);
@@ -102,11 +101,18 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 				if(CommonConstants.YES.equals(orderInfo.getIsPay())
 						&& CommonConstants.NO.equals(orderItem.getIsRefund())
 						&& orderRefunds.getRefundAmount().compareTo(BigDecimal.ZERO) == 1){
+					//获取支付总金额
+					AtomicReference<BigDecimal> totalFee = new AtomicReference<>(BigDecimal.ZERO);
+					List<OrderInfo> listOrderInfo = orderInfoService.list(Wrappers.<OrderInfo>query().lambda()
+							.eq(OrderInfo::getTransactionId, orderInfo.getTransactionId()));
+					listOrderInfo.forEach(orderInfo1 -> {
+						totalFee.set(totalFee.get().add(orderInfo1.getPaymentPrice()));
+					});
 					WxPayRefundRequest request = new WxPayRefundRequest();
 					request.setAppid(orderInfo.getAppId());
 					request.setTransactionId(orderInfo.getTransactionId());
 					request.setOutRefundNo(orderRefunds.getId());
-					request.setTotalFee(orderInfo.getPaymentPrice().multiply(new BigDecimal(100)).intValue());
+					request.setTotalFee(totalFee.get().multiply(new BigDecimal(100)).intValue());
 					request.setRefundFee(orderRefunds.getRefundAmount().multiply(new BigDecimal(100)).intValue());
 					request.setNotifyUrl(mallConfigProperties.getNotifyHost()+"/mall/api/ma/orderrefunds/notify-refunds");
 					R<WxPayRefundResult> r = feignWxPayService.refundOrder(request, SecurityConstants.FROM_IN);

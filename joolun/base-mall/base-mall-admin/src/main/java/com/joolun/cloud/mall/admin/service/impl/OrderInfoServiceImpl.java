@@ -524,7 +524,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 				}
 				baseMapper.updateById(orderInfo);//更新订单
 			}else{//处理订单是否需要拆分（通过不同发货地进行订单拆分）,有多个发货地，要拆分订单
+				OrderLogistics orderLogistics = orderLogisticsService.getById(orderInfo.getLogisticsId());
 				resultGoodsSpu.forEach((key, value) -> {
+					orderLogistics.setId(null);
+					orderLogistics.setTenantId(null);
+					orderLogisticsService.save(orderLogistics);
 					List<OrderItem> listOrderItem1 = new ArrayList<>();
 					value.forEach(item ->{
 						listOrderItem1.addAll(resultList.get(item.getId()));
@@ -540,11 +544,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					orderInfo1.setPaymentPoints(0);
 					orderInfo1.setPaymentCouponPrice(BigDecimal.ZERO);
 					orderInfo1.setPaymentPointsPrice(BigDecimal.ZERO);
+					orderInfo1.setLogisticsId(orderLogistics.getId());
 					listOrderItem1.forEach(item -> {
 						GoodsSku goodsSku = goodsSkuService.getById(item.getSkuId());
 						orderInfo1.setSalesPrice(orderInfo1.getSalesPrice().add(goodsSku.getSalesPrice().multiply(new BigDecimal(item.getQuantity()))));
 						orderInfo1.setFreightPrice(orderInfo1.getFreightPrice().add(item.getFreightPrice()));
-						orderInfo1.setPaymentPrice(orderInfo1.getPaymentPrice().add(item.getPaymentPrice().add(item.getFreightPrice())));
+						orderInfo1.setPaymentPrice(orderInfo1.getPaymentPrice().add(item.getPaymentPrice()));
 						orderInfo1.setPaymentPoints(orderInfo1.getPaymentPoints() + (item.getPaymentPoints() != null ? item.getPaymentPoints() : 0));
 						orderInfo1.setPaymentCouponPrice(orderInfo1.getPaymentCouponPrice().add((item.getPaymentCouponPrice() != null ? item.getPaymentCouponPrice() : BigDecimal.ZERO)));
 						orderInfo1.setPaymentPointsPrice(orderInfo1.getPaymentPointsPrice().add((item.getPaymentPointsPrice() != null ? item.getPaymentPointsPrice() : BigDecimal.ZERO)));
@@ -558,8 +563,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					listOrderItem1.forEach(item -> item.setOrderId(orderInfo1.getId()));
 					orderItemService.updateBatchById(listOrderItem1);
 				});
-				//删除旧订单
+				//删除旧订单、旧订单物流
 				baseMapper.deleteById(orderInfo.getId());
+				orderLogisticsService.removeById(orderInfo.getLogisticsId());
 			}
 			//发送订阅消息
 			try {
