@@ -10,6 +10,7 @@ import com.joolun.cloud.codegen.mapper.SysDatasourceMapper;
 import com.joolun.cloud.codegen.util.GenUtils;
 import com.joolun.cloud.codegen.mapper.SysGeneratorMapper;
 import com.joolun.cloud.codegen.service.SysGeneratorService;
+import com.joolun.cloud.common.datasource.constants.DataSourceConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
@@ -39,21 +40,27 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	@Override
 	public IPage<List<Map<String, Object>>> getPage(Page page, String tableName, String sysDatasourceId) {
 		if(StrUtil.isNotBlank(sysDatasourceId)){
-			DynamicDataSourceContextHolder.push(sysDatasourceMapper.selectById(sysDatasourceId).getName());
+			String ds = sysDatasourceMapper.selectById(sysDatasourceId).getName();
+			DynamicDataSourceContextHolder.push(ds);
 		}
-		return sysGeneratorMapper.queryList(page, tableName);
+		IPage<List<Map<String, Object>>> rs = sysGeneratorMapper.queryList(page, tableName);
+		DynamicDataSourceContextHolder.push(DataSourceConstants.DS_MASTER);//切回主数据源
+		return rs;
 	}
 
 	@Override
 	public Map<String, String> generatorView(GenTable genTable) {
 		if(StrUtil.isNotBlank(genTable.getSysDatasourceId())){
-			DynamicDataSourceContextHolder.push(sysDatasourceMapper.selectById(genTable.getSysDatasourceId()).getName());
+			String ds = sysDatasourceMapper.selectById(genTable.getSysDatasourceId()).getName();
+			DynamicDataSourceContextHolder.push(ds);
 		}
 		//查询表信息
 		Map<String, String> table = queryTable(genTable.getTableName());
 		//查询列信息
 		List<Map<String, Object>> columns = queryColumns(genTable.getTableName());
-		return GenUtils.generatorCode(genTable, table, columns, null);
+		Map<String, String> rs = GenUtils.generatorCode(genTable, table, columns, null);
+		DynamicDataSourceContextHolder.push(DataSourceConstants.DS_MASTER);//切回主数据源
+		return rs;
 	}
 
 	/**
@@ -65,7 +72,8 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 	@Override
 	public byte[] generatorCode(GenTable genTable) {
 		if(StrUtil.isNotBlank(genTable.getSysDatasourceId())){
-			DynamicDataSourceContextHolder.push(sysDatasourceMapper.selectById(genTable.getSysDatasourceId()).getName());
+			String ds = sysDatasourceMapper.selectById(genTable.getSysDatasourceId()).getName();
+			DynamicDataSourceContextHolder.push(ds);
 		}
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ZipOutputStream zip = new ZipOutputStream(outputStream);
@@ -77,7 +85,9 @@ public class SysGeneratorServiceImpl implements SysGeneratorService {
 		//生成代码
 		GenUtils.generatorCode(genTable, table, columns, zip);
 		IoUtil.close(zip);
-		return outputStream.toByteArray();
+		byte[] rs = outputStream.toByteArray();
+		DynamicDataSourceContextHolder.push(DataSourceConstants.DS_MASTER);//切回主数据源
+		return rs;
 	}
 
 	private Map<String, String> queryTable(String tableName) {

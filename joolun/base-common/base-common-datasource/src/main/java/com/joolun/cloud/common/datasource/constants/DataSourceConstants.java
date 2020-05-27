@@ -8,6 +8,10 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
  */
 public interface DataSourceConstants {
 	/**
+	 * 默认的数据源名称
+	 */
+	String DS_MASTER = "master";
+	/**
 	 * 数据源查询SQL
 	 */
 	String DS_QUERY_SQL = "select * from " + CommonConstants.UPMS_DATABASE + ".sys_datasource where del_flag = 0";

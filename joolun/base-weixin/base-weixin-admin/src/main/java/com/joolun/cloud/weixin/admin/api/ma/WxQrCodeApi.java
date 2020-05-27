@@ -10,10 +10,7 @@ package com.joolun.cloud.weixin.admin.api.ma;
 
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
-import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import com.joolun.cloud.weixin.common.dto.MaQrCodeDTO;
-import com.joolun.cloud.weixin.common.entity.WxApp;
-import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.util.WxMaUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,11 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.misc.BASE64Encoder;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Base64;
 
 /**
  * 小程序码
@@ -59,7 +55,7 @@ public class WxQrCodeApi {
 			byte[] buffer = new byte[(int)fileImg.length()];
 			inputFile.read(buffer);
 			inputFile.close();
-			String rs =  new BASE64Encoder().encode(buffer);
+			String rs =  new String(Base64.getEncoder().encode(buffer));
 			return R.ok(rs);
 		} catch (Exception e) {
 			e.printStackTrace();

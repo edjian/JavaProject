@@ -39,7 +39,7 @@ public class JdbcDynamicDataSourceProvider extends AbstractJdbcDataSourceProvide
 		property.setUsername(druidDataSourceProperties.getUsername());
 		property.setPassword(druidDataSourceProperties.getPassword());
 		property.setUrl(druidDataSourceProperties.getUrl());
-		map.put("master", property);
+		map.put(DataSourceConstants.DS_MASTER, property);
 		while (rs.next()) {
 			String name = rs.getString(DataSourceConstants.DS_NAME);
 			String username = rs.getString(DataSourceConstants.DS_USER_NAME);
