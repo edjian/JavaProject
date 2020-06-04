@@ -1,4 +1,4 @@
-### [阿里云领取￥2000红包](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)
+### [阿里云领取￥2000红包，服务器低至￥91.80/年](https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=ktp7i3ac)
 ### 注意🈲
 1. 本软件为 www.joolun.com 开发研制，未经购买不得使用
 1. 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
