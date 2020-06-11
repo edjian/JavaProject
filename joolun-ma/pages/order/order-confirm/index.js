@@ -42,7 +42,6 @@ Page({
     this.pointsConfigGet()
     this.userInfoGet()
     this.orderConfirmDo()
-    this.couponUserPage()
   },
   //获取订阅消息列表
   wxTemplateMsgList(id){
@@ -155,6 +154,7 @@ Page({
             }
           })
         }
+        that.couponUserPage()
       }
     })
   },

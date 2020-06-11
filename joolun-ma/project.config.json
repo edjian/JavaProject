@@ -28,7 +28,7 @@
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.11.0",
+	"libVersion": "2.11.1",
 	"appid": "wxd5b98bbec200013b",
 	"projectname": "joolun-ma",
 	"debugOptions": {
