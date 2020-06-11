@@ -99,7 +99,6 @@ public class SysRoleController {
 	 */
 	@ApiOperation(value = "获取角色列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('sys:role:index')")
 	public List<SysRole> getList(SysRole sysRole) {
 		return sysRoleService.list(Wrappers.query(sysRole));
 	}
@@ -112,6 +111,7 @@ public class SysRoleController {
 	 */
 	@ApiOperation(value = "分页查询角色信息")
 	@GetMapping("/page")
+	@PreAuthorize("@ato.hasAuthority('sys:role:index')")
 	public R getRolePage(Page page) {
 		return R.ok(sysRoleService.page(page, Wrappers.emptyWrapper()));
 	}
@@ -126,7 +126,7 @@ public class SysRoleController {
 	@ApiOperation(value = "更新角色菜单")
 	@SysLog("更新角色菜单")
 	@PutMapping("/menu")
-	@PreAuthorize("@ato.hasAuthority('sys:role:perm')")
+	@PreAuthorize("@ato.hasAuthority('sys:role:perm','sys:tenant:edit')")
 	public R saveRoleMenus(@RequestBody SysRoleMenu sysRoleMenu) {
 		String roleId = sysRoleMenu.getRoleId();
 		String menuIds = sysRoleMenu.getMenuId();

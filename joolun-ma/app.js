@@ -7,7 +7,7 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 /**
- * <version>2.8.3</version>
+ * <version>2.8.4</version>
  */
 import api from './utils/api'
 

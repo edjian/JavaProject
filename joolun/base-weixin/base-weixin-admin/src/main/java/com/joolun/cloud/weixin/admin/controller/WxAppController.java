@@ -14,37 +14,28 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.config.HomeDirConfigProperties;
-import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.common.security.annotation.Inside;
-import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
-import com.joolun.cloud.weixin.admin.config.pay.WxPayConfiguration;
-import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.constant.WxReturnCode;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
-import com.joolun.cloud.weixin.common.dto.WxAppTree;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpDataCubeService;
 import me.chanjar.weixin.mp.api.WxMpQrcodeService;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,9 +121,6 @@ public class WxAppController {
 	@PreAuthorize("@ato.hasAuthority('wxmp:wxapp:edit')")
 	public R updateById(@RequestBody WxApp wxApp) {
 		wxAppService.updateById(wxApp);
-		WxMpConfiguration.removeWxMpService(wxApp.getId());
-		WxPayConfiguration.removeWxPayService(wxApp.getId());
-		WxMaConfiguration.removeWxMaService(wxApp.getId());
 		return R.ok();
 	}
 

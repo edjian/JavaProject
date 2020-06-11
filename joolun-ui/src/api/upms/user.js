@@ -8,6 +8,14 @@ export function getPage(query) {
   })
 }
 
+export function getCount(query) {
+  return request({
+    url: '/upms/user/count',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addObj(obj) {
   return request({
     url: '/upms/user',

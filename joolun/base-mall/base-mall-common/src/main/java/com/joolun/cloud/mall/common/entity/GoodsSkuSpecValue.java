@@ -80,5 +80,10 @@ private static final long serialVersionUID = 1L;
 	@ApiModelProperty(value = "规格值名")
 	@TableField(exist = false)
 	private String specValueName;
+	/**
+	 * 排序字段
+	 */
+	@ApiModelProperty(value = "排序字段")
+	private Integer sort;
   
 }

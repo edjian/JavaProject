@@ -60,7 +60,6 @@ public class BargainInfoController {
 	 */
 	@ApiOperation(value = "list列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:bargaininfo:index')")
 	public R getList(BargainInfo bargainInfo) {
 		return R.ok(bargainInfoService.list(Wrappers.query(bargainInfo)));
 	}

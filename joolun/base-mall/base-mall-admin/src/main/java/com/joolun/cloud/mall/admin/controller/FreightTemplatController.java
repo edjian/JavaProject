@@ -58,7 +58,6 @@ public class FreightTemplatController {
 	 */
 	@ApiOperation(value = "list列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:freighttemplat:index')")
 	public List<FreightTemplat> getList(FreightTemplat freightTemplat) {
 		return freightTemplatService.list(Wrappers.query(freightTemplat));
 	}

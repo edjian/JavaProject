@@ -51,7 +51,6 @@ public class GoodsSpecValueController {
 
 	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:goodsspec:index')")
 	public R getGoodsSpecValueList(GoodsSpecValue goodsSpecValue) {
 		return R.ok(goodsSpecValueService.list(Wrappers.query(goodsSpecValue)));
 	}

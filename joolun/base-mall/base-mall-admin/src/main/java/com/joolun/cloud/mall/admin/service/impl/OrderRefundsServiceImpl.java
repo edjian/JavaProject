@@ -61,7 +61,7 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 		if(StrUtil.isNotBlank(entity.getStatus())
 				&& orderItem != null
 				&& CommonConstants.NO.equals(orderItem.getIsRefund())
-				&& OrderItemEnum.STATUS_0.getValue().equals(orderItem.getStatus())){//只有未退款的订单才能发起退款
+		 		&& OrderItemEnum.STATUS_0.getValue().equals(orderItem.getStatus())){//只有未退款的订单才能发起退款
 			//修改订单详情状态为退款中
 			orderItem.setStatus(entity.getStatus());
 			orderItem.setIsRefund(CommonConstants.NO);
@@ -151,7 +151,9 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
 		GoodsSku goodsSku = goodsSkuService.getById(orderItem.getSkuId());
 		if(goodsSku != null){
 			goodsSku.setStock(goodsSku.getStock() + orderItem.getQuantity());
-			goodsSkuService.updateById(goodsSku);
+			if(!goodsSkuService.updateById(goodsSku)){//更新库存
+				throw new RuntimeException("请重新提交");
+			}
 		}
 		//回滚赠送积分
 		PointsRecord pointsRecord = new PointsRecord();

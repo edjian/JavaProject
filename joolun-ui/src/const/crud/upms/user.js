@@ -1,4 +1,4 @@
-import {getByUserName} from '@/api/upms/user'
+import {getByUserName, getCount} from '@/api/upms/user'
 
 
 const validateUserName = (rule, value, callback) => {
@@ -14,6 +14,40 @@ const validateUserName = (rule, value, callback) => {
             }
         })
     }
+}
+
+const validateEmail = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getCount({
+      email: value
+    }).then(response => {
+      let data = response.data.data
+      if (data > 0) {
+        callback(new Error('邮箱已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
+}
+
+const validatePhone = (rule, value, callback) => {
+  if (window.openType === 'edit'){
+    callback()
+  }else{
+    getCount({
+      phone: value
+    }).then(response => {
+      let data = response.data.data
+      if (data > 0) {
+        callback(new Error('手机号码已经存在'))
+      } else {
+        callback()
+      }
+    })
+  }
 }
 
 export const tableOption = {
@@ -138,24 +172,35 @@ export const tableOption = {
         addDisplay: false,
         span: 24
     }, {
-        label: '邮箱',
-        prop: 'email',
-        type: 'email',
-        rules: [{
-            required: true,
-            message: '请输入邮箱'
-        }]
+      label: '邮箱',
+      prop: 'email',
+      type: 'email',
+      editDisabled: true,
+      rules: [{
+        required: true,
+        message: '请输入邮箱'
+      },{
+        validator: validateEmail,
+        trigger: 'blur'
+      }]
     }, {
-        label: '手机号',
-        prop: 'phone',
-        type: 'tel',
-        value: '',
-        span: 24,
-        rules: [{
-            min: 11,
-            max: 11,
-            message: '长度在 11 个字符',
-            trigger: 'blur'
-        }]
+      label: '手机号',
+      prop: 'phone',
+      type: 'tel',
+      value: '',
+      span: 24,
+      editDisabled: true,
+      rules: [{
+        required: true,
+        message: '请输入手机号'
+      },{
+        min: 11,
+        max: 11,
+        message: '长度在 11 个字符',
+        trigger: 'blur'
+      },{
+        validator: validatePhone,
+        trigger: 'blur'
+      }]
     }]
 }

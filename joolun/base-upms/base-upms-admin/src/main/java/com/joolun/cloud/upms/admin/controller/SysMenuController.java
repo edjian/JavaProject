@@ -37,6 +37,20 @@ public class SysMenuController {
 	private final SysRoleService sysRoleService;
 
 	/**
+	 * 获取所有菜单和权限
+	 *
+	 * @return 树形菜单
+	 */
+	@ApiOperation(value = "返回树形菜单集合")
+	@GetMapping(value = "/all/tree")
+	public R getAllTree() {
+		List<MenuTree> menuTreeList = TreeUtil.buildTree(sysMenuService.list(Wrappers.<SysMenu>lambdaQuery()
+				.orderByAsc(SysMenu::getSort)).stream()
+				.collect(Collectors.toList()),CommonConstants.PARENT_ID);
+		return R.ok(menuTreeList);
+	}
+
+	/**
 	 * 获取当前用户的菜单
 	 *
 	 * @return 当前用户的树形菜单

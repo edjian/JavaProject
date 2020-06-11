@@ -18,7 +18,7 @@
           <el-button size="mini"
                      type="text"
                      icon="el-icon-suitcase"
-                     v-if="permissions['sys:role:perm']"
+                     v-if="permissions['sys:tenant:edit']"
                      @click="handlePermission(scope.row,scope.index)">管理员角色权限
           </el-button>
         </template>
@@ -57,7 +57,7 @@
     import {addObj, delObj, getPage, getObj, putObj} from '@/api/upms/tenant'
     import {fetchRoleTreeTenant, permissionUpdTenant} from '@/api/upms/role'
     import {tableOption} from '@/const/crud/upms/tenant'
-    import {fetchMenuTree} from '@/api/upms/menu'
+    import {fetchAllMenuTree} from '@/api/upms/menu'
     import {mapGetters} from 'vuex'
 
     export default {
@@ -192,7 +192,7 @@
                     .then(response => {
                         this.checkedKeys = response.data.data.listMenuVO
                         this.checkedDysRole = response.data.data.sysRole
-                        return fetchMenuTree()
+                        return fetchAllMenuTree()
                     })
                     .then(response => {
                         this.treeData = response.data.data
@@ -238,7 +238,7 @@
                 }).then(() => {
                     this.dialogLoading = false
                     this.dialogPermissionVisible = false
-                  fetchMenuTree()
+                    fetchAllMenuTree()
                         .then(response => {
                             this.form = response.data.data
                             return fetchRoleTreeTenant(this.checkedDysRole.tenantId)

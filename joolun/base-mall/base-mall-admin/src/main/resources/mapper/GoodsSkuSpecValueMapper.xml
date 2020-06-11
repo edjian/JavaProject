@@ -19,6 +19,7 @@
 		<result property="specValueId" column="spec_value_id"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
+		<result property="sort" column="sort"/>
 	</resultMap>
 
 	<resultMap id="goodsSkuSpecValueMap2" extends="goodsSkuSpecValueMap" type="com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue">
@@ -39,6 +40,7 @@
 		ssv.`spec_value_id`,
 		ssv.`create_time`,
 		ssv.`update_time`,
+		ssv.`sort`,
 		gsv.`spec_id`,
 		gsv.`name` AS `spec_value_name`
 	</sql>
@@ -51,6 +53,7 @@
 		LEFT JOIN `goods_spec_value` gsv
 		ON gsv.`id` = ssv.`spec_value_id`
 		WHERE ssv.`sku_id` = #{skuId}
+		ORDER BY ssv.`sort` ASC
 	</select>
 
 	<select id="selectBySpecId" resultMap="goodsSpecVoMap">

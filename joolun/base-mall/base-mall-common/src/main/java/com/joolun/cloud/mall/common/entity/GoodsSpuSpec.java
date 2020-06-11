@@ -68,5 +68,10 @@ private static final long serialVersionUID = 1L;
    */
 	@ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
+	/**
+	 * 排序字段
+	 */
+	@ApiModelProperty(value = "排序字段")
+	private Integer sort;
   
 }

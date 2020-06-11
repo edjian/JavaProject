@@ -71,7 +71,6 @@ public class DeliveryPlaceController {
 	 */
 	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:deliveryplace:index')")
 	public List<DeliveryPlace> getList(DeliveryPlace deliveryPlace) {
 		return deliveryPlaceService.list(Wrappers.query(deliveryPlace).lambda()
 				.select(DeliveryPlace::getId,

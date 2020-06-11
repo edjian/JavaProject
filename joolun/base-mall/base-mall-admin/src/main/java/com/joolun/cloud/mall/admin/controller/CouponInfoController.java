@@ -58,7 +58,6 @@ public class CouponInfoController {
 	 */
 	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:couponinfo:index')")
 	public List<CouponInfo> getList(CouponInfo couponInfo) {
 		return couponInfoService.list(Wrappers.query(couponInfo).lambda()
 				.select(CouponInfo::getId,

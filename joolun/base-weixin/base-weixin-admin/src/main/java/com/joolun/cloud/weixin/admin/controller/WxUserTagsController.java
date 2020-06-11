@@ -50,7 +50,6 @@ public class WxUserTagsController {
 	*/
 	@ApiOperation(value = "获取微信用户标签")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('wxmp:wxusertags:list')")
 	public R getWxUserList(String appId) {
 		WxMpUserTagService wxMpUserTagService = WxMpConfiguration.getMpService(appId).getUserTagService();
 		try {

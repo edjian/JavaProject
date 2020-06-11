@@ -25,12 +25,12 @@ public class TreeUtil {
 		for (T treeNode : treeNodes) {
 			if (root.equals(treeNode.getParentId())) {
 				trees.add(treeNode);
-				trees.sort(Comparator.comparing(TreeNode::getSort));
+//				trees.sort(Comparator.comparing(TreeNode::getSort));
 			}
 			for (T it : treeNodes) {
 				if (it.getParentId().equals(treeNode.getId())) {
 					treeNode.addChildren(it);
-					treeNode.getChildren().sort(Comparator.comparing(TreeNode::getSort));
+//					treeNode.getChildren().sort(Comparator.comparing(TreeNode::getSort));
 				}
 			}
 		}
@@ -83,14 +83,16 @@ public class TreeUtil {
 		MenuTree node;
 		for (SysMenu menu : menus) {
 			node = new MenuTree();
+			node.setType(menu.getType());
 			node.setId(menu.getId());
 			node.setParentId(menu.getParentId());
 			node.setName(menu.getName());
 			node.setPath(menu.getPath());
-			node.setCode(menu.getPermission());
+			node.setPermission(menu.getPermission());
 			node.setLabel(menu.getName());
 			node.setComponent(menu.getComponent());
 			node.setIcon(menu.getIcon());
+			node.setSort(menu.getSort());
 			node.setKeepAlive(menu.getKeepAlive());
 			trees.add(node);
 		}

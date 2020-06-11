@@ -10,9 +10,9 @@ package com.joolun.cloud.weixin.admin.config.mp;
 
 import java.util.concurrent.TimeUnit;
 
+import me.chanjar.weixin.common.enums.TicketType;
 import me.chanjar.weixin.mp.config.impl.WxMpDefaultConfigImpl;
 import org.springframework.data.redis.core.RedisTemplate;
-import me.chanjar.weixin.mp.enums.TicketType;
 
 /**
  * 基于Redis的微信配置provider.

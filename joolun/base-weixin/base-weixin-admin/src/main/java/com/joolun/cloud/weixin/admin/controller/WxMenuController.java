@@ -46,7 +46,6 @@ public class WxMenuController {
 	 */
 	@ApiOperation(value = "通过appId查询自定义菜单")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('wxmp:wxmenu:get')")
 	public R getWxMenuButton(String appId, String menuRuleId) {
 		return R.ok(wxMenuService.getWxMenuButton(appId, menuRuleId));
 	}

@@ -58,7 +58,6 @@ public class GoodsSpuController {
 	 */
 	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:index')")
 	public List<GoodsSpu> getList(GoodsSpu goodsSpu) {
 		return goodsSpuService.list(Wrappers.query(goodsSpu).lambda()
 						.select(GoodsSpu::getId,

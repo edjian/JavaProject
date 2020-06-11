@@ -7,7 +7,7 @@
                  :page="page"
                  v-model="form"
                  :table-loading="listLoading"
-                 :before-open="handleOpenBefore"
+                 :before-open="beforeOpen"
                  :permission="permissionList"
                  @on-load="getPage"
                  @sort-change="sortChange"
@@ -156,8 +156,8 @@
         this.getPage(this.page, this.filterForm(param))
         done()
       },
-      handleOpenBefore(show, type) {
-      	window.openType = type
+      beforeOpen(done, type) {
+        window.openType = type
         fetchTree().then(response => {
           this.dsScopeData = response.data.data;
           if (this.form.dsScope) {
@@ -166,7 +166,7 @@
             this.checkedDsScope = []
           }
         });
-        show();
+        done();
       },
       handlePermission(row) {
         this.listLoading = true

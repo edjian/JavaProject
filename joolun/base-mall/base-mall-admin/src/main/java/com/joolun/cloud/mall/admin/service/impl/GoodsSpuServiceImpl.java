@@ -114,7 +114,9 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
 				priceUpDown(goodsSpu,goodsSku);
 				goodsSku.setSpuId(goodsSpu.getId());
 				goodsSku.setTenantId(null);
-				goodsSkuService.saveOrUpdate(goodsSku);
+				if(!goodsSkuService.saveOrUpdate(goodsSku)){//更新库存
+					throw new RuntimeException("请重新提交");
+				}
 				goodsSku.setId(goodsSku.getId());
 			});
 			baseMapper.updateById(goodsSpu);

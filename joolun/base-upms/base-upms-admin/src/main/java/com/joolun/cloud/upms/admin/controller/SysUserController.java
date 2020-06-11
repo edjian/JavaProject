@@ -230,6 +230,18 @@ public class SysUserController {
 	}
 
 	/**
+	 * 数量查询
+	 * @param sysUser
+	 * @return
+	 */
+	@ApiOperation(value = "数量查询")
+	@GetMapping("/count")
+	@PreAuthorize("@ato.hasAuthority('sys:user:index')")
+	public R getCount(SysUser sysUser) {
+		return R.ok(sysUserService.count(Wrappers.query(sysUser)));
+	}
+
+	/**
 	 * 修改个人信息
 	 *
 	 * @param userDto userDto

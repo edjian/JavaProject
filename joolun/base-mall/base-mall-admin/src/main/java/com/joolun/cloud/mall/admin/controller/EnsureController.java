@@ -71,7 +71,6 @@ public class EnsureController {
 	 */
 	@ApiOperation(value = "list查询")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:ensure:index')")
 	public List<Ensure> getList(Ensure ensure) {
 		return ensureService.list(Wrappers.query(ensure).lambda()
 				.select(Ensure::getId,

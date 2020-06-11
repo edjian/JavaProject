@@ -60,7 +60,6 @@ public class GrouponInfoController {
 	 */
 	@ApiOperation(value = "list列表")
 	@GetMapping("/list")
-	@PreAuthorize("@ato.hasAuthority('mall:grouponinfo:index')")
 	public R getList(GrouponInfo grouponInfo) {
 		return R.ok(grouponInfoService.list(Wrappers.query(grouponInfo)));
 	}

@@ -27,6 +27,7 @@
 		<result property="volume" column="volume"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="enable" column="enable"/>
+		<result property="version" column="version"/>
 	</resultMap>
 
 	<resultMap id="goodsSkuMap2" extends="goodsSkuMap" type="com.joolun.cloud.mall.common.entity.GoodsSku">
@@ -51,7 +52,8 @@
 		sku.`weight`,
 		sku.`volume`,
 		sku.`del_flag`,
-		sku.`enable`
+		sku.`enable`,
+		sku.`version`
 	</sql>
 
 	<select id="getGoodsSkuById" resultMap="goodsSkuMap2">

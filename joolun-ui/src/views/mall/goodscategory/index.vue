@@ -23,7 +23,10 @@
                  @row-del="handleDel">
         <template slot="picUrlForm"
                   slot-scope="scope">
-          <MaterialList v-model="scope.row.picUrl" type="image" :num=1 :width='scope.row.parentId == "0" ? 300 : 150' :height=150></MaterialList>
+          <div>
+            <MaterialList v-model="scope.row.picUrl" type="image" :num=1 :width='scope.row.parentId == "0" ? 300 : 150' :height=150></MaterialList>
+            <p v-if="scope.row.parentId">推荐尺寸{{scope.row.parentId == "0" ? "200*100" : "100*100"}}</p>
+          </div>
         </template>
         <template slot="picUrl" slot-scope="scope">
           <img

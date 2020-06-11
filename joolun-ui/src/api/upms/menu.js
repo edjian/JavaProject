@@ -7,6 +7,14 @@ export function GetMenu() {
   })
 }
 
+export function fetchAllMenuTree(query) {
+  return request({
+    url: '/upms/menu/all/tree',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchMenuTree(query) {
   return request({
     url: '/upms/menu/tree',

@@ -210,12 +210,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 			//回滚库存
 			List<OrderItem> listOrderItem = orderItemService.list(Wrappers.<OrderItem>lambdaQuery()
 					.eq(OrderItem::getOrderId,orderInfo.getId()));
-			//！注意，这种库存操作会有并发问题，导致库存不准确。如对库存要求很精确，需单独新建库存表
 			listOrderItem.forEach(orderItem -> {
 				GoodsSku goodsSku = goodsSkuService.getById(orderItem.getSkuId());
 				if(goodsSku != null){
 					goodsSku.setStock(goodsSku.getStock() + orderItem.getQuantity());
-					goodsSkuService.updateById(goodsSku);
+					if(!goodsSkuService.updateById(goodsSku)){//更新库存
+						throw new RuntimeException("请重新提交");
+					}
 				}
 				//回滚积分
 				PointsRecord pointsRecord = new PointsRecord();
@@ -393,8 +394,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 					listPointsRecord.add(pointsRecord);
 				}
 			});
-			//这种库存操作会有并发问题，导致库存不准确。如对库存要求很精确，需单独新建库存表
-			goodsSkuService.updateBatchById(listGoodsSku);//更新库存
+			if(!goodsSkuService.updateBatchById(listGoodsSku)){//更新库存
+				throw new RuntimeException("请重新提交");
+			}
 			if(orderInfo.getPaymentPoints() > 0){
 				//新增积分记录
 				pointsRecordService.saveBatch(listPointsRecord);
@@ -515,6 +517,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 				}
 				grouponUser.setOrderId(orderInfo.getId());
 				grouponUserMapper.updateById(grouponUser);
+				grouponInfo.setLaunchNum(grouponInfo.getLaunchNum()+1);//参与人数+1
+				grouponInfoMapper.updateById(grouponInfo);
 			}
 
 			Map<String, List<GoodsSpu>> resultGoodsSpu = listGoodsSpu.stream().collect(Collectors.groupingBy(GoodsSpu::getDeliveryPlaceId));

@@ -120,7 +120,10 @@ public class GoodsSkuController {
     @PutMapping
     @PreAuthorize("@ato.hasAuthority('mall:goodssku:edit')")
     public R updateById(@RequestBody GoodsSku goodsSku){
-        return R.ok(goodsSkuService.updateById(goodsSku));
+		if(!goodsSkuService.updateById(goodsSku)){
+			return R.failed("请重新提交");
+		}
+        return R.ok(Boolean.TRUE);
     }
 
     /**

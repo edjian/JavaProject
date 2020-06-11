@@ -8,8 +8,6 @@
  */
 package com.joolun.cloud.weixin.admin.config.mp;
 
-import java.util.Map;
-import com.google.common.collect.Maps;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.weixin.admin.config.open.WxOpenConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
@@ -47,15 +45,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Slf4j
 @Configuration
 public class WxMpConfiguration {
-	/**
-	 * 全局缓存WxMpService
-	 */
-	private static Map<String, WxMpService> mpServices = Maps.newHashMap();
-	
-	/**
-	 * 全局缓存WxMpMessageRouter
-	 */
-	private static Map<String, WxMpMessageRouter> routers = Maps.newHashMap();
 
 	private static RedisTemplate redisTemplate;
 	private static WxAppService wxAppService;
@@ -100,43 +89,28 @@ public class WxMpConfiguration {
 	}
 
 	/**
-	 *  获取全局缓存WxMpService
+	 *  获取WxMpService
 	 * @param appId
 	 * @return
 	 */
 	public static WxMpService getMpService(String appId) {
-		WxMpService wxMpService = mpServices.get(appId);
-        if(wxMpService == null) {
-        	WxApp wxApp = wxAppService.findByAppId(appId);
-        	if(wxApp!=null) {
-        		if(CommonConstants.YES.equals(wxApp.getIsComponent())){//第三方授权账号
-					wxMpService = WxOpenConfiguration.getOpenService().getWxOpenComponentService().getWxMpServiceByAppid(appId);
-					mpServices.put(appId, wxMpService);
-					routers.put(appId, newRouter(wxMpService));
-				}else{
-					WxMpInRedisConfigStorage configStorage = new WxMpInRedisConfigStorage(redisTemplate);
-					configStorage.setAppId(wxApp.getId());
-					configStorage.setSecret(wxApp.getSecret());
-					configStorage.setToken(wxApp.getToken());
-					configStorage.setAesKey(wxApp.getAesKey());
-					wxMpService = new WxMpServiceImpl();
-					wxMpService.setWxMpConfigStorage(configStorage);
-					mpServices.put(appId, wxMpService);
-					routers.put(appId, newRouter(wxMpService));
-				}
-        	}
-        }
+		WxMpService wxMpService = null;
+		WxApp wxApp = wxAppService.findByAppId(appId);
+		if(wxApp!=null) {
+			if(CommonConstants.YES.equals(wxApp.getIsComponent())){//第三方授权账号
+				wxMpService = WxOpenConfiguration.getOpenService().getWxOpenComponentService().getWxMpServiceByAppid(appId);
+			}else{
+				WxMpInRedisConfigStorage configStorage = new WxMpInRedisConfigStorage(redisTemplate);
+				configStorage.setAppId(wxApp.getId());
+				configStorage.setSecret(wxApp.getSecret());
+				configStorage.setToken(wxApp.getToken());
+				configStorage.setAesKey(wxApp.getAesKey());
+				wxMpService = new WxMpServiceImpl();
+				wxMpService.setWxMpConfigStorage(configStorage);
+			}
+		}
 		return wxMpService;
     }
-
-	/**
-	 * 移除WxMpService缓存
-	 * @param appId
-	 */
-	public static void removeWxMpService(String appId){
-		mpServices.remove(appId);
-		routers.remove(appId);
-	}
 
 	/**
 	 *  获取全局缓存WxMpMessageRouter
@@ -144,7 +118,7 @@ public class WxMpConfiguration {
 	 * @return
 	 */
 	public static WxMpMessageRouter getWxMpMessageRouter(String appId) {
-		WxMpMessageRouter wxMpMessageRouter = routers.get(appId);
+		WxMpMessageRouter wxMpMessageRouter = newRouter(getMpService(appId));
 		return wxMpMessageRouter;
     }
 	

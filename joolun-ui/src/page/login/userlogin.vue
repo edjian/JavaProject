@@ -67,13 +67,10 @@
       <el-col :span="24">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>【公众号+小程序商城版】演示账号</span>
+            <span>【租户管理员】演示账号</span>
           </div>
           <div class="text item">
-            账号：test；密码：123456
-          </div>
-          <div class="el-timeline-item__timestamp is-bottom">
-            test账号属于一个租户，能看到【公众号+小程序商城版】所有功能
+            账号：joolun   密码：123456
           </div>
         </el-card>
       </el-col>
@@ -82,13 +79,22 @@
       <el-col :span="24">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>【公众号版】演示账号</span>
+            <span>【公众号+小程序商城版】租户演示账号</span>
           </div>
           <div class="text item">
-            账号：test2；密码：123456
+            账号：test   密码：123456
           </div>
-          <div class="el-timeline-item__timestamp is-bottom">
-            test2账号属于一个租户，能看到【公众号版】所有功能
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row style="margin-bottom: 20px">
+      <el-col :span="24">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>【公众号版】租户演示账号</span>
+          </div>
+          <div class="text item">
+            账号：test2   密码：123456
           </div>
         </el-card>
       </el-col>

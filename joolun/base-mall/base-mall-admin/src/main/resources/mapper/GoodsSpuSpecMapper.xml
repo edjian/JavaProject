@@ -19,6 +19,7 @@
 		<result property="specName" column="spec_name"/>
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
+		<result property="sort" column="sort"/>
 	</resultMap>
 
 	<resultMap id="goodsSpecVoMap" type="com.joolun.cloud.mall.common.vo.GoodsSpecVO">
@@ -41,5 +42,6 @@
 		  LEFT JOIN `goods_spec` gs
 			ON gs.`id` = gss.`spec_id`
 		WHERE gss.`spu_id` = #{spuId}
+		ORDER BY gss.`sort` ASC
 	</select>
 </mapper>

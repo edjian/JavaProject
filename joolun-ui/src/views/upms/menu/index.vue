@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import {addObj, delObj, fetchMenuTree, getObj, putObj} from "@/api/upms/menu"
+  import {addObj, delObj, fetchAllMenuTree, getObj, putObj} from "@/api/upms/menu"
   import { tableOption } from '@/const/crud/upms/menu'
   import {mapGetters} from "vuex"
 
@@ -84,7 +84,7 @@
     methods: {
       getPage() {
         this.tableLoading = true
-        fetchMenuTree().then(response => {
+        fetchAllMenuTree().then(response => {
           this.tableData = response.data.data
           let children = this.tableData
           let parentIdDIC = [{

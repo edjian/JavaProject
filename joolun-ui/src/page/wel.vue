@@ -362,7 +362,7 @@
               }
             }, {
               type: 'value',
-              interval: 10,
+              interval: 20,
               min: 0,
               axisLine: {
                 show: false,
