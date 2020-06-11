@@ -31,7 +31,7 @@
 * 升级脚本不包含base_config库，base_config请自行全量导入
 * nacos中修改数据库、redis等信息
 * 升级完要清redis缓存，再重启所有服务（包括nacos）
-
+##### 如果没有特殊情况请直接第一种全量升级，避免不必要的麻烦
 ### 常见问题
 * [必看的常见问题](https://git.joolun.com/joolun-mp-ma/mp-ma/issues?q=&type=all&sort=&state=closed&labels=6&milestone=0&assignee=0)
 
