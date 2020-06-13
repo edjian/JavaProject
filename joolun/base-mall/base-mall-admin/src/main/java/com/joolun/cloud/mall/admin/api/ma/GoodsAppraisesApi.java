@@ -64,7 +64,6 @@ public class GoodsAppraisesApi {
 	@ApiOperation(value = "分页查询")
     @GetMapping("/page")
     public R getGoodsAppraisesPage(Page page, GoodsAppraises goodsAppraises) {
-		goodsAppraises.setUserId(ThirdSessionHolder.getMallUserId());
         return R.ok(goodsAppraisesService.page(page,Wrappers.query(goodsAppraises)));
     }
 
