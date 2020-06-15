@@ -61,7 +61,7 @@ export const tableOption = {
         },
         {
             label: '商品信息',
-            prop: 'goodsInfo',
+            prop: 'name',
             width: 500,
             slot: true,
             display: false

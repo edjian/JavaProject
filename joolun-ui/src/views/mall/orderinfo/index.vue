@@ -372,7 +372,7 @@
                         </el-card>
                     </div>
                 </template>
-                <template slot-scope="scope" slot="goodsInfo">
+                <template slot-scope="scope" slot="name">
                     <el-row :gutter="10" v-for="(item, index) in scope.row.listOrderItem" :key="index"
                             style="border:1px solid #eaeaea;padding: 5px">
                         <el-col :span="3">
