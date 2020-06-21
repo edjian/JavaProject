@@ -163,6 +163,3 @@ https://git.joolun.com/joolun-mp-ma/mp-ma/wiki/C-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%
 10、修复代码生成器切换数据源导致报错的问题
 11、sku表增加乐观锁对库存进行控制
 12、goods_spu_spec、goods_sku_spec_value增加排序字段
-
-一、2.8.4升级2.8.5
-1、后台增加第三方登录（微信）
