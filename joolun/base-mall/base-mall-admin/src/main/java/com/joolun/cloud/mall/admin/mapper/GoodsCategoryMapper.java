@@ -8,8 +8,12 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.GoodsCategory;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品类目
@@ -19,4 +23,5 @@ import com.joolun.cloud.mall.common.entity.GoodsCategory;
  */
 public interface GoodsCategoryMapper extends BaseMapper<GoodsCategory> {
 
+    List<GoodsCategory> selectTreeMerchant(Wrapper<GoodsCategory> queryWrapper);
 }

@@ -32,6 +32,7 @@
 		<result property="content" column="content"/>
 		<result property="sellerReply" column="seller_reply"/>
 		<result property="replyTime" column="reply_time"/>
+		<result property="organId" column="organ_id"/>
 	</resultMap>
 
 	<resultMap id="goodsAppraisesMap2" extends="goodsAppraisesMap" type="com.joolun.cloud.mall.common.entity.GoodsAppraises">
@@ -69,7 +70,8 @@
 		goods_appraises.`logistics_score`,
 		goods_appraises.`content`,
 		goods_appraises.`seller_reply`,
-		goods_appraises.`reply_time`
+		goods_appraises.`reply_time`,
+		goods_appraises.`organ_id`
 	</sql>
 
 	<select id="selectPage1" resultMap="goodsAppraisesMap2">

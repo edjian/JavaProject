@@ -226,6 +226,7 @@ public class WxAppController {
 		Map<Object, Object> responseData = new HashMap<>();
 		String home;
 		String os = System.getProperty("os.name");
+		System.out.println(os);
 		if(os.toLowerCase().startsWith("win")){
 			home = homeDirConfigProperties.getWindows();
 		}else{

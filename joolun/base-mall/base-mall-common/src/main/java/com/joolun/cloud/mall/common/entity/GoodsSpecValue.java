@@ -67,5 +67,9 @@ private static final long serialVersionUID = 1L;
    */
 	@ApiModelProperty(value = "最后更新时间")
     private LocalDateTime updateTime;
-  
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
 }

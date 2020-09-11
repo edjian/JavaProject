@@ -208,6 +208,11 @@ public class OrderInfo extends Model<OrderInfo> {
 	@ApiModelProperty(value = "营销记录ID（砍价记录ID、拼团记录组ID（团长的拼团记录ID））")
 	private String relationId;
 	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
+	/**
 	 * 订单详情
 	 */
 	@TableField(exist = false)

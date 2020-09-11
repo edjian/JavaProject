@@ -2,6 +2,7 @@ package com.joolun.cloud.upms.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.upms.admin.service.SysOrganService;
 import com.joolun.cloud.upms.common.dto.OrganTree;
 import com.joolun.cloud.upms.common.entity.SysOrgan;
@@ -144,5 +145,20 @@ public class SysOrganController {
 			e.printStackTrace();
 			return R.failed(e.getMessage());
 		}
+	}
+
+	/**
+	 * 查看产品机构是否属于商家入驻
+	 * @param organId
+	 * @return
+	 */
+	@ApiOperation(value = "查看产品机构是否属于商家入驻")
+	@Inside
+	@GetMapping("/info/{organId}")
+	public boolean info(@PathVariable String organId){
+		return sysOrganService.count(Wrappers.<SysOrgan>lambdaQuery()
+				.eq(SysOrgan::getId,organId)
+				.eq(SysOrgan::getParentId, sysOrganService.getOne(Wrappers.<SysOrgan>lambdaQuery()
+						.eq(SysOrgan::getName, CommonConstants.SYS_ORGAN_MERCHANRT)).getId())) == 1;
 	}
 }

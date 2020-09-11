@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.UserMealMapper">
+
+    <resultMap id="userMealMap" type="com.joolun.cloud.mall.common.entity.UserMeal">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="setMealId" column="set_meal_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+        <result property="isPay" column="is_pay"/>
+        <result property="accountStatus" column="account_status"/>
+        <result property="inviteDay" column="invite_day"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="transactionId" column="transaction_id"/>
+        <result property="surplusPoint" column="surplus_point"/>
+    </resultMap>
+
+    <resultMap id="userMealMap1" type="com.joolun.cloud.mall.common.entity.UserMeal">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="setMealId" column="set_meal_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+        <result property="isPay" column="is_pay"/>
+        <result property="accountStatus" column="account_status"/>
+        <result property="inviteDay" column="invite_day"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="transactionId" column="transaction_id"/>
+        <result property="surplusPoint" column="surplus_point"/>
+        <collection property="setMeal" ofType="com.joolun.cloud.mall.common.entity.SetMeal"
+                    select="com.joolun.cloud.mall.admin.mapper.SetMealMapper.selectById"
+                    column="{id=set_meal_id}"/>
+    </resultMap>
+
+    <sql id="userMealSql">
+        user_meal.`id`,
+        user_meal.`user_id`,
+        user_meal.`set_meal_id`,
+        user_meal.`create_time`,
+        user_meal.`update_time`,
+        user_meal.`start_time`,
+        user_meal.`end_time`,
+        user_meal.`status`,
+        user_meal.`is_pay`,
+        user_meal.`account_status`,
+        user_meal.`invite_day`,
+        user_meal.`order_no`,
+        user_meal.`transaction_id`,
+        user_meal.`surplus_point`
+    </sql>
+
+    <select id="getByConditional" resultMap="userMealMap1">
+        SELECT
+        <include refid="userMealSql"/>
+        FROM user_meal
+        <where>
+            <if test="query.id != null">
+                AND user_meal.id = #{query.id}
+            </if>
+            <if test="query.userId != null">
+                AND user_meal.user_id = #{query.userId}
+            </if>
+            <if test="query.setMealId != null">
+                AND user_meal.set_meal_id = #{query.setMealId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserMeal" resultMap="userMealMap1">
+        SELECT
+        <include refid="userMealSql"/>
+        FROM user_meal
+        <where>
+            <if test="true">
+                AND user_meal.`account_status` = 0
+            </if>
+            <if test="query.userId != null">
+                AND user_meal.`user_id` = #{query.userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectUserMealByInviteNew" resultMap="userMealMap1">
+        SELECT
+        <include refid="userMealSql"/>
+        FROM user_meal
+        <where>
+            <if test="true">
+                AND user_meal.`account_status` = 0
+            </if>
+            <if test="true">
+                AND user_meal.`status` = 1
+            </if>
+            <if test="userId != null">
+                AND user_meal.`user_id` = #{userId}
+            </if>
+        </where>
+    </select>
+</mapper>

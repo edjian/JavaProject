@@ -82,5 +82,14 @@ private static final long serialVersionUID = 1L;
    */
 	@ApiModelProperty(value = "逻辑删除标记")
     private String delFlag;
-  
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
+    /**
+     * 商品返现比例
+     */
+    @ApiModelProperty(value = "商品返现比例")
+    private Integer rebate;
 }

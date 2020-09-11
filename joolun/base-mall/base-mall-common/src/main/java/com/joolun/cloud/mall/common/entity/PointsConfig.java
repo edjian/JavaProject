@@ -12,14 +12,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import io.swagger.annotations.ApiModel;
 
 /**
  * 积分设置
@@ -85,5 +84,4 @@ public class PointsConfig extends Model<PointsConfig> {
 	 */
 	@ApiModelProperty(value = "默认1积分数可抵多少元")
 	private BigDecimal defaultDeductAmount;
-
 }

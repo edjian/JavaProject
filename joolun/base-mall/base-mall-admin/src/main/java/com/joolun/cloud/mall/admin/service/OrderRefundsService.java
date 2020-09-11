@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 
 /**
@@ -41,4 +42,11 @@ public interface OrderRefundsService extends IService<OrderRefunds> {
 	void notifyRefunds(OrderRefunds orderRefunds);
 
 	IPage<OrderRefunds> page1(IPage<OrderRefunds> page, OrderRefunds orderRefunds);
+
+	/**
+	 * 商城用户下的退款订单
+	 * @param orderInfo
+	 * @return
+	 */
+	IPage<OrderRefunds> getByUserId(IPage<OrderRefunds> page, OrderInfo orderInfo);
 }

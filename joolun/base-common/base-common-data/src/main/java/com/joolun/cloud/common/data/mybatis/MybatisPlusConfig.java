@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.joolun.cloud.common.data.datascope.DataScopeInterceptor;
 import com.joolun.cloud.common.data.datascope.DataScopeProperties;
+import com.joolun.cloud.common.data.datascope.OrganScopeInterceptor;
 import com.joolun.cloud.common.data.tenant.BaseTenantHandler;
 import lombok.AllArgsConstructor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -74,6 +75,19 @@ public class MybatisPlusConfig {
 	public DataScopeInterceptor dataScopeInterceptor(DataSource dataSource) {
 		return new DataScopeInterceptor(dataSource,dataScopeProperties);
 	}
+
+	/**
+	 * 数据权限插件
+	 *
+	 * @param dataSource 数据源
+	 * @return DataScopeInterceptor
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public OrganScopeInterceptor OrganScopeInterceptor(DataSource dataSource) {
+		return new OrganScopeInterceptor(dataSource,dataScopeProperties);
+	}
+
 
 	/**
 	 * 乐观锁配置

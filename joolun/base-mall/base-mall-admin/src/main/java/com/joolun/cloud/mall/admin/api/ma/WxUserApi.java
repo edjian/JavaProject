@@ -19,6 +19,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(value = "userinfo", tags = "微信用户API")
 public class WxUserApi {
 
+	private final Logger logger= LoggerFactory.getLogger(WxUserApi.class);
 	private final FeignWxUserService feignWxUserService;
 	private final UserInfoService userInfoService;
 

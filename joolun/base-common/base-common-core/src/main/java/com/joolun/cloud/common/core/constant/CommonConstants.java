@@ -24,6 +24,8 @@ public interface CommonConstants {
 	 * 数据权限字段
 	 */
 	String SCOPENAME = "organ_id";
+
+	String SCOPENAME_ENTITY = "organId";
 	/**
 	 * upms数据库
 	 */
@@ -134,4 +136,13 @@ public interface CommonConstants {
 	String CONFIG_DATA_ID = "dynamic_routes";
 	String CONFIG_GROUP = "DEFAULT_GROUP";
 	long CONFIG_TIMEOUT_MS = 5000;
+
+	String IS_PAY_FAIL = "0";
+	String IS_PAY_SUCCESS = "1";
+
+	/**
+	 * 商家入驻
+	 */
+	String SYS_ORGAN_MERCHANRT = "商家入驻";
+
 }

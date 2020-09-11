@@ -113,6 +113,12 @@ private static final long serialVersionUID = 1L;
 	 */
 	@Version
 	private Integer version;
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
+
 	@TableField(exist = false)
 	private List<GoodsSkuSpecValue> specs;
 

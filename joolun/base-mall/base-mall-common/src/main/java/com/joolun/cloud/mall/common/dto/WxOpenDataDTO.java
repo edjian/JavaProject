@@ -16,4 +16,5 @@ public class WxOpenDataDTO {
 	private String signature;
 	private String sessionKey;
 	private String mallUserId;
+	private String inviteUserId;
 }

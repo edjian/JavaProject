@@ -85,8 +85,18 @@ public class LocalDateTimeUtils {
 		return ldt.atZone(zone).toInstant().toEpochMilli();
 	}
 
+	/**
+	 *
+	 * @param time
+	 */
+	public static boolean isExpire(LocalDateTime time){
+		return LocalDateTime.now().compareTo(time)>0;
+	}
+
 	public static void main(String[] args) {
-		long timeStamp = 1382694957000l;
-		System.out.println(timestamToDatetime(timeStamp));
+//		long timeStamp = 1382694957000l;
+		LocalDateTime time=LocalDateTime.parse("2020-07-20T10:17:12.353");
+		System.out.println(time);
+		System.out.println(isExpire(time));
 	}
 }

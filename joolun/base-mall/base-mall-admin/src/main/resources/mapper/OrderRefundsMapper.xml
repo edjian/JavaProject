@@ -25,6 +25,7 @@
 		<result property="refundTradeNo" column="refund_trade_no"/>
 		<result property="refundReson" column="refund_reson"/>
 		<result property="refuseRefundReson" column="refuse_refund_reson"/>
+		<result property="organId" column="organ_id"/>
 	</resultMap>
 
 	<resultMap id="orderRefundsMap2" extends="orderRefundsMap" type="com.joolun.cloud.mall.common.entity.OrderRefunds">
@@ -51,7 +52,8 @@
 		obj.`refund_amount`,
 		obj.`refund_trade_no`,
 		obj.`refund_reson`,
-		obj.`refuse_refund_reson`
+		obj.`refuse_refund_reson`,
+		obj.`organ_id`
 	</sql>
 
 	<select id="selectList2" resultMap="orderRefundsMap">
@@ -76,6 +78,18 @@
 		<where>
 			<if test="query.status != null">
 				AND obj.`status` = #{query.status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getByUserId" resultMap="orderRefundsMap2">
+		SELECT
+		<include refid="orderRefundsSql"/>
+		FROM order_refunds obj LEFT JOIN
+		order_info oi ON obj.order_id = oi.id
+		<where>
+			<if test="query.userId != null">
+				AND oi.user_id = #{query.userId}
 			</if>
 		</where>
 	</select>

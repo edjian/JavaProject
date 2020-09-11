@@ -8,10 +8,7 @@
  */
 package com.joolun.cloud.mall.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -120,8 +117,29 @@ public class UserInfo extends Model<UserInfo> {
 	@ApiModelProperty(value = "所在省份")
 	private String province;
 	/**
+	 * 提现积分
+	 */
+	@ApiModelProperty(value = "提现积分")
+	private Integer pointsWithdraw;
+	/**
+	 * 版本号
+	 */
+	@Version
+	private Integer version;
+	/**
 	 * 电子券数量
 	 */
 	@TableField(exist = false)
 	private Integer couponNum;
+	/**
+	 * 用户套餐
+	 */
+	@TableField(exist = false)
+	private UserMeal userMeal;
+
+	/**
+	 * 邀新用户表
+	 */
+	@TableField(exist = false)
+	private InviteNew inviteNew;
 }

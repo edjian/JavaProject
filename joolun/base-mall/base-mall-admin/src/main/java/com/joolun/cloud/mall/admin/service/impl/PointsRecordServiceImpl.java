@@ -15,6 +15,8 @@ import com.joolun.cloud.mall.admin.mapper.PointsRecordMapper;
 import com.joolun.cloud.mall.admin.service.PointsRecordService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 积分变动记录
  *
@@ -27,5 +29,10 @@ public class PointsRecordServiceImpl extends ServiceImpl<PointsRecordMapper, Poi
 	@Override
 	public IPage<PointsRecord> page1(IPage<PointsRecord> page, PointsRecord pointsRecord) {
 		return baseMapper.selectPage1(page,pointsRecord);
+	}
+
+	@Override
+	public List<PointsRecord> profitByToday(String userId,List<String> list) {
+		return baseMapper.profitByToday(userId,list);
 	}
 }

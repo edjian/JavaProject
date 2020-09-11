@@ -166,6 +166,11 @@ private static final long serialVersionUID = 1L;
 	 */
 	@ApiModelProperty(value = "发货地ID")
 	private String deliveryPlaceId;
+	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
 
 	/**
 	 * 保障服务

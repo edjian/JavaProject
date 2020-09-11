@@ -8,8 +8,16 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.mall.common.entity.InviteNew;
 import com.joolun.cloud.mall.common.entity.UserInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.io.Serializable;
 
 /**
  * 商城用户
@@ -19,4 +27,11 @@ import com.joolun.cloud.mall.common.entity.UserInfo;
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
+    UserInfo getUserMeal(Serializable id);
+
+    /**
+     * 我的邀请用户信息
+     * @return
+     */
+    UserInfo selectUserInfoByInviteNew(@Param("query")UserInfo userInfo);
 }

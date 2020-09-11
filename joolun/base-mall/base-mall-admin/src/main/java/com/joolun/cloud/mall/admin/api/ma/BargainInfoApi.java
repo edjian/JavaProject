@@ -39,15 +39,16 @@ import javax.servlet.http.HttpServletRequest;
 public class BargainInfoApi {
 
     private final BargainInfoService bargainInfoService;
-	private final BargainCutService bargainCutService;
+    private final BargainCutService bargainCutService;
 
     /**
      * 分页列表
-     * @param page 分页对象
+     *
+     * @param page        分页对象
      * @param bargainInfo 砍价
      * @return
      */
-	@ApiOperation(value = "分页列表")
+    @ApiOperation(value = "分页列表")
     @GetMapping("/page")
     public R getPage(Page page, BargainInfo bargainInfo) {
         return R.ok(bargainInfoService.page2(page, bargainInfo));
@@ -55,23 +56,24 @@ public class BargainInfoApi {
 
     /**
      * 砍价查询
+     *
      * @param bargainUser
      * @return R
      */
-	@ApiOperation(value = "砍价查询")
+    @ApiOperation(value = "砍价查询")
     @GetMapping
     public R get(BargainUser bargainUser) {
-		bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
-		BargainInfo bargainInfo = bargainInfoService.getOne2(bargainUser);
-		if(bargainInfo.getBargainUser() != null){
-			//获取已砍金额
-			bargainInfo.getBargainUser().setHavBargainAmount(bargainCutService.getTotalCutPrice(bargainInfo.getBargainUser().getId()));
-			//获取当前用户的砍价信息
-			BargainCut bargainCut = bargainCutService.getOne(Wrappers.<BargainCut>lambdaQuery()
-					.eq(BargainCut::getBargainUserId,bargainInfo.getBargainUser().getId())
-					.eq(BargainCut::getUserId,bargainUser.getUserId()));
-			bargainInfo.getBargainUser().setBargainCut(bargainCut);
-		}
+        bargainUser.setUserId(ThirdSessionHolder.getMallUserId());
+        BargainInfo bargainInfo = bargainInfoService.getOne2(bargainUser);
+        if (bargainInfo != null && bargainInfo.getBargainUser() != null) {
+            //获取已砍金额
+            bargainInfo.getBargainUser().setHavBargainAmount(bargainCutService.getTotalCutPrice(bargainInfo.getBargainUser().getId()));
+            //获取当前用户的砍价信息
+            BargainCut bargainCut = bargainCutService.getOne(Wrappers.<BargainCut>lambdaQuery()
+                    .eq(BargainCut::getBargainUserId, bargainInfo.getBargainUser().getId())
+                    .eq(BargainCut::getUserId, bargainUser.getUserId()));
+            bargainInfo.getBargainUser().setBargainCut(bargainCut);
+        }
         return R.ok(bargainInfo);
     }
 

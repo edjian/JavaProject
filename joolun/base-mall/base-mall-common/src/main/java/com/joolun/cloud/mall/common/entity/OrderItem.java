@@ -150,6 +150,11 @@ public class OrderItem extends Model<OrderItem> {
 	@ApiModelProperty(value = "是否退款0:否 1：是")
 	private String isRefund;
 	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
+	/**
 	 * 状态1：申请退款；2、拒绝退款；3、同意退款
 	 */
 	@ApiModelProperty(value = "状态")
@@ -157,7 +162,7 @@ public class OrderItem extends Model<OrderItem> {
 	private String statusDesc;
 
 	public String getStatusDesc() {
-		if (this.status == null) {
+		if (this.status == null || "".equals(this.status)) {
 			return null;
 		}
 		return OrderItemEnum.valueOf(OrderItemEnum.STATUS_PREFIX + "_" + this.status).getDesc();

@@ -20,6 +20,7 @@ import com.joolun.cloud.common.data.tenant.TenantContextHolder;
 import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.admin.service.OrderRefundsService;
+import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import io.swagger.annotations.Api;
@@ -125,5 +126,18 @@ public class OrderRefundsApi {
 		}else{
 			return WxPayNotifyResponse.fail(r.getMsg());
 		}
+	}
+
+
+	/**
+	 * 商城用户下的退款订单
+	 * @param page	分页
+	 * @param orderInfo 订单信息
+	 * @return R
+	 */
+	@ApiOperation(value = "用户退款订单列表")
+	@GetMapping("/orderRefundsList")
+	public R getByUserId(Page page, OrderInfo orderInfo) {
+		return R.ok(orderRefundsService.getByUserId(page, orderInfo));
 	}
 }

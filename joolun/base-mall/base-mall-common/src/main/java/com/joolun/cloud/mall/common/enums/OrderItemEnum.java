@@ -11,7 +11,10 @@ public enum OrderItemEnum implements IEnum<String> {
 	STATUS_1("1","退款中"),
 	STATUS_2("2","退货退款中"),
 	STATUS_3("3","完成退款"),
-	STATUS_4("4","完成退货退款");
+	STATUS_4("4","完成退货退款"),
+	STATUS_5("5","拒绝退款"),
+	STATUS_6("6","拒绝退货退款"),
+	STATUS_7("7","收到退货拒绝退款");
 
 	OrderItemEnum(final String value, final String desc) {
 		this.value = value;

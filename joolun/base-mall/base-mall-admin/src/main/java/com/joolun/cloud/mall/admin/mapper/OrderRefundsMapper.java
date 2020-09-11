@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +27,6 @@ public interface OrderRefundsMapper extends BaseMapper<OrderRefunds> {
 	IPage<OrderRefunds> selectPage1(IPage<OrderRefunds> page, @Param("query") OrderRefunds orderRefunds);
 
 	List<OrderRefunds> selectList2(OrderRefunds orderItem);
+
+	IPage<OrderRefunds> getByUserId(IPage<OrderRefunds> page, @Param("query") OrderInfo orderInfo);
 }

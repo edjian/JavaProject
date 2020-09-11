@@ -10,7 +10,6 @@ package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.OrderItem;
-import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
 import java.util.List;

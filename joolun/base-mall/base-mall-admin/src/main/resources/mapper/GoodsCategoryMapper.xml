@@ -11,15 +11,37 @@
 
 <mapper namespace="com.joolun.cloud.mall.admin.mapper.GoodsCategoryMapper">
   <resultMap id="goodsCategoryMap" type="com.joolun.cloud.mall.common.entity.GoodsCategory">
-	<id property="id" column="id"/>
-	<result property="tenantId" column="tenant_id"/>
-	<result property="parentId" column="parent_id"/>
-	<result property="name" column="name"/>
-	<result property="description" column="description"/>
-	<result property="picUrl" column="pic_url"/>
-	<result property="sort" column="sort"/>
-	<result property="createTime" column="create_time"/>
-	<result property="updateTime" column="update_time"/>
-	<result property="delFlag" column="del_flag"/>
+	  <id property="id" column="id"/>
+	  <result property="tenantId" column="tenant_id"/>
+	  <result property="parentId" column="parent_id"/>
+	  <result property="name" column="name"/>
+	  <result property="description" column="description"/>
+	  <result property="picUrl" column="pic_url"/>
+	  <result property="sort" column="sort"/>
+	  <result property="createTime" column="create_time"/>
+	  <result property="updateTime" column="update_time"/>
+	  <result property="delFlag" column="del_flag"/>
+	  <result property="organId" column="organ_id"/>
+	  <result property="rebate" column="rebate"/>
   </resultMap>
+	
+	<sql id="goodsCategorySql">
+		goods_category.`id`,
+		goods_category.`tenant_id`,
+		goods_category.`parent_id`,
+		goods_category.`name`,
+		goods_category.`description`,
+		goods_category.`pic_url`,
+		goods_category.`sort`,
+		goods_category.`create_time`,
+		goods_category.`update_time`,
+		goods_category.`del_flag`,
+		goods_category.`organ_id`,
+		goods_category.`rebate`
+	</sql>
+    <select id="selectTreeMerchant" resultType="com.joolun.cloud.mall.common.entity.GoodsCategory">
+		SELECT
+		<include refid="goodsCategorySql"/>
+		FROM goods_category goods_category
+	</select>
 </mapper>

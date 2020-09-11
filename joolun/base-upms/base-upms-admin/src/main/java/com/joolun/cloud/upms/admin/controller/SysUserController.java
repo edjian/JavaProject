@@ -97,6 +97,33 @@ public class SysUserController {
 	}
 
 	/**
+	 * 获取指定用户全部信息
+	 * @param organId
+	 * @return
+	 */
+	@ApiOperation(value = "获取指定用户全部信息")
+	@Inside
+	@GetMapping("/info/sys/{organId}")
+	public R infoByUser(@PathVariable String organId) {
+		SysUser sysUser = new SysUser();
+		sysUser.setOrganId(organId);
+		sysUser = sysUserService.getByNoTenant(sysUser);
+		if (sysUser == null) {
+			return R.failed(null, String.format("用户信息为空 %s", organId));
+		}
+		TenantContextHolder.setTenantId(sysUser.getTenantId());
+		if(CommonConstants.STATUS_NORMAL.equals(sysUser.getLockFlag())){
+			//查询所属租户状态是否正常，否则禁止登录
+			SysTenant sysTenant = sysTenantService.getById(sysUser.getTenantId());
+			if(CommonConstants.STATUS_LOCK.equals(sysTenant.getStatus())){
+				sysUser.setLockFlag(CommonConstants.STATUS_LOCK);
+			}
+		}
+		UserInfo userInfo = sysUserService.findUserInfo(sysUser);
+		return R.ok(userInfo);
+	}
+
+	/**
 	 * 通过ID查询用户信息
 	 *
 	 * @param id ID

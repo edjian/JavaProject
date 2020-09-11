@@ -48,6 +48,7 @@ public class WxPayConfiguration {
 				payConfig.setAppId(wxApp.getId());
 				payConfig.setMchId(wxApp.getMchId());
 				payConfig.setMchKey(wxApp.getMchKey());
+				System.out.println(wxApp.getKeyPath());
 				payConfig.setKeyPath(wxApp.getKeyPath());
 				// 可以指定是否使用沙箱环境
 				payConfig.setUseSandboxEnv(false);

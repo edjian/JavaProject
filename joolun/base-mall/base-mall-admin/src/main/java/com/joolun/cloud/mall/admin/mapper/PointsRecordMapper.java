@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.joolun.cloud.mall.common.entity.PointsRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 积分变动记录
  *
@@ -22,4 +24,6 @@ import org.apache.ibatis.annotations.Param;
 public interface PointsRecordMapper extends BaseMapper<PointsRecord> {
 
 	IPage<PointsRecord> selectPage1(IPage<PointsRecord> page, @Param("query") PointsRecord pointsRecord);
+
+    List<PointsRecord> profitByToday(@Param("userId")String userId,@Param("list") List<String> list);
 }

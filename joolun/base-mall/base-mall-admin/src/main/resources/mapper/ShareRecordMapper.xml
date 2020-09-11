@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.ShareRecordMapper">
+
+    <resultMap id="shareRecordMap" type="com.joolun.cloud.mall.common.entity.ShareRecord">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="taskId" column="task_id"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="shareRecordSql">
+        share_record.`id`,
+        share_record.`create_time`,
+        share_record.`update_time`,
+        share_record.`user_id`,
+        share_record.`task_id`,
+        share_record.`status`
+    </sql>
+    <select id="selectShareRecordByTaskId" resultType="com.joolun.cloud.mall.common.entity.ShareRecord">
+        SELECT
+        <include refid="shareRecordSql"/>
+        FROM share_record share_record
+        <where>
+            <if test="taskId != null">
+                AND share_record.`task_id` = #{shareRecord.taskId}
+            </if>
+            <if test="true">
+                AND share_record.`create_time` between
+                (select DATE_FORMAT(now(),'%Y-%m-%d 00:00:00') from DUAL) and
+                (select DATE_FORMAT(now(),'%Y-%m-%d 23:59:59') from DUAL)
+            </if>
+        </where>
+    </select>
+</mapper>

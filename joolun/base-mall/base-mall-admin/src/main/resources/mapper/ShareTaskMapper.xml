@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.ShareTaskMapper">
+
+    <resultMap id="shareTaskMap" type="com.joolun.cloud.mall.common.entity.ShareTask">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="point" column="point"/>
+        <result property="shareUrl" column="share_url"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="enable" column="enable"/>
+        <result property="taskState" column="task_state"/>
+    </resultMap>
+
+
+    <sql id="shareTaskSql">
+        share_task.`id`,
+        share_task.`name`,
+        share_task.`point`,
+        share_task.`share_url`,
+        share_task.`pic_url`,
+        share_task.`enable`,
+        share_task.`task_state`
+    </sql>
+
+    <sql id="shareTaskSq2">
+        share_task.`id`,
+        share_task.`name`,
+        share_task.`point`,
+        share_task.`share_url`,
+        share_task.`pic_url`,
+        share_task.`enable`,
+        share_task.`task_state`,
+        share_record.`id`,
+        share_record.`create_time`,
+        share_record.`update_time`,
+        share_record.`user_id`,
+        share_record.`task_id`,
+        share_record.`status`
+    </sql>
+
+    <select id="selectPage1" resultMap="shareTaskMap">
+        SELECT
+        <include refid="shareTaskSq2"/>
+        FROM share_task share_task
+        LEFT JOIN
+        (
+          SELECT *  FROM
+          share_record
+          <where>
+              <if test="query.userId != null">
+                  AND share_record.`user_id` = #{query.userId}
+              </if>
+              <if test="true">
+                  AND share_record.`create_time` BETWEEN
+                  (SELECT DATE_FORMAT(now(), '%Y-%m-%d 00:00:00') FROM DUAL) AND
+                  (SELECT DATE_FORMAT(now(), '%Y-%m-%d 23:59:59') FROM DUAL)
+              </if>
+          </where>
+        ) share_record ON share_task.`id` = share_record.`task_id`
+        <where>
+            <if test="query.id != null">
+                AND share_task.`id` = #{query.id}
+            </if>
+            <if test="query.name != null">
+                AND share_task.`name` = #{query.name}
+            </if>
+            <if test="query.point != null">
+                AND share_task.`point` = #{query.point}
+            </if>
+            <if test="query.shareUrl != null">
+                AND share_task.`share_url` = #{query.shareUrl}
+            </if>
+            <if test="query.picUrl != null">
+                AND share_task.`pic_url` = #{query.picUrl}
+            </if>
+            <if test="query.enable != null">
+                AND share_task.`enable` = #{query.enable}
+            </if>
+        </where>
+    </select>
+</mapper>

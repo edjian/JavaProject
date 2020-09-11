@@ -61,7 +61,7 @@ public class GoodsCategoryController {
 	@GetMapping("/tree")
 	@PreAuthorize("@ato.hasAuthority('mall:goodscategory:index')")
 	public R getGoodsCategoryTree() {
-		return R.ok(goodsCategoryService.selectTree(null));
+		return R.ok(goodsCategoryService.selectTreeMerchant(null));
 	}
 
     /**

@@ -36,6 +36,7 @@
 		<result property="pointsDeductAmount" column="points_deduct_amount"/>
 		<result property="freightTemplatId" column="freight_templat_id"/>
 		<result property="deliveryPlaceId" column="delivery_place_id"/>
+		<result property="organId" column="organ_id"/>
 	</resultMap>
 
 	<resultMap id="goodsSpuMap1" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
@@ -110,7 +111,8 @@
 		goods_spu.`points_deduct_scale`,
 		goods_spu.`points_deduct_amount`,
 		goods_spu.`freight_templat_id`,
-		goods_spu.`delivery_place_id`
+		goods_spu.`delivery_place_id`,
+		goods_spu.`organ_id`
 	</sql>
 
 	<sql id="goodsSpuSql2">
@@ -138,7 +140,8 @@
 		goods_spu.`points_deduct_scale`,
 		goods_spu.`points_deduct_amount`,
 		goods_spu.`freight_templat_id`,
-		goods_spu.`delivery_place_id`
+		goods_spu.`delivery_place_id`,
+		goods_spu.`organ_id`
 	</sql>
 
 	<select id="selectPage1" resultMap="goodsSpuMap">

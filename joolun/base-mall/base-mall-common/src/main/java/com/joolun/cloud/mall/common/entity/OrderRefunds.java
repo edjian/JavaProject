@@ -82,6 +82,11 @@ public class OrderRefunds extends Model<OrderRefunds> {
 	 */
 	@ApiModelProperty(value = "退款状态")
 	private String status;
+	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
 	@TableField(exist = false)
 	private String statusDesc;
 

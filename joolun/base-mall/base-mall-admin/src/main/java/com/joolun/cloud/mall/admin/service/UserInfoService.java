@@ -13,6 +13,8 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.common.dto.WxOpenDataDTO;
 import com.joolun.cloud.mall.common.entity.UserInfo;
 
+import java.io.Serializable;
+
 /**
  * 商城用户
  *
@@ -34,4 +36,17 @@ public interface UserInfoService extends IService<UserInfo> {
 	 * @return
 	 */
 	boolean saveInside(UserInfo userInfo);
+
+	/**
+	 * 查询用户套餐和用户信息
+	 * @param id
+	 * @return
+	 */
+	UserInfo getUserMeal(Serializable id);
+
+	/**
+	 * 我的账户积分信息
+	 * @return
+	 */
+    R assets();
 }

@@ -73,5 +73,9 @@ private static final long serialVersionUID = 1L;
 	 */
 	@ApiModelProperty(value = "排序字段")
 	private Integer sort;
-  
+	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
 }

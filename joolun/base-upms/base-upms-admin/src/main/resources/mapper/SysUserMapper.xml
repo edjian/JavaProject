@@ -150,6 +150,9 @@
 			<if test="phone != null and phone != ''">
 				and sys_user.phone = #{phone}
 			</if>
+			<if test="organId != null and organId != ''">
+				and sys_user.organ_id = #{organId}
+			</if>
 		</where>
 	</select>
 

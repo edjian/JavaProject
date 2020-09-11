@@ -29,6 +29,26 @@ public interface FeignUserService {
 			, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
+	 * 查询该机构是否是商家入驻
+	 * @param organId
+	 * @param from
+	 * @return
+	 */
+	@GetMapping("/organ/info/{organId}")
+	boolean infoByOrganId(@PathVariable("organId") String organId
+			, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 *
+	 * @param organId
+	 * @param from
+	 * @return
+	 */
+	@GetMapping("/user/info/sys/{organId}")
+	R<UserInfo> infoByUser(@PathVariable("organId") String organId
+			, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
 	 * 手机号查询用户、角色信息
 	 *
 	 * @param phone

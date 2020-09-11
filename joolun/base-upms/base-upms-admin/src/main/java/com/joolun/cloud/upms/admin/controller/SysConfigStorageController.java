@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import com.joolun.cloud.upms.admin.service.SysConfigStorageService;
 import io.swagger.annotations.ApiOperation;
@@ -117,4 +118,13 @@ public class SysConfigStorageController {
 	public R get() {
 		return R.ok(sysConfigStorageService.getOne(Wrappers.emptyWrapper()));
 	}
+
+    /**
+     * 小程序调用后台上传存储配置
+     * @return
+     */
+	@Inside
+	@ApiOperation("小程序调用后台上传存储配置")
+	@GetMapping("/getOne")
+    public SysConfigStorage getOne(){return sysConfigStorageService.getOne(Wrappers.emptyWrapper());}
 }

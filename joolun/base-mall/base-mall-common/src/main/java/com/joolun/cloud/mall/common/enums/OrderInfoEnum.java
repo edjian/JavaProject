@@ -13,7 +13,7 @@ public enum OrderInfoEnum implements IEnum<String> {
 	STATUS_2("2","待收货"),
 	STATUS_3("3","已完成"),
 	STATUS_5("5","已取消"),
-	STATUS_6("6","退款中"),
+	STATUS_6("6","已退款"),
 	STATUS_10("10","待成团");
 
 	OrderInfoEnum(final String value, final String desc) {

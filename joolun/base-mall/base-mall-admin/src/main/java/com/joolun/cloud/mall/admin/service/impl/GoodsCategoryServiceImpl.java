@@ -38,6 +38,11 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, G
 		return getTree(this.list(Wrappers.lambdaQuery(goodsCategory)));
 	}
 
+	@Override
+	public List<GoodsCategoryTree> selectTreeMerchant(GoodsCategory goodsCategory) {
+		return getTree(baseMapper.selectTreeMerchant(Wrappers.lambdaQuery(goodsCategory)));
+	}
+
 	/**
 	 * 构建树
 	 *

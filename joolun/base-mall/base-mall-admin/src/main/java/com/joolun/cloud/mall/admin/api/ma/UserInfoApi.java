@@ -59,4 +59,10 @@ public class UserInfoApi {
 		userInfo.setCouponNum(couponNum);
         return R.ok(userInfo);
     }
+
+	@ApiOperation(value = "我的账户积分信息")
+	@GetMapping("/assets")
+	public R assets(){
+		return R.ok(userInfoService.assets());
+	}
 }

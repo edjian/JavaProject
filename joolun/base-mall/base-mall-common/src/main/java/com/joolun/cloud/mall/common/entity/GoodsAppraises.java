@@ -133,6 +133,11 @@ public class GoodsAppraises extends Model<GoodsAppraises> {
    */
 	@ApiModelProperty(value = "回复时间")
     private LocalDateTime replyTime;
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
 
 	@TableField(exist = false)
 	private GoodsSpu goodsSpu;

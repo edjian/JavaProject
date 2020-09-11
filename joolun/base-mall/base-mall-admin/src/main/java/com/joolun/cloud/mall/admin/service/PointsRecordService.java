@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.PointsRecord;
 
+import java.util.List;
+
 /**
  * 积分变动记录
  *
@@ -21,4 +23,6 @@ import com.joolun.cloud.mall.common.entity.PointsRecord;
 public interface PointsRecordService extends IService<PointsRecord> {
 
 	IPage<PointsRecord> page1(IPage<PointsRecord> page, PointsRecord pointsRecord);
+
+	List<PointsRecord> profitByToday(String userId, List<String> list);
 }

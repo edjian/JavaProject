@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.InviteNewMapper">
+
+    <resultMap id="inviteNewMap" type="com.joolun.cloud.mall.common.entity.InviteNew">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userIdFirst" column="user_id_first"/>
+        <result property="userIdSecond" column="user_id_second"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="setMealIdFirst" column="set_meal_id_first"/>
+        <result property="setMealIdSecond" column="set_meal_id_second"/>
+    </resultMap>
+
+    <resultMap id="inviteNewMap1" type="com.joolun.cloud.mall.common.entity.InviteNew" extends="inviteNewMap">
+        <collection property="userInfo" ofType="com.joolun.cloud.mall.common.entity.UserInfo"
+                    select="com.joolun.cloud.mall.admin.mapper.UserInfoMapper.selectById"
+                    column="user_id"/>
+    </resultMap>
+
+    <sql id="inviteNewSql">
+        invite_new.`id`,
+        invite_new.`user_id`,
+        invite_new.`user_id_first`,
+        invite_new.`user_id_second`,
+        invite_new.`create_time`,
+        invite_new.`update_time`,
+        invite_new.`status`,
+        invite_new.`set_meal_id_first`,
+        invite_new.`set_meal_id_second`
+    </sql>
+    <select id="selectPage1" resultMap="inviteNewMap1">
+        SELECT
+        <include refid="inviteNewSql"/>
+        FROM invite_new invite_new
+        <where>
+            <if test="query.userIdFirst != null">
+                AND invite_new.`user_id_first` = #{query.userIdFirst}
+            </if>
+            <if test="query.status != null and query.status != ''">
+                AND invite_new.`status` = #{query.status}
+            </if>
+        </where>
+    </select>
+</mapper>

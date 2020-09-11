@@ -20,6 +20,7 @@
 		<result property="createTime" column="create_time"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="sort" column="sort"/>
+		<result property="organId" column="organ_id"/>
 	</resultMap>
 
 	<resultMap id="goodsSkuSpecValueMap2" extends="goodsSkuSpecValueMap" type="com.joolun.cloud.mall.common.entity.GoodsSkuSpecValue">
@@ -41,6 +42,7 @@
 		ssv.`create_time`,
 		ssv.`update_time`,
 		ssv.`sort`,
+		ssv.`organ_id`,
 		gsv.`spec_id`,
 		gsv.`name` AS `spec_value_name`
 	</sql>
