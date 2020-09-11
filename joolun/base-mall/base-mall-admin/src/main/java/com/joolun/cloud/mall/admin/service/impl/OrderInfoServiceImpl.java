@@ -143,20 +143,31 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             }
             //发送订阅消息
             try {
+//                订单编号{{character_string1.DATA}}
+//                商品详情{{thing2.DATA}}
+//                快递单号{{character_string4.DATA}}
+//                收货人{{name5.DATA}}
+//                发货时间{{date10.DATA}}
+
+//                订单号 {{number2.DATA}}
+//                物品名称 {{thing1.DATA}}
+//                收货人 {{phrase16.DATA}}
+//                快递公司 {{thing14.DATA}}
+//                快递单号 {{character_string13.DATA}}
                 OrderInfo orderInfo = baseMapper.selectById(entity.getId());
                 WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
                 wxTemplateMsgSendDTO.setMallUserId(orderInfo.getUserId());
                 wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_3);
                 wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + orderInfo.getId());
                 HashMap<String, HashMap<String, String>> data = new HashMap<>();
-                data.put("character_string1", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getOrderNo() + "\"}", Map.class));
-                String thing2 = orderInfo.getName();
-                thing2 = thing2.length() > 20 ? thing2.substring(0, 19) : thing2;
-                data.put("thing2", (HashMap) JSONUtil.toBean("{\"value\": \"" + thing2 + "\"}", Map.class));
-                data.put("character_string4", (HashMap) JSONUtil.toBean("{\"value\": \"" + entity.getLogisticsNo() + "\"}", Map.class));
-                data.put("name5", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderLogistics.getUserName() + "\"}", Map.class));
+                data.put("number2", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getOrderNo() + "\"}", Map.class));
+                String thing1 = orderInfo.getName();
+                thing1 = thing1.length() > 20 ? thing1.substring(0, 19) : thing1;
+                data.put("thing1", (HashMap) JSONUtil.toBean("{\"value\": \"" + thing1 + "\"}", Map.class));
+                data.put("character_string13", (HashMap) JSONUtil.toBean("{\"value\": \"" + entity.getLogisticsNo() + "\"}", Map.class));
+                data.put("phrase16", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderLogistics.getUserName() + "\"}", Map.class));
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
-                data.put("date10", (HashMap) JSONUtil.toBean("{\"value\": \"" + entity.getDeliveryTime().format(dtf) + "\"}", Map.class));
+                data.put("thing14", (HashMap) JSONUtil.toBean("{\"value\": \"" + "快递公司" + "\"}", Map.class));
                 wxTemplateMsgSendDTO.setData(data);
                 feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
             } catch (Exception e) {
@@ -266,7 +277,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         AtomicReference<Integer> pointsGiveAmount = new AtomicReference<>(0);
         AtomicReference<Integer> orderPointsFirst = new AtomicReference<>(0);
         AtomicReference<Integer> orderPointsSecond = new AtomicReference<>(0);
+        AtomicReference<Integer> orderPointsThird = new AtomicReference<>(0);
         List<PointsRecord> listPointsRecord = new ArrayList<>();
+        List<UserInfo> listUserInfo = new ArrayList<>();
         List<GoodsSpu> listGoodsSpu = goodsSpuService.listByIds(resultList.keySet());
         UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
 
@@ -286,16 +299,28 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     R<com.joolun.cloud.upms.common.dto.UserInfo> result = feignUserService.infoByUser(goodsSpu.getOrganId(), SecurityConstants.FROM_IN);
                     MerchantSettled merchantSettled = merchantSettledService.getOne(Wrappers.<MerchantSettled>lambdaQuery()
                             .eq(MerchantSettled::getPhone, result.getData().getSysUser().getPhone())
-                            .eq(MerchantSettled::getStatus, MallConstants.MERCHANT_STATUS_3));
-                    UserInfo merchantUserInfo = userInfoService.getById(merchantSettled.getUserId());
-                    UserMeal userMeal1 = userMealMapper.selectUserMealByInviteNew(merchantUserInfo.getId());
+                            .eq(MerchantSettled::getStatus, MallConstants.MERCHANT_STATUS_2));
+                    if(Optional.ofNullable(merchantSettled).isPresent()){
+                        UserInfo merchantUserInfo = userInfoService.getById(merchantSettled.getUserId());
+                        UserMeal userMeal1 = userMealMapper.selectUserMealByInviteNew(merchantUserInfo.getId());
 
-                    int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_10)).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-                    if (MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()))
-                        amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_30)).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                        int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_10)).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                        if (MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()))
+                            amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_30)).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 
-                    merchantUserInfo.setPointsCurrent(merchantUserInfo.getPointsCurrent() + amount);
-                    userInfoService.updateById(merchantUserInfo);
+                        PointsRecord pointsRecord = new PointsRecord();
+                        pointsRecord.setUserId(merchantUserInfo.getId());
+                        pointsRecord.setDescription("【跨界收益赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
+                        pointsRecord.setSpuId(goodsSpu.getId());
+                        pointsRecord.setOrderItemId(orderItem.getId());
+                        pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
+                        pointsRecord.setAmount(amount);
+                        listPointsRecord.add(pointsRecord);
+
+                        merchantUserInfo.setPointsWithdraw(merchantUserInfo.getPointsWithdraw() + amount);
+//                        userInfoService.updateById(merchantUserInfo);
+                        listUserInfo.add(merchantUserInfo);
+                    }
                 }
 
                 //处理积分赠送
@@ -314,6 +339,28 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                         pointsRecord.setAmount(amount);
                         listPointsRecord.add(pointsRecord);
                         pointsGiveAmount.updateAndGet(v -> v + amount);
+                        //更新用户积分
+                        userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsGiveAmount.get());
+
+                        if (StringUtils.isNotEmpty(orderInfo.getInviteUserId())) {
+//                          到时候可以根据时间点赠送积分
+                            UserInfo userInfoThird = new UserInfo();
+                            userInfoThird.setId(orderInfo.getInviteUserId());
+                            userInfoThird = userInfoMapper.selectUserInfoByInviteNew(userInfoThird);
+                            PointsRecord pointsRecord3 = new PointsRecord();
+                            pointsRecord3.setUserId(orderInfo.getInviteUserId());
+                            pointsRecord3.setDescription("【赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
+                            pointsRecord3.setSpuId(goodsSpu.getId());
+                            pointsRecord3.setOrderItemId(orderItem.getId());
+                            pointsRecord3.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
+                            int amountThird = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * userInfoThird.getUserMeal().getSetMeal().getOrderRebateSecond())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                            pointsRecord3.setAmount(amountThird);
+                            listPointsRecord.add(pointsRecord3);
+                            orderPointsThird.updateAndGet(v -> v + amountThird);
+                            userInfoThird.setPointsWithdraw(userInfoThird.getPointsWithdraw() + orderPointsThird.get());
+//                            userInfoService.updateById(userInfoThird);
+                            listUserInfo.add(userInfoThird);
+                        }
                     } else {
                         SetMeal setMeal = setMealMapper.selectOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, userMeal.getSetMealId()));
                         InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
@@ -323,10 +370,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                         pointsRecord.setAmount(amount);
                         listPointsRecord.add(pointsRecord);
                         pointsGiveAmount.updateAndGet(v -> v + amount);
+                        //更新用户积分
+                        userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + pointsGiveAmount.get());
 
                         if (!MallConstants.CITY_PARTNER.equals(setMeal.getPrice().intValue())) {
-                            UserInfo userInfoFirst = StringUtils.isEmpty(inviteNew.getUserIdFirst()) ? null : userInfoMapper.selectById(inviteNew.getUserIdFirst());
-                            UserInfo userInfoSecond = StringUtils.isEmpty(inviteNew.getUserIdSecond()) ? null : userInfoMapper.selectById(inviteNew.getUserIdSecond());
+                            UserInfo userInfoFirst = StringUtils.isEmpty(inviteNew.getUserIdFirst()) ? null : userInfoMapper.getUserMeal(inviteNew.getUserIdFirst());
+                            UserInfo userInfoSecond = StringUtils.isEmpty(inviteNew.getUserIdSecond()) ? null : userInfoMapper.getUserMeal(inviteNew.getUserIdSecond());
 
                             if (userInfoFirst != null) {
                                 PointsRecord pointsRecord1 = new PointsRecord();
@@ -335,25 +384,28 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                                 pointsRecord1.setSpuId(goodsSpu.getId());
                                 pointsRecord1.setOrderItemId(orderItem.getId());
                                 pointsRecord1.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
-                                int amountFirst = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * setMeal.getOrderRebateFirst())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                                int amountFirst = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * userInfoFirst.getUserMeal().getSetMeal().getOrderRebateFirst())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
                                 pointsRecord1.setAmount(amountFirst);
                                 listPointsRecord.add(pointsRecord1);
                                 orderPointsFirst.updateAndGet(v -> v + amountFirst);
-                                userInfoFirst.setPointsCurrent(userInfoFirst.getPointsCurrent() + orderPointsFirst.get());
-                                userInfoService.updateById(userInfoFirst);
-                            } else if (userInfoSecond != null) {
+                                userInfoFirst.setPointsWithdraw(userInfoFirst.getPointsWithdraw() + orderPointsFirst.get());
+//                                userInfoService.updateById(userInfoFirst);
+                                listUserInfo.add(userInfoFirst);
+                            }
+                            if (userInfoSecond != null) {
                                 PointsRecord pointsRecord2 = new PointsRecord();
                                 pointsRecord2.setUserId(userInfoSecond.getId());
                                 pointsRecord2.setDescription("【赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
                                 pointsRecord2.setSpuId(goodsSpu.getId());
                                 pointsRecord2.setOrderItemId(orderItem.getId());
                                 pointsRecord2.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
-                                int amountSecond = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * setMeal.getOrderRebateSecond())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                                int amountSecond = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * userInfoSecond.getUserMeal().getSetMeal().getOrderRebateSecond())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
                                 pointsRecord2.setAmount(amountSecond);
                                 listPointsRecord.add(pointsRecord2);
                                 orderPointsSecond.updateAndGet(v -> v + amountSecond);
-                                userInfoSecond.setPointsCurrent(userInfoSecond.getPointsCurrent() + orderPointsSecond.get());
-                                userInfoService.updateById(userInfoSecond);
+                                userInfoSecond.setPointsWithdraw(userInfoSecond.getPointsWithdraw() + orderPointsSecond.get());
+//                                userInfoService.updateById(userInfoSecond);
+                                listUserInfo.add(userInfoSecond);
                             }
                         }
                     }
@@ -364,8 +416,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         //新增积分记录
         pointsRecordService.saveBatch(listPointsRecord);
         //更新用户积分
-        userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsGiveAmount.get());
-        userInfoService.updateById(userInfo);
+//        userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + pointsGiveAmount.get());
+//        userInfoService.updateById(userInfo);
+        listUserInfo.add(userInfo);
+        userInfoService.updateBatchById(listUserInfo);
         baseMapper.updateById(orderInfo);
     }
 
@@ -391,6 +445,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setPaymentCouponPrice(BigDecimal.ZERO);
         orderInfo.setPaymentPointsPrice(BigDecimal.ZERO);
         orderInfo.setCreateTime(LocalDateTime.now());
+
+        UserMeal userMeal = userMealMapper.selectUserMealByInviteNew(orderInfo.getUserId());
+        if (userMeal != null) {
+            orderInfo.setInviteUserId(placeOrderDTO.getInviteUserId());
+        }
         List<OrderItem> listOrderItem = new ArrayList<>();
         List<GoodsSku> listGoodsSku = new ArrayList<>();
         List<CouponUser> listCouponUser = new ArrayList<>();
@@ -519,10 +578,17 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 pointsRecordService.saveBatch(listPointsRecord);
                 //更新用户积分
                 UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
-                if (userInfo.getPointsCurrent() < orderInfo.getPaymentPoints()) {
+                if (userInfo.getPointsCurrent() + userInfo.getPointsWithdraw() < orderInfo.getPaymentPoints()) {
                     throw new RuntimeException("积分不足");
+                } else {
+                    if (userInfo.getPointsCurrent() < orderInfo.getPaymentPoints()) {
+                        orderInfo.setPointsWithdrawal(userInfo.getPointsCurrent() - orderInfo.getPaymentPoints());
+                        userInfo.setPointsWithdraw(userInfo.getPointsCurrent() + userInfo.getPointsWithdraw() - orderInfo.getPaymentPoints());
+                        userInfo.setPointsCurrent(0);
+                    } else {
+                        userInfo.setPointsCurrent(userInfo.getPointsCurrent() - orderInfo.getPaymentPoints());
+                    }
                 }
-                userInfo.setPointsCurrent(userInfo.getPointsCurrent() - orderInfo.getPaymentPoints());
                 userInfoService.updateById(userInfo);
             }
             //加入redis，30分钟自动取消
@@ -732,17 +798,29 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             try {
                 WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
                 wxTemplateMsgSendDTO.setMallUserId(orderInfo.getUserId());
-                wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_2);
+                wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_12);
                 wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + orderInfo.getId());
                 HashMap<String, HashMap<String, String>> data = new HashMap<>();
-                data.put("character_string1", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getOrderNo() + "\"}", Map.class));
+//                店铺名称{{name7.DATA}}
+//                商品{{thing1.DATA}}
+//                支付金额{{amount3.DATA}}
+//                收货信息{{thing4.DATA}}
+//                下单时间{{date5.DATA}}
+
+//                订单编号{{character_string1.DATA}}
+//                订单金额{{amount2.DATA}}
+//                商品名称{{thing3.DATA}}
+//                下单时间{{time4.DATA}}
+//                支付金额{{amount5.DATA}}
+                data.put("name7", (HashMap) JSONUtil.toBean("{\"value\": \"" + "盈联易单配" + "\"}", Map.class));
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
-                data.put("time4", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getCreateTime().format(dtf) + "\"}", Map.class));
-                String thing3 = orderInfo.getName();
-                thing3 = thing3.length() > 20 ? thing3.substring(0, 19) : thing3;
-                data.put("thing3", (HashMap) JSONUtil.toBean("{\"value\": \"" + thing3 + "\"}", Map.class));
-                data.put("amount2", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
-                data.put("amount5", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
+                String thing1 = orderInfo.getName();
+                thing1 = thing1.length() > 20 ? thing1.substring(0, 19) : thing1;
+                data.put("thing1", (HashMap) JSONUtil.toBean("{\"value\": \"" + thing1 + "\"}", Map.class));
+                data.put("amount3", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
+                data.put("thing4", (HashMap) JSONUtil.toBean("{\"value\": \"" + "收货信息" + "\"}", Map.class));
+//                data.put("amount2", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
+                data.put("date5", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getCreateTime().format(dtf) + "\"}", Map.class));
                 wxTemplateMsgSendDTO.setData(data);
                 feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
             } catch (Exception e) {

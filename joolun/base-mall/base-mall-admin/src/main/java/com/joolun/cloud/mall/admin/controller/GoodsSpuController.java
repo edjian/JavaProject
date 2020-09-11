@@ -9,18 +9,26 @@
 package com.joolun.cloud.mall.admin.controller;
 
 import cn.hutool.core.convert.Convert;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
-import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import com.joolun.cloud.common.security.entity.BaseUser;
+import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import com.joolun.cloud.mall.common.entity.UserInfo;
+import com.joolun.cloud.upms.common.entity.SysUser;
+import com.joolun.cloud.upms.common.feign.FeignUserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -73,6 +81,10 @@ public class GoodsSpuController {
 	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
 	public R getCount(GoodsSpu goodsSpu) {
+		BaseUser baseUser = SecurityUtils.getUser();
+		if(baseUser.getOrganId().equals(1)){
+			goodsSpu.setOrganId(baseUser.getOrganId());
+		}
 		return R.ok(goodsSpuService.count(Wrappers.query(goodsSpu)));
 	}
 

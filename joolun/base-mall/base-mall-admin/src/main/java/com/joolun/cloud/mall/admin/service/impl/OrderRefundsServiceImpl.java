@@ -85,9 +85,13 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
             //发起微信退款申请
             if (OrderRefundsEnum.STATUS_11.getValue().equals(entity.getStatus()) || OrderRefundsEnum.STATUS_211.getValue().equals(entity.getStatus())) {
                 //查询该订单详情是否有赠送积分
+                OrderItem orderItem = orderItemService.getById2(orderRefunds.getOrderItemId());
+                OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
+
                 PointsRecord pointsRecord = new PointsRecord();
                 pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
                 pointsRecord.setOrderItemId(orderRefunds.getOrderItemId());
+                pointsRecord.setUserId(orderInfo.getUserId());
                 pointsRecord = pointsRecordService.getOne(Wrappers.query(pointsRecord));
                 if (pointsRecord != null && StrUtil.isNotBlank(pointsRecord.getId())) {
                     UserInfo userInfo = userInfoService.getById(pointsRecord.getUserId());
@@ -99,8 +103,6 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
                     }
                 }
 
-                OrderItem orderItem = orderItemService.getById2(orderRefunds.getOrderItemId());
-                OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
                 //校验数据，只有已支付的订单、未退款的订单详情才能退款
                 if (CommonConstants.YES.equals(orderInfo.getIsPay())
                         && CommonConstants.NO.equals(orderItem.getIsRefund())
@@ -205,30 +207,36 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
         PointsRecord pointsRecord = new PointsRecord();
         pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
         pointsRecord.setOrderItemId(orderItem.getId());
-        pointsRecord = pointsRecordService.getOne(Wrappers.query(pointsRecord));
+        List<PointsRecord> pointsRecords = pointsRecordService.list(Wrappers.query(pointsRecord));
         //查询该订单详情是否有赠送积分
-        if (pointsRecord != null && StrUtil.isNotBlank(pointsRecord.getId())) {
+        if (!pointsRecords.isEmpty()) {
             //减回赠送的积分
-            pointsRecord.setId(null);
-            pointsRecord.setTenantId(null);
-            pointsRecord.setCreateTime(null);
-            pointsRecord.setUpdateTime(null);
-            pointsRecord.setDescription("【退款】 " + pointsRecord.getDescription());
-            pointsRecord.setAmount(-pointsRecord.getAmount());
-            pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_3);
-            //新增积分记录
-            pointsRecordService.save(pointsRecord);
-            //减去赠送积分
-            OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
-            UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
-            Integer amount = userInfo.getPointsCurrent() + pointsRecord.getAmount();
-            if(amount < 0){
-                userInfo.setPointsCurrent(0);
-                userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + amount);
-            }else{
-                userInfo.setPointsCurrent(amount);
-            }
-            userInfoService.updateById(userInfo);
+            pointsRecords.stream().forEach(pointsRecord1 -> {
+                pointsRecord1.setId(null);
+                pointsRecord1.setTenantId(null);
+                pointsRecord1.setCreateTime(null);
+                pointsRecord1.setUpdateTime(null);
+                pointsRecord1.setDescription("【退款】 " + pointsRecord1.getDescription());
+                pointsRecord1.setAmount(-pointsRecord1.getAmount());
+                pointsRecord1.setRecordType(MallConstants.POINTS_RECORD_TYPE_3);
+                //新增积分记录
+                pointsRecordService.save(pointsRecord1);
+                //减去赠送积分
+//                OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
+                UserInfo userInfo = userInfoService.getById(pointsRecord1.getUserId());
+                Integer amount = userInfo.getPointsCurrent() + pointsRecord1.getAmount();
+                if(amount < 0){
+                    amount += userInfo.getPointsWithdraw();
+                    if(amount > 0){
+                        userInfo.setPointsCurrent(0);
+                        userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + amount);
+                    }
+                }else{
+                    userInfo.setPointsCurrent(amount);
+                }
+                userInfoService.updateById(userInfo);
+            });
+
         }
 
         //回滚抵扣积分
@@ -238,7 +246,7 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
         pointsRecord2 = pointsRecordService.getOne(Wrappers.query(pointsRecord2));
         //查询该订单详情是否有抵扣积分
         if (pointsRecord2 != null && StrUtil.isNotBlank(pointsRecord2.getId())) {
-            //减回赠送的积分
+            //减回抵扣的积分
             pointsRecord2.setId(null);
             pointsRecord2.setTenantId(null);
             pointsRecord2.setCreateTime(null);
@@ -248,10 +256,11 @@ public class OrderRefundsServiceImpl extends ServiceImpl<OrderRefundsMapper, Ord
             pointsRecord2.setRecordType(MallConstants.POINTS_RECORD_TYPE_6);
             //新增积分记录
             pointsRecordService.save(pointsRecord2);
-            //减去赠送积分
+            //加回抵扣积分
             OrderInfo orderInfo = orderInfoService.getById(orderItem.getOrderId());
             UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
-            userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsRecord2.getAmount());
+            userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() - orderInfo.getPointsWithdrawal());
+            userInfo.setPointsCurrent(userInfo.getPointsCurrent() + pointsRecord2.getAmount() + orderInfo.getPointsWithdrawal());
             userInfoService.updateById(userInfo);
         }
 

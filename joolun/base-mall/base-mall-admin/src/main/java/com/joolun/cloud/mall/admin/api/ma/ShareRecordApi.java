@@ -102,7 +102,8 @@ public class ShareRecordApi {
         Integer count = shareRecordService.count(Wrappers.<ShareRecord>lambdaQuery()
                 .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
                 .like(ShareRecord::getCreateTime, LocalDate.now()));
-        if (count == shareTaskService.count(Wrappers.<ShareTask>lambdaQuery().eq(ShareTask::getEnable, CommonConstants.YES))) {
+//        if (count == shareTaskService.count(Wrappers.<ShareTask>lambdaQuery().eq(ShareTask::getEnable, CommonConstants.YES))) {
+        if (count == MallConstants.SHARE_COUNT) {
             return shareTaskApi.shareCallback();
         }
         return R.ok();

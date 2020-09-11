@@ -199,10 +199,10 @@ public interface MallConstants {
     /**
      * 商城入驻资料填报状态
      */
+    Integer MERCHANT_STATUS_0 = 0;
     Integer MERCHANT_STATUS_1 = 1;
     Integer MERCHANT_STATUS_2 = 2;
     Integer MERCHANT_STATUS_3 = 3;
-    Integer MERCHANT_STATUS_4 = 4;
 
     /**
      * 提现积分状态
@@ -216,12 +216,22 @@ public interface MallConstants {
     /**
      * 套餐邀请城市合伙人比例
      */
-    BigDecimal SET_MEAL_980 = new BigDecimal(0.10);
-    BigDecimal SET_MEAL_3980 = new BigDecimal(0.15);
-    BigDecimal SET_MEAL_59800 = new BigDecimal(0.20);
+    BigDecimal SET_MEAL_980 = new BigDecimal("0.03");
+    BigDecimal SET_MEAL_3980 = new BigDecimal("0.12");
+    BigDecimal SET_MEAL_59800 = new BigDecimal("0.20");
+
+    /**
+     * 城市合伙人分享比例
+     */
+    BigDecimal CITY_PARTNER_SHARE = new BigDecimal("0.05");
 
     /**
      * 积分明细描述
      */
     String DAILY_TASKS = "每日任务";
+
+    /**
+     * 分享任务条数
+     */
+    Integer SHARE_COUNT = 4;
 }

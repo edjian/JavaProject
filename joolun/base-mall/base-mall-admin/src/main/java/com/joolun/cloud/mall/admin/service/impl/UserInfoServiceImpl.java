@@ -160,19 +160,23 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             map.put("amount", amount);
             map.put("withdrawal", userInfo.getPointsWithdraw());
             List<PointsRecord> pointsRecords = pointsRecordService.profitByToday(ThirdSessionHolder.getMallUserId(),list);
-            int profitToday = pointsRecords.stream().filter(pointsRecord -> pointsRecordService.getOne(Wrappers.<PointsRecord>lambdaQuery()
+            int profitToday = pointsRecords.stream().filter(pointsRecord ->
+                    pointsRecordService.getOne(Wrappers.<PointsRecord>lambdaQuery()
                     .eq(PointsRecord::getOrderItemId, pointsRecord.getOrderItemId())
+                    .eq(PointsRecord::getUserId, userInfo.getId())
                     .eq(PointsRecord::getRecordType, MallConstants.POINTS_RECORD_TYPE_3)
                     .between(PointsRecord::getCreateTime, LocalDate.now().atTime(LocalTime.MIN), LocalDate.now().atTime(LocalTime.MAX))) == null)
                     .mapToInt(pointsRecord -> pointsRecord.getAmount()).sum();
             map.put("profitToday",profitToday);
-            //还有一个升级🆙的积分没算
+            //还有一个升级�的积分没算
             UserMeal userMeal = userMealMapper.selectUserMealByInviteNew(userInfo.getId());
 
             if(userMeal != null && MallConstants.BASICS_MEAL.equals(userMeal.getSetMeal().getPrice().intValue())){
                 map.put("amount", amount + userMeal.getSurplusPoint());
-                map.put("withdrawal", userInfo.getPointsWithdraw() + userMeal.getSurplusPoint()/2);
-                map.put("surplusPoint", userMeal.getSurplusPoint());
+                map.put("withdrawal", userInfo.getPointsWithdraw() + userMeal.getSurplusPoint());
+                if(userMeal.getSurplusPoint() != 0){
+                    map.put("surplusPoint", userMeal.getSurplusPoint());
+                }
             }
         }
         return R.ok(map);

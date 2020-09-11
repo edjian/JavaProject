@@ -113,6 +113,11 @@ public class UserMeal extends Model<UserMeal> {
     @ApiModelProperty(value = "剩余可获取积分")
     private Integer surplusPoint;
     /**
+     * 城市合伙人团队
+     */
+    @ApiModelProperty(value = "城市合伙人团队")
+    private String cityPartner;
+    /**
      * 套餐信息
      */
     @TableField(exist = false)

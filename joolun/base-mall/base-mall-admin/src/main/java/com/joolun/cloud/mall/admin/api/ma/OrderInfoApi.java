@@ -206,6 +206,9 @@ public class OrderInfoApi {
             orderInfoService.notifyOrder(orderInfo);
             return R.ok();
         }
+        if (orderInfo.getPaymentPrice().compareTo(BigDecimal.ZERO) < 0) {//小于0元购买不调支付
+            return R.failed(MyReturnCode.ERR_70006.getCode(), MyReturnCode.ERR_70006.getMsg());
+        }
         if (MallConstants.ORDER_TYPE_1.equals(orderInfo.getOrderType())) {//砍价订单
             BargainUser bargainUser = bargainUserService.getById(orderInfo.getRelationId());
             if (CommonConstants.YES.equals(bargainUser.getIsBuy())) {
@@ -291,7 +294,8 @@ public class OrderInfoApi {
                 SetMeal setMeal = setMealService.getOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, userMeal.getSetMealId()));
                 HashMap<String, Object> map = com.alibaba.fastjson.JSON.parseObject(notifyResult.getAttach(), HashMap.class);
                 if (Boolean.FALSE.equals(map.get("upgrade"))) {
-                    if (true||setMeal.getPrice().multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
+//                    if (true||setMeal.getPrice().multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
+                    if (setMeal.getPrice().multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
                         String timeEnd = notifyResult.getTimeEnd();
                         LocalDateTime paymentTime = LocalDateTimeUtils.parse(timeEnd);
                         LocalDateTime endTime = paymentTime.plusDays(MallConstants.DEFAULT_TIME);
@@ -304,7 +308,8 @@ public class OrderInfoApi {
                         return WxPayNotifyResponse.fail("付款金额与订单金额不等");
                     }
                 }
-                if (true||setMeal.getPrice().subtract(new BigDecimal(MallConstants.BASICS_MEAL)).multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
+//                if (true||setMeal.getPrice().subtract(new BigDecimal(MallConstants.BASICS_MEAL)).multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
+                if (setMeal.getPrice().subtract(new BigDecimal(MallConstants.BASICS_MEAL)).multiply(new BigDecimal(100)).intValue() == notifyResult.getTotalFee()) {
                     String timeEnd = notifyResult.getTimeEnd();
                     LocalDateTime paymentTime = LocalDateTimeUtils.parse(timeEnd);
                     LocalDateTime endTime = paymentTime.plusDays(MallConstants.MINE_UPGRADE_TIME);

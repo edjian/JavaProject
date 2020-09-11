@@ -102,6 +102,7 @@ public class GoodsAppraisesApi {
 			goodsAppraises.setUserId(wxUser.getId());
 			goodsAppraises.setHeadimgUrl(wxUser1.getHeadimgUrl());
 			goodsAppraises.setNickName(wxUser1.getNickName());
+			goodsAppraises.setOrganId(orderInfo.getOrganId());
 		});
 		goodsAppraisesService.doAppraises(listGoodsAppraises);
         return R.ok();

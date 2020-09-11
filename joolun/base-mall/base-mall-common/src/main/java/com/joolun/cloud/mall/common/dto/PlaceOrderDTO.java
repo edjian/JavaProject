@@ -90,4 +90,9 @@ public class PlaceOrderDTO extends Model<ShoppingCart> {
 	 */
 	@ApiModelProperty(value = "营销记录ID（砍价记录ID、拼团记录组ID（团长的拼团记录ID））")
 	private String relationId;
+	/**
+	 * 邀请人ID
+	 */
+	@ApiModelProperty(value = "邀请人ID")
+	private String inviteUserId;
 }

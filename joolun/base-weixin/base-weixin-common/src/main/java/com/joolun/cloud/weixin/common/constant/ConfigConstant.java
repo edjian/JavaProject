@@ -87,8 +87,18 @@ public interface ConfigConstant {
 	String WX_MENU_TYPE_2 = "2";
 
 	/**
-	 * 订阅消息用途，2：订单支付成功；3、订单发货提醒
+	 * 订阅消息用途，2：订单支付成功；3、订单发货提醒；4、拼团失败通知；5、拼团成功通知；6、商家入驻审核结果通知；7、退款结果通知；8、积分通知；9、积分兑换成功通知；10、积分变更提醒；11、待付款提醒；12、下单成功提醒
 	 */
 	String WX_TMP_USE_TYPE_2 = "2";
 	String WX_TMP_USE_TYPE_3 = "3";
+	String WX_TMP_USE_TYPE_4 = "4";
+	String WX_TMP_USE_TYPE_5 = "5";
+	String WX_TMP_USE_TYPE_6 = "6";
+	String WX_TMP_USE_TYPE_7 = "7";
+	String WX_TMP_USE_TYPE_8 = "8";
+	String WX_TMP_USE_TYPE_9 = "9";
+	String WX_TMP_USE_TYPE_10 = "10";
+	String WX_TMP_USE_TYPE_11 = "11";
+	String WX_TMP_USE_TYPE_12 = "12";
+
 }

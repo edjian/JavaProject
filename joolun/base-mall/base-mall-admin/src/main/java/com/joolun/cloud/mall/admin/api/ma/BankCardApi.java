@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.BankCardService;
 import com.joolun.cloud.mall.admin.service.BankContrastService;
+import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.BankCard;
 import com.joolun.cloud.mall.common.entity.BankContrast;
 import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
@@ -16,11 +17,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Slf4j
 @AllArgsConstructor
@@ -73,7 +76,12 @@ public class BankCardApi {
     @PostMapping
     public R save(@RequestBody BankCard bankCard) {
         bankCard.setUserId(ThirdSessionHolder.getMallUserId());
-        return R.ok(bankCardService.save(bankCard));
+        try {
+            bankCardService.save(bankCard);
+        }catch (DuplicateKeyException e){
+            return R.failed(MyReturnCode.ERR_91000.getCode(), MyReturnCode.ERR_91000.getMsg());
+        }
+        return R.ok();
     }
 
     /**

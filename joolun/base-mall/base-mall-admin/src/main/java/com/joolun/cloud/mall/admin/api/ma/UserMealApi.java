@@ -41,6 +41,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 商城用户套餐
@@ -135,23 +136,35 @@ public class UserMealApi {
             SetMeal oldSetMeal = setMealService.getOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, oldUserMeal.getSetMealId()));
             if (nowSetMeal.getPrice().compareTo(oldSetMeal.getPrice()) <= 0)
                 return R.failed(MyReturnCode.ERR_90001.getCode(), MyReturnCode.ERR_90001.getMsg());
+            if (MallConstants.CITY_PARTNER.equals(nowSetMeal.getPrice().intValue()))
+                return R.failed(MyReturnCode.ERR_92000.getCode(), MyReturnCode.ERR_92000.getMsg());
         }
         userMeal.setSetMeal(nowSetMeal);
         if (oldUserMeal == null) {
             inviteNewService.remove(Wrappers.<InviteNew>lambdaQuery()
                     .eq(InviteNew::getUserId, ThirdSessionHolder.getMallUserId())
-                    .eq(!StringUtils.isEmpty(userMealDataDTO.getInviteUserId()),InviteNew::getUserIdFirst, userMealDataDTO.getInviteUserId()));
+                    .eq(!StringUtils.isEmpty(userMealDataDTO.getInviteUserId()), InviteNew::getUserIdFirst, userMealDataDTO.getInviteUserId()));
 
             //这个还要加后续条件，如果是升级套餐的话有多条记录
             UserMeal firstUserMeal = userMealService.getOne(Wrappers.<UserMeal>lambdaQuery()
+                    .eq(UserMeal::getAccountStatus, CommonConstants.NO)
                     .eq(UserMeal::getUserId, userMealDataDTO.getInviteUserId())
                     .eq(UserMeal::getStatus, CommonConstants.YES));
+
 
             InviteNew inviteNew = new InviteNew();
             inviteNew.setUserId(userMeal.getUserId());
             inviteNew.setCreateTime(LocalDateTime.now());
             inviteNew.setStatus(CommonConstants.NO);
-            if (firstUserMeal != null) {
+            if (Optional.ofNullable(firstUserMeal).isPresent()) {
+                SetMeal firstSetMeal = setMealService.getOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, firstUserMeal.getSetMealId()));
+                if (MallConstants.CITY_PARTNER.equals(firstSetMeal.getPrice().intValue()) && !MallConstants.CITY_PARTNER.equals(nowSetMeal.getPrice())) {
+                    userMeal.setCityPartner(firstUserMeal.getUserId());
+                }
+                if (StringUtils.isNotEmpty(firstUserMeal.getCityPartner())) {
+                    userMeal.setCityPartner(firstUserMeal.getCityPartner());
+                }
+
                 inviteNew.setUserIdFirst(firstUserMeal.getUserId());
                 InviteNew firstInviteNew = inviteNewService.getOne(Wrappers.<InviteNew>lambdaQuery()
                         .eq(InviteNew::getUserId, firstUserMeal.getUserId())
@@ -189,6 +202,7 @@ public class UserMealApi {
         userMeal = userMealService.getByConditional(userMeal);
         UserMeal oldUserMeal = userMealService.getOne(Wrappers.<UserMeal>lambdaQuery()
                 .eq(UserMeal::getUserId, ThirdSessionHolder.getMallUserId())
+                .eq(UserMeal::getAccountStatus, CommonConstants.NO)
                 .eq(UserMeal::getStatus, MallConstants.UNDER_WAY));
         if (userMeal == null) {
             return R.failed(MyReturnCode.ERR_70005.getCode(), MyReturnCode.ERR_70005.getMsg());
@@ -206,19 +220,21 @@ public class UserMealApi {
         wxPayUnifiedOrderRequest.setBody(userMeal.getSetMeal().getName().length() > 40 ? userMeal.getSetMeal().getName().substring(0, 39) : userMeal.getSetMeal().getName());
         wxPayUnifiedOrderRequest.setTradeType("JSAPI");
         wxPayUnifiedOrderRequest.setOutTradeNo(userMeal.getOrderNo());
-//        wxPayUnifiedOrderRequest.setTotalFee(userMeal.getSetMeal().getPrice().multiply(new BigDecimal(100)).intValue());
+        wxPayUnifiedOrderRequest.setTotalFee(userMeal.getSetMeal().getPrice().multiply(new BigDecimal(100)).intValue());
         //测试金额
-        if(MallConstants.BASICS_MEAL.equals(userMeal.getSetMeal().getPrice().intValue())){
-            wxPayUnifiedOrderRequest.setTotalFee(1);
-        }else if(MallConstants.FLAGSHIP_MEAL.equals(userMeal.getSetMeal().getPrice().intValue())){
-            wxPayUnifiedOrderRequest.setTotalFee(2);
-        }
+//        if(MallConstants.BASICS_MEAL.equals(userMeal.getSetMeal().getPrice().intValue())){
+//            wxPayUnifiedOrderRequest.setTotalFee(1);
+//        }else if(MallConstants.FLAGSHIP_MEAL.equals(userMeal.getSetMeal().getPrice().intValue())){
+//            wxPayUnifiedOrderRequest.setTotalFee(2);
+//        }else{
+//            wxPayUnifiedOrderRequest.setTotalFee(1);
+//        }
         wxPayUnifiedOrderRequest.setNotifyUrl(mallConfigProperties.getNotifyHost() + "/mall/api/ma/orderinfo/notify-order");
         wxPayUnifiedOrderRequest.setSpbillCreateIp("127.0.0.1");
         if (oldUserMeal != null) {
             map.put("upgrade", true);
-//            wxPayUnifiedOrderRequest.setTotalFee(userMeal.getSetMeal().getPrice().subtract(new BigDecimal(MallConstants.BASICS_MEAL)).multiply(new BigDecimal(100)).intValue());
-            wxPayUnifiedOrderRequest.setTotalFee(1);
+            wxPayUnifiedOrderRequest.setTotalFee(userMeal.getSetMeal().getPrice().subtract(new BigDecimal(MallConstants.BASICS_MEAL)).multiply(new BigDecimal(100)).intValue());
+//            wxPayUnifiedOrderRequest.setTotalFee(1);
         }
         JSONObject jsonObject = new JSONObject(map);
         wxPayUnifiedOrderRequest.setAttach(jsonObject.toString());

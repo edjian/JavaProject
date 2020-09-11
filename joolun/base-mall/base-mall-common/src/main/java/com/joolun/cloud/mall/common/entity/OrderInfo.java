@@ -213,6 +213,16 @@ public class OrderInfo extends Model<OrderInfo> {
 	@ApiModelProperty(value = "机构ID")
 	private String organId;
 	/**
+	 * 邀请人ID
+	 */
+	@ApiModelProperty(value = "邀请人ID")
+	private String inviteUserId;
+	/**
+	 * 提现积分使用情况
+	 */
+	@ApiModelProperty(value = "提现积分使用情况")
+	private Integer pointsWithdrawal;
+	/**
 	 * 订单详情
 	 */
 	@TableField(exist = false)

@@ -113,7 +113,7 @@ public class PointsConfigController {
 	 */
 	@ApiOperation(value = "查询积分设置")
 	@GetMapping()
-	@PreAuthorize("@ato.hasAuthority('mall:pointsconfig:get')")
+//	@PreAuthorize("@ato.hasAuthority('mall:pointsconfig:get')")
 	public R get() {
 		return R.ok(pointsConfigService.getOne(Wrappers.emptyWrapper()));
 	}

@@ -24,4 +24,7 @@ public interface FeignWxUserService {
 
 	@PostMapping("/wxuser/inside")
 	R<WxUser> save(@RequestBody WxOpenDataDTO wxOpenDataDTO, @RequestHeader(SecurityConstants.FROM) String from);
+
+	@GetMapping("/wxuser/insideByMallUserId/{mallUserId}")
+	R<WxUser> getByMallUserIdInside(@PathVariable("mallUserId") String mallUserId, @RequestHeader(SecurityConstants.FROM) String from);
 }

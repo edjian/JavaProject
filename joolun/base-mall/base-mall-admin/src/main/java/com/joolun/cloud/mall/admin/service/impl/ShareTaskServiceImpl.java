@@ -19,9 +19,11 @@ import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,35 +62,40 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
                 .eq(UserMeal::getUserId, ThirdSessionHolder.getMallUserId())
                 .eq(UserMeal::getStatus, MallConstants.UNDER_WAY)
                 .eq(UserMeal::getAccountStatus, CommonConstants.NO));
-        InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
-                .eq(InviteNew::getUserId, userInfo.getId())
-                .eq(InviteNew::getStatus, CommonConstants.YES));
+//        InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
+//                .eq(InviteNew::getUserId, userInfo.getId())
+//                .eq(InviteNew::getStatus, CommonConstants.YES));
 
         if (userMeal != null) {
             SetMeal setMeal = setMealMapper.selectOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, userMeal.getSetMealId()));
-            userInfo.setPointsCurrent(userInfo.getPointsCurrent() + setMeal.getSharePoint() / 2);
-            userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + setMeal.getSharePoint() / 2);
-            userInfoMapper.updateById(userInfo);
-            PointsRecord pointsRecord = new PointsRecord();
-            pointsRecord.setAmount(setMeal.getSharePoint());
-            pointsRecord.setCreateTime(LocalDateTime.now());
-            pointsRecord.setUserId(ThirdSessionHolder.getMallUserId());
-            pointsRecord.setDescription(MallConstants.DAILY_TASKS);
-            pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_9);
-            pointsRecordMapper.insert(pointsRecord);
-            //邀请人套餐
-            UserMeal userMeal1 = userMealMapper.selectUserMealByInviteNew(inviteNew.getUserIdFirst());
-            UserInfo userInfo1 = userInfoMapper.selectById(inviteNew.getUserIdFirst());
-            if (userMeal1!=null && MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue())) {
-                userInfo1.setPointsWithdraw(userInfo1.getPointsWithdraw() + setMeal.getSharePoint());
-                userInfoMapper.updateById(userInfo1);
-                PointsRecord pointsRecord1 = new PointsRecord();
-                pointsRecord1.setAmount(setMeal.getSharePoint());
-                pointsRecord1.setCreateTime(LocalDateTime.now());
-                pointsRecord1.setUserId(userInfo1.getId());
-                pointsRecord1.setDescription(MallConstants.DAILY_TASKS);
-                pointsRecord1.setRecordType(MallConstants.POINTS_RECORD_TYPE_9);
-                pointsRecordMapper.insert(pointsRecord1);
+            if (setMeal.getPrice().compareTo(new BigDecimal(MallConstants.CITY_PARTNER)) != 0) {
+                userInfo.setPointsCurrent(userInfo.getPointsCurrent() + setMeal.getSharePoint() / 2);
+                userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + setMeal.getSharePoint() / 2);
+                userInfoMapper.updateById(userInfo);
+                PointsRecord pointsRecord = new PointsRecord();
+                pointsRecord.setAmount(setMeal.getSharePoint());
+                pointsRecord.setCreateTime(LocalDateTime.now());
+                pointsRecord.setUserId(ThirdSessionHolder.getMallUserId());
+                pointsRecord.setDescription(MallConstants.DAILY_TASKS);
+                pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_9);
+                pointsRecordMapper.insert(pointsRecord);
+                //邀请人套餐
+                if (StringUtils.isNotEmpty(userMeal.getCityPartner())) {
+                    UserMeal userMeal1 = userMealMapper.selectUserMealByInviteNew(userMeal.getCityPartner());
+                    UserInfo userInfo1 = userInfoMapper.selectById(userMeal.getCityPartner());
+                    if (userMeal1 != null && MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue())) {
+                        int amount = new BigDecimal(setMeal.getSharePoint()).multiply(MallConstants.CITY_PARTNER_SHARE).intValue();
+                        userInfo1.setPointsWithdraw(userInfo1.getPointsWithdraw() + amount);
+                        userInfoMapper.updateById(userInfo1);
+                        PointsRecord pointsRecord1 = new PointsRecord();
+                        pointsRecord1.setAmount(amount);
+                        pointsRecord1.setCreateTime(LocalDateTime.now());
+                        pointsRecord1.setUserId(userInfo1.getId());
+                        pointsRecord1.setDescription(MallConstants.DAILY_TASKS);
+                        pointsRecord1.setRecordType(MallConstants.POINTS_RECORD_TYPE_9);
+                        pointsRecordMapper.insert(pointsRecord1);
+                    }
+                }
             }
         }
     }

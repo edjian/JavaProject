@@ -202,6 +202,18 @@ public class WxUserController {
 	}
 
 	/**
+	 * 通过mall_user_id查询微信用户
+	 * @param mallUserId mallUserId
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询微信用户")
+	@Inside
+	@GetMapping("/insideByMallUserId/{mallUserId}")
+	public R getByMallUserIdInside(@PathVariable("mallUserId") String mallUserId){
+		return R.ok(wxUserService.getOne(Wrappers.<WxUser>lambdaQuery().eq(WxUser::getMallUserId, mallUserId)));
+	}
+
+	/**
 	 * 保存微信用户
 	 * @param wxOpenDataDTO
 	 * @return R

@@ -14,6 +14,8 @@ import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.common.security.entity.BaseUser;
+import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
@@ -72,6 +74,10 @@ public class OrderInfoController {
 	@ApiOperation(value = "查询数量")
 	@GetMapping("/count")
 	public R getCount(OrderInfo orderInfo) {
+		BaseUser baseUser = SecurityUtils.getUser();
+		if(baseUser.getOrganId().equals(1)){
+			orderInfo.setOrganId(baseUser.getOrganId());
+		}
 		return R.ok(orderInfoService.count(Wrappers.query(orderInfo)));
 	}
 

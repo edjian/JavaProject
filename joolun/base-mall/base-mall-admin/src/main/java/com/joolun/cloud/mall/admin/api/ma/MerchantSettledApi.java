@@ -101,8 +101,7 @@ public class MerchantSettledApi {
     @ApiOperation(value = "商城入驻信息表修改")
     @PutMapping
     public R updateById(@RequestBody MerchantSettled merchantSettled) {
-        merchantSettled.setUserId(ThirdSessionHolder.getMallUserId());
-        return R.ok(merchantSettledService.update(merchantSettled,Wrappers.update()));
+        return R.ok(merchantSettledService.update(merchantSettled,Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, ThirdSessionHolder.getMallUserId())));
     }
 
     /**

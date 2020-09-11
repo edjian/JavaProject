@@ -98,10 +98,12 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                 //判断是否有邀请人
 
                 UserInfo userInfo = userInfoMapper.getUserMeal(userMeal.getUserId());
-                userMeal.setEndTime(userMeal.getCreateTime().plusDays(MallConstants.MINE_UPGRADE_TIME));
+                userMeal.setStartTime(oldUserMeal.getEndTime());
+                userMeal.setEndTime(oldUserMeal.getEndTime().plusDays(MallConstants.MINE_UPGRADE_TIME));
                 userMeal.setInviteDay(MallConstants.MINE_UPGRADE_TIME);
-                userInfo.setPointsCurrent(userMeal.getSurplusPoint() / 2);
-                userInfo.setPointsWithdraw(userMeal.getSurplusPoint() / 2);
+//                userInfo.setPointsCurrent(userInfo.getPointsCurrent() + oldUserMeal.getSurplusPoint());
+                userInfo.setPointsWithdraw(userInfo.getPointsWithdraw() + oldUserMeal.getSurplusPoint());
+                userInfoMapper.updateById(userInfo);
 
                 //邀新成功后一级邀请人信息
                 if (StringUtils.isNotBlank(existInviteNew.getUserIdFirst())) {
@@ -110,6 +112,7 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
 
                         if (MallConstants.FLAGSHIP_MEAL.equals(upgradeUserInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
                             upgradeUserInfoFirst.getUserMeal().setEndTime(upgradeUserInfoFirst.getUserMeal().getEndTime().plusDays(MallConstants.FLAGSHIP_INVITE_BASIC_UPGRADE_TIME));
+                            baseMapper.updateById(upgradeUserInfoFirst.getUserMeal());
                         }
                     }
                 }
@@ -125,43 +128,43 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
             } else {
                 InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
                         .eq(InviteNew::getUserId, userMeal.getUserId())
-                        .eq(StringUtils.isNotEmpty(inviteUserId),InviteNew::getUserIdFirst,inviteUserId));
+                        .eq(StringUtils.isNotEmpty(inviteUserId), InviteNew::getUserIdFirst, inviteUserId));
                 if (inviteNew != null) {
                     inviteNew.setStatus(CommonConstants.YES);
-                    inviteNewMapper.update(inviteNew, Wrappers.<InviteNew>lambdaUpdate().eq(InviteNew::getId,inviteNew.getId()));
+                    inviteNewMapper.update(inviteNew, Wrappers.<InviteNew>lambdaUpdate().eq(InviteNew::getId, inviteNew.getId()));
 
                     UserInfo userInfo = userInfoMapper.getUserMeal(inviteNew.getUserId());
 
                     //邀新成功后一级邀请人信息
-                    if(StringUtils.isNotEmpty(inviteUserId)){
+                    if (StringUtils.isNotEmpty(inviteUserId)) {
                         UserInfo userInfoFirst = userInfoMapper.getUserMeal(inviteUserId);
                         if (userInfoFirst != null) {
                             BigDecimal firstPoint = BigDecimal.ZERO;
 
-                            if(MallConstants.CITY_PARTNER.equals(userInfo.getUserMeal().getSetMeal().getPrice().intValue())){
-                                if(MallConstants.CITY_PARTNER.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())){
-                                    firstPoint = MallConstants.SET_MEAL_59800.multiply(new BigDecimal(MallConstants.CITY_PARTNER)).multiply(new BigDecimal(100)).divide(new BigDecimal(2));
-                                }else if(MallConstants.FLAGSHIP_MEAL.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())){
-                                    firstPoint = MallConstants.SET_MEAL_3980.multiply(new BigDecimal(MallConstants.CITY_PARTNER)).multiply(new BigDecimal(100)).divide(new BigDecimal(2));
-                                }else{
-                                    firstPoint = MallConstants.SET_MEAL_980.multiply(new BigDecimal(MallConstants.CITY_PARTNER)).multiply(new BigDecimal(100)).divide(new BigDecimal(2));
+                            if (MallConstants.CITY_PARTNER.equals(userInfo.getUserMeal().getSetMeal().getPrice().intValue())) {
+                                if (MallConstants.CITY_PARTNER.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
+                                    firstPoint = MallConstants.SET_MEAL_59800.multiply(new BigDecimal(MallConstants.CITY_PARTNER.toString())).multiply(new BigDecimal("100")).divide(new BigDecimal("2"));
+                                } else if (MallConstants.FLAGSHIP_MEAL.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
+                                    firstPoint = MallConstants.SET_MEAL_3980.multiply(new BigDecimal(MallConstants.CITY_PARTNER.toString())).multiply(new BigDecimal("100")).divide(new BigDecimal("2"));
+                                } else {
+                                    firstPoint = MallConstants.SET_MEAL_980.multiply(new BigDecimal(MallConstants.CITY_PARTNER.toString())).multiply(new BigDecimal("100")).divide(new BigDecimal("2"));
                                 }
-                                userInfoFirst.setPointsWithdraw(userInfoFirst.getPointsWithdraw() + firstPoint.intValue()*2);
-                            }else{
+                                userInfoFirst.setPointsWithdraw(userInfoFirst.getPointsWithdraw() + firstPoint.intValue() * 2);
+                            } else {
+                                BigDecimal balanceFirst = new BigDecimal(MallConstants.FLAGSHIP_MEAL - MallConstants.BASICS_MEAL);
                                 if (userInfoFirst.getUserMeal().getSetMeal().getPrice().compareTo(userInfo.getUserMeal().getSetMeal().getPrice()) >= 0) {
-                                    firstPoint = userInfo.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfo.getUserMeal().getSetMeal().getInviteRebateFirst()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2)));
+                                    firstPoint = userInfo.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfo.getUserMeal().getSetMeal().getInviteRebateFirst().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100")));
                                     if (MallConstants.BASICS_MEAL.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
                                         userInfoFirst.getUserMeal().setEndTime(userInfoFirst.getUserMeal().getEndTime().plusDays(MallConstants.DEFAULT_INVITE_TIME));
                                     } else if (MallConstants.FLAGSHIP_MEAL.equals(userInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
                                         userInfoFirst.getUserMeal().setEndTime(userInfoFirst.getUserMeal().getEndTime().plusDays(MallConstants.FLAGSHIP_INVITE_BASIC_TIME));
                                     }
                                 } else {
-                                    firstPoint = userInfoFirst.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfoFirst.getUserMeal().getSetMeal().getInviteRebateFirst()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2)));
-                                    BigDecimal balanceFirst = new BigDecimal(MallConstants.FLAGSHIP_MEAL - MallConstants.BASICS_MEAL);
-                                    userInfoFirst.getUserMeal().setSurplusPoint(balanceFirst.multiply(new BigDecimal(userInfoFirst.getUserMeal().getSetMeal().getInviteRebateFirst()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2))).intValue());
+                                    firstPoint = userInfoFirst.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfoFirst.getUserMeal().getSetMeal().getInviteRebateFirst().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100")));
+                                    userInfoFirst.getUserMeal().setSurplusPoint(userInfoFirst.getUserMeal().getSurplusPoint() + balanceFirst.multiply(new BigDecimal(userInfoFirst.getUserMeal().getSetMeal().getInviteRebateFirst().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100"))).intValue());
                                     userInfoFirst.getUserMeal().setEndTime(userInfoFirst.getUserMeal().getEndTime().plusDays(MallConstants.DEFAULT_INVITE_TIME));
                                 }
-                                userInfoFirst.setPointsCurrent(userInfoFirst.getPointsCurrent() + firstPoint.intValue());
+//                                userInfoFirst.setPointsCurrent(userInfoFirst.getPointsCurrent() + firstPoint.intValue());
                                 userInfoFirst.setPointsWithdraw(userInfoFirst.getPointsWithdraw() + firstPoint.intValue());
                             }
 
@@ -170,7 +173,7 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                             //邀新一级积分记录
                             PointsRecord pointsRecord = new PointsRecord();
                             pointsRecord.setUserId(userInfoFirst.getId());
-                            pointsRecord.setAmount(firstPoint.intValue()*2);
+                            pointsRecord.setAmount(firstPoint.intValue());
                             pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_7);
                             pointsRecord.setDescription("邀新一级积分");
                             pointsRecord.setOrderItemId(userMeal.getOrderNo());
@@ -181,22 +184,25 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                                 userInfoSecond = userInfoMapper.getUserMeal(inviteNew.getUserIdSecond());
                             if (userInfoSecond != null) {
                                 BigDecimal secondPoint = BigDecimal.ZERO;
-                                if(!MallConstants.CITY_PARTNER.equals(userInfo.getUserMeal().getSetMeal().getPrice().intValue())){
-                                    if (userInfoSecond.getUserMeal().getSetMeal().getPrice().compareTo(userInfoFirst.getUserMeal().getSetMeal().getPrice()) >= 0) {
-                                        secondPoint = userInfo.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfo.getUserMeal().getSetMeal().getInviteRebateSecond()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2)));
+                                if (!MallConstants.CITY_PARTNER.equals(userInfo.getUserMeal().getSetMeal().getPrice().intValue())) {
+                                    BigDecimal balanceSecond = new BigDecimal(MallConstants.FLAGSHIP_MEAL - MallConstants.BASICS_MEAL);
+                                    if (userInfoSecond.getUserMeal().getSetMeal().getPrice().compareTo(userInfo.getUserMeal().getSetMeal().getPrice()) >= 0) {
+                                        secondPoint = userInfo.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfo.getUserMeal().getSetMeal().getInviteRebateSecond().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100")));
+//                                        if (MallConstants.BASICS_MEAL.equals(userInfoSecond.getUserMeal().getSetMeal().getPrice().intValue())) {
+//                                            userInfoSecond.getUserMeal().setSurplusPoint(userInfoSecond.getUserMeal().getSurplusPoint() + balanceSecond.multiply(new BigDecimal(userInfoSecond.getUserMeal().getSetMeal().getInviteRebateFirst().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100"))).intValue());
+//                                        }
                                     } else {
-                                        secondPoint = userInfoSecond.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfoSecond.getUserMeal().getSetMeal().getInviteRebateSecond()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2)));
-                                        BigDecimal balanceSecond = new BigDecimal(MallConstants.FLAGSHIP_MEAL - MallConstants.BASICS_MEAL);
-                                        userInfoSecond.getUserMeal().setSurplusPoint(balanceSecond.multiply(new BigDecimal(userInfoSecond.getUserMeal().getSetMeal().getInviteRebateSecond()).divide(new BigDecimal(100)).multiply(new BigDecimal(100)).divide(new BigDecimal(2))).intValue());
+                                        secondPoint = userInfoSecond.getUserMeal().getSetMeal().getPrice().multiply(new BigDecimal(userInfoSecond.getUserMeal().getSetMeal().getInviteRebateSecond().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100")));
+                                        userInfoSecond.getUserMeal().setSurplusPoint(userInfoSecond.getUserMeal().getSurplusPoint() + balanceSecond.multiply(new BigDecimal(userInfoSecond.getUserMeal().getSetMeal().getInviteRebateSecond().toString()).divide(new BigDecimal("100")).multiply(new BigDecimal("100"))).intValue());
                                     }
-                                    userInfoSecond.setPointsCurrent(userInfoSecond.getPointsCurrent() + secondPoint.intValue());
+//                                    userInfoSecond.setPointsCurrent(userInfoSecond.getPointsCurrent() + secondPoint.intValue());
                                     userInfoSecond.setPointsWithdraw(userInfoSecond.getPointsWithdraw() + secondPoint.intValue());
                                     userInfoMapper.update(userInfoSecond, Wrappers.<UserInfo>lambdaUpdate().eq(UserInfo::getId, userInfoSecond.getId()));
                                     userMealMapper.update(userInfoSecond.getUserMeal(), Wrappers.<UserMeal>lambdaUpdate().eq(UserMeal::getId, userInfoSecond.getUserMeal().getId()));
                                     //邀新二级积分记录
                                     PointsRecord pointsRecord2 = new PointsRecord();
                                     pointsRecord2.setUserId(userInfoSecond.getId());
-                                    pointsRecord2.setAmount(secondPoint.intValue()*2);
+                                    pointsRecord2.setAmount(secondPoint.intValue());
                                     pointsRecord2.setRecordType(MallConstants.POINTS_RECORD_TYPE_8);
                                     pointsRecord2.setDescription("邀新二级积分");
                                     pointsRecord2.setOrderItemId(userMeal.getOrderNo());

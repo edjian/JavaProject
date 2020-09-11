@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (C) 2018-2019
-  ~ All rights reserved, Designed By www.joolun.com
-  ~ 注意：
-  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
-  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
-  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
-  -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.joolun.cloud.mall.admin.mapper.OrderInfoMapper">
@@ -46,6 +38,8 @@
 		<result property="marketId" column="market_id"/>
 		<result property="relationId" column="relation_id"/>
 		<result property="organId" column="organ_id"/>
+		<result property="inviteUserId" column="invite_user_id"/>
+		<result property="pointsWithdrawal" column="points_withdrawal"/>
 	</resultMap>
 
 	<resultMap id="orderInfoMap2" extends="orderInfoMap" type="com.joolun.cloud.mall.common.entity.OrderInfo">
@@ -97,7 +91,9 @@
 		order_info.`order_type`,
 		order_info.`market_id`,
 		order_info.`relation_id`,
-		order_info.`organ_id`
+		order_info.`organ_id`,
+		order_info.`invite_user_id`,
+		order_info.`points_withdrawal`
 	</sql>
 
 	<select id="selectPage1" resultMap="orderInfoMap2">
