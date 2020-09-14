@@ -24,6 +24,7 @@
         <result property="orderRebateSecond" column="order_rebate_second"/>
         <result property="inviteRebateFirst" column="invite_rebate_first"/>
         <result property="inviteRebateSecond" column="invite_rebate_second"/>
+        <result property="crossBorderBenefits" column="cross_border_benefits"/>
         <result property="merchantStatus" column="merchant_status"/>
     </resultMap>
 
@@ -40,6 +41,7 @@
         set_meal.`order_rebate_second`,
         set_meal.`invite_rebate_first`,
         set_meal.`invite_rebate_second`,
+        set_meal.`cross_border_benefits`,
         set_meal.`merchant_status`
     </sql>
 </mapper>

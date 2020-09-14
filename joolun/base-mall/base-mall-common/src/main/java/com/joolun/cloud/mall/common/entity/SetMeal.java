@@ -14,9 +14,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
@@ -31,7 +33,7 @@ import io.swagger.annotations.ApiModel;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(description = "套餐")
 public class SetMeal extends Model<SetMeal> {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * PK
@@ -77,33 +79,38 @@ public class SetMeal extends Model<SetMeal> {
      * 套餐周期
      */
     @NotNull(message = "套餐周期不能为空")
-    @ApiModelProperty(value="套餐周期")
+    @ApiModelProperty(value = "套餐周期")
     private String period;
     /**
      * 邀请下单一级返利百分比
      */
-    @ApiModelProperty(value="邀请下单一级返利百分比")
+    @ApiModelProperty(value = "邀请下单一级返利百分比")
     private Integer orderRebateFirst;
     /**
      * 邀请下单二级返利百分比
      */
-    @ApiModelProperty(value="邀请下单二级返利百分比")
+    @ApiModelProperty(value = "邀请下单二级返利百分比")
     private Integer orderRebateSecond;
     /**
      * 邀新一级返利百分比
      */
-    @ApiModelProperty(value="邀新一级返利百分比")
+    @ApiModelProperty(value = "邀新一级返利百分比")
     private Integer inviteRebateFirst;
     /**
      * 邀新二级返利百分比
      */
-    @ApiModelProperty(value="邀新二级返利百分比")
+    @ApiModelProperty(value = "邀新二级返利百分比")
     private Integer inviteRebateSecond;
+    /**
+     * 跨界收益
+     */
+    @ApiModelProperty(value = "跨界收益")
+    private Integer crossBorderBenefits;
     /**
      * 商家入驻资格
      */
     @NotNull(message = "商家入驻资格不能为空")
-    @ApiModelProperty(value="商家入驻资格")
+    @ApiModelProperty(value = "商家入驻资格")
     private Integer merchantStatus;
 
 }

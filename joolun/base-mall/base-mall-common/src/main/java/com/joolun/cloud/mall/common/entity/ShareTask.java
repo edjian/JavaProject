@@ -76,4 +76,7 @@ public class ShareTask extends Model<ShareTask> {
 
     @TableField(exist = false)
     private ShareRecord shareRecord;
+
+    @TableField(exist = false)
+    private boolean complete;
 }

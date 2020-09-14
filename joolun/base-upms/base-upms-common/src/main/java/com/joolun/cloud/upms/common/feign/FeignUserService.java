@@ -67,4 +67,13 @@ public interface FeignUserService {
 	 */
 	@GetMapping("/user/ancestor/{username}")
 	R<List<SysUser>> ancestorUsers(@PathVariable("username") String username);
+
+	/**
+	 * 校验是否是管理员角色
+	 * @param roleId 角色ID
+	 * @return boolean
+	 */
+	@GetMapping("/role/judeAdmin/{roleId}")
+	boolean judeAdmin(@PathVariable("roleId") String roleId
+			, @RequestHeader(SecurityConstants.FROM) String from);
 }

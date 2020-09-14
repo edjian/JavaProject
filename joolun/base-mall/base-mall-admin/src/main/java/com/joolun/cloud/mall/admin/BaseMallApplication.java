@@ -14,6 +14,7 @@ import com.joolun.cloud.common.swagger.annotation.BaseEnableSwagger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
@@ -27,6 +28,7 @@ import java.io.*;
 @SpringCloudApplication
 @EnableBaseFeignClients
 @EnableBaseResourceServer
+@EnableScheduling
 public class BaseMallApplication {
 
 	public static void main(String[] args) throws IOException {

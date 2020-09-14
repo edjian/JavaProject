@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +46,7 @@ import java.util.List;
 public class GoodsSpuController {
 
     private final GoodsSpuService goodsSpuService;
+	private final FeignUserService feignUserService;
 
     /**
     * 分页查询
@@ -82,7 +84,9 @@ public class GoodsSpuController {
 	@GetMapping("/count")
 	public R getCount(GoodsSpu goodsSpu) {
 		BaseUser baseUser = SecurityUtils.getUser();
-		if(baseUser.getOrganId().equals(1)){
+		R<com.joolun.cloud.upms.common.dto.UserInfo> userInfoR = feignUserService.info(baseUser.getUsername(), SecurityConstants.FROM_IN);
+		long count = Arrays.stream(userInfoR.getData().getRoles()).filter(role-> !feignUserService.judeAdmin(role, SecurityConstants.FROM_IN)).count();
+		if(count < 1){
 			goodsSpu.setOrganId(baseUser.getOrganId());
 		}
 		return R.ok(goodsSpuService.count(Wrappers.query(goodsSpu)));

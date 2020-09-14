@@ -28,7 +28,6 @@ public class ShareRecordApi {
 
     private final ShareRecordService shareRecordService;
     private final ShareTaskService shareTaskService;
-    private final ShareTaskApi shareTaskApi;
 
     /**
      * 分页列表
@@ -82,12 +81,13 @@ public class ShareRecordApi {
 
     /**
      * 用户分享任务回调接口
+     *
      * @param shareRecord
      * @return
      */
     @ApiOperation(value = "用户分享任务回调接口")
     @GetMapping("/shareCallback")
-    public R get(ShareRecord shareRecord) {
+    public R shareCallback(ShareRecord shareRecord) {
 
         ShareRecord shareRecord1 = shareRecordService.getOne(Wrappers.<ShareRecord>lambdaQuery()
                 .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
@@ -99,13 +99,18 @@ public class ShareRecordApi {
         shareRecord.setCreateTime(LocalDateTime.now());
         shareRecord.setStatus(MallConstants.SHARE_RECORD_YES);
         shareRecordService.save(shareRecord);
-        Integer count = shareRecordService.count(Wrappers.<ShareRecord>lambdaQuery()
-                .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
-                .like(ShareRecord::getCreateTime, LocalDate.now()));
-//        if (count == shareTaskService.count(Wrappers.<ShareTask>lambdaQuery().eq(ShareTask::getEnable, CommonConstants.YES))) {
-        if (count == MallConstants.SHARE_COUNT) {
-            return shareTaskApi.shareCallback();
-        }
+        if (shareTaskService.completeTask())
+            shareTaskService.shareCallback();
         return R.ok();
+    }
+
+    /**
+     * 任务完成情况
+     * @return
+     */
+    @ApiOperation(value = "任务完成情况")
+    @GetMapping("/completeTask")
+    public R completeTask(){
+        return R.ok(shareTaskService.completeTask());
     }
 }

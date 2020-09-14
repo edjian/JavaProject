@@ -233,4 +233,11 @@
 		FROM goods_spu goods_spu
 		WHERE goods_spu.`id` = #{id}
 	</select>
+
+	<select id="selectListByShelf" resultMap="goodsSpuMap">
+		SELECT
+		<include refid="goodsSpuSql"/>
+		FROM goods_spu goods_spu
+		WHERE goods_spu.`shelf` = #{query.shelf}
+	</select>
 </mapper>

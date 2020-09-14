@@ -26,6 +26,10 @@ import com.joolun.cloud.mall.common.entity.OrderItem;
 import com.joolun.cloud.mall.common.entity.OrderLogistics;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxAppService;
+import com.joolun.cloud.upms.common.dto.UserInfo;
+import com.joolun.cloud.upms.common.entity.SysRoleMenu;
+import com.joolun.cloud.upms.common.entity.SysUserRole;
+import com.joolun.cloud.upms.common.feign.FeignUserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -52,6 +57,7 @@ public class OrderInfoController {
 	private final UserInfoService userInfoService;
 	private final FeignWxAppService feignWxAppService;
 	private final OrderLogisticsService orderLogisticsService;
+	private final FeignUserService feignUserService;
 
     /**
     * 分页查询
@@ -75,7 +81,9 @@ public class OrderInfoController {
 	@GetMapping("/count")
 	public R getCount(OrderInfo orderInfo) {
 		BaseUser baseUser = SecurityUtils.getUser();
-		if(baseUser.getOrganId().equals(1)){
+		R<UserInfo> userInfoR = feignUserService.info(baseUser.getUsername(), SecurityConstants.FROM_IN);
+		long count = Arrays.stream(userInfoR.getData().getRoles()).filter(role-> !feignUserService.judeAdmin(role, SecurityConstants.FROM_IN)).count();
+		if(count < 1){
 			orderInfo.setOrganId(baseUser.getOrganId());
 		}
 		return R.ok(orderInfoService.count(Wrappers.query(orderInfo)));

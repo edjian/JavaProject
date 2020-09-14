@@ -24,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
     private final UserMealMapper userMealMapper;
     private final SetMealMapper setMealMapper;
     private final InviteNewMapper inviteNewMapper;
+    private final ShareRecordMapper shareRecordMapper;
 
     @Override
     public IPage<ShareTask> page1(IPage<ShareTask> page, ShareTask shareTask) {
@@ -98,5 +101,12 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
                 }
             }
         }
+    }
+
+    @Override
+    public boolean completeTask() {
+        return MallConstants.SHARE_COUNT.equals(shareRecordMapper.selectCount(Wrappers.<ShareRecord>lambdaQuery()
+                .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
+                .between(ShareRecord::getCreateTime, LocalDate.now().atTime(LocalTime.MIN), LocalDate.now().atTime(LocalTime.MAX))));
     }
 }

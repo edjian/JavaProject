@@ -300,26 +300,36 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     MerchantSettled merchantSettled = merchantSettledService.getOne(Wrappers.<MerchantSettled>lambdaQuery()
                             .eq(MerchantSettled::getPhone, result.getData().getSysUser().getPhone())
                             .eq(MerchantSettled::getStatus, MallConstants.MERCHANT_STATUS_2));
-                    if(Optional.ofNullable(merchantSettled).isPresent()){
+                    if (Optional.ofNullable(merchantSettled).isPresent()) {
                         UserInfo merchantUserInfo = userInfoService.getById(merchantSettled.getUserId());
                         UserMeal userMeal1 = userMealMapper.selectUserMealByInviteNew(merchantUserInfo.getId());
 
-                        int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_10)).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-                        if (MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()))
-                            amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.TRANSBOUNDARY_PROFIT_30)).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+                        InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
+                                .eq(InviteNew::getUserId, merchantUserInfo.getId())
+                                .eq(InviteNew::getStatus, MallConstants.UNDER_WAY)
+                        );
+                        if (!MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()) && Optional.ofNullable(inviteNew.getUserIdFirst()).isPresent()) {
+                            UserInfo inviteUserInfo = userInfoService.getById(inviteNew.getUserIdFirst());
+                            UserMeal inviteUserMeal = userMealMapper.selectUserMealByInviteNew(inviteNew.getUserIdFirst());
+                            if(!MallConstants.BASICS_MEAL.equals(inviteUserMeal.getSetMeal().getPrice().intValue())){
+                                int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * inviteUserMeal.getSetMeal().getCrossBorderBenefits())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 
-                        PointsRecord pointsRecord = new PointsRecord();
-                        pointsRecord.setUserId(merchantUserInfo.getId());
-                        pointsRecord.setDescription("【跨界收益赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
-                        pointsRecord.setSpuId(goodsSpu.getId());
-                        pointsRecord.setOrderItemId(orderItem.getId());
-                        pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
-                        pointsRecord.setAmount(amount);
-                        listPointsRecord.add(pointsRecord);
+                                PointsRecord pointsRecord = new PointsRecord();
+                                pointsRecord.setUserId(inviteUserInfo.getId());
+                                pointsRecord.setDescription("【跨界收益赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
+                                pointsRecord.setSpuId(goodsSpu.getId());
+                                pointsRecord.setOrderItemId(orderItem.getId());
+                                pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
+                                pointsRecord.setAmount(amount);
+                                listPointsRecord.add(pointsRecord);
 
-                        merchantUserInfo.setPointsWithdraw(merchantUserInfo.getPointsWithdraw() + amount);
-//                        userInfoService.updateById(merchantUserInfo);
-                        listUserInfo.add(merchantUserInfo);
+                                inviteUserInfo.setPointsWithdraw(inviteUserInfo.getPointsWithdraw() + amount);
+//                              userInfoService.updateById(merchantUserInfo);
+                                listUserInfo.add(inviteUserInfo);
+
+                            }
+
+                        }
                     }
                 }
 

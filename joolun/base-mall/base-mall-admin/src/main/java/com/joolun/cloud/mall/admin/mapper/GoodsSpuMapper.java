@@ -8,6 +8,8 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
+import com.baomidou.mybatisplus.annotation.SqlParser;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.joolun.cloud.mall.common.entity.CouponGoods;
@@ -44,4 +46,7 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 	List<GoodsSpu> selectListByCouponId(String couponId);
 
 	IPage<GoodsSpu> selectPage2(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu, @Param("query2") CouponUser couponUser);
+
+	@SqlParser(filter=true)
+	List<GoodsSpu> selectListByShelf(@Param("query") GoodsSpu goodsSpu);
 }

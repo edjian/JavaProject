@@ -3,6 +3,7 @@ package com.joolun.cloud.upms.admin.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.upms.admin.service.SysRoleMenuService;
 import com.joolun.cloud.upms.admin.service.SysRoleService;
 import com.joolun.cloud.upms.common.entity.SysRole;
@@ -145,7 +146,10 @@ public class SysRoleController {
 	 * @param roleId
 	 * @return
 	 */
-	boolean judeAdmin(String roleId){
+	@ApiOperation(value = "校验是否是管理员角色")
+	@Inside
+	@GetMapping("/judeAdmin/{roleId}")
+	boolean judeAdmin(@PathVariable("roleId") String roleId){
 		SysRole sysRole = sysRoleService.getById(roleId);
 		if(CommonConstants.ROLE_CODE_ADMIN.equals(sysRole.getRoleCode())){
 			return Boolean.FALSE;
