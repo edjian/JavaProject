@@ -76,4 +76,14 @@ public interface FeignUserService {
 	@GetMapping("/role/judeAdmin/{roleId}")
 	boolean judeAdmin(@PathVariable("roleId") String roleId
 			, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 判断当前商品是否是公司自营
+	 * @param organId
+	 * @param from
+	 * @return
+	 */
+	@GetMapping("/organ/roleAdmin/{organId}")
+	boolean isRoleAdmin(@PathVariable("organId") String organId
+			, @RequestHeader(SecurityConstants.FROM) String from);
 }

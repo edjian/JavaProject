@@ -22,5 +22,13 @@ public interface ShareTaskService extends IService<ShareTask> {
 
     IPage<ShareTask> page1(IPage<ShareTask> page,ShareTask shareTask);
 
+    /**
+     * 分享任务回调
+     */
     void shareCallback();
+
+    /**
+     * 判断是否已完成任务
+     */
+    boolean completeTask();
 }

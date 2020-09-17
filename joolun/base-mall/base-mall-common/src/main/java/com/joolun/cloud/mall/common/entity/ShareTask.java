@@ -70,6 +70,11 @@ public class ShareTask extends Model<ShareTask> {
      */
     @ApiModelProperty(value = "任务标识：0、分享任务，1、视频任务")
     private String taskState;
+    /**
+     * 视频任务的说明
+     */
+    @ApiModelProperty(value = "视频任务的说明")
+    private String tips;
 
     @TableField(exist = false)
     private String userId;

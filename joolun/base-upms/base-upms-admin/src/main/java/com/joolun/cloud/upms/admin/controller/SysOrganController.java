@@ -161,4 +161,18 @@ public class SysOrganController {
 				.eq(SysOrgan::getParentId, sysOrganService.getOne(Wrappers.<SysOrgan>lambdaQuery()
 						.eq(SysOrgan::getName, CommonConstants.SYS_ORGAN_MERCHANRT)).getId())) == 1;
 	}
+
+	/**
+	 * 判断当前商品是否是公司自营
+	 * @param organId
+	 * @return
+	 */
+	@ApiOperation(value = "判断当前商品是否是公司自营")
+	@Inside
+	@GetMapping("/roleAdmin/{organId}")
+	public boolean isRoleAdmin(@PathVariable String organId){
+		return sysOrganService.count(Wrappers.<SysOrgan>lambdaQuery()
+				.eq(SysOrgan::getId,organId)
+				.eq(SysOrgan::getParentId, CommonConstants.NO)) == 1;
+	}
 }

@@ -33,6 +33,7 @@ public enum OrderLogisticsEnum implements IEnum<String> {
 	LOGISTICS_SHUNFENG("shunfeng","顺丰速运"),
 	LOGISTICS_ZHONGTONG("zhongtong","中通快递"),
 	LOGISTICS_SHENTONG("shentong","申通快递"),
+	LOGISTICS_JITU("jitu","极兔速递"),
 	;
 	OrderLogisticsEnum(final String value, final String desc) {
 		this.value = value;

@@ -26,9 +26,17 @@ public class WebConfig implements WebMvcConfigurer {
 		 */
 		registry.addInterceptor(new ThirdSessionInterceptor(redisTemplate))
 				.addPathPatterns("/api/**")//拦截/api/**接口
-				.excludePathPatterns("/api/ma/wxuser/login",
-						"/api/ma/orderinfo/notify-order",
-						"/api/ma/orderinfo/notify-logisticsr",
-						"/api/ma/orderrefunds/notify-refunds");//放行接口
+				.excludePathPatterns("/api/ma/wxuser/login"
+						,"/api/ma/orderinfo/notify-order"
+						,"/api/ma/orderinfo/notify-logisticsr"
+						,"/api/ma/orderrefunds/notify-refunds"
+//						,"/api/ma/userinfo"
+//						,"/api/ma/goodsspu/{id}"
+//						,"/api/ma/goodsspuspec/tree"
+//						,"/api/ma/couponinfo/page"
+//						,"/api/ma/shoppingcart/count"
+//						,"/api/ma/goodsappraises/page"
+//						,"/api/ma/ensuregoods/listEnsureBySpuId"
+				);//放行接口
 	}
 }

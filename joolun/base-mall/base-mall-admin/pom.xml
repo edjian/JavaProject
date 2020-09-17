@@ -84,6 +84,10 @@
             <groupId>com.joolun</groupId>
             <artifactId>base-common-storage</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.joolun</groupId>
+            <artifactId>base-common-sms</artifactId>
+        </dependency>
         <!--分布式事务
         <dependency>
             <groupId>com.joolun</groupId>

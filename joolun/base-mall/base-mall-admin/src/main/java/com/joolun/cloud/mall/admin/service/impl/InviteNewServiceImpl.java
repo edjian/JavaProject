@@ -62,7 +62,8 @@ public class InviteNewServiceImpl extends ServiceImpl<InviteNewMapper, InviteNew
                 .eq(PointsRecord::getUserId, ThirdSessionHolder.getMallUserId()));
         Integer sum = pointsRecords.stream().mapToInt((pointsRecord) -> pointsRecord.getAmount()).sum();
         Integer count = baseMapper.selectCount(Wrappers.<InviteNew>lambdaQuery()
-                .eq(InviteNew::getUserIdFirst, ThirdSessionHolder.getMallUserId()));
+                .eq(InviteNew::getUserIdFirst, ThirdSessionHolder.getMallUserId())
+                .eq(InviteNew::getStatus, CommonConstants.YES));
         Integer failUserCount = baseMapper.selectCount(Wrappers.<InviteNew>lambdaQuery()
                 .eq(InviteNew::getUserIdFirst, ThirdSessionHolder.getMallUserId())
                 .eq(InviteNew::getStatus, CommonConstants.NO));

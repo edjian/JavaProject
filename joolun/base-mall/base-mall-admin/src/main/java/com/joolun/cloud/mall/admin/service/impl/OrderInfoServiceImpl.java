@@ -26,6 +26,8 @@ import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
+import com.joolun.cloud.common.sms.config.SmsTemplateProperties;
+import com.joolun.cloud.common.sms.util.SmsUtils;
 import com.joolun.cloud.mall.admin.config.MallConfigProperties;
 import com.joolun.cloud.mall.admin.mapper.*;
 import com.joolun.cloud.mall.admin.service.*;
@@ -41,7 +43,6 @@ import com.joolun.cloud.mall.common.util.Kuaidi100Utils;
 import com.joolun.cloud.upms.common.feign.FeignUserService;
 import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.dto.WxTemplateMsgSendDTO;
-import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -94,6 +95,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private final InviteNewMapper inviteNewMapper;
     private final FeignUserService feignUserService;
     private final MerchantSettledService merchantSettledService;
+    private final SmsTemplateProperties smsTemplateProperties;
+    private final SmsUtils smsUtils;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -143,12 +146,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             }
             //发送订阅消息
             try {
-//                订单编号{{character_string1.DATA}}
-//                商品详情{{thing2.DATA}}
-//                快递单号{{character_string4.DATA}}
-//                收货人{{name5.DATA}}
-//                发货时间{{date10.DATA}}
-
 //                订单号 {{number2.DATA}}
 //                物品名称 {{thing1.DATA}}
 //                收货人 {{phrase16.DATA}}
@@ -311,7 +308,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                         if (!MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()) && Optional.ofNullable(inviteNew.getUserIdFirst()).isPresent()) {
                             UserInfo inviteUserInfo = userInfoService.getById(inviteNew.getUserIdFirst());
                             UserMeal inviteUserMeal = userMealMapper.selectUserMealByInviteNew(inviteNew.getUserIdFirst());
-                            if(!MallConstants.BASICS_MEAL.equals(inviteUserMeal.getSetMeal().getPrice().intValue())){
+                            if (!MallConstants.BASICS_MEAL.equals(inviteUserMeal.getSetMeal().getPrice().intValue())) {
                                 int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * inviteUserMeal.getSetMeal().getCrossBorderBenefits())).divide(new BigDecimal(10000)).multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 
                                 PointsRecord pointsRecord = new PointsRecord();
@@ -619,66 +616,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             List<OrderItem> listOrderItem = orderItemService.list(Wrappers.<OrderItem>lambdaQuery()
                     .eq(OrderItem::getOrderId, orderInfo.getId()));
             Map<String, List<OrderItem>> resultList = listOrderItem.stream().collect(Collectors.groupingBy(OrderItem::getSpuId));
-//            AtomicReference<Integer> pointsGiveAmount = new AtomicReference<>(0);
-//            AtomicReference<Integer> orderPointsFirst = new AtomicReference<>(0);
-//            AtomicReference<Integer> orderPointsSecond = new AtomicReference<>(0);
-//            List<PointsRecord> listPointsRecord = new ArrayList<>();
             List<GoodsSpu> listGoodsSpu = goodsSpuService.listByIds(resultList.keySet());
             UserInfo userInfo = userInfoService.getById(orderInfo.getUserId());
-//
-//            UserMeal userMeal = userMealMapper.selectOne(Wrappers.<UserMeal>lambdaQuery()
-//                    .eq(UserMeal::getUserId, userInfo.getId())
-//                    .eq(UserMeal::getAccountStatus, CommonConstants.NO)
-//                    .eq(UserMeal::getStatus, CommonConstants.YES)
-//                    .eq(UserMeal::getIsPay, CommonConstants.YES));
-//
             listGoodsSpu.forEach(goodsSpu -> {
                 resultList.get(goodsSpu.getId()).forEach(orderItem -> {
                     //更新销量
                     goodsSpu.setSaleNum(goodsSpu.getSaleNum() + orderItem.getQuantity());
                     //处理积分赠送
-//                    if (CommonConstants.YES.equals(goodsSpu.getPointsGiveSwitch())) {
-//                        GoodsCategory goodsCategory = goodsCategoryService.getById(goodsSpu.getCategoryFirst());
-//                        PointsRecord pointsRecord = new PointsRecord();
-//                        pointsRecord.setUserId(orderInfo.getUserId());
-//                        pointsRecord.setDescription("【赠送】购买商品【" + goodsSpu.getName() + "】 * " + orderItem.getQuantity());
-//                        pointsRecord.setSpuId(goodsSpu.getId());
-//                        pointsRecord.setOrderItemId(orderItem.getId());
-//                        pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_2);
-//
-//                        //自然人
-//                        if (userMeal == null) {
-////							pointsRecord.setAmount(orderItem.getQuantity() * goodsSpu.getPointsGiveNum());
-//                            int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * MallConstants.CONSUME_PROFIT)).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-//                            pointsRecord.setAmount(amount);
-//                            listPointsRecord.add(pointsRecord);
-//                            pointsGiveAmount.updateAndGet(v -> v + amount);
-//                        } else {
-//                            SetMeal setMeal = setMealMapper.selectOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, userMeal.getSetMealId()));
-//                            InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
-//                                    .eq(InviteNew::getUserId, userInfo.getId())
-//                                    .eq(InviteNew::getStatus, CommonConstants.YES));
-//                            int amount = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * setMeal.getOrderRebateFirst())).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-//                            pointsRecord.setAmount(amount);
-//                            listPointsRecord.add(pointsRecord);
-//                            pointsGiveAmount.updateAndGet(v -> v + amount);
-//
-//                            UserInfo userInfoFirst = inviteNew.getUserIdFirst() == null ? null : userInfoMapper.selectById(inviteNew.getUserIdFirst());
-//                            UserInfo userInfoSecond = inviteNew.getUserIdSecond() == null ? null : userInfoMapper.selectById(inviteNew.getUserIdSecond());
-//
-//                            if (userInfoFirst != null) {
-//                                int amountFirst = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * setMeal.getOrderRebateFirst())).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-//                                orderPointsFirst.updateAndGet(v -> v + amountFirst);
-//                                userInfoFirst.setPointsCurrent(userInfoFirst.getPointsCurrent() + orderPointsFirst.get());
-//                                userInfoService.updateById(userInfoFirst);
-//                            } else if (userInfoSecond != null) {
-//                                int amountSecond = orderItem.getSalesPrice().multiply(new BigDecimal(orderItem.getQuantity() * goodsCategory.getRebate() * setMeal.getOrderRebateSecond())).divide(new BigDecimal(10000)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-//                                orderPointsSecond.updateAndGet(v -> v + amountSecond);
-//                                userInfoSecond.setPointsCurrent(userInfoSecond.getPointsCurrent() + orderPointsSecond.get());
-//                                userInfoService.updateById(userInfoSecond);
-//                            }
-//                        }
-//                    }
                 });
                 goodsSpuService.updateById(goodsSpu);
             });
@@ -754,12 +698,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 grouponInfoMapper.updateById(grouponInfo);
             }
 
-            Map<String, List<GoodsSpu>> resultGoodsSpu = listGoodsSpu.stream().collect(Collectors.groupingBy(GoodsSpu::getDeliveryPlaceId));
+            //发货地+商户organId
+            Map<String, List<GoodsSpu>> resultGoodsSpu = listGoodsSpu.stream().collect(Collectors.groupingBy(goodsSpu -> goodsSpu.getDeliveryPlaceId() + "#" + goodsSpu.getOrganId()));
+            List<OrderInfo> orderInfoList = new ArrayList<>();
             if (resultGoodsSpu.size() <= 1) {//只有一个发货地址
                 if (MallConstants.DELIVERY_WAY_2.equals(orderInfo.getDeliveryWay())) {//配送方式2、上门自提，设置自提地址
                     orderInfo.setLogisticsId(listGoodsSpu.get(0).getDeliveryPlaceId());
                 }
                 baseMapper.updateById(orderInfo);//更新订单
+                orderInfoList.add(baseMapper.selectById(orderInfo.getId()));
             } else {//处理订单是否需要拆分（通过不同发货地进行订单拆分）,有多个发货地，要拆分订单
                 OrderLogistics orderLogistics = orderLogisticsService.getById(orderInfo.getLogisticsId());
                 resultGoodsSpu.forEach((key, value) -> {
@@ -799,43 +746,35 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     //更新订单详情
                     listOrderItem1.forEach(item -> item.setOrderId(orderInfo1.getId()));
                     orderItemService.updateBatchById(listOrderItem1);
+
+                    orderInfoList.add(orderInfo1);
                 });
                 //删除旧订单、旧订单物流
                 baseMapper.deleteById(orderInfo.getId());
                 orderLogisticsService.removeById(orderInfo.getLogisticsId());
             }
-            //发送订阅消息
-            try {
-                WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
-                wxTemplateMsgSendDTO.setMallUserId(orderInfo.getUserId());
-                wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_12);
-                wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + orderInfo.getId());
-                HashMap<String, HashMap<String, String>> data = new HashMap<>();
-//                店铺名称{{name7.DATA}}
-//                商品{{thing1.DATA}}
-//                支付金额{{amount3.DATA}}
-//                收货信息{{thing4.DATA}}
-//                下单时间{{date5.DATA}}
+            orderInfoList.stream().forEach(info -> {
+                try {
 
-//                订单编号{{character_string1.DATA}}
-//                订单金额{{amount2.DATA}}
-//                商品名称{{thing3.DATA}}
-//                下单时间{{time4.DATA}}
-//                支付金额{{amount5.DATA}}
-                data.put("name7", (HashMap) JSONUtil.toBean("{\"value\": \"" + "盈联易单配" + "\"}", Map.class));
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm");
-                String thing1 = orderInfo.getName();
-                thing1 = thing1.length() > 20 ? thing1.substring(0, 19) : thing1;
-                data.put("thing1", (HashMap) JSONUtil.toBean("{\"value\": \"" + thing1 + "\"}", Map.class));
-                data.put("amount3", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
-                data.put("thing4", (HashMap) JSONUtil.toBean("{\"value\": \"" + "收货信息" + "\"}", Map.class));
-//                data.put("amount2", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getPaymentPrice() + "\"}", Map.class));
-                data.put("date5", (HashMap) JSONUtil.toBean("{\"value\": \"" + orderInfo.getCreateTime().format(dtf) + "\"}", Map.class));
-                wxTemplateMsgSendDTO.setData(data);
-                feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
-            } catch (Exception e) {
-                log.error("发送订阅消息发送出错：" + e.getMessage(), e);
-            }
+                    if (feignUserService.isRoleAdmin(info.getOrganId(), SecurityConstants.FROM_IN)) {
+                        smsUtils.sendSms(smsTemplateProperties.getSignName4(), "18838966603", smsTemplateProperties.getTemplateCode4(), "{\"code\":\"" + info.getOrderNo() + "\"}");
+                    }
+
+                    if (feignUserService.infoByOrganId(info.getOrganId(), SecurityConstants.FROM_IN)) {
+                        R<com.joolun.cloud.upms.common.dto.UserInfo> result = feignUserService.infoByUser(info.getOrganId(), SecurityConstants.FROM_IN);
+                        MerchantSettled merchantSettled = merchantSettledService.getOne(Wrappers.<MerchantSettled>lambdaQuery()
+                                .eq(MerchantSettled::getPhone, result.getData().getSysUser().getPhone())
+                                .eq(MerchantSettled::getStatus, MallConstants.MERCHANT_STATUS_2));
+                        if (Optional.ofNullable(merchantSettled).isPresent()) {
+                            UserInfo merchantUserInfo = userInfoService.getById(merchantSettled.getUserId());
+                            smsUtils.sendSms(smsTemplateProperties.getSignName4(), merchantUserInfo.getPhone(), smsTemplateProperties.getTemplateCode4(), "{\"code\":\"" + info.getOrderNo() + "\"}");
+                        }
+                    }
+
+                } catch (Exception e) {
+                    log.error("短信发送失败:" + e.getMessage(), e);
+                }
+            });
         }
     }
 

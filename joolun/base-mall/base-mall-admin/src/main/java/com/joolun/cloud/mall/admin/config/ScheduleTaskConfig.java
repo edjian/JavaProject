@@ -3,7 +3,6 @@ package com.joolun.cloud.mall.admin.config;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
-import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.admin.service.ShareTaskService;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.ShareTask;
@@ -12,7 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 @Configuration
