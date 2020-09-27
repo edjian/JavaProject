@@ -33,6 +33,8 @@
 		<result property="sellerReply" column="seller_reply"/>
 		<result property="replyTime" column="reply_time"/>
 		<result property="organId" column="organ_id"/>
+		<result property="isItIllegal" column="is_it_illegal"/>
+		<result property="status" column="status"/>
 	</resultMap>
 
 	<resultMap id="goodsAppraisesMap2" extends="goodsAppraisesMap" type="com.joolun.cloud.mall.common.entity.GoodsAppraises">
@@ -71,7 +73,9 @@
 		goods_appraises.`content`,
 		goods_appraises.`seller_reply`,
 		goods_appraises.`reply_time`,
-		goods_appraises.`organ_id`
+		goods_appraises.`organ_id`,
+		goods_appraises.`is_it_illegal`,
+		goods_appraises.`status`
 	</sql>
 
 	<select id="selectPage1" resultMap="goodsAppraisesMap2">
@@ -87,4 +91,27 @@
 			</if>
 		</where>
 	</select>
+
+	<select id="selectPage2"
+			resultMap="goodsAppraisesMap2">
+		select
+		<include refid="goodsAppraisesSql"/>
+		from goods_appraises goods_appraises
+		<where>
+			<if test="query.userId != null">
+				AND goods_appraises.`user_id` = #{query.userId}
+			</if>
+			<if test="query.spuId != null">
+				AND goods_appraises.`spu_id` = #{query.spuId}
+			</if>
+			<if test="query.tenantId != null">
+				AND order_item.`tenant_id`=#{query.tenantId}
+			</if>
+			<if test="query.status != null">
+				AND goods_appraises.`status`=#{query.status}
+			</if>
+		</where>
+	</select>
+
+
 </mapper>

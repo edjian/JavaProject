@@ -200,5 +200,7 @@
 		</where>
 		ORDER BY sys_user.create_time DESC
 	</select>
-
+	<select id="selectSysUser" resultType="com.joolun.cloud.upms.common.entity.SysUser">
+		SELECT sys_user.organ_id,sys_user.username FROM sys_user
+	</select>
 </mapper>

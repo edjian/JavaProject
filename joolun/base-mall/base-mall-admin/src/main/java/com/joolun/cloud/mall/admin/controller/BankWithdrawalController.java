@@ -60,7 +60,6 @@ public class BankWithdrawalController {
     public R getById(@PathVariable("id") String id) {
         return R.ok(bankWithdrawalService.getById(id));
     }
-
     /**
      * 银行提现表新增
      * @param bankWithdrawal 银行提现表
@@ -86,6 +85,19 @@ public class BankWithdrawalController {
     public R updateById(@RequestBody BankWithdrawal bankWithdrawal) {
         return R.ok(bankWithdrawalService.updateById(bankWithdrawal));
     }
+
+	/**
+	 * 银行提现表 提现审核结果修改
+	 * @param  bankWithdrawal
+	 * @return R
+	 */
+	@ApiOperation(value = "提现审核结果")
+	@SysLog("提现审核结果")
+	@PutMapping("/editauditresult")
+	@PreAuthorize("@ato.hasAuthority('mall:bankwithdrawal:edit')")
+	public R drawalAuditSuccessResult(@RequestBody BankWithdrawal bankWithdrawal){
+		return R.ok(bankWithdrawalService.drawalAuditResult(bankWithdrawal));
+	}
 
     /**
      * 银行提现表删除

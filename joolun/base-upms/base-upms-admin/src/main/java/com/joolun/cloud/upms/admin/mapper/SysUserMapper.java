@@ -43,4 +43,8 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @return userVo
 	 */
 	UserVO getUserVoById(String id);
+	//查询所有租户
+	List<SysUser> selectSysUser();
+
+
 }

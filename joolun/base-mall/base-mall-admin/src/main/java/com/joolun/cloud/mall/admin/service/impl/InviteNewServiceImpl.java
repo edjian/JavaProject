@@ -8,26 +8,32 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.mall.admin.mapper.PointsRecordMapper;
 import com.joolun.cloud.mall.admin.mapper.UserInfoMapper;
+import com.joolun.cloud.mall.admin.mapper.UserMealMapper;
 import com.joolun.cloud.mall.common.constant.MallConstants;
-import com.joolun.cloud.mall.common.entity.InviteNew;
+import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.admin.mapper.InviteNewMapper;
 import com.joolun.cloud.mall.admin.service.InviteNewService;
-import com.joolun.cloud.mall.common.entity.PointsRecord;
-import com.joolun.cloud.mall.common.entity.UserInfo;
-import com.joolun.cloud.mall.common.entity.UserMeal;
+import com.joolun.cloud.mall.common.feign.FeignWxTemplateMsgService;
+import com.joolun.cloud.weixin.common.constant.ConfigConstant;
+import com.joolun.cloud.weixin.common.dto.WxTemplateMsgSendDTO;
 import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +54,8 @@ public class InviteNewServiceImpl extends ServiceImpl<InviteNewMapper, InviteNew
 
     private final PointsRecordMapper pointsRecordMapper;
     private final UserInfoMapper userInfoMapper;
+	private final UserMealMapper userMealMapper;
+	private final FeignWxTemplateMsgService feignWxTemplateMsgService;
 
     @Override
     public IPage<InviteNew> page1(IPage<InviteNew> page, InviteNew inviteNew) {
@@ -56,7 +64,7 @@ public class InviteNewServiceImpl extends ServiceImpl<InviteNewMapper, InviteNew
 
     @Override
     public Map<String, Object> myInviteNew(InviteNew inviteNew) {
-        HashMap<String, Object> map = new HashMap<>();
+		HashMap<String, Object> map = new HashMap<>();
         List<PointsRecord> pointsRecords = pointsRecordMapper.selectList(Wrappers.<PointsRecord>lambdaQuery()
                 .in(PointsRecord::getRecordType, new String[]{MallConstants.POINTS_RECORD_TYPE_7, MallConstants.POINTS_RECORD_TYPE_8})
                 .eq(PointsRecord::getUserId, ThirdSessionHolder.getMallUserId()));
@@ -87,6 +95,26 @@ public class InviteNewServiceImpl extends ServiceImpl<InviteNewMapper, InviteNew
         jsonObject.put("all", firstCount + secondCount);
         jsonObject.put("first", firstCount);
         jsonObject.put("second", secondCount);
+		//发布订阅邀请成功通知消息
+		try {
+//					已邀请人数{{number1.DATA}}
+//					邀请时间{{time2.DATA}}
+//  				温馨提示{{thing3.DATA}}
+			InviteNew inviteNew1 = baseMapper.selectById(Wrappers.<InviteNew>lambdaQuery().eq(InviteNew::getUserId,ThirdSessionHolder.getMallUserId()));
+			WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
+			wxTemplateMsgSendDTO.setMallUserId(ThirdSessionHolder.getMallUserId());
+			wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + inviteNew1.getId());
+			wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_14);
+			HashMap<String, HashMap<String, String>> data = new HashMap<>();
+			data.put("number1", (HashMap) JSONUtil.toBean("{\"value\": \""+firstCount + secondCount + "\"}", Map.class));
+			data.put("thing3",(HashMap)JSONUtil.toBean("{\"value\": \""+"注意查收" + "\"}", Map.class));
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd");
+			data.put("date3",(HashMap)JSONUtil.toBean("{\"value\": \""+dtf.format(inviteNew1.getCreateTime()) + "\"}", Map.class));
+			wxTemplateMsgSendDTO.setData(data);
+			feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
+		}catch (Exception e){
+			log.error("邀请失败: "+e.getMessage(),e);
+		}
         return jsonObject;
     }
 

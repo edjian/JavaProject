@@ -11,17 +11,6 @@
     <froala :tag="'textarea'" :config="config" v-model="content" v-if="editorType == '2'"></froala>
     <div v-loading="quillUpdateImg" element-loading-text="请稍等，图片上传中" v-if="editorType == '1'">
       <!-- 图片上传组件辅助-->
-      <el-upload
-              class="avatar-uploader"
-              :action="serverUrl"
-              name="file"
-              :headers="header"
-              :show-file-list="false"
-              :data="uploadData"
-              :on-success="uploadSuccess"
-              :on-error="uploadError"
-              :before-upload="beforeUpload">
-      </el-upload>
       <quill-editor
               class="editor"
               v-model="content"
@@ -54,7 +43,7 @@
     ["link", "image", "video"] // 链接、图片、视频
   ]
 
-  import { quillEditor } from "vue-quill-editor"
+  import { quillEditor, Quill } from "vue-quill-editor"
   import "quill/dist/quill.core.css"
   import "quill/dist/quill.snow.css"
   import "quill/dist/quill.bubble.css"
@@ -67,6 +56,7 @@
   import store from "@/store"
   import {getObj2} from '@/api/upms/configeditor'
 
+  const Delta = Quill.import('delta')
   export default {
     props: {
       uploadData: {
@@ -89,6 +79,7 @@
     data() {
       return {
         editorType: '',
+		imgSign: {},
         config: {
           language: 'zh_cn',
           requestHeaders: {
@@ -177,9 +168,99 @@
       handleGet: function () {
         getObj2().then(response => {
           this.editorType = response.data.data ? response.data.data.editorType : '1'
+		  this.imgSign = response
+		  this.setEditorOption() 
         })
       },
-
+	  
+	  setEditorOption() {
+                // 当前组件实例      
+                let vm = this				
+                this.editorOption = Object.assign(this.editorOption, {        
+                    placeholder: '请插入内容...',       
+                    modules: {          
+                        toolbar: {            
+                            container: toolbarOptions,           
+                             handlers: {              
+                                // 自定义上传图片到服务器             
+                                image: function() { 
+                                    // quill插件实例               
+                                    let _self = this  
+                                    // 创建上传文件input并触发
+                                    let fileInput = document.createElement('input')                
+                                    fileInput.setAttribute('type', 'file')                
+                                    fileInput.setAttribute('multiple', 'multiple')                
+                                    fileInput.setAttribute('accept', 'image/*')                
+                                    fileInput.addEventListener('change', () => {                  
+                                        if (fileInput.files !== null) {                    
+                                            const files = Array.from(fileInput.files).reverse()                    
+                                            // 利用es6迭代器异步顺序上传图片，保证图片插入顺序正常                  
+                                            const it = files[Symbol.iterator]()                    
+                                            uploadFile()   
+                 
+                                            function uploadFile () {                      
+                                               const { done, value: _file } = it.next()                      
+                                                if (done) return                      
+                                                let reader = new FileReader()                      
+                                                reader.onload = (event) => { 											
+                                                    const range = _self.quill.getSelection(true)  
+                                                    // 设置图片上传地址
+                                                    const uploadImgServer = '/upms/file/upload?fileType=image&dir=editor/'                        
+                                                    // 创建formData参数提交（文件+签名信息）                  
+                                                    const formData = new FormData()                        
+                                                    formData.append('file', _file)                        
+                                                    for (const [key, val] of Object.entries(vm.imgSign)) {                          
+                                                        formData.append(key, val)                        
+                                                    }                        
+                                                    // 发送图片上传请求                     
+                                                    const xhr = new XMLHttpRequest()                        
+                                                    xhr.open('POST', uploadImgServer)
+													xhr.setRequestHeader('Authorization', 'Bearer ' + store.getters.access_token)
+                                                    xhr.timeout = 6000                        
+                                                    xhr.ontimeout = () => {                          
+                                                        alert('图片上传超时')                        
+                                                    }                        
+                                                    xhr.onreadystatechange = () => {                          
+                                                        let result                          
+                                                        if (xhr.readyState === 4) {                                            
+                                                            // http status code                            
+                                                            if (xhr.status < 200 || xhr.status >= 300) {   
+                                                                return alert(`上传图片发生错误，上传图片发生错误，服务器返回状态是 ${xhr.status}`)                            
+                                                            }                            
+                                                            result = xhr.responseText                            
+                                                            if (typeof result !== 'object') {                              
+                                                                try {                                
+                                                                    result = JSON.parse(result)                              
+                                                                } catch {                                
+                                                                    return alert('上传图片失败', '上传图片返回结果错误，返回结果是: ' + result)                              
+                                                                }                            
+                                                            } 
+                                                            // 根据服务器返回的结果自行拼接图片地址
+                                                            //const URI = result.data.items.file.map(v => `/upms/file/upload?fileType=image&dir=editor/${v.filename}`)[0]
+                                                            // 插入到文本                            
+                                                            _self.quill.updateContents(                              
+                                                                new Delta()                                
+                                                                    .retain(range.index)                                
+                                                                    .delete(range.length)                                
+                                                                    .insert({ image: result.link })                            
+                                                            )                          
+                                                        }                          
+                                                        // 上传下一个图片                         
+                                                        uploadFile()                        
+                                                    }                        
+                                                    xhr.send(formData)                      
+                                                }                      
+                                                reader.readAsDataURL(_file)                    
+                                            }       
+                                        }                
+                                    })                
+                                    fileInput.click()              
+                                }            
+                            }         
+                        }        
+                    }      
+                })
+		}, 
       onEditorBlur(editor) {
         //失去焦点事件
       },

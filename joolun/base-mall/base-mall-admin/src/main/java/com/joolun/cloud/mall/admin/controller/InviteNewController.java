@@ -87,6 +87,19 @@ public class InviteNewController {
         return R.ok(inviteNewService.updateById(inviteNew));
     }
 
+//	/**
+//	 * 邀新表邀新状态修改并通知
+//	 * @param inviteNew 邀新表
+//	 * @return R
+//	 */
+//	@ApiOperation(value = "邀新表邀新状态修改")
+//	@SysLog("修改邀新表邀新状态")
+//	@PutMapping("/updateInviteNewStatus")
+//	@PreAuthorize("@ato.hasAuthority('mall:invitenew:edit')")
+//	public R updateInviteNewStatus(@RequestBody InviteNew inviteNew) {
+//		return R.ok(inviteNewService.updateInviteNewStatus(inviteNew));
+//	}
+
     /**
      * 邀新表删除
      * @param userIdFirst

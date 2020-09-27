@@ -34,6 +34,7 @@ public enum MyReturnCode {
 	ERR_92000(92000, "请联系400-880-1511"){},
 	;
 
+
 	MyReturnCode(int code, String msg) {
 		this.code = code;
 		this.msg = msg;

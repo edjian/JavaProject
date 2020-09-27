@@ -20,4 +20,13 @@ import com.joolun.cloud.mall.common.entity.BankWithdrawal;
 public interface BankWithdrawalService extends IService<BankWithdrawal> {
 
     boolean save1(BankWithdrawal bankWithdrawal);
+//    /*
+//    * 提现结果状态更改
+//    * */
+//	boolean updateDrawalStatus(BankWithdrawal bankWithdrawal);
+
+	/*
+	 * 提现审核结果状态更改
+	 * */
+	boolean drawalAuditResult(BankWithdrawal bankWithdrawal);
 }

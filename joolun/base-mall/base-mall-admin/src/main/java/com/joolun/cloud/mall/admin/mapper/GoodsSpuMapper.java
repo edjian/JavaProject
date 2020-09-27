@@ -49,4 +49,6 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
 	@SqlParser(filter=true)
 	List<GoodsSpu> selectListByShelf(@Param("query") GoodsSpu goodsSpu);
+
+    List<GoodsSpu> getAllGoods();
 }

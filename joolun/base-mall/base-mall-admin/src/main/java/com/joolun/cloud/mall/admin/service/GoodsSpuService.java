@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.CouponUser;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 
+import java.util.List;
+
 /**
  * spu商品
  *
@@ -32,4 +34,7 @@ public interface GoodsSpuService extends IService<GoodsSpu> {
 	GoodsSpu getById2(String id);
 
 	IPage<GoodsSpu> page2(IPage<GoodsSpu> page, GoodsSpu goodsSpu, CouponUser couponUser);
+//	查询所有商品
+	List<GoodsSpu> GetAllGoods();
+
 }

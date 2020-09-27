@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
+import com.joolun.cloud.mall.common.entity.MerchantSettled;
 import com.joolun.cloud.upms.admin.service.*;
 import com.joolun.cloud.upms.common.dto.UserDTO;
 import com.joolun.cloud.upms.common.dto.UserInfo;
@@ -362,4 +363,30 @@ public class SysUserController {
 			return R.failed(e.getMessage());
 		}
 	}
+
+	/**
+	 * 设置商家正常还是锁定
+	 *
+	 * @param merchantSettled 对象
+	 * @return
+	 */
+	@ApiOperation(value = "设置商家正常还是锁定")
+	@SysLog("设置商家正常还是锁定")
+	@PreAuthorize("@ato.hasAuthority('sys:user:edit')")
+	@PutMapping("/lockflag")
+	R editlockflag(@RequestBody MerchantSettled merchantSettled){
+		return R.ok(sysUserService.editlockflag(merchantSettled));
+	}
+
+	/*
+	 * 查询所有租户
+	 * */
+
+	@ApiOperation(value = "所有租户")
+	@GetMapping("/getallsysuser")
+	@PreAuthorize("@ato.hasAuthority('sys:user:get')")
+	public R getAllSysUser(){
+		return R.ok(sysUserService.getAllSysUser());
+	}
+
 }

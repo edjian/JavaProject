@@ -127,4 +127,5 @@ public class UserMeal extends Model<UserMeal> {
      */
     @TableField(exist = false)
     private String inviteUserId;
+
 }

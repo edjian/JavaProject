@@ -52,6 +52,7 @@
         merchant_settled.`status`,
         merchant_settled.`reason`
     </sql>
+
     <select id="selectStep" resultType="java.lang.Integer">
         SELECT
         merchant_settled.`step`
@@ -62,4 +63,21 @@
             </if>
         </where>
     </select>
+    <select id="getMerchants"
+            resultType="com.joolun.cloud.mall.common.entity.MerchantSettled">
+		SELECT
+		<include refid="merchantSettledSql"/>
+		FROM merchant_settled merchant_settled
+		<where>
+			<if test="query.merchants_settled">
+				AND merchant_settled.merchants_settled=#{query.merchants_settled}
+			</if>
+			<if test="query.userId">
+				AND merchant_settled.user_id=#{query.userId}
+			</if>
+			<if test="status != null">
+				AND merchant_settled.status=#{query.status}
+			</if>
+		</where>
+	</select>
 </mapper>

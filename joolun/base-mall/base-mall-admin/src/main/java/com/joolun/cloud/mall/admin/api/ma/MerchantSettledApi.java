@@ -2,7 +2,9 @@ package com.joolun.cloud.mall.admin.api.ma;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.FileUtils;
@@ -13,6 +15,7 @@ import com.joolun.cloud.common.storage.util.UploadFileUtils;
 import com.joolun.cloud.mall.admin.service.MerchantSettledService;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.constant.ResultCode;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.MerchantSettled;
 import com.joolun.cloud.mall.common.feign.FeignUpmsAdminService;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
@@ -98,7 +102,7 @@ public class MerchantSettledApi {
      * @param merchantSettled 商城入驻信息表
      * @return R
      */
-    @ApiOperation(value = "商城入驻信息表修改")
+    @ApiOperation(value = "商城入驻信息改表修")
     @PutMapping
     public R updateById(@RequestBody MerchantSettled merchantSettled) {
         return R.ok(merchantSettledService.update(merchantSettled,Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, ThirdSessionHolder.getMallUserId())));
@@ -150,4 +154,7 @@ public class MerchantSettledApi {
         merchantSettledService.update(merchantSettled, Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, merchantSettled.getUserId()));
         return R.ok();
     }
+
+
+
 }

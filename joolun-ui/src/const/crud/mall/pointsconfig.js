@@ -22,30 +22,30 @@ export const tableOption = {
     viewBtn: true,
     searchMenuSpan: 6,
     column: [
-        {
-            label: '用户初始积分',
-            prop: 'initPosts',
-            tip: '新用户的初始积分数',
-            type: 'number',
-            minRows: 0,
-            rules: [{
-                required: true,
-                message: '请输入初始积分',
-                trigger: 'blur'
-            }],
-        },
-        {
-          label: '会员初始积分',
-          prop: 'initVipPosts',
-          tip: '新会员的初始积分数',
-          type: 'number',
-          minRows: 0,
-          rules: [{
-            required: true,
-            message: '请输入初始积分',
-            trigger: 'blur'
-          }],
-        },
+        // {
+        //     label: '用户初始积分',
+        //     prop: 'initPosts',
+        //     tip: '新用户的初始积分数',
+        //     type: 'number',
+        //     minRows: 0,
+        //     rules: [{
+        //         required: true,
+        //         message: '请输入初始积分',
+        //         trigger: 'blur'
+        //     }],
+        // },
+        // {
+        //   label: '会员初始积分',
+        //   prop: 'initVipPosts',
+        //   tip: '新会员的初始积分数',
+        //   type: 'number',
+        //   minRows: 0,
+        //   rules: [{
+        //     required: true,
+        //     message: '请输入初始积分',
+        //     trigger: 'blur'
+        //   }],
+        // },
         {
             label: '订单满',
             prop: 'premiseAmount',

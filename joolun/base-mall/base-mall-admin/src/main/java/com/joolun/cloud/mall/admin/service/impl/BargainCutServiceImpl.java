@@ -76,6 +76,7 @@ public class BargainCutServiceImpl extends ServiceImpl<BargainCutMapper, Bargain
 			}
 			bargainCut.setCutPrice(cutPrice);
 			baseMapper.insert(bargainCut);
+
 		}
 		return Boolean.TRUE;
 	}

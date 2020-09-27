@@ -159,5 +159,4 @@ public class GoodsSpuController {
     public R removeById(@PathVariable String id){
         return R.ok(goodsSpuService.removeById(id));
     }
-
 }

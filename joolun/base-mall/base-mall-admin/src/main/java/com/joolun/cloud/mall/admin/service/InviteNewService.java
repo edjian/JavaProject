@@ -36,4 +36,5 @@ public interface InviteNewService extends IService<InviteNew> {
     JSONObject successMyInviteNew();
 
     List<UserInfo> myInviteNewDetail(String level, IPage<InviteNew> page);
+
 }

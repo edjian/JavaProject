@@ -10,9 +10,11 @@ package com.joolun.cloud.mall.admin.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.mapper.*;
 import com.joolun.cloud.mall.admin.service.InviteNewService;
@@ -22,7 +24,10 @@ import com.joolun.cloud.mall.admin.service.UserMealService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.entity.*;
+import com.joolun.cloud.mall.common.feign.FeignWxTemplateMsgService;
 import com.joolun.cloud.mall.common.util.StringUtil;
+import com.joolun.cloud.weixin.common.constant.ConfigConstant;
+import com.joolun.cloud.weixin.common.dto.WxTemplateMsgSendDTO;
 import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户套餐表
@@ -49,6 +57,8 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
     private final InviteNewMapper inviteNewMapper;
     private final MerchantSettledMapper merchantSettledMapper;
     private final UserMealMapper userMealMapper;
+    private final SetMealMapper setMealMapper;
+	private final FeignWxTemplateMsgService feignWxTemplateMsgService;
 
     @Override
     public UserMeal getByConditional(UserMeal userMeal) {
@@ -75,6 +85,7 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                 .eq(UserMeal::getStatus, MallConstants.UNDER_WAY)
                 .eq(UserMeal::getAccountStatus, CommonConstants.NO)
                 .eq(UserMeal::getUserId, userMeal.getUserId()));
+
         if (CommonConstants.NO.equals(userMeal.getIsPay())) {
             userMeal.setIsPay(CommonConstants.YES);
             userMeal.setStatus(CommonConstants.YES);
@@ -96,7 +107,6 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                         .eq(InviteNew::getUserId, userMeal.getUserId())
                         .eq(InviteNew::getStatus, CommonConstants.YES));
                 //判断是否有邀请人
-
                 UserInfo userInfo = userInfoMapper.getUserMeal(userMeal.getUserId());
                 userMeal.setStartTime(oldUserMeal.getEndTime());
                 userMeal.setEndTime(oldUserMeal.getEndTime().plusDays(MallConstants.MINE_UPGRADE_TIME));
@@ -109,7 +119,6 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                 if (StringUtils.isNotBlank(existInviteNew.getUserIdFirst())) {
                     UserInfo upgradeUserInfoFirst = userInfoMapper.getUserMeal(existInviteNew.getUserIdFirst());//升级套餐一级用户信息
                     if (upgradeUserInfoFirst != null) {
-
                         if (MallConstants.FLAGSHIP_MEAL.equals(upgradeUserInfoFirst.getUserMeal().getSetMeal().getPrice().intValue())) {
                             upgradeUserInfoFirst.getUserMeal().setEndTime(upgradeUserInfoFirst.getUserMeal().getEndTime().plusDays(MallConstants.FLAGSHIP_INVITE_BASIC_UPGRADE_TIME));
                             baseMapper.updateById(upgradeUserInfoFirst.getUserMeal());
@@ -125,7 +134,55 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
                                 .eq(UserMeal::getUserId, inviteNew.getUserId())) != null)
                         .forEach(inviteNew -> userMeal.setEndTime(userMeal.getEndTime().plusDays(MallConstants.BASIC_INVITE_FLAGSHIP_UPGRADE_TIME)));
                 baseMapper.updateById(userMeal);
-            } else {
+
+//		查出套餐过期的用户信息
+				UserMeal OldUserMeal = baseMapper.selectOne(Wrappers.<UserMeal>lambdaQuery()
+						.eq(UserMeal::getStatus, MallConstants.FINISHED)
+						.eq(UserMeal::getAccountStatus, CommonConstants.YES)
+						.eq(UserMeal::getUserId, userMeal.getUserId()));
+				SetMeal setMeal = setMealMapper.selectById(OldUserMeal.getSetMealId());
+//		查出新套餐的用户信息
+				UserMeal NewUserMeal = baseMapper.selectOne(Wrappers.<UserMeal>lambdaQuery()
+						.eq(UserMeal::getStatus, MallConstants.UNDER_WAY)
+						.eq(UserMeal::getAccountStatus, CommonConstants.NO)
+						.eq(UserMeal::getIsPay,MallConstants.PAID)
+						.eq(UserMeal::getUserId, userMeal.getUserId()));
+				if (!OldUserMeal.getSetMealId().equals(NewUserMeal.getSetMealId())){
+					userMeal.setCreateTime(NewUserMeal.getCreateTime());
+					userMeal.setAccountStatus(NewUserMeal.getAccountStatus());
+					userMeal.setEndTime(NewUserMeal.getEndTime());
+					userMeal.setOrderNo(NewUserMeal.getOrderNo());
+					userMeal.setSetMealId(NewUserMeal.getSetMealId());
+					userMeal.setId(NewUserMeal.getId());
+					userMeal.setStartTime(NewUserMeal.getStartTime());
+					userMeal.setSurplusPoint(OldUserMeal.getSurplusPoint()+NewUserMeal.getSurplusPoint());
+					userMealMapper.updateById(userMeal);
+				}
+				SetMeal setMeal1 = setMealMapper.selectById(NewUserMeal.getSetMealId());
+
+				//发布订阅会员等级变更通知消息
+				try {
+//					会员等级 {{phrase1.DATA}}
+//					变更时间 {{date2.DATA}}
+//					备注说明 {{thing3.DATA}}
+					UserMeal userMeal1 = baseMapper.selectById(userMeal.getUserId());
+					WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
+					wxTemplateMsgSendDTO.setMallUserId(ThirdSessionHolder.getMallUserId());
+					wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + userMeal1.getId());
+					wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_17);
+					HashMap<String, HashMap<String, String>> data = new HashMap<>();
+					if (!OldUserMeal.getSetMealId().equals(NewUserMeal.getSetMealId())){
+						data.put("phrase1", (HashMap) JSONUtil.toBean("{\"value\": \""+ setMeal1.getName()+ "\"}", Map.class));
+						data.put("thing3", (HashMap) JSONUtil.toBean("{\"value\": \""+ "由"+setMeal.getName()+"升级为"+setMeal1.getName()+ "\"}", Map.class));
+					}
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+					data.put("date2",(HashMap)JSONUtil.toBean("{\"value\": \""+dtf.format(userMeal1.getUpdateTime()) + "\"}", Map.class));
+					wxTemplateMsgSendDTO.setData(data);
+					feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
+				}catch (Exception e){
+					log.error("等级变更失败: "+e.getMessage(),e);
+				}
+			} else {
                 InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
                         .eq(InviteNew::getUserId, userMeal.getUserId())
                         .eq(StringUtils.isNotEmpty(inviteUserId), InviteNew::getUserIdFirst, inviteUserId));
@@ -229,5 +286,60 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
         }
         return R.ok(MyReturnCode.ERR_10000.getCode(), MyReturnCode.ERR_10000.getMsg());
     }
+//待付款提醒
+	@Override
+	public void obligation(UserMeal userMeal) {
+    	baseMapper.updateById(userMeal);
+		try {
+//			商品名称 {{thing1.DATA}}
+//			订单金额 {{amount5.DATA}}
+//			下单时间 {{date2.DATA}}
+//			支付提醒 {{thing6.DATA}}
+//			温馨提示 {{thing7.DATA}}
+			//    	根据用户Id 查出 商户信息
+			MerchantSettled merchantSettled = merchantSettledMapper.selectOne(Wrappers.<MerchantSettled>lambdaQuery()
+					.eq(MerchantSettled::getUserId, userMeal.getUserId()));
+//		根据用户套餐Id 查  套餐信息
+			SetMeal setMeal = setMealMapper.selectOne(Wrappers.<SetMeal>lambdaQuery()
+					.eq(SetMeal::getId, userMeal.getSetMealId()));
+			//		发布订阅待付款提醒
+			WxTemplateMsgSendDTO wxTemplateMsgSendDTO = new WxTemplateMsgSendDTO();
+			wxTemplateMsgSendDTO.setMallUserId(userMeal.getUserId());
+			wxTemplateMsgSendDTO.setPage("pages/order/order-detail/index?id=" + userMeal.getId());
+			wxTemplateMsgSendDTO.setUseType(ConfigConstant.WX_TMP_USE_TYPE_13);
+			HashMap<String, HashMap<String, String>> data = new HashMap<>();
+			data.put("thing1", (HashMap) JSONUtil.toBean("{\"value\": \"" + merchantSettled.getUserName() + "\"}", Map.class));
+			//		根据用户套餐的支付状态 再做判断  0、未支付 1、已支付
+			if (CommonConstants.IS_PAY_SUCCESS.equals(userMeal.getStatus())){
+//					判断用户套餐的价格是不是 980  如果是需要补差价
+				if (MallConstants.BASICS_MEAL==(setMeal.getPrice().intValue())){
+					int price=(MallConstants.FLAGSHIP_MEAL-(MallConstants.BASICS_MEAL.intValue()));
+					data.put("amount5",(HashMap)JSONUtil.toBean("{\"value\": \""+"￥"+price+ "\"}", Map.class));
+					data.put("thing6",(HashMap)JSONUtil.toBean("{\"value\": \""+"请在18点前完成支付"+ "\"}", Map.class));
+					data.put("thing7",(HashMap)JSONUtil.toBean("{\"value\": \""+"您有未支付订单！请尽快支付，逾期订单将自动取消。"+ "\"}", Map.class));
+				}
+			}
+			else if (CommonConstants.IS_PAY_FAIL.equals(userMeal.getStatus())){
+//					判断用户套餐价格是 3980
+				if (MallConstants.FLAGSHIP_MEAL==(setMeal.getPrice().intValue())){
+					data.put("amount5",(HashMap)JSONUtil.toBean("{\"value\": \""+"￥"+MallConstants.FLAGSHIP_MEAL+ "\"}", Map.class));
+					data.put("thing6",(HashMap)JSONUtil.toBean("{\"value\": \""+"请在18点前完成支付"+ "\"}", Map.class));
+					data.put("thing7",(HashMap)JSONUtil.toBean("{\"value\": \""+"您有未支付订单！请尽快支付，逾期订单将自动取消。"+ "\"}", Map.class));
+				}
+//					判断用户套餐价格是59800
+				else if (MallConstants.CITY_PARTNER==(setMeal.getPrice().intValue())){
+					data.put("amount5",(HashMap)JSONUtil.toBean("{\"value\": \""+"￥"+MallConstants.CITY_PARTNER+ "\"}", Map.class));
+					data.put("thing6",(HashMap)JSONUtil.toBean("{\"value\": \""+"请在18点前完成支付"+ "\"}", Map.class));
+					data.put("thing7",(HashMap)JSONUtil.toBean("{\"value\": \""+"您有未支付订单！请尽快支付，逾期订单将自动取消。"+ "\"}", Map.class));
+				}
+			}
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			data.put("date3", (HashMap) JSONUtil.toBean("{\"value\": \"" + dtf.format(userMeal.getCreateTime()) + "\"}", Map.class));
+			wxTemplateMsgSendDTO.setData(data);
+			feignWxTemplateMsgService.sendTemplateMsg(wxTemplateMsgSendDTO, SecurityConstants.FROM_IN);
+		} catch (Exception e) {
+			log.error("提现失败: " + e.getMessage(), e);
+		}
+	}
 
 }

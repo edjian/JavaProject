@@ -44,4 +44,6 @@ public class GoodsCategoryApi {
     public R goodsCategoryTree() {
 		return R.ok(goodsCategoryService.selectTree(null));
     }
+
+
 }

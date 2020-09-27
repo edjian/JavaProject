@@ -31,4 +31,11 @@ public interface UserMealService extends IService<UserMeal> {
 
     R getUserMealIsPay(UserMeal userMeal);
 
+////    会员等级通知
+//    boolean membershipLevelChange(UserMeal userMeal);
+
+
+//	待付款提醒
+	void   obligation(UserMeal userMeal);
+
 }

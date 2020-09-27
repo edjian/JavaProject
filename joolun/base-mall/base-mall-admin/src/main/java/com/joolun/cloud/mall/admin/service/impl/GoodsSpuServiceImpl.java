@@ -163,7 +163,14 @@ public class GoodsSpuServiceImpl extends ServiceImpl<GoodsSpuMapper, GoodsSpu> i
     public IPage<GoodsSpu> page2(IPage<GoodsSpu> page, GoodsSpu goodsSpu, CouponUser couponUser) {
         return baseMapper.selectPage2(page, goodsSpu, couponUser);
     }
-
+/*
+*
+* 查询所有商品
+* */
+    @Override
+    public List<GoodsSpu> GetAllGoods() {
+        return baseMapper.getAllGoods();
+    }
     /**
      * 多规格处理
      *

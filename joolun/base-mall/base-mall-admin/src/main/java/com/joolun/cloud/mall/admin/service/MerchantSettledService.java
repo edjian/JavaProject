@@ -9,8 +9,13 @@
 package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.MerchantSettled;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 商城入驻信息表
@@ -21,4 +26,18 @@ import com.joolun.cloud.mall.common.entity.MerchantSettled;
 public interface MerchantSettledService extends IService<MerchantSettled> {
 
     Integer getStep(MerchantSettled merchantSettled);
+	/**
+	 * 审核结果更改并通知
+	 * @param merchantSettled
+	 */
+    boolean updateMerchantSettled(MerchantSettled merchantSettled);
+	/**
+	 * 商家基本信息查询
+	 *
+	 */
+	List<MerchantSettled> getMerchants(IPage<GoodsSpu> page,MerchantSettled merchantSettled);
+
+
+
+
 }
