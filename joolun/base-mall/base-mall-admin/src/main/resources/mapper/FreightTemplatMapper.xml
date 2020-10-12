@@ -25,5 +25,6 @@
 		<result property="firstFreight" column="first_freight"/>
 		<result property="continueNum" column="continue_num"/>
 		<result property="continueFreight" column="continue_freight"/>
+		<result property="organId" column="organ_id"/>
 	</resultMap>
 </mapper>

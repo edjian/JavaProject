@@ -18,6 +18,7 @@ import com.joolun.cloud.mall.common.entity.OrderItem;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商城订单
@@ -66,4 +67,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
 	 * @param orderItem
 	 */
 	void editPrice(OrderItem orderItem);
+
+	List<OrderInfo> selectByForge(String i);
 }

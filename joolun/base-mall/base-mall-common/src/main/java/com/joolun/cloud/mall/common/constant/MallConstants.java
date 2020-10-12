@@ -142,24 +142,24 @@ public interface MallConstants {
     String DELIVERY_WAY_2 = "2";
 
     /**
-     * 套餐价格
+     * 套餐价格（980、伙计；3980、掌柜；59800、城市合伙人）
      */
     Integer BASICS_MEAL = 980;
     Integer FLAGSHIP_MEAL = 3980;
     Integer CITY_PARTNER = 59800;
 
     /**
-     * 套餐状态
+     * 套餐状态（0、未开始；1、进行中；2、已结束）
      */
     String NOT_START = "0";
     String UNDER_WAY = "1";
     String FINISHED = "2";
 
     /**
-     * 套餐支付状态
+     * 套餐支付状态（0、未支付；1、已支付）
      */
-    String PAID = "1";
     String UNPAID = "0";
+    String PAID = "1";
 
     /**
      * 套餐周期
@@ -172,13 +172,13 @@ public interface MallConstants {
     Integer BASIC_INVITE_FLAGSHIP_UPGRADE_TIME = 11;
 
     /**
-     * 分享记录状态
+     * 分享记录状态（0、未分享；1、已分享）
      */
     String SHARE_RECORD_NO = "0";
     String SHARE_RECORD_YES = "1";
 
     /**
-     * 我的邀请等级分别
+     * 我的邀请等级分别（first、一级；second、二级；all、所有）
      */
     String MY_INVITE_STAT_FIRST = "first";
     String MY_INVITE_STAT_SECOND = "second";
@@ -189,12 +189,11 @@ public interface MallConstants {
      */
     Integer CONSUME_PROFIT = 10;//自然人比例
 
-    /**
-     * 跨界收益
-     */
-    Integer TRANSBOUNDARY_PROFIT_10 = 10;//掌柜比例
-    Integer TRANSBOUNDARY_PROFIT_30 = 30;//城市合伙人比例
-
+//    /**
+//     * 跨界收益
+//     */
+//    Integer TRANSBOUNDARY_PROFIT_10 = 10;//掌柜比例
+//    Integer TRANSBOUNDARY_PROFIT_30 = 30;//城市合伙人比例
 
     /**
      * 商城入驻资料填报状态
@@ -234,4 +233,9 @@ public interface MallConstants {
      * 分享任务条数
      */
     Integer SHARE_COUNT = 4;
+
+    /**
+     * 每日点击商品虚拟数量
+     */
+    Integer VOID_NUM = 100;
 }

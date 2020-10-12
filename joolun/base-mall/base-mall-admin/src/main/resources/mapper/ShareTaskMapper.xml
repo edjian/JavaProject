@@ -26,7 +26,7 @@
         share_task.`tips`
     </sql>
 
-    <sql id="shareTaskSq2">
+    <sql id="shareTaskSql1">
         share_task.`id`,
         share_task.`name`,
         share_task.`point`,
@@ -34,34 +34,34 @@
         share_task.`pic_url`,
         share_task.`enable`,
         share_task.`task_state`,
-        share_task.`tips`,
-        share_record.`id`,
-        share_record.`create_time`,
-        share_record.`update_time`,
-        share_record.`user_id`,
-        share_record.`task_id`,
-        share_record.`status`
+        share_task.`tips`
+--         share_record.`id`,
+--         share_record.`create_time`,
+--         share_record.`update_time`,
+--         share_record.`user_id`,
+--         share_record.`task_id`,
+--         share_record.`status`
     </sql>
 
     <select id="selectPage1" resultMap="shareTaskMap">
         SELECT
-        <include refid="shareTaskSq2"/>
+        <include refid="shareTaskSql"/>
         FROM share_task share_task
-        LEFT JOIN
-        (
-          SELECT *  FROM
-          share_record
-          <where>
-              <if test="query.userId != null">
-                  AND share_record.`user_id` = #{query.userId}
-              </if>
-              <if test="true">
-                  AND share_record.`create_time` BETWEEN
-                  (SELECT DATE_FORMAT(now(), '%Y-%m-%d 00:00:00') FROM DUAL) AND
-                  (SELECT DATE_FORMAT(now(), '%Y-%m-%d 23:59:59') FROM DUAL)
-              </if>
-          </where>
-        ) share_record ON share_task.`id` = share_record.`task_id`
+        <!--LEFT JOIN-->
+        <!--(-->
+          <!--SELECT * FROM-->
+          <!--share_record-->
+          <!--<where>-->
+              <!--<if test="query.userId != null">-->
+                  <!--AND share_record.`user_id` = #{query.userId}-->
+              <!--</if>-->
+              <!--<if test="true">-->
+                  <!--AND share_record.`create_time` BETWEEN-->
+                  <!--(SELECT DATE_FORMAT(now(), '%Y-%m-%d 00:00:00') FROM DUAL) AND-->
+                  <!--(SELECT DATE_FORMAT(now(), '%Y-%m-%d 23:59:59') FROM DUAL)-->
+              <!--</if>-->
+          <!--</where>-->
+        <!--) share_record ON share_task.`id` = share_record.`task_id`-->
         <where>
             <if test="query.id != null">
                 AND share_task.`id` = #{query.id}

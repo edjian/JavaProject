@@ -88,7 +88,7 @@
             <groupId>com.joolun</groupId>
             <artifactId>base-common-sms</artifactId>
         </dependency>
-        <!--分布式事务
+		<!--分布式事务
         <dependency>
             <groupId>com.joolun</groupId>
             <artifactId>base-common-transaction</artifactId>

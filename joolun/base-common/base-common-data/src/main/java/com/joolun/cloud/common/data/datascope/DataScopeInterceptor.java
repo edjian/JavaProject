@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
+import com.joolun.cloud.common.core.constant.enums.MallSetEnum;
 import com.joolun.cloud.common.core.exception.CheckedException;
 import com.joolun.cloud.common.data.enums.DataScopeTypeEnum;
 import com.joolun.cloud.common.security.entity.BaseUser;
@@ -88,7 +89,10 @@ public class DataScopeInterceptor extends AbstractSqlParserHandler implements In
 		Integer dsType = query.getInt("ds_type");
 		// 查询全部
 		if (DataScopeTypeEnum.ALL.getType() == dsType) {
-			return invocation.proceed();
+			if( !Arrays.stream(MallSetEnum.values()).anyMatch(mall->mappedStatement.getId().equals(mall.getMapperId())) ){
+				return invocation.proceed();
+			}
+			organIds.add("1");
 		}
 		// 自定义
 		if (DataScopeTypeEnum.CUSTOM.getType() == dsType) {

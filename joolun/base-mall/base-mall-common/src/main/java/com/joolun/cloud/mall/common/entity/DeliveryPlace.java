@@ -78,5 +78,10 @@ public class DeliveryPlace extends Model<DeliveryPlace> {
 	 */
 	@ApiModelProperty(value = "电话号码")
 	private String telNum;
+	/**
+	 * 机构ID
+	 */
+	@ApiModelProperty(value = "机构ID")
+	private String organId;
 
 }

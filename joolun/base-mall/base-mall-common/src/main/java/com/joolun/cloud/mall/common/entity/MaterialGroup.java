@@ -67,5 +67,10 @@ public class MaterialGroup extends Model<MaterialGroup> {
    */
 	@ApiModelProperty(value = "分组名")
     private String name;
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
   
 }

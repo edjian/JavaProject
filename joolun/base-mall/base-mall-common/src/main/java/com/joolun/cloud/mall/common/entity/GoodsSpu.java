@@ -8,10 +8,7 @@
  */
 package com.joolun.cloud.mall.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.joolun.cloud.common.data.mybatis.typehandler.ArrayStringTypeHandler;
 import com.joolun.cloud.mall.common.dto.SpuSpecDTO;
@@ -171,7 +168,16 @@ private static final long serialVersionUID = 1L;
 	 */
 	@ApiModelProperty(value = "机构ID")
 	private String organId;
-
+	/**
+	 * 版本号
+	 */
+	@Version
+	private Integer version;
+	/**
+	 * 每日点击商品虚拟数量
+	 */
+	@ApiModelProperty(value = "每日点击商品虚拟数量")
+	private Integer voidNum;
 	/**
 	 * 保障服务
 	 */

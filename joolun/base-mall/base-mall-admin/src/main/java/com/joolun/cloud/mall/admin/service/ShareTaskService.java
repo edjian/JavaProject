@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.common.entity.ShareTask;
 
 /**
@@ -25,7 +26,7 @@ public interface ShareTaskService extends IService<ShareTask> {
     /**
      * 分享任务回调
      */
-    void shareCallback();
+    void shareCallback(String inviteUserId);
 
     /**
      * 判断是否已完成任务

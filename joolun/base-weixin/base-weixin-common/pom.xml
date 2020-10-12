@@ -30,6 +30,6 @@
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-common</artifactId>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 </project>

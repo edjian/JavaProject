@@ -9,6 +9,7 @@
 package com.joolun.cloud.mall.admin.api.ma;
 
 //import cn.hutool.core.codec.Base64;
+
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.core.constant.CommonConstants;
@@ -22,9 +23,6 @@ import com.joolun.cloud.mall.common.entity.CouponUser;
 import com.joolun.cloud.mall.common.entity.UserInfo;
 import com.joolun.cloud.mall.common.entity.UserMeal;
 import com.joolun.cloud.mall.common.feign.FeignWxUserService;
-import com.joolun.cloud.upms.common.feign.FeignUserService;
-import com.joolun.cloud.weixin.common.constant.MyReturnCode;
-import com.joolun.cloud.weixin.common.entity.ThirdSession;
 import com.joolun.cloud.weixin.common.entity.WxUser;
 import com.joolun.cloud.weixin.common.util.ThirdSessionHolder;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -32,7 +30,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.bouncycastle.util.encoders.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +38,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.security.spec.AlgorithmParameterSpec;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
+
+//import org.bouncycastle.util.encoders.Base64;
 
 /**
  * 商城用户
@@ -85,8 +85,12 @@ public class UserInfoApi {
 				.eq(UserMeal::getAccountStatus, CommonConstants.NO)
 				.eq(UserMeal::getUserId, userInfo.getId()));
 		int amount = userInfo.getPointsWithdraw()+userInfo.getPointsCurrent();
-		if(userMeal != null){
+		map.put("isVip", Boolean.FALSE);
+		if(Optional.ofNullable(userMeal).isPresent()){
 			amount += userMeal.getSurplusPoint()*2;
+			Duration duration = Duration.between(LocalDateTime.now(), userMeal.getEndTime());
+			map.put("isVip", Boolean.TRUE);
+			map.put("dueTime", duration.toDays());
 		}
 		map.put("amount", amount);
         return R.ok(map);

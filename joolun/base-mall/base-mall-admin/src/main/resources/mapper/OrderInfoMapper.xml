@@ -40,6 +40,7 @@
 		<result property="organId" column="organ_id"/>
 		<result property="inviteUserId" column="invite_user_id"/>
 		<result property="pointsWithdrawal" column="points_withdrawal"/>
+		<result property="forge" column="forge"/>
 	</resultMap>
 
 	<resultMap id="orderInfoMap2" extends="orderInfoMap" type="com.joolun.cloud.mall.common.entity.OrderInfo">
@@ -93,7 +94,8 @@
 		order_info.`relation_id`,
 		order_info.`organ_id`,
 		order_info.`invite_user_id`,
-		order_info.`points_withdrawal`
+		order_info.`points_withdrawal`,
+		order_info.`forge`
 	</sql>
 
 	<select id="selectPage1" resultMap="orderInfoMap2">
@@ -167,5 +169,16 @@
 		<include refid="orderInfoSql"/>
 		FROM order_info order_info
 		WHERE order_info.`id` = #{id}
+	</select>
+
+	<select id="selectByForge" resultType="com.joolun.cloud.mall.common.entity.OrderInfo">
+		SELECT
+		<include refid="orderInfoSql"/>
+		 from order_info order_info
+		where NOT EXISTS
+		(select
+		<include refid="orderInfoSql"/>
+		FROM order_item order_item
+		WHERE order_info.id=order_item.order_id)
 	</select>
 </mapper>

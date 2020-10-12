@@ -8,16 +8,36 @@
  */
 package com.joolun.cloud.mall.admin;
 
+import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.common.core.util.LocalDateTimeUtils;
 import com.joolun.cloud.common.security.annotation.EnableBaseFeignClients;
 import com.joolun.cloud.common.security.annotation.EnableBaseResourceServer;
 import com.joolun.cloud.common.swagger.annotation.BaseEnableSwagger;
+import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import com.joolun.cloud.mall.admin.service.OrderInfoService;
+import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
+import com.joolun.cloud.mall.admin.service.UserAddressService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import com.joolun.cloud.mall.common.entity.OrderInfo;
+import com.joolun.cloud.mall.common.entity.OrderLogistics;
+import com.joolun.cloud.mall.common.entity.UserAddress;
+import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
+import com.joolun.cloud.mall.common.util.SpringUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * @author JL
@@ -25,6 +45,7 @@ import java.io.*;
  * 商城模块
  */
 @BaseEnableSwagger
+@ServletComponentScan
 @SpringCloudApplication
 @EnableBaseFeignClients
 @EnableBaseResourceServer
@@ -33,7 +54,9 @@ public class BaseMallApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(BaseMallApplication.class, args);
-//		String jsonStr = "";
+//		String s=readJsonFile("C:\\Users\\14408\\Downloads\\bannedwords-master\\pub_sms_banned_words.txt");
+//		System.out.println(s);
+//		Base64.getDecoder();
 //		ApplicationContext applicationContext = SpringUtil.getApplicationContext();
 //		BankContrastService bankContrastService= applicationContext.getBean(BankContrastService.class);
 //		String s=readJsonFile("C:\\Users\\14408\\Desktop\\b.txt");
@@ -45,7 +68,6 @@ public class BaseMallApplication {
 //			bankContrast.setBankName(entry.getValue().toString());
 //			bankContrastService.save(bankContrast);
 //		});
-
 	}
 
 	public static String readJsonFile(String fileName) {
@@ -53,11 +75,11 @@ public class BaseMallApplication {
 		try {
 			File jsonFile = new File(fileName);
 			FileReader fileReader = new FileReader(jsonFile);
-			Reader reader = new InputStreamReader(new FileInputStream(jsonFile),"utf-8");
-			int ch = 0;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(jsonFile),"utf-8"));
+			String ch = null;
 			StringBuffer sb = new StringBuffer();
-			while ((ch = reader.read()) != -1) {
-				sb.append((char) ch);
+			while ((ch = reader.readLine()) != null) {
+				sb.append(new String(Base64.getDecoder().decode(ch),"UTF-8"));
 			}
 			fileReader.close();
 			reader.close();

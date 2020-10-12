@@ -8,7 +8,6 @@
  */
 package com.joolun.cloud.mall.admin.api.ma;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -69,6 +68,10 @@ public class OrderInfoApi {
     private final BargainUserService bargainUserService;
     private final UserMealService userMealService;
     private final SetMealService setMealService;
+    private final UserAddressService userAddressService;
+    private final GoodsSpuService goodsSpuService;
+    private final OrderItemService orderItemService;
+    private final GoodsSkuService goodsSkuService;
 
     /**
      * 分页查询
@@ -408,4 +411,103 @@ public class OrderInfoApi {
                 .eq(OrderInfo::getAppraisesStatus, MallConstants.APPRAISES_STATUS_0)));
         return R.ok(countAll);
     }
+
+//    @GetMapping("/aaa")
+//    public void aaa(){
+//        List<GoodsSpu> goodsSpuList = goodsSpuService.list();
+//        Integer[] integers = new Integer[100000];
+//        Arrays.stream(integers).forEach(index -> {
+//            OrderInfo orderInfo = new OrderInfo();
+//            Random random = new Random();
+//            GoodsSpu goodsSpu = goodsSpuList.get(random.nextInt(goodsSpuList.size()));
+//            orderInfo.setId(IdUtil.getSnowflake(0, 0).nextIdStr());
+//            orderInfo.setAppId("wxd886059de9c8e704");
+//            orderInfo.setDelFlag("0");
+//            orderInfo.setAppType("1");
+//            orderInfo.setUserId("1303144419377090562");
+//            orderInfo.setOrderNo(IdUtil.getSnowflake(0, 0).nextIdStr());
+//            orderInfo.setPaymentWay("2");
+//            orderInfo.setDeliveryWay("1");
+//            orderInfo.setPaymentType("1");
+//            orderInfo.setIsPay("1");
+//            orderInfo.setName(goodsSpu.getName());
+//            orderInfo.setStatus("3");
+//            orderInfo.setAppraisesStatus("0");
+//            orderInfo.setFreightPrice(new BigDecimal("0"));
+//            orderInfo.setSalesPrice(goodsSpu.getPriceDown());
+//            orderInfo.setPaymentPointsPrice(new BigDecimal("0"));
+//            orderInfo.setPaymentCouponPrice(new BigDecimal("0"));
+//            orderInfo.setPaymentPrice(goodsSpu.getPriceDown());
+//            orderInfo.setPaymentPoints(0);
+//            orderInfo.setTransactionId(IdUtil.getSnowflake(0, 0).nextIdStr());
+//            orderInfo.setOrderType("0");
+//            orderInfo.setOrganId("1");
+//            orderInfo.setPointsWithdrawal(0);
+//            orderInfo.setForge(1);
+//
+//            String logisticsId = IdUtil.getSnowflake(0, 0).nextIdStr();
+//            orderInfo.setLogisticsId(logisticsId);
+//
+//            LocalDateTime localDateTime = LocalDateTimeUtils.randomDate("2020-06-01T00:00:00","2020-09-01T00:00:00");
+//            orderInfo.setCreateTime(localDateTime);
+//            orderInfo.setUpdateTime(localDateTime);
+//            orderInfo.setPaymentTime(localDateTime.plusHours(1));
+//            orderInfo.setDeliveryTime(localDateTime.plusDays(1));
+//            orderInfo.setReceiverTime(localDateTime.plusDays(2));
+//
+//            OrderLogistics orderLogistics = new OrderLogistics();
+//            orderLogistics.setId(logisticsId);
+//            orderLogistics.setCreateTime(localDateTime.plusDays(1));
+//            orderLogistics.setUpdateTime(localDateTime.plusDays(1));
+//            orderLogistics.setStatus("3");
+//            orderLogistics.setIsCheck("1");
+//
+//            int min = 9;
+//            int max = 18;
+//            int s = random.nextInt(max)%(max-min+1) + min;
+//
+//            List<UserAddress> userAddressList = userAddressService.list(Wrappers.<UserAddress>query().lambda().eq(UserAddress::getUserId, "1303144419377090562"));
+//            UserAddress userAddress = userAddressList.get(random.nextInt(userAddressList.size()));
+//            orderLogistics.setLogistics(OrderLogisticsEnum.values()[s].getValue());
+//            orderLogistics.setDelFlag("0");
+//            orderLogistics.setUserName(userAddress.getUserName());
+//            orderLogistics.setAddress(userAddress.getProvinceName()+userAddress.getCityName()+userAddress.getCountyName()+userAddress.getDetailInfo());
+//            orderLogistics.setTelNum(userAddress.getTelNum());
+//            orderLogistics.setLogisticsNo(IdUtil.getSnowflake(0, 0).nextIdStr());
+//
+//            orderLogisticsService.save(orderLogistics);
+//            orderInfoService.save(orderInfo);
+//        });
+//    }
+//
+//    @GetMapping("/bbb")
+//    public void bbb(){
+//        List<OrderInfo> orderInfoList = orderInfoService.selectByForge("1");
+//        orderInfoList.stream().forEach(orderInfo -> {
+//            OrderItem orderItem = new OrderItem();
+//            List<GoodsSpu> goodsSpuList = goodsSpuService.list(Wrappers.<GoodsSpu>lambdaQuery().like(GoodsSpu::getName, orderInfo.getName()));
+//            List<GoodsSku> goodsSkuList = goodsSkuService.list(Wrappers.<GoodsSku>lambdaQuery().eq(GoodsSku::getSpuId, goodsSpuList.get(0).getId()));
+//
+//            orderItem.setId(IdUtil.getSnowflake(0, 0).nextIdStr());
+//            orderItem.setDelFlag("0");
+//            orderItem.setCreateTime(LocalDateTime.now());
+//            orderItem.setUpdateTime(LocalDateTime.now());
+//            orderItem.setOrderId(orderInfo.getId());
+//            orderItem.setSpuId(goodsSpuList.get(0).getId());
+//            orderItem.setSpuName(orderInfo.getName());
+//            orderItem.setSkuId(goodsSkuList.get(0).getId());
+//            orderItem.setPicUrl(StrUtil.isNotBlank(goodsSkuList.get(0).getPicUrl()) ? goodsSkuList.get(0).getPicUrl() : goodsSpuList.get(0).getPicUrls()[0]);
+//            orderItem.setQuantity(1);
+//            orderItem.setSalesPrice(orderInfo.getSalesPrice());
+//            orderItem.setFreightPrice(new BigDecimal("0"));
+//            orderItem.setPaymentPrice(orderInfo.getPaymentPrice());
+//            orderItem.setPaymentPointsPrice(orderInfo.getPaymentPointsPrice());
+//            orderItem.setPaymentCouponPrice(new BigDecimal("0"));
+//            orderItem.setPaymentPoints(0);
+//            orderItem.setStatus("0");
+//            orderItem.setIsRefund("0");
+//            orderItem.setOrganId("1");
+//            orderItemService.save(orderItem);
+//        });
+//    }
 }

@@ -20,8 +20,18 @@
         <result property="createId" column="create_id"/>
         <result property="name" column="name"/>
         <result property="detail" column="detail"/>
+        <result property="organId" column="organ_id"/>
     </resultMap>
 
     <sql id="ensureSql">
-        ensure.`id`,        ensure.`tenant_id`,        ensure.`del_flag`,        ensure.`create_time`,        ensure.`update_time`,        ensure.`create_id`,        ensure.`name`,        ensure.`detail`    </sql>
+        ensure.`id`,
+        ensure.`tenant_id`,
+        ensure.`del_flag`,
+        ensure.`create_time`,
+        ensure.`update_time`,
+        ensure.`create_id`,
+        ensure.`name`,
+        ensure.`detail`,
+        ensure.`organ_id`
+    </sql>
 </mapper>

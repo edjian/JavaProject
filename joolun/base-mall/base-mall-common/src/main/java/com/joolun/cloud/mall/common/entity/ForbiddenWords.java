@@ -12,71 +12,47 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModel;
 
 /**
- * 保障服务
+ * 违禁词表
  *
- * @author JL
- * @date 2020-02-09 23:31:36
+ * @author zq
+ * @date 2020-10-08 14:12:20
  */
 @Data
-@TableName("ensure")
+@TableName("forbidden_words")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(description = "保障服务")
-public class Ensure extends Model<Ensure> {
+@ApiModel(description = "违禁词表")
+public class ForbiddenWords extends Model<ForbiddenWords> {
     private static final long serialVersionUID=1L;
 
     /**
      * PK
      */
-	@ApiModelProperty(value = "PK")
     @TableId(type = IdType.ASSIGN_ID)
+    @NotNull(message = "PK不能为空")
+    @ApiModelProperty(value = "PK")
     private String id;
-    /**
-     * 所属租户
-     */
-	@ApiModelProperty(value = "所属租户")
-    private String tenantId;
-    /**
-     * 逻辑删除标记（0：显示；1：隐藏）
-     */
-	@ApiModelProperty(value = "逻辑删除标记")
-    private String delFlag;
     /**
      * 创建时间
      */
-	@ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
     /**
-     * 最后更新时间
+     * 更新时间
      */
-	@ApiModelProperty(value = "最后更新时间")
+    @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
     /**
-     * 创建者ID
+     * 内容
      */
-	@ApiModelProperty(value = "创建者ID")
-    private String createId;
-    /**
-     * 保障名
-     */
-	@ApiModelProperty(value = "保障名")
-    private String name;
-    /**
-     * 保障详情
-     */
-	@ApiModelProperty(value = "保障详情")
-    private String detail;
-    /**
-     * 机构ID
-     */
-    @ApiModelProperty(value = "机构ID")
-    private String organId;
+    @ApiModelProperty(value = "内容")
+    private String content;
 
 }

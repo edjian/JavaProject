@@ -3,9 +3,11 @@ package com.joolun.cloud.common.core.util;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Arrays;
 
 /**
  * LocalDateTime时间工具
@@ -86,7 +88,7 @@ public class LocalDateTimeUtils {
 	}
 
 	/**
-	 *
+	 * true:未过期；false:已过期
 	 * @param time
 	 */
 	public static boolean isExpire(LocalDateTime time){
@@ -98,5 +100,31 @@ public class LocalDateTimeUtils {
 		LocalDateTime time=LocalDateTime.parse("2020-07-20T10:17:12.353");
 		System.out.println(time);
 		System.out.println(isExpire(time));
+		System.out.println(randomDate("2020-06-01T00:00:00","2020-09-01T00:00:00"));
+		Integer[] integers=new Integer[15];
+		Arrays.stream(integers).forEach(inx->{
+			System.out.println(1);
+		});
+	}
+
+	public static LocalDateTime randomDate(String beginDate,String  endDate ){
+
+		LocalDateTime bDate = LocalDateTime.parse(beginDate);
+		LocalDateTime eDate = LocalDateTime.parse(endDate);
+		if(bDate.compareTo(eDate)>=0){
+			return null;
+		}
+		long date = random(bDate.toInstant(ZoneOffset.of("+8")).toEpochMilli(),eDate.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+		return LocalDateTime.ofEpochSecond(date/1000,0,ZoneOffset.ofHours(8));
+	}
+
+	private static long random(long begin,long end){
+
+		long rtn = begin + (long)(Math.random() * (end - begin));
+		//如果返回的是开始时间和结束时间，通过递归调用本函数查找随机值
+		if(rtn == begin || rtn == end){
+			return random(begin,end);
+		}
+		return rtn;
 	}
 }

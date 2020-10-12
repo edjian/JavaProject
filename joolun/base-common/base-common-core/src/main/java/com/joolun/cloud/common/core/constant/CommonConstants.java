@@ -145,4 +145,9 @@ public interface CommonConstants {
 	 */
 	String SYS_ORGAN_MERCHANRT = "商家入驻";
 
+	/**
+	 * 数据库违禁词
+	 */
+	String REDIS_FORBIDDEN_WORDS_KEY = "forbidden:words:all";
+
 }

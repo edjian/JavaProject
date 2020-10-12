@@ -1,6 +1,5 @@
 package com.joolun.cloud.mall.admin.api.ma;
 
-import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -63,11 +61,11 @@ public class ShareTaskApi {
         shareTask.setUserId(ThirdSessionHolder.getMallUserId());
         IPage<ShareTask> shareTaskIPage = shareTaskService.page1(page, shareTask);
         shareTaskIPage.getRecords().stream().forEach(record ->
-                record.setComplete(Optional.ofNullable(shareRecordService.getOne(Wrappers.<ShareRecord>lambdaQuery()
+                record.setComplete(shareRecordService.count(Wrappers.<ShareRecord>query().select("distinct(task_id)").lambda()
                         .eq(ShareRecord::getTaskId, record.getId())
                         .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
                         .between(ShareRecord::getCreateTime, LocalDate.now().atTime(LocalTime.MIN), LocalDate.now().atTime(LocalTime.MAX))
-                )).isPresent())
+                )>0)
         );
         Map<String,Object> map = new HashMap<>();
         map.put("share", shareTaskIPage);

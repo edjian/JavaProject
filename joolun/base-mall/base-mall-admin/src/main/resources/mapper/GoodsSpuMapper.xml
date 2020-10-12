@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (C) 2018-2019
-  ~ All rights reserved, Designed By www.joolun.com
-  ~ 注意：
-  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
-  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
-  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
-  -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper">
@@ -37,6 +29,8 @@
 		<result property="freightTemplatId" column="freight_templat_id"/>
 		<result property="deliveryPlaceId" column="delivery_place_id"/>
 		<result property="organId" column="organ_id"/>
+		<result property="version" column="version"/>
+		<result property="voidNum" column="void_num"/>
 	</resultMap>
 
 	<resultMap id="goodsSpuMap1" extends="goodsSpuMap" type="com.joolun.cloud.mall.common.entity.GoodsSpu">
@@ -112,7 +106,9 @@
 		goods_spu.`points_deduct_amount`,
 		goods_spu.`freight_templat_id`,
 		goods_spu.`delivery_place_id`,
-		goods_spu.`organ_id`
+		goods_spu.`organ_id`,
+		goods_spu.`version`,
+		goods_spu.`void_num`
 	</sql>
 
 	<sql id="goodsSpuSql2">
@@ -141,7 +137,9 @@
 		goods_spu.`points_deduct_amount`,
 		goods_spu.`freight_templat_id`,
 		goods_spu.`delivery_place_id`,
-		goods_spu.`organ_id`
+		goods_spu.`organ_id`,
+		goods_spu.`version`,
+		goods_spu.`void_num`
 	</sql>
 
 	<select id="selectPage1" resultMap="goodsSpuMap">
@@ -240,4 +238,11 @@
 		FROM goods_spu goods_spu
 		WHERE goods_spu.`shelf` = #{query.shelf}
 	</select>
+
+	<update id="updateSaleNum">
+		UPDATE
+		goods_spu goods_spu
+		SET goods_spu.`sale_num` = #{query.saleNum}
+		WHERE goods_spu.`id` = #{query.id}
+	</update>
 </mapper>

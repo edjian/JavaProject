@@ -47,6 +47,18 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
 	IPage<GoodsSpu> selectPage2(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu, @Param("query2") CouponUser couponUser);
 
+	/**
+	 * 是否上架
+	 * @param goodsSpu
+	 * @return
+	 */
 	@SqlParser(filter=true)
 	List<GoodsSpu> selectListByShelf(@Param("query") GoodsSpu goodsSpu);
+
+	/**
+	 * 定时任务更新销量
+	 * @param goodsSpu
+	 */
+	@SqlParser(filter = true)
+	void updateSaleNum(@Param("query") GoodsSpu goodsSpu);
 }

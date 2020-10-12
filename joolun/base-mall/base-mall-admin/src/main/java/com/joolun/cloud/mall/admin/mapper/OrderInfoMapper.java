@@ -14,6 +14,7 @@ import com.joolun.cloud.mall.common.entity.OrderInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商城订单
@@ -28,4 +29,6 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 	IPage<OrderInfo> selectPage2(IPage<OrderInfo> page, @Param("query") OrderInfo orderInfo);
 
 	OrderInfo selectById2(Serializable id);
+
+    List<OrderInfo> selectByForge(String i);
 }

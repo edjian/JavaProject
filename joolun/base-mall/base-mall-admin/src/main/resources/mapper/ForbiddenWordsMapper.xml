@@ -9,19 +9,15 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.joolun.cloud.mall.admin.mapper.DeliveryPlaceMapper">
+<mapper namespace="com.joolun.cloud.mall.common.mapper.ForbiddenWordsMapper">
 
-    <resultMap id="deliveryPlaceMap" type="com.joolun.cloud.mall.common.entity.DeliveryPlace">
+    <resultMap id="forbiddenWordsMap" type="com.joolun.cloud.mall.common.entity.ForbiddenWords">
         <id property="id" column="id"/>
-        <result property="tenantId" column="tenant_id"/>
-        <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="createId" column="create_id"/>
-        <result property="place" column="place"/>
-		<result property="address" column="address"/>
-		<result property="telNum" column="tel_num"/>
-        <result property="organId" column="organ_id"/>
+        <result property="content" column="content"/>
     </resultMap>
 
- </mapper>
+    <sql id="forbiddenWordsSql">
+        forbidden_words.`id`,        forbidden_words.`create_time`,        forbidden_words.`update_time`,        forbidden_words.`content`    </sql>
+</mapper>

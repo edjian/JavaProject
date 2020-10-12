@@ -82,5 +82,10 @@ public class Material extends Model<Material> {
    */
 	@ApiModelProperty(value = "素材链接")
     private String url;
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
   
 }

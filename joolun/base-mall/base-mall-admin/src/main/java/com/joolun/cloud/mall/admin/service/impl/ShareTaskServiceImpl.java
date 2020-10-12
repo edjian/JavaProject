@@ -27,8 +27,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 分享任务表
@@ -45,7 +43,6 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
     private final UserInfoMapper userInfoMapper;
     private final UserMealMapper userMealMapper;
     private final SetMealMapper setMealMapper;
-    private final InviteNewMapper inviteNewMapper;
     private final ShareRecordMapper shareRecordMapper;
 
     @Override
@@ -55,19 +52,22 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void shareCallback() {
-        UserInfo userInfo = userInfoMapper.selectById(ThirdSessionHolder.getMallUserId());
+    public void shareCallback(String inviteUserId) {
+        UserInfo userInfo = userInfoMapper.selectById(inviteUserId);
         UserMeal userMeal = userMealMapper.selectOne(Wrappers.<UserMeal>lambdaQuery()
-                .eq(UserMeal::getUserId, ThirdSessionHolder.getMallUserId())
+                .eq(UserMeal::getUserId, inviteUserId)
                 .eq(UserMeal::getStatus, MallConstants.UNDER_WAY)
-                .eq(UserMeal::getAccountStatus, CommonConstants.YES));
+                .eq(UserMeal::getAccountStatus, CommonConstants.YES)
+                .lt(UserMeal::getStartTime, LocalDateTime.now())
+                .gt(UserMeal::getEndTime, LocalDateTime.now())
+        );
         userMeal = userMeal != null ? userMeal : userMealMapper.selectOne(Wrappers.<UserMeal>lambdaQuery()
-                .eq(UserMeal::getUserId, ThirdSessionHolder.getMallUserId())
+                .eq(UserMeal::getUserId, inviteUserId)
                 .eq(UserMeal::getStatus, MallConstants.UNDER_WAY)
-                .eq(UserMeal::getAccountStatus, CommonConstants.NO));
-//        InviteNew inviteNew = inviteNewMapper.selectOne(Wrappers.<InviteNew>lambdaQuery()
-//                .eq(InviteNew::getUserId, userInfo.getId())
-//                .eq(InviteNew::getStatus, CommonConstants.YES));
+                .eq(UserMeal::getAccountStatus, CommonConstants.NO)
+                .lt(UserMeal::getStartTime, LocalDateTime.now())
+                .gt(UserMeal::getEndTime, LocalDateTime.now())
+        );
 
         if (userMeal != null) {
             SetMeal setMeal = setMealMapper.selectOne(Wrappers.<SetMeal>lambdaQuery().eq(SetMeal::getId, userMeal.getSetMealId()));
@@ -78,7 +78,7 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
                 PointsRecord pointsRecord = new PointsRecord();
                 pointsRecord.setAmount(setMeal.getSharePoint());
                 pointsRecord.setCreateTime(LocalDateTime.now());
-                pointsRecord.setUserId(ThirdSessionHolder.getMallUserId());
+                pointsRecord.setUserId(inviteUserId);
                 pointsRecord.setDescription(MallConstants.DAILY_TASKS);
                 pointsRecord.setRecordType(MallConstants.POINTS_RECORD_TYPE_9);
                 pointsRecordMapper.insert(pointsRecord);
@@ -105,8 +105,8 @@ public class ShareTaskServiceImpl extends ServiceImpl<ShareTaskMapper, ShareTask
 
     @Override
     public boolean completeTask() {
-        return MallConstants.SHARE_COUNT.equals(shareRecordMapper.selectCount(Wrappers.<ShareRecord>lambdaQuery()
+        return MallConstants.SHARE_COUNT <= shareRecordMapper.selectList(Wrappers.<ShareRecord>lambdaQuery()
                 .eq(ShareRecord::getUserId, ThirdSessionHolder.getMallUserId())
-                .between(ShareRecord::getCreateTime, LocalDate.now().atTime(LocalTime.MIN), LocalDate.now().atTime(LocalTime.MAX))));
+                .between(ShareRecord::getCreateTime, LocalDate.now().atTime(LocalTime.MIN), LocalDate.now().atTime(LocalTime.MAX))).size();
     }
 }

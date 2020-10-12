@@ -11,8 +11,10 @@ package com.joolun.cloud.mall.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.log.annotation.SysLog;
+import com.joolun.cloud.common.security.util.SecurityUtils;
 import com.joolun.cloud.mall.common.entity.GoodsCategory;
 import com.joolun.cloud.mall.common.entity.GoodsCategoryTree;
 import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 
+import java.security.Security;
 import java.util.List;
 
 /**
@@ -61,7 +64,8 @@ public class GoodsCategoryController {
 	@GetMapping("/tree")
 	@PreAuthorize("@ato.hasAuthority('mall:goodscategory:index')")
 	public R getGoodsCategoryTree() {
-		return R.ok(goodsCategoryService.selectTreeMerchant(null));
+//        SecurityUtils.getUser().getId()
+	    return R.ok(goodsCategoryService.selectTreeMerchant(null));
 	}
 
     /**

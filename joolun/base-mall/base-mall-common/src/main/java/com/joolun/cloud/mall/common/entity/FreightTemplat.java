@@ -99,5 +99,10 @@ public class FreightTemplat extends Model<FreightTemplat> {
      */
 	@ApiModelProperty(value = "续运费")
     private BigDecimal continueFreight;
+    /**
+     * 机构ID
+     */
+    @ApiModelProperty(value = "机构ID")
+    private String organId;
 
 }

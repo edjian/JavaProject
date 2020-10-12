@@ -9,8 +9,11 @@ import com.joolun.cloud.common.core.util.FileUtils;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.common.core.util.WaterMarkUtils;
 import com.joolun.cloud.common.data.tenant.TenantContextHolder;
+import com.joolun.cloud.common.sms.config.SmsTemplateProperties;
+import com.joolun.cloud.common.sms.util.SmsUtils;
 import com.joolun.cloud.common.storage.util.UploadFileUtils;
 import com.joolun.cloud.mall.admin.service.MerchantSettledService;
+import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
 import com.joolun.cloud.mall.common.constant.ResultCode;
 import com.joolun.cloud.mall.common.entity.MerchantSettled;
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -36,6 +40,8 @@ public class MerchantSettledApi {
 
     private final MerchantSettledService merchantSettledService;
     private final FeignUpmsAdminService feignUpmsAdminService;
+    private final SmsUtils smsUtils;
+    private final SmsTemplateProperties smsTemplateProperties;
 
     /**
      * 商城入驻信息表查询
@@ -101,7 +107,17 @@ public class MerchantSettledApi {
     @ApiOperation(value = "商城入驻信息表修改")
     @PutMapping
     public R updateById(@RequestBody MerchantSettled merchantSettled) {
-        return R.ok(merchantSettledService.update(merchantSettled,Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, ThirdSessionHolder.getMallUserId())));
+        boolean flag = merchantSettledService.update(merchantSettled, Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, ThirdSessionHolder.getMallUserId()));
+        if (flag) {
+            try {
+                merchantSettled = merchantSettledService.getOne(Wrappers.<MerchantSettled>lambdaUpdate().eq(MerchantSettled::getUserId, ThirdSessionHolder.getMallUserId()));
+                if(Optional.ofNullable(merchantSettled).isPresent() && MallConstants.MERCHANT_STATUS_1.equals(merchantSettled.getStatus()) )
+                    smsUtils.sendSms(smsTemplateProperties.getSignName5(), "15958006697", smsTemplateProperties.getTemplateCode5(), "{\"code\":\"" + merchantSettled.getPhone() + "\"}");
+            } catch (Exception e) {
+                log.error("短信发送失败:" + e.getMessage(), e);
+            }
+        }
+        return R.ok(flag);
     }
 
     /**

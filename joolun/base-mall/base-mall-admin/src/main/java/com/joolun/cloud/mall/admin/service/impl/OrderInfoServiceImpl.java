@@ -305,7 +305,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                                 .eq(InviteNew::getUserId, merchantUserInfo.getId())
                                 .eq(InviteNew::getStatus, MallConstants.UNDER_WAY)
                         );
-                        if (!MallConstants.CITY_PARTNER.equals(userMeal1.getSetMeal().getPrice().intValue()) && Optional.ofNullable(inviteNew.getUserIdFirst()).isPresent()) {
+                        if (Optional.ofNullable(inviteNew.getUserIdFirst()).isPresent()) {
                             UserInfo inviteUserInfo = userInfoService.getById(inviteNew.getUserIdFirst());
                             UserMeal inviteUserMeal = userMealMapper.selectUserMealByInviteNew(inviteNew.getUserIdFirst());
                             if (!MallConstants.BASICS_MEAL.equals(inviteUserMeal.getSetMeal().getPrice().intValue())) {
@@ -824,6 +824,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderItemService.updateById(orderItem);
         orderInfo.setOrderNo(IdUtil.getSnowflake(0, 0).nextIdStr());
         baseMapper.updateById(orderInfo);
+    }
+
+    @Override
+    public List<OrderInfo> selectByForge(String i) {
+        return baseMapper.selectByForge(i);
     }
 
 }

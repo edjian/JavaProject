@@ -223,6 +223,11 @@ public class OrderInfo extends Model<OrderInfo> {
 	@ApiModelProperty(value = "提现积分使用情况")
 	private Integer pointsWithdrawal;
 	/**
+	 * 0：真实数据，1：虚假数据
+	 */
+	@ApiModelProperty(value = "0：真实数据，1：虚假数据")
+	private Integer forge;
+	/**
 	 * 订单详情
 	 */
 	@TableField(exist = false)
