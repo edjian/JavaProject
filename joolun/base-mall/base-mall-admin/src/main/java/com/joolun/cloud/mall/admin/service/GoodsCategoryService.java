@@ -35,4 +35,6 @@ public interface GoodsCategoryService extends IService<GoodsCategory> {
 	 * @return 树
 	 */
 	List<GoodsCategoryTree> selectTreeMerchant(GoodsCategory goodsCategory);
+
+
 }

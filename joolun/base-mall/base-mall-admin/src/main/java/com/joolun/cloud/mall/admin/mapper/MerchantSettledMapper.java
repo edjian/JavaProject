@@ -9,8 +9,12 @@
 package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.MerchantSettled;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商城入驻信息表
@@ -21,4 +25,7 @@ import org.apache.ibatis.annotations.Param;
 public interface MerchantSettledMapper extends BaseMapper<MerchantSettled> {
 
     Integer selectStep(@Param("query") MerchantSettled merchantSettled);
+
+    List<MerchantSettled> getMerchants(IPage<GoodsSpu> page, @Param("query") MerchantSettled merchantSettled);
+
 }

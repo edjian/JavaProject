@@ -100,4 +100,15 @@ public class UserMealController {
         return R.ok(userMealService.removeById(id));
     }
 
+//	/**
+//	 * 会员等级通知
+//	 * @param userMeal
+//	 * @return R
+//	 */
+//	@ApiOperation(value = "会员等级通知")
+//	@GetMapping("/membershipLevelChange")
+//	@PreAuthorize("@ato.hasAuthority('mall:usermeal:get')")
+//	public R membershipLevelChange(@RequestBody UserMeal userMeal) {
+//		return R.ok(userMealService.membershipLevelChange(userMeal));
+//	}
 }

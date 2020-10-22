@@ -88,6 +88,7 @@ public interface ConfigConstant {
 
 	/**
 	 * 订阅消息用途，2：订单支付成功；3、订单发货提醒；4、拼团失败通知；5、拼团成功通知；6、商家入驻审核结果通知；7、退款结果通知；8、积分通知；9、积分兑换成功通知；10、积分变更提醒；11、待付款提醒；12、下单成功提醒
+	 * 13、提现结果通知；14、邀请成功提醒通知；15、提现之前结果审核通知；16、下级会员等级变更通知；17、会员等级变更通知
 	 */
 	String WX_TMP_USE_TYPE_2 = "2";
 	String WX_TMP_USE_TYPE_3 = "3";
@@ -100,5 +101,9 @@ public interface ConfigConstant {
 	String WX_TMP_USE_TYPE_10 = "10";
 	String WX_TMP_USE_TYPE_11 = "11";
 	String WX_TMP_USE_TYPE_12 = "12";
-
+	String WX_TMP_USE_TYPE_13 = "13";
+	String WX_TMP_USE_TYPE_14 = "14";
+	String WX_TMP_USE_TYPE_15 = "15";
+	String WX_TMP_USE_TYPE_16 = "16";
+	String WX_TMP_USE_TYPE_17 = "17";
 }

@@ -48,6 +48,7 @@ public class GoodsAppraisesController {
         return R.ok(goodsAppraisesService.page1(page,goodsAppraises));
     }
 
+
     /**
     * 通过id查询商品评价
     * @param id
@@ -98,5 +99,29 @@ public class GoodsAppraisesController {
     public R removeById(@PathVariable String id){
         return R.ok(goodsAppraisesService.removeById(id));
     }
+
+	/**
+	 * 非法评论审核
+	 * @return R
+	 */
+	@ApiOperation(value = "非法评论审核")
+	@SysLog("非法评论审核")
+	@PutMapping("/commentsaudit")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsappraises:edit')")
+	public R CommentsAudit(@RequestBody GoodsAppraises goodsAppraises1){
+		return R.ok(goodsAppraisesService.CommentsAudit(goodsAppraises1));
+	}
+	/**
+	 * 根据租户ID和审核状态查出的数据分页显示
+	 * @param page 分页对象
+	 * @param goodsAppraises 商品评价
+	 * @return
+	 */
+	@ApiOperation(value = "根据租户ID和审核状态查出的数据分页显示")
+	@GetMapping("/page/query")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsappraises:index')")
+	public R getGoodsAppraisesByTenantId(Page page, GoodsAppraises goodsAppraises) {
+		return R.ok(goodsAppraisesService.page2(page,goodsAppraises));
+	}
 
 }

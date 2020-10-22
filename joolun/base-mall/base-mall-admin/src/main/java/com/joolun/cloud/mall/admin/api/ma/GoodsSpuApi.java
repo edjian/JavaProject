@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
+import com.joolun.cloud.common.log.annotation.SysLog;
 import com.joolun.cloud.mall.admin.mapper.UserCollectMapper;
 import com.joolun.cloud.mall.admin.service.CouponUserService;
 import com.joolun.cloud.mall.admin.service.GoodsSpuService;
@@ -26,6 +27,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,5 +120,16 @@ public class GoodsSpuApi {
         }
         return R.ok(goodsSpu);
     }
-
+	/**
+	 * 查询全部商品
+	 * @param
+	 * @return R
+	 */
+	@ApiOperation(value = "查询全部商品")
+	@SysLog("查询全部商品")
+	@GetMapping("/getallgoods")
+	@PreAuthorize("@ato.hasAuthority('mall:goodsspu:get')")
+	public R GetAllGoods(){
+		return R.ok(goodsSpuService.GetAllGoods());
+	}
 }

@@ -3,6 +3,7 @@ package com.joolun.cloud.upms.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.mall.common.entity.MerchantSettled;
 import com.joolun.cloud.upms.common.dto.UserDTO;
 import com.joolun.cloud.upms.common.dto.UserInfo;
 import com.joolun.cloud.upms.common.dto.UserRegister;
@@ -95,4 +96,11 @@ public interface SysUserService extends IService<SysUser> {
 	 * @param userDto
 	 */
 	void bindPhone(UserDTO userDto);
+
+//	设置商家启用还是停用
+
+	Boolean editlockflag(MerchantSettled merchantSettled);
+	//	查询出所有租户
+	List<SysUser> getAllSysUser();
+
 }

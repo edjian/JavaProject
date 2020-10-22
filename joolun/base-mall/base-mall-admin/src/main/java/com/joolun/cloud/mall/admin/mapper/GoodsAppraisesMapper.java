@@ -8,10 +8,14 @@
  */
 package com.joolun.cloud.mall.admin.mapper;
 
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.joolun.cloud.mall.common.entity.GoodsAppraises;
+import com.joolun.cloud.upms.common.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 商品评价
@@ -22,4 +26,7 @@ import org.apache.ibatis.annotations.Param;
 public interface GoodsAppraisesMapper extends BaseMapper<GoodsAppraises> {
 
 	IPage<GoodsAppraises> selectPage1(IPage<GoodsAppraises> page, @Param("query") GoodsAppraises goodsAppraises);
+
+//根据查询条件 租户ID和审核状态
+	IPage<GoodsAppraises> selectPage2(IPage<GoodsAppraises> page, @Param("query") GoodsAppraises godsAppraises);
 }

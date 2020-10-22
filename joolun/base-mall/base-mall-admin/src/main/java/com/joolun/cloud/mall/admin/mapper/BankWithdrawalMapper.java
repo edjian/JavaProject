@@ -10,6 +10,7 @@ package com.joolun.cloud.mall.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.joolun.cloud.mall.common.entity.BankWithdrawal;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 银行提现表
@@ -18,5 +19,6 @@ import com.joolun.cloud.mall.common.entity.BankWithdrawal;
  * @date 2020-08-21 10:41:42
  */
 public interface BankWithdrawalMapper extends BaseMapper<BankWithdrawal> {
+
 
 }

@@ -61,7 +61,7 @@ public class InviteNewApi {
     }
 
 
-    @ApiOperation(value = "")
+    @ApiOperation(value = "我的成功邀新")
     @GetMapping("/passMyInviteNew")
     public R successMyInviteNew(){
         return R.ok(inviteNewService.successMyInviteNew());
@@ -72,4 +72,5 @@ public class InviteNewApi {
     public R myInviteNewDetail(@PathVariable()String level, Page page){
         return R.ok(inviteNewService.myInviteNewDetail(level,page));
     }
+
 }

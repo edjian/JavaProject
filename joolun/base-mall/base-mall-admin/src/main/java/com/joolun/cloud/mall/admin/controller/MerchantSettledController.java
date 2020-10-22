@@ -86,6 +86,19 @@ public class MerchantSettledController {
     public R updateById(@RequestBody MerchantSettled merchantSettled) {
         return R.ok(merchantSettledService.updateById(merchantSettled));
     }
+	/**
+	 * 商城入驻审核
+	 * @param  merchantSettled
+	 * @return R
+	 */
+	@ApiOperation(value = "商城入驻审核")
+	@SysLog("商城入驻审核")
+	@PutMapping("/updateMerchantSettled")
+	@PreAuthorize("@ato.hasAuthority('mall:merchantsettled:edit')")
+    public R updateMerchantSettled(@RequestBody MerchantSettled merchantSettled){
+		return R.ok(merchantSettledService.updateMerchantSettled(merchantSettled));
+	}
+
 
     /**
      * 商城入驻信息表删除
@@ -99,5 +112,14 @@ public class MerchantSettledController {
     public R removeById(@PathVariable String id) {
         return R.ok(merchantSettledService.removeById(id));
     }
-
+	/*
+	 * 商家基本信息查询(有分页）
+	 * page 分页对象
+	 * */
+	@ApiOperation(value = "商家基本信息查询")
+	@GetMapping(value = "/getmerchants")
+	@PreAuthorize("@ato.hasAuthority('mall:merchantsettled:get')")
+	public  R getMerchants(Page page,MerchantSettled merchantSettled){
+		return R.ok(merchantSettledService.getMerchants(page,merchantSettled));
+	}
 }

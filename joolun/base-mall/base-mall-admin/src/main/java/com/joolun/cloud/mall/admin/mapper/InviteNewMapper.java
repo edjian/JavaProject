@@ -23,4 +23,6 @@ import org.apache.ibatis.annotations.Param;
 public interface InviteNewMapper extends BaseMapper<InviteNew> {
 
     IPage<InviteNew> selectPage1(IPage<InviteNew> page,@Param("query") InviteNew inviteNew);
+
+    Integer updateInviteNewStatus(InviteNew inviteNew);
 }

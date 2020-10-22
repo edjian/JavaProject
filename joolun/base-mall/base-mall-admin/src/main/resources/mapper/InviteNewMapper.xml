@@ -40,6 +40,9 @@
         invite_new.`set_meal_id_first`,
         invite_new.`set_meal_id_second`
     </sql>
+    <update id="updateInviteNewStatus">
+		UPDATE invite_new SET invite_new.`status`=#{inviteNew.status} WHERE invite_new.id=#{inviteNew.id}
+	</update>
     <select id="selectPage1" resultMap="inviteNewMap1">
         SELECT
         <include refid="inviteNewSql"/>

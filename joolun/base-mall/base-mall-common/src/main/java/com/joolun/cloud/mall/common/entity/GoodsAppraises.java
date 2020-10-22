@@ -19,6 +19,8 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 商品评价
  *
@@ -147,4 +149,16 @@ public class GoodsAppraises extends Model<GoodsAppraises> {
 
 	@TableField(exist = false)
 	private OrderItem orderItem;
+	/**
+	 * 非法评论标识  0为否 1为是
+	 */
+	@ApiModelProperty(value = "非法评论标识")
+	private String isItIllegal;
+
+	/**
+	 * 评论审核状态：0 待审核 1 审核成功  2 审核失败
+	 */
+	@NotNull(message = "审核状态")
+	@ApiModelProperty(value = "审核状态")
+	private String status;
 }

@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.exception.ValidateCodeException;
+import com.joolun.cloud.mall.admin.mapper.MerchantSettledMapper;
+import com.joolun.cloud.mall.common.entity.MerchantSettled;
 import com.joolun.cloud.upms.admin.mapper.SysUserMapper;
 import com.joolun.cloud.upms.admin.service.SysOrganRelationService;
 import com.joolun.cloud.upms.admin.service.SysOrganService;
@@ -69,6 +71,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	private final SysOrganRelationService sysOrganRelationService;
 	private final SysRoleMenuService sysRoleMenuService;
 	private final CacheManager cacheManager;
+	private final MerchantSettledMapper merchantSettledMapper;
 
 	/**
 	 * 保存用户信息
@@ -290,5 +293,27 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		//更新緩存
 		cacheManager.getCache(CacheConstants.USER_CACHE).evict(sysUser.getUsername());
 	}
-
+	//  设置商家启用还是停用
+	@Override
+	public Boolean editlockflag(MerchantSettled merchantSettled) {
+		//    根据用户手机号查出这个商家
+		SysUser sysUser = baseMapper.selectOne(Wrappers.<SysUser>lambdaQuery()
+				.eq(SysUser::getPhone, merchantSettled.getPhone()));
+//		if (sysUser!=null){
+			if (CommonConstants.STATUS_NORMAL.equals(sysUser.getLockFlag())){
+				sysUser.setLockFlag("9");
+				baseMapper.updateById(sysUser);
+			}
+			else if (CommonConstants.LOG_TYPE_9.equals(sysUser.getLockFlag())){
+				sysUser.setLockFlag("0");
+				baseMapper.updateById(sysUser);
+			}
+//		}
+		return Boolean.TRUE;
+	}
+	/*查询所有租户*/
+	@Override
+	public List<SysUser> getAllSysUser() {
+		return baseMapper.selectSysUser();
+	}
 }

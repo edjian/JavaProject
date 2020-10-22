@@ -11,6 +11,8 @@ package com.joolun.cloud.mall.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.entity.GoodsAppraises;
+import com.joolun.cloud.upms.common.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,4 +31,12 @@ public interface GoodsAppraisesService extends IService<GoodsAppraises> {
 	void doAppraises(List<GoodsAppraises> listGoodsAppraises);
 
 	IPage<GoodsAppraises> page1(IPage<GoodsAppraises> page, GoodsAppraises godsAppraises);
+
+
+	//    评论审核结果
+	Integer CommentsAudit(GoodsAppraises godsAppraises1);
+
+//根据查询条件并分页展示
+	IPage<GoodsAppraises> page2(IPage<GoodsAppraises> page, GoodsAppraises godsAppraises);
+
 }

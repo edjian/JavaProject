@@ -7,83 +7,111 @@
  * 一经发现盗用、分享等行为，将追究法律责任，后果自负
  */
 export const tableOption = {
-    dialogDrag: true,
-    border: true,
-    indexLabel: '序号',
-    stripe: true,
-    menuAlign: 'center',
-    align: 'center',
-    menuType: 'text',
-    searchShow: false,
-    excelBtn: true,
-    printBtn: true,
-    viewBtn: true,
-    column: [
+  dialogDrag: true,
+  border: true,
+  indexLabel: '序号',
+  stripe: true,
+  menuAlign: 'center',
+  align: 'center',
+  menuType: 'text',
+  searchShow: false,
+  excelBtn: true,
+  printBtn: true,
+  viewBtn: true,
+  column: [
+    {
+      label: '是否启用',
+      prop: 'enable',
+      type: 'radio',
+      search: true,
+      sortable: true,
+      rules: [{
+        required: true,
+        message: '请选择启用状态',
+        trigger: 'blur'
+      }],
+      dicData: [{
+        label: '关闭',
+        value: '0'
+      },{
+        label: '启用',
+        value: '1'
+      }]
+    },
+    {
+      label: '用途',
+      prop: 'useType',
+      type: 'select',
+      search: true,
+      sortable: true,
+      rules: [{
+        required: true,
+        message: '请选择用途',
+        trigger: 'blur'
+      }],
+      dicData: [
         {
-            label: '是否启用',
-            prop: 'enable',
-            type: 'radio',
-            search: true,
-            sortable: true,
-            rules: [{
-                required: true,
-                message: '请选择启用状态',
-                trigger: 'blur'
-            }],
-            dicData: [{
-                label: '关闭',
-                value: '0'
-            },{
-                label: '启用',
-                value: '1'
-            }]
-        },
-        {
-            label: '用途',
-            prop: 'useType',
-            type: 'select',
-            search: true,
-            sortable: true,
-            rules: [{
-                required: true,
-                message: '请选择用途',
-                trigger: 'blur'
-            }],
-            dicData: [{
-                label: '订单支付成功',
-                value: '2'
-            },{
-                label: '订单发货提醒',
-                value: '3'
-            }]
-        },
-        {
-            label: '模板ID',
-            prop: 'priTmplId',
-            rules: [{
-                required: true,
-                message: '请输入模板ID',
-                trigger: 'blur'
-            }],
-        },
-        {
-            label: '模版标题',
-            prop: 'title',
-            rules: [{
-                required: true,
-                message: '请输入模版标题',
-                trigger: 'blur'
-            }],
-        },
-        {
-            label: '模版内容',
-            prop: 'content',
-            type: 'textarea',
-            rules: [{
-                required: true,
-                message: '请输入模版内容',
-                trigger: 'blur'
-            }],
-        }
-    ]
+          label: '订单支付成功',
+          value: '2'
+        },{
+          label: '订单发货提醒',
+          value: '3'
+        },{
+          label: '拼团失败通知',
+          value: '4'
+        },{
+          label: '拼团成功通知',
+          value: '5'
+        },{
+          label: '商家入驻审核结果通知',
+          value: '6'
+        },{
+          label: '退款结果通知',
+          value: '7'
+        },{
+          label: '积分通知',
+          value: '8'
+        },{
+          label: '积分兑换成功通知',
+          value: '9'
+        },{
+          label: '积分变更提醒',
+          value: '10'
+        },{
+          label: '待付款提醒',
+          value: '11'
+        },{
+          label: '下单成功提醒',
+          value: '12'
+        }]
+    },
+    {
+      label: '模板ID',
+      prop: 'priTmplId',
+      rules: [{
+        required: true,
+        message: '请输入模板ID',
+        trigger: 'blur'
+      }],
+    },
+    {
+      label: '模版标题',
+      prop: 'title',
+      rules: [{
+        required: true,
+        message: '请输入模版标题',
+        trigger: 'blur'
+      }],
+    },
+    {
+      label: '模版内容',
+      prop: 'content',
+      type: 'textarea',
+      rules: [{
+        required: true,
+        message: '请输入模版内容',
+        trigger: 'blur'
+      }],
+    }
+  ]
 }

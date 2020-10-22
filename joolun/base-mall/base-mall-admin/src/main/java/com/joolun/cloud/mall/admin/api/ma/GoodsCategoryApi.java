@@ -66,4 +66,6 @@ public class GoodsCategoryApi {
                 .eq(GoodsCategory::getParentId, CommonConstants.PARENT_ID)
                 .like(GoodsCategory::getName, param)));
     }
+
+
 }
