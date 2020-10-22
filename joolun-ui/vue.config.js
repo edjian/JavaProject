@@ -4,9 +4,9 @@
  */
 // const url = 'http://192.168.31.110:9999'
 //后台网关地址
-// const url = 'http://192.168.0.133:9999'
+ const url = 'http://localhost:9999'
   //线上环境 网关地址
-  const url = 'http://139.155.36.147:9999'
+// const url = 'http://139.155.36.147:9999'
 const fs = require('fs')
 module.exports = {
   lintOnSave: true,
