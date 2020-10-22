@@ -69,4 +69,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
 	void editPrice(OrderItem orderItem);
 
 	List<OrderInfo> selectByForge(String i);
+
+	List<OrderInfo> page1(Wrapper<OrderInfo> queryWrapper);
 }

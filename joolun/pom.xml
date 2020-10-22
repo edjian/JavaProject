@@ -56,6 +56,8 @@
 		<ant-contrib.version>1.0b3</ant-contrib.version>
 		<ant-jsch.version>1.10.7</ant-jsch.version>
 		<oshi.version>3.9.1</oshi.version>
+		<poi>3.13</poi>
+		<poi-ooxml>3.13</poi-ooxml>
 	</properties>
 
 	<dependencies>
@@ -116,6 +118,16 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>${spring-boot-admin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml}</version>
 		</dependency>
 	</dependencies>
 

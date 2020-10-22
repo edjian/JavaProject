@@ -26,6 +26,8 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
 	IPage<OrderInfo> selectPage1(IPage<OrderInfo> page, @Param("query") OrderInfo orderInfo);
 
+	List<OrderInfo> selectPage1(@Param("query") OrderInfo orderInfo);
+
 	IPage<OrderInfo> selectPage2(IPage<OrderInfo> page, @Param("query") OrderInfo orderInfo);
 
 	OrderInfo selectById2(Serializable id);

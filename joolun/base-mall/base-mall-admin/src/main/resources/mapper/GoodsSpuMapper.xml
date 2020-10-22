@@ -171,6 +171,39 @@
 		</where>
 	</select>
 
+	<select id="selectPage3" resultMap="goodsSpuMap">
+		SELECT
+		<include refid="goodsSpuSql2"/>
+		FROM goods_spu goods_spu
+		<where>
+			<if test="query.shelf != null">
+				AND goods_spu.`shelf` = #{query.shelf}
+			</if>
+			<if test="query.categoryFirst != null">
+				AND goods_spu.`category_first` = #{query.categoryFirst}
+			</if>
+			<if test="query.categorySecond != null">
+				AND goods_spu.`category_second` = #{query.categorySecond}
+			</if>
+			<if test="query.name != null">
+				AND goods_spu.`name` LIKE CONCAT('%',#{query.name},'%')
+			</if>
+			<if test="query.spuCode != null">
+				AND goods_spu.`spu_code` = #{query.spuCode}
+			</if>
+			<if test="query.specType != null">
+				AND goods_spu.`spec_type` = #{query.specType}
+			</if>
+			<if test="query.pointsGiveSwitch != null">
+				AND goods_spu.`points_give_switch` = #{query.pointsGiveSwitch}
+			</if>
+			<if test="query.pointsDeductSwitch != null">
+				AND goods_spu.`points_deduct_switch` = #{query.pointsDeductSwitch}
+			</if>
+		</where>
+		order by goods_spu.`sale_num` desc
+	</select>
+
 	<select id="selectById1" resultMap="goodsSpuMap1">
 		SELECT
 		<include refid="goodsSpuSql"/>
@@ -212,6 +245,9 @@
 		<where>
 			<if test="query.shelf != null">
 				AND goods_spu.`shelf` = #{query.shelf}
+			</if>
+			<if test="query.categoryFirst != null">
+				AND goods_spu.`category_first` = #{query.categoryFirst}
 			</if>
 			<if test="query.categorySecond != null">
 				AND goods_spu.`category_second` = #{query.categorySecond}

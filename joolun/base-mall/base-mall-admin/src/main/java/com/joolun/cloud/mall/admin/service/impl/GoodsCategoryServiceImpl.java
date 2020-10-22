@@ -9,17 +9,26 @@
 package com.joolun.cloud.mall.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
+import com.joolun.cloud.mall.admin.service.GoodsSpuService;
 import com.joolun.cloud.mall.common.entity.GoodsCategory;
 import com.joolun.cloud.mall.common.entity.GoodsCategoryTree;
 import com.joolun.cloud.mall.admin.mapper.GoodsCategoryMapper;
 import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
+import com.joolun.cloud.mall.common.entity.GoodsSpu;
+import com.joolun.cloud.mall.common.entity.GoodsSpuTree;
 import com.joolun.cloud.upms.common.util.TreeUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,11 +40,14 @@ import java.util.stream.Collectors;
  * @date 2019-08-12 11:46:28
  */
 @Service
+@AllArgsConstructor
 public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, GoodsCategory> implements GoodsCategoryService {
+
+	private final GoodsSpuMapper goodsSpuMapper;
 
 	@Override
 	public List<GoodsCategoryTree> selectTree(GoodsCategory goodsCategory) {
-		return getTree(this.list(Wrappers.lambdaQuery(goodsCategory)));
+		return getTree2(this.list(Wrappers.lambdaQuery(goodsCategory)));
 	}
 
 	@Override
@@ -59,6 +71,30 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, G
 					return node;
 				}).collect(Collectors.toList());
 		return TreeUtil.build(treeList, CommonConstants.PARENT_ID);
+	}
+
+	/**
+	 * 构建树2:显示所有产品
+	 *
+	 * @param entitys
+	 * @return
+	 */
+	private List<GoodsCategoryTree> getTree2(List<GoodsCategory> entitys){
+		return entitys.stream()
+				.sorted(Comparator.comparingInt(GoodsCategory::getSort))
+				.map(entity -> {
+					GoodsCategoryTree node = new GoodsCategoryTree();
+					BeanUtil.copyProperties(entity,node);
+					GoodsSpu goodsSpu = new GoodsSpu();
+					goodsSpu.setCategoryFirst(node.getId());
+					IPage<GoodsSpu> goodsSpuList = goodsSpuMapper.selectPage3(new Page<>(1,15),goodsSpu);
+					goodsSpuList.getRecords().stream().forEach(goodsSpu1 -> {
+						GoodsSpuTree goodsSpuTree = new GoodsSpuTree();
+						BeanUtil.copyProperties(goodsSpu1, goodsSpuTree);
+						node.addChildren(goodsSpuTree);
+					});
+					return node;
+				}).collect(Collectors.toList());
 	}
 
 	@Override

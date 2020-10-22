@@ -831,4 +831,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return baseMapper.selectByForge(i);
     }
 
+    @Override
+    public List<OrderInfo> page1(Wrapper<OrderInfo> queryWrapper) {
+        return baseMapper.selectPage1(queryWrapper.getEntity());
+    }
+
 }

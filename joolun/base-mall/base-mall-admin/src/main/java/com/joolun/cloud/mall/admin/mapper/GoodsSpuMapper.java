@@ -30,6 +30,8 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 
 	IPage<GoodsSpu> selectPage1(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu);
 
+	IPage<GoodsSpu> selectPage3(IPage<GoodsSpu> page, @Param("query") GoodsSpu goodsSpu);
+
 	GoodsSpu selectById1(String id);
 
 	GoodsSpu selectById2(String id);

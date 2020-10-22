@@ -8,13 +8,17 @@
  */
 package com.joolun.cloud.mall.admin.api.ma;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
+import com.joolun.cloud.mall.common.entity.GoodsCategory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +46,24 @@ public class GoodsCategoryApi {
 	@ApiOperation(value = "返回树形集合")
     @GetMapping("/tree")
     public R goodsCategoryTree() {
-		return R.ok(goodsCategoryService.selectTree(null));
+//	    二级
+//	    return R.ok(goodsCategoryService.selectTree(null));
+        GoodsCategory goodsCategory = new GoodsCategory();
+        goodsCategory.setParentId(CommonConstants.PARENT_ID);
+	    return R.ok(goodsCategoryService.selectTree(goodsCategory));
+    }
+
+    /**
+     * 类目模糊查询
+     *
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "类目模糊查询")
+    @GetMapping("/blur/{param}")
+    public R goodsCategoryByBlur(@PathVariable("param") String param){
+	    return R.ok(goodsCategoryService.getOne(Wrappers.<GoodsCategory>lambdaQuery()
+                .eq(GoodsCategory::getParentId, CommonConstants.PARENT_ID)
+                .like(GoodsCategory::getName, param)));
     }
 }

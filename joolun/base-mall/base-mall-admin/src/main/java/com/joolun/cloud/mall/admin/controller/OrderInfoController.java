@@ -8,6 +8,8 @@
  */
 package com.joolun.cloud.mall.admin.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.joolun.cloud.common.core.constant.CommonConstants;
@@ -20,12 +22,14 @@ import com.joolun.cloud.mall.admin.service.OrderLogisticsService;
 import com.joolun.cloud.mall.admin.service.UserInfoService;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.constant.MyReturnCode;
+import com.joolun.cloud.mall.common.dto.ShipmentsDTO;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.admin.service.OrderInfoService;
 import com.joolun.cloud.mall.common.entity.OrderItem;
 import com.joolun.cloud.mall.common.entity.OrderLogistics;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.feign.FeignWxAppService;
+import com.joolun.cloud.mall.common.util.ExcelUtil;
 import com.joolun.cloud.upms.common.dto.UserInfo;
 import com.joolun.cloud.upms.common.entity.SysRoleMenu;
 import com.joolun.cloud.upms.common.entity.SysUserRole;
@@ -36,9 +40,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 商城订单
@@ -200,5 +209,35 @@ public class OrderInfoController {
 		}
 		orderInfoService.orderReceive(orderInfo);
 		return R.ok();
+	}
+
+	/**
+	 * 待发货订单Excel导出
+	 * @param response
+	 * @param orderInfo
+	 */
+	@ApiOperation(value = "待发货订单Excel导出")
+	@GetMapping("/sendOrderInfo/excelExport")
+	public void excelExport(HttpServletResponse response, OrderInfo orderInfo){
+		orderInfo.setStatus("1");
+		List<OrderInfo> orderInfoList = orderInfoService.page1(Wrappers.query(orderInfo));
+		List<ShipmentsDTO> shipmentsDTOList = orderInfoList.stream().map(orderInfo1 -> {
+			ShipmentsDTO shipmentsDTO = new ShipmentsDTO();
+			shipmentsDTO.setOrderId(orderInfo1.getId());
+//			BeanUtil.copyProperties(shipmentsDTO, orderInfo1.getOrderLogistics());
+			return shipmentsDTO;
+		}).collect(Collectors.toList());
+		ExcelUtil.writeExcel(response, shipmentsDTOList, ShipmentsDTO.class);
+	}
+
+	/**
+	 * 待发货订单单号Excel导入
+	 * @param file
+	 */
+	@ApiOperation(value = "待发货订单单号Excel导入")
+	@PostMapping("/readOrderInfo/readExcel")
+	public void readExcel(MultipartFile file){
+		List<ShipmentsDTO> shipmentsDTOList = ExcelUtil.readExcel("", ShipmentsDTO.class, file);
+		shipmentsDTOList.forEach(s-> System.out.println(s.toString()));
 	}
 }
