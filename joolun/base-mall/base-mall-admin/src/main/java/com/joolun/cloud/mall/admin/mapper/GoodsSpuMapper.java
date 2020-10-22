@@ -63,4 +63,6 @@ public interface GoodsSpuMapper extends BaseMapper<GoodsSpu> {
 	 */
 	@SqlParser(filter = true)
 	void updateSaleNum(@Param("query") GoodsSpu goodsSpu);
+
+	List<GoodsSpu> getAllGoods();
 }
