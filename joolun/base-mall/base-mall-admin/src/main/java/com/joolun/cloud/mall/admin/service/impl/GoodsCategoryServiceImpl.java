@@ -9,18 +9,16 @@
 package com.joolun.cloud.mall.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.joolun.cloud.common.core.constant.CommonConstants;
+import com.joolun.cloud.mall.admin.mapper.GoodsCategoryMapper;
 import com.joolun.cloud.mall.admin.mapper.GoodsSpuMapper;
-import com.joolun.cloud.mall.admin.service.GoodsSpuService;
+import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
 import com.joolun.cloud.mall.common.entity.GoodsCategory;
 import com.joolun.cloud.mall.common.entity.GoodsCategoryTree;
-import com.joolun.cloud.mall.admin.mapper.GoodsCategoryMapper;
-import com.joolun.cloud.mall.admin.service.GoodsCategoryService;
 import com.joolun.cloud.mall.common.entity.GoodsSpu;
 import com.joolun.cloud.mall.common.entity.GoodsSpuTree;
 import com.joolun.cloud.upms.common.util.TreeUtil;
@@ -28,7 +26,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,6 +83,7 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryMapper, G
 					GoodsCategoryTree node = new GoodsCategoryTree();
 					BeanUtil.copyProperties(entity,node);
 					GoodsSpu goodsSpu = new GoodsSpu();
+					goodsSpu.setShelf(CommonConstants.YES);
 					goodsSpu.setCategoryFirst(node.getId());
 					IPage<GoodsSpu> goodsSpuList = goodsSpuMapper.selectPage3(new Page<>(1,15),goodsSpu);
 					goodsSpuList.getRecords().stream().forEach(goodsSpu1 -> {

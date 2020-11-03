@@ -11,14 +11,15 @@ package com.joolun.cloud.weixin.admin.api.ma;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
+import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import com.joolun.cloud.weixin.common.entity.WxApp;
 import com.joolun.cloud.weixin.common.entity.WxUser;
-import com.joolun.cloud.weixin.common.dto.LoginMaDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.common.mapper.BusinessCollegeCourseMapper">
+
+    <resultMap id="businessCollegeCourseMap" type="com.joolun.cloud.mall.common.entity.BusinessCollegeCourse">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="categoryFirst" column="category_first"/>
+        <result property="categorySecond" column="category_second"/>
+        <result property="columnId" column="column_id"/>
+        <result property="name" column="name"/>
+        <result property="relationId" column="relation_id"/>
+        <result property="collectedNum" column="collected_num"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <sql id="businessCollegeCourseSql">
+        business_college_course.`id`,        business_college_course.`create_time`,        business_college_course.`update_time`,        business_college_course.`category_first`,        business_college_course.`category_second`,        business_college_course.`column_id`,        business_college_course.`name`,        business_college_course.`relation_id`,        business_college_course.`collected_num`,        business_college_course.`del_flag`    </sql>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.admin.mapper.BusinessCollegeCollectMapper">
+
+    <resultMap id="businessCollegeCollectMap" type="com.joolun.cloud.mall.common.entity.BusinessCollegeCollect">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="columnId" column="column_id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="collected" column="collected"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <sql id="businessCollegeCollectSql">
+        business_college_collect.`id`,        business_college_collect.`create_time`,        business_college_collect.`update_time`,        business_college_collect.`user_id`,        business_college_collect.`column_id`,        business_college_collect.`course_id`,        business_college_collect.`collected`,        business_college_collect.`del_flag`    </sql>
+</mapper>

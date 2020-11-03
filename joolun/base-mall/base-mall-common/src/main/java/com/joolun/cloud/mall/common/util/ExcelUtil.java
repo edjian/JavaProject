@@ -2,7 +2,7 @@ package com.joolun.cloud.mall.common.util;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.joolun.cloud.mall.common.constant.ExcelColumn;
-import com.sun.deploy.net.URLEncoder;
+import java.net.URLEncoder;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;

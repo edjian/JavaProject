@@ -19,12 +19,12 @@ import com.google.common.collect.Lists;
 import com.joolun.cloud.common.core.constant.SecurityConstants;
 import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.weixin.admin.config.ma.WxMaConfiguration;
-import com.joolun.cloud.weixin.common.constant.ConfigConstant;
+import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
 import com.joolun.cloud.weixin.admin.handler.SubscribeHandler;
+import com.joolun.cloud.weixin.admin.mapper.WxUserMapper;
 import com.joolun.cloud.weixin.admin.service.WxAppService;
 import com.joolun.cloud.weixin.admin.service.WxUserService;
-import com.joolun.cloud.weixin.admin.mapper.WxUserMapper;
-import com.joolun.cloud.weixin.admin.config.mp.WxMpConfiguration;
+import com.joolun.cloud.weixin.common.constant.ConfigConstant;
 import com.joolun.cloud.weixin.common.constant.WxMaConstants;
 import com.joolun.cloud.weixin.common.dto.MallUserInfoDTO;
 import com.joolun.cloud.weixin.common.dto.WxOpenDataDTO;
@@ -42,6 +42,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
