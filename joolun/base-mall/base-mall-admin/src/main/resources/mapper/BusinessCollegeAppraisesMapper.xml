@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2018-2019
+  ~ All rights reserved, Designed By www.joolun.com
+  ~ 注意：
+  ~ 本软件为www.joolun.com开发研制，未经购买不得使用
+  ~ 购买后可获得全部源代码（禁止转卖、分享、上传到码云、github等开源平台）
+  ~ 一经发现盗用、分享等行为，将追究法律责任，后果自负
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joolun.cloud.mall.common.mapper.BusinessCollegeAppraisesMapper">
+
+    <resultMap id="businessCollegeAppraisesMap" type="com.joolun.cloud.mall.common.entity.BusinessCollegeAppraises">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="userId" column="user_id"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="headimgUrl" column="headimg_url"/>
+        <result property="courseId" column="course_id"/>
+        <result property="replyId" column="reply_id"/>
+        <result property="content" column="content"/>
+        <result property="likeNum" column="like_num"/>
+    </resultMap>
+
+    <sql id="businessCollegeAppraisesSql">
+        business_college_appraises.`id`,        business_college_appraises.`create_time`,        business_college_appraises.`update_time`,        business_college_appraises.`del_flag`,        business_college_appraises.`user_id`,        business_college_appraises.`nick_name`,        business_college_appraises.`headimg_url`,        business_college_appraises.`course_id`,        business_college_appraises.`reply_id`,        business_college_appraises.`content`,        business_college_appraises.`like_num`    </sql>
+</mapper>
