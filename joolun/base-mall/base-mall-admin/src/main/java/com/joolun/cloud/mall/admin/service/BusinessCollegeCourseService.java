@@ -9,7 +9,10 @@
 package com.joolun.cloud.mall.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.joolun.cloud.mall.common.dto.CourseDetailDTO;
 import com.joolun.cloud.mall.common.entity.BusinessCollegeCourse;
+
+import java.util.List;
 
 /**
  * 商学院课程表
@@ -18,5 +21,7 @@ import com.joolun.cloud.mall.common.entity.BusinessCollegeCourse;
  * @date 2020-11-03 16:22:39
  */
 public interface BusinessCollegeCourseService extends IService<BusinessCollegeCourse> {
+	 CourseDetailDTO courseDetail(String id);
 
+	List<CourseDetailDTO> randomCourse(String id);
 }
