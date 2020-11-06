@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
+import com.joolun.cloud.mall.common.dto.PlaceOrderSkuDTO;
+import com.joolun.cloud.mall.common.entity.GoodsSku;
 import com.joolun.cloud.mall.common.entity.OrderInfo;
 import com.joolun.cloud.mall.common.entity.OrderItem;
 import com.joolun.cloud.mall.common.entity.OrderRefunds;
@@ -32,6 +34,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
 	/**
 	 * 下单
+	 *
 	 * @param placeOrderDTO
 	 */
 	OrderInfo orderSub(PlaceOrderDTO placeOrderDTO);
@@ -42,28 +45,35 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
 	/**
 	 * 取消订单
+	 *
 	 * @param orderInfo
 	 */
 	void orderCancel(OrderInfo orderInfo);
+
 	/**
 	 * 订单收货
+	 *
 	 * @param orderInfo
 	 */
 	void orderReceive(OrderInfo orderInfo);
 
 	/**
 	 * 处理订单回调
+	 *
 	 * @param orderInfo
 	 */
 	void notifyOrder(OrderInfo orderInfo);
 
 	/**
 	 * 物流信息回调
+	 *
 	 * @param jsonObject
 	 */
 	void notifyLogisticsr(String logisticsId, JSONObject jsonObject);
+
 	/**
 	 * 修改商城订单价格
+	 *
 	 * @param orderItem
 	 */
 	void editPrice(OrderItem orderItem);
@@ -71,4 +81,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 	List<OrderInfo> selectByForge(String i);
 
 	List<OrderInfo> page1(Wrapper<OrderInfo> queryWrapper);
+
+	//查询商品库存数量低于5时对店家下发短信提醒
+	void lowStockNotice(List<PlaceOrderSkuDTO> skus);
 }

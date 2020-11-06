@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.joolun.cloud.common.security.annotation.Inside;
 import com.joolun.cloud.upms.admin.service.SysOrganService;
 import com.joolun.cloud.upms.common.dto.OrganTree;
+import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import com.joolun.cloud.upms.common.entity.SysOrgan;
 import com.joolun.cloud.common.core.constant.CommonConstants;
 import com.joolun.cloud.common.core.util.R;
@@ -174,5 +175,17 @@ public class SysOrganController {
 		return sysOrganService.count(Wrappers.<SysOrgan>lambdaQuery()
 				.eq(SysOrgan::getId,organId)
 				.eq(SysOrgan::getParentId, CommonConstants.NO)) == 1;
+	}
+
+
+	/**
+	 * 小程序调用后台查询商家手机
+	 * @return
+	 */
+	@Inside
+	@ApiOperation("小程序调用后台查询商家手机")
+	@GetMapping("/getPhoneById/{organId}")
+	public String getPhoneById(@PathVariable("organId") String organId){
+		return sysOrganService.getById(organId).getPhone();
 	}
 }

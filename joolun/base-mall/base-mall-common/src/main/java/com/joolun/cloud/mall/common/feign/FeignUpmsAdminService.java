@@ -6,10 +6,7 @@ import com.joolun.cloud.common.core.util.R;
 import com.joolun.cloud.upms.common.entity.SysConfigStorage;
 import com.joolun.cloud.upms.common.entity.SysUser;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @FeignClient(contextId = "feignUpmsAdminService",value = ServiceNameConstants.UMPS_ADMIN_SERVICE)
@@ -20,4 +17,7 @@ public interface FeignUpmsAdminService {
 
 //    @GetMapping("")
 //    SysUser getSysUser(@RequestHeader(SecurityConstants.FROM)String from);
+
+	@GetMapping("/organ/getPhoneById/{organId}")
+	String getPhoneById(@PathVariable("organId") String organId, @RequestHeader(SecurityConstants.FROM) String from);
 }

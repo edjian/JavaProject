@@ -14,6 +14,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -33,10 +34,12 @@ import com.joolun.cloud.mall.admin.mapper.*;
 import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.constant.MallConstants;
 import com.joolun.cloud.mall.common.dto.PlaceOrderDTO;
+import com.joolun.cloud.mall.common.dto.PlaceOrderSkuDTO;
 import com.joolun.cloud.mall.common.entity.*;
 import com.joolun.cloud.mall.common.enums.OrderInfoEnum;
 import com.joolun.cloud.mall.common.enums.OrderItemEnum;
 import com.joolun.cloud.mall.common.enums.OrderLogisticsEnum;
+import com.joolun.cloud.mall.common.feign.FeignUpmsAdminService;
 import com.joolun.cloud.mall.common.feign.FeignWxPayService;
 import com.joolun.cloud.mall.common.feign.FeignWxTemplateMsgService;
 import com.joolun.cloud.mall.common.util.Kuaidi100Utils;
@@ -97,6 +100,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private final MerchantSettledService merchantSettledService;
     private final SmsTemplateProperties smsTemplateProperties;
     private final SmsUtils smsUtils;
+	private final FeignUpmsAdminService feignUpmsAdminService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -557,6 +561,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderInfo.setName(listOrderItem.get(0).getSpuName());
             orderInfo.setOrganId(listOrderItem.get(0).getOrganId());
             super.save(orderInfo);//保存订单
+			//当商品库存数量低于5时对店家下发短信提醒
+			lowStockNotice(placeOrderDTO.getSkus());
             listOrderItem.forEach(orderItem -> orderItem.setOrderId(orderInfo.getId()));
             //保存订单详情
             orderItemService.saveBatch(listOrderItem);
@@ -836,4 +842,31 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return baseMapper.selectPage1(queryWrapper.getEntity());
     }
 
+	@Override
+	public void lowStockNotice(List<PlaceOrderSkuDTO> skus) {
+		List<String> skuIdList = skus.stream().map(x->x.getSkuId()).collect(Collectors.toList());
+		for (String skuId : skuIdList) {
+			//库存小于5给商家发短信通知
+			GoodsSku goodsSku = goodsSkuService.getById(skuId);
+			if (goodsSku.getStock() < 5) {
+				String organId = goodsSpuService.getById(goodsSkuService.getById(skuId).getSpuId()).getOrganId();
+				String phone = feignUpmsAdminService.getPhoneById(organId, SecurityConstants.FROM_IN);
+				List<GoodsSkuSpecValue> listGoodsSkuSpecValue = goodsSkuSpecValueMapper.listGoodsSkuSpecValueBySkuId(goodsSku.getId());
+				String skuSpec = "";
+				for (GoodsSkuSpecValue goodsSkuSpecValue : listGoodsSkuSpecValue) {
+					skuSpec = skuSpec + goodsSkuSpecValue.getSpecValueName() + "，";
+				}
+				String fullSkuName = goodsSpuService.getById(goodsSku.getSpuId()).getName() + " " + skuSpec;
+				String skuName = fullSkuName;
+				if (fullSkuName.length() > 20) {
+					skuName = fullSkuName.substring(0, 20);
+				}
+				try {
+					smsUtils.sendSms(smsTemplateProperties.getSignName6(), phone, smsTemplateProperties.getTemplateCode6(), "{\"skuName\":\"" + skuName + "\"}");
+				} catch (ClientException e) {
+					log.error("短信发送失败:" + e.getMessage(), e);
+				}
+			}
+		}
+	}
 }

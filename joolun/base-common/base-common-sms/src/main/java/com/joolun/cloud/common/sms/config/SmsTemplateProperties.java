@@ -49,5 +49,10 @@ public class SmsTemplateProperties {
 	 */
 	private String signName5 = "signName5";
 	private String templateCode5 = "templateCode5";
+	/**
+	 * #盈联易单配商家库存不足通知
+	 */
+	private String signName6 = "signName6";
+	private String templateCode6 = "templateCode6";
 
 }
