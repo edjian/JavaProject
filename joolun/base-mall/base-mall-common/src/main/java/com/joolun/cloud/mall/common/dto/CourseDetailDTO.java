@@ -36,6 +36,21 @@ public class CourseDetailDTO {
 	@ApiModelProperty(value = "创建时间")
 	private LocalDateTime createTime;
 
-	@ApiModelProperty(value = "浏览历史")
-	private String history;
+	@ApiModelProperty(value = "是否收藏：0、收藏；1、取消收藏")
+	private String collected;
+
+	@ApiModelProperty(value = "观看数量")
+	private Integer watchName;
+
+	@ApiModelProperty(value = "标识：1、图文；2、视频；3、音频；4、专栏；5、直播")
+	private String tag;
+
+	@ApiModelProperty(value = "是否为新课程：1、是  2、不是")
+	private Integer isNew;
+
+	@ApiModelProperty(value = "分类一级：1、商城运营；2、金融服务；3、精选课程")
+	private String categoryFirst;
+
+	@ApiModelProperty(value = "分类二级：1、初级；2、中级；3、高级")
+	private String categorySecond;
 }

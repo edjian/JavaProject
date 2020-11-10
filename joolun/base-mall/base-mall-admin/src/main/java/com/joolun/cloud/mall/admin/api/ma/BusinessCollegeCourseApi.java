@@ -100,25 +100,25 @@ public class BusinessCollegeCourseApi {
 
 	/**
 	 * 商学院课程详情
-	 * @param id
+	 * @param
 	 * @return R
 	 */
 	@ApiOperation(value = "商学院课程详情")
 	//@SysLog("查询商学院课程详情")
-	@GetMapping("/detail/{id}")
-	public R courseDetail(@PathVariable("id") String id) {
-		return R.ok(businessCollegeCourseService.courseDetail(id));
+	@GetMapping("/detail/courseId/{courseId}/userId/{userId}")
+	public R courseDetail(@PathVariable String courseId,@PathVariable String userId) {
+		return R.ok(businessCollegeCourseService.courseDetail(courseId,userId));
 	}
 
 	/**
 	 * 相关推荐
-	 * @param id
+	 * @param
 	 * @return R
 	 */
 	@ApiOperation(value = "随机五个相关推荐")
 	//@SysLog("相关推荐")
-	@GetMapping("/randomCourse/{id}")
-	public R randomCourse(@PathVariable("id") String id) {
-		return R.ok(businessCollegeCourseService.randomCourse(id));
+	@GetMapping("/randomCourse/{courseId}")
+	public R randomCourse(@PathVariable("courseId") String courseId) {
+		return R.ok(businessCollegeCourseService.randomCourse(courseId));
 	}
 }

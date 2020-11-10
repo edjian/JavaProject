@@ -8,19 +8,32 @@
  */
 package com.joolun.cloud.mall.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.joolun.cloud.mall.admin.mapper.BusinessCollegeCollectMapper;
 import com.joolun.cloud.mall.admin.service.*;
 import com.joolun.cloud.mall.common.dto.CourseDetailDTO;
+import com.joolun.cloud.mall.common.entity.BusinessCollegeCollect;
 import com.joolun.cloud.mall.common.entity.BusinessCollegeCourse;
 import com.joolun.cloud.mall.admin.mapper.BusinessCollegeCourseMapper;
 import com.joolun.cloud.mall.common.entity.BusinessCollegeHistory;
 import com.joolun.cloud.mall.common.entity.BusinessCollegeRelation;
+import com.joolun.cloud.mall.common.util.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
+import java.sql.Time;
 import java.sql.Wrapper;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -36,58 +49,68 @@ public class BusinessCollegeCourseServiceImpl extends ServiceImpl<BusinessColleg
 	private final BusinessCollegePictureService businessCollegePictureService;
 	private final BusinessCollegeVideoService businessCollegeVideoService;
 	private final BusinessCollegeRelationService businessCollegeRelationService;
-	private final BusinessCollegeHistoryService businessCollegeHistoryService;
+	private final BusinessCollegeCollectService businessCollegeCollectService;
 
 	/**
 	 * 查询课程详情
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	@Override
-	public CourseDetailDTO courseDetail(String id) {
+	public CourseDetailDTO courseDetail(String courseId,String userId) {
 		CourseDetailDTO courseDetailDTO = new CourseDetailDTO();
-		BusinessCollegeCourse course = this.getById(id);
-		courseDetailDTO.setId(id);
-		courseDetailDTO.setName(course.getName());
-		courseDetailDTO.setCollectedNum(course.getCollectedNum());
-		courseDetailDTO.setCreateTime(course.getCreateTime());
-		courseDetailDTO.setHistory(businessCollegeHistoryService.getOne(Wrappers.<BusinessCollegeHistory>lambdaQuery().eq(BusinessCollegeHistory::getCourseId,id),false).getHistory());
-		BusinessCollegeRelation relation = businessCollegeRelationService.getById(this.getById(id).getRelationId());
-		courseDetailDTO.setContent(businessCollegeTextService.getById(relation.getTextId()).getContent());
-		courseDetailDTO.setPicUrls(businessCollegePictureService.getById(relation.getPicId()).getPicUrls());
-		courseDetailDTO.setVideoUrl(businessCollegeVideoService.getById(relation.getVideoId()).getVideoUrl());
+		BusinessCollegeCourse course = this.getById(courseId);
+		BeanUtil.copyProperties(course,courseDetailDTO);
+		QueryWrapper<BusinessCollegeCollect> wrapper = new QueryWrapper();
+		wrapper.lambda().eq(BusinessCollegeCollect::getCourseId, courseId).eq(BusinessCollegeCollect::getUserId, userId);
+		BusinessCollegeCollect Collect = businessCollegeCollectService.getOne(wrapper);
+		if (Objects.nonNull(Collect)) {
+			courseDetailDTO.setCollected(Collect.getCollected());
+		}
+		BusinessCollegeRelation relation = businessCollegeRelationService.getById(this.getById(courseId).getRelationId());
+		if (StringUtil.isNotBlank(relation.getTextId())) {
+			courseDetailDTO.setContent(businessCollegeTextService.getById(relation.getTextId()).getContent());
+		}
+		if (StringUtil.isNotBlank(relation.getPicId())) {
+			courseDetailDTO.setPicUrls(businessCollegePictureService.getById(relation.getPicId()).getPicUrls());
+		}if (StringUtil.isNotBlank(relation.getVideoId())) {
+			courseDetailDTO.setVideoUrl(businessCollegeVideoService.getById(relation.getVideoId()).getVideoUrl());
+		}
 		return courseDetailDTO;
 	}
 
 	/**
 	 * 查询五个随机课程
-	 * @param id
+	 * @param
 	 * @return
 	 */
 	@Override
-	public List<CourseDetailDTO> randomCourse(String id) {
+	public List<CourseDetailDTO> randomCourse(String courseId) {
 		List<CourseDetailDTO> list = new ArrayList<>();
 		QueryWrapper<BusinessCollegeCourse> wrapper = new QueryWrapper();
-		wrapper.lambda().eq(BusinessCollegeCourse::getCategorySecond, this.getById(id).getCategorySecond());
+		wrapper.lambda().eq(BusinessCollegeCourse::getCategorySecond, this.getById(courseId).getCategorySecond());
 		List<BusinessCollegeCourse> courseList = this.list(wrapper);
-		Random random = new Random();
+		Random r = new Random();
 		Set<Integer> set = new HashSet<>();
 		while (set.size() < 5) {
-			set.add(random.nextInt(courseList.size()));
+			set.add(r.nextInt(courseList.size()));
 		}
 		Iterator iterator = set.iterator();
 		while (iterator.hasNext()) {
-			int randomId = (int)iterator.next();
+			int random = (int)iterator.next();
+			BusinessCollegeCourse businessCollegeCourse = courseList.get(random);
 			CourseDetailDTO courseDetailDTO = new CourseDetailDTO();
-			BusinessCollegeCourse course = courseList.get(randomId);
-			courseDetailDTO.setId(course.getId());
-			courseDetailDTO.setName(course.getName());
-			courseDetailDTO.setCollectedNum(course.getCollectedNum());
-			courseDetailDTO.setCreateTime(course.getCreateTime());
-			courseDetailDTO.setHistory(businessCollegeHistoryService.getOne(Wrappers.<BusinessCollegeHistory>lambdaQuery().eq(BusinessCollegeHistory::getCourseId,course.getId()),false).getHistory());
-			BusinessCollegeRelation relation = businessCollegeRelationService.getById(courseList.get(randomId).getRelationId());
+			BeanUtil.copyProperties(businessCollegeCourse, courseDetailDTO);
+			LocalDateTime createTime = businessCollegeCourse.getCreateTime();
+			Duration duration = Duration.between(createTime, LocalDateTime.now());
+			long l = duration.toDays();
+			if (duration.toDays() > 7) {
+				courseDetailDTO.setIsNew(2);
+			} else {
+				courseDetailDTO.setIsNew(1);
+			}
+			BusinessCollegeRelation relation = businessCollegeRelationService.getById(businessCollegeCourse.getRelationId());
 			courseDetailDTO.setPicUrls(businessCollegePictureService.getById(relation.getPicId()).getPicUrls());
-			courseDetailDTO.setVideoUrl(businessCollegeVideoService.getById(relation.getVideoId()).getVideoUrl());
 			list.add(courseDetailDTO);
 		}
 		return list;

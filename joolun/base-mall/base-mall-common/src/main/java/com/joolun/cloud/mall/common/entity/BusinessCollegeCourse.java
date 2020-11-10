@@ -84,5 +84,14 @@ public class BusinessCollegeCourse extends Model<BusinessCollegeCourse> {
      */
     @ApiModelProperty(value = "逻辑删除标记（0：显示；1：隐藏）")
     private String delFlag;
-
+	/**
+	 * 观看数量
+	 */
+	@ApiModelProperty(value = "观看数量")
+	private Integer watchName;
+	/**
+	 * 类型标识
+	 */
+	@ApiModelProperty(value = "标识：1、图文；2、视频；3、音频；4、专栏；5、直播")
+	private String tag;
 }

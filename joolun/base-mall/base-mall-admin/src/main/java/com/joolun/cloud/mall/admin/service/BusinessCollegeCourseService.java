@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2020-11-03 16:22:39
  */
 public interface BusinessCollegeCourseService extends IService<BusinessCollegeCourse> {
-	 CourseDetailDTO courseDetail(String id);
+	 CourseDetailDTO courseDetail(String courseId,String userId);
 
 	List<CourseDetailDTO> randomCourse(String id);
 }
